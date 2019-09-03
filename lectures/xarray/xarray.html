@@ -1,0 +1,2022 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,minimum-scale=1">
+
+  <title>Basic Xarray</title>
+  <meta name="description" content="Lesson 1: Xarray Fundamentals">
+
+  <link rel="canonical" href="http://earth-env-data-science.github.io//lectures/xarray/xarray.html">
+  <link rel="alternate" type="application/rss+xml" title="Earth and Environmental Data Science" href="http://earth-env-data-science.github.io//feed.xml">
+
+  <meta property="og:url"         content="http://earth-env-data-science.github.io//lectures/xarray/xarray.html" />
+<meta property="og:type"        content="article" />
+<meta property="og:title"       content="Basic Xarray" />
+<meta property="og:description" content="Lesson 1: Xarray Fundamentals" />
+<meta property="og:image"       content="" />
+
+
+  <script type="application/ld+json">
+  {
+  "@context": "http://schema.org",
+  "@type": "NewsArticle",
+  "mainEntityOfPage":
+    "http://earth-env-data-science.github.io//lectures/xarray/xarray.html",
+  "headline":
+    "Basic Xarray",
+  "datePublished":
+    "2019-09-03T04:19:38+00:00",
+  "dateModified":
+    "2019-09-03T04:19:38+00:00",
+  "description":
+    "Lesson 1: Xarray Fundamentals",
+  "author": {
+    "@type": "Person",
+    "name": "Ryan Abernathey"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Data 100 at UC Berkeley",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://earth-env-data-science.github.io/",
+      "width": 60,
+      "height": 60
+    }
+  },
+  "image": {
+    "@type": "ImageObject",
+    "url": "http://earth-env-data-science.github.io/",
+    "height": 60,
+    "width": 60
+  }
+}
+
+  </script>
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css ">
+  <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+
+  <!-- <link rel="manifest" href="/manifest.json"> -->
+  <!-- <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#efae0a"> -->
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+  <meta name="theme-color" content="#233947">
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="image/x-icon" href="/images/logo/favicon.ico">
+
+  <!-- MathJax Config -->
+  <!-- Allow inline math using $ and automatically break long math lines -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true,
+        processEnvironments: true
+    },
+    CommonHTML: {
+        linebreaks: {
+            automatic: true,
+        },
+    },
+});
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_CHTML' async></script>
+
+  <!-- DOM updating function -->
+  <script>
+const runWhenDOMLoaded = cb => {
+  if (document.readyState != 'loading') {
+    cb()
+  } else if (document.addEventListener) {
+    document.addEventListener('DOMContentLoaded', cb)
+  } else {
+    document.attachEvent('onreadystatechange', function() {
+      if (document.readyState == 'complete') cb()
+    })
+  }
+}
+
+// Helper function to init things quickly
+initFunction = function(myfunc) {
+  runWhenDOMLoaded(myfunc);
+  document.addEventListener('turbolinks:load', myfunc);
+};
+</script>
+
+  <!-- Define some javascript variables that will be useful in other javascript -->
+  <script>
+    const site_basename = '/';
+  </script>
+
+  <!-- Add AnchorJS to let headers be linked -->
+  <script src="/assets/js/anchor.min.js"  type="text/javascript"></script>
+  <script>
+
+initFunction(function () {
+    anchors.add("main h1, main h2, main h3, main h4")
+});
+
+</script>
+
+  <!-- Include Turbolinks to make page loads fast -->
+  <!-- https://github.com/turbolinks/turbolinks -->
+  <script src="/assets/js/turbolinks.js" async></script>
+  <meta name="turbolinks-cache-control" content="no-cache">
+
+  <!-- Load nbinteract for widgets -->
+  
+
+  <!-- Load Thebelab for interactive widgets -->
+  <!-- Include Thebelab for interactive code if it's enabled -->
+
+
+<!-- Display Thebelab button in each code cell -->
+<script>
+/**
+ * Set up thebelab button for code blocks
+ */
+
+const thebelabCellButton = id =>
+  `<a id="thebelab-cell-button-${id}" class="btn thebebtn o-tooltip--left" data-tooltip="Interactive Mode">
+    <img src="/assets/images/edit-button.svg" alt="Start interactive mode">
+  </a>`
+
+
+const addThebelabButtonToCodeCells =  () => {
+
+  const codeCells = document.querySelectorAll('div.input_area > div.highlighter-rouge:not(.output) pre')
+  codeCells.forEach((codeCell, index) => {
+    const id = codeCellId(index)
+    codeCell.setAttribute('id', id)
+    if (document.getElementById("thebelab-cell-button-" + id) == null) {
+      codeCell.insertAdjacentHTML('afterend', thebelabCellButton(id));
+    }
+  })
+}
+
+initFunction(addThebelabButtonToCodeCells);
+</script>
+
+
+
+<script type="text/x-thebe-config">
+    {
+      requestKernel: true,
+      binderOptions: {
+        repo: 'YOUR-ORG/YOUR-REPO',
+        ref: 'gh-pages',
+      },
+      codeMirrorConfig: {
+        theme: "abcdef"
+      },
+      kernelOptions: {
+        name: 'python3',
+      }
+    }
+</script>
+<script src="https://unpkg.com/thebelab@0.4.0/lib/index.js"></script>
+<script>
+    /**
+     * Add attributes to Thebelab blocks
+     */
+
+    const initThebelab = () => {
+        const addThebelabToCodeCells = () => {
+            console.log("Adding thebelab to code cells...");
+            // If Thebelab hasn't loaded, wait a bit and try again. This
+            // happens because we load ClipboardJS asynchronously.
+            if (window.thebelab === undefined) {
+                setTimeout(addThebelabToCodeCells, 250)
+            return
+            }
+
+            // If we already detect a Thebelab cell, don't re-run
+            if (document.querySelectorAll('div.thebelab-cell').length > 0) {
+                return;
+            }
+
+            // Find all code cells, replace with Thebelab interactive code cells
+            const codeCells = document.querySelectorAll('.input_area pre')
+            codeCells.forEach((codeCell, index) => {
+                const id = codeCellId(index)
+                codeCell.setAttribute('data-executable', 'true')
+
+                // Figure out the language it uses and add this too
+                var parentDiv = codeCell.parentElement.parentElement;
+                var arrayLength = parentDiv.classList.length;
+                for (var ii = 0; ii < arrayLength; ii++) {
+                    var parts = parentDiv.classList[ii].split('language-');
+                    if (parts.length === 2) {
+                        // If found, assign dataLanguage and break the loop
+                        var dataLanguage = parts[1];
+                        break;
+                    }
+                }
+                codeCell.setAttribute('data-language', dataLanguage)
+
+                // If the code cell is hidden, show it
+                var inputCheckbox = document.querySelector(`input#hidebtn${codeCell.id}`);
+                if (inputCheckbox !== null) {
+                    setCodeCellVisibility(inputCheckbox, 'visible');
+                }
+            });
+
+            // Remove the event listener from the page so keyboard press doesn't
+            // Change page
+            document.removeEventListener('keydown', initPageNav)
+            keyboardListener = false;
+
+            // Init thebelab
+            thebelab.bootstrap();
+
+            // Remove copy buttons since they won't work anymore
+            const copyAndThebeButtons = document.querySelectorAll('.copybtn, .thebebtn')
+            copyAndThebeButtons.forEach((button, index) => {
+                button.remove();
+            });
+
+            // Remove outputs since they'll be stale
+            const outputs = document.querySelectorAll('.output *, .output')
+            outputs.forEach((output, index) => {
+                output.remove();
+            });
+        }
+
+        // Add event listener for the function to modify code cells
+        const thebelabButtons = document.querySelectorAll('[id^=thebelab], [id$=thebelab]')
+        thebelabButtons.forEach((thebelabButton,index) => {
+            if (thebelabButton === null) {
+                setTimeout(initThebelab, 250)
+                return
+            };
+            thebelabButton.addEventListener('click', addThebelabToCodeCells);
+        });
+    }
+
+    // Initialize Thebelab
+    initFunction(initThebelab);
+</script>
+
+
+
+  <!-- Load the auto-generating TOC -->
+  <script src="/assets/js/tocbot.min.js"  type="text/javascript"></script>
+  <script>
+var initToc = function () {
+  tocbot.init({
+    tocSelector: 'nav.onthispage',
+    contentSelector: '.c-textbook__content',
+    headingSelector: 'h2, h3',
+    orderedList: false,
+    collapseDepth: 6,
+    listClass: 'toc__menu',
+    activeListItemClass: "",  // Not using
+    activeLinkClass: "", // Not using
+  });
+  tocbot.refresh();
+}
+initFunction(initToc);
+</script>
+
+  <!-- Google analytics -->
+  <script src="/assets/js/ga.js" async></script>
+
+  <!-- Clipboard copy button -->
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" async></script>
+
+  <!-- Load JS that depends on site variables -->
+  <script>
+/**
+ * Set up copy/paste for code blocks
+ */
+const codeCellId = index => `codecell${index}`
+
+const clipboardButton = id =>
+  `<a id="copy-button-${id}" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#${id}">
+    <img src="/assets/images/copy-button.svg" alt="Copy to clipboard">
+  </a>`
+
+// Clears selected text since ClipboardJS will select the text when copying
+const clearSelection = () => {
+  if (window.getSelection) {
+    window.getSelection().removeAllRanges()
+  } else if (document.selection) {
+    document.selection.empty()
+  }
+}
+
+// Changes tooltip text for two seconds, then changes it back
+const temporarilyChangeTooltip = (el, newText) => {
+  const oldText = el.getAttribute('data-tooltip')
+  el.setAttribute('data-tooltip', newText)
+  setTimeout(() => el.setAttribute('data-tooltip', oldText), 2000)
+}
+
+const addCopyButtonToCodeCells = () => {
+  // If ClipboardJS hasn't loaded, wait a bit and try again. This
+  // happens because we load ClipboardJS asynchronously.
+  if (window.ClipboardJS === undefined) {
+    setTimeout(addCopyButtonToCodeCells, 250)
+    return
+  }
+
+  const codeCells = document.querySelectorAll('div.c-textbook__content > div.highlighter-rouge > div.highlight > pre, div.input_area pre')
+  codeCells.forEach((codeCell, index) => {
+    const id = codeCellId(index)
+    codeCell.setAttribute('id', id)
+    if (document.getElementById("copy-button" + id) == null) {
+      codeCell.insertAdjacentHTML('afterend', clipboardButton(id));
+    }
+  })
+
+  const clipboard = new ClipboardJS('.copybtn')
+  clipboard.on('success', event => {
+    clearSelection()
+    temporarilyChangeTooltip(event.trigger, 'Copied!')
+  })
+
+  clipboard.on('error', event => {
+    temporarilyChangeTooltip(event.trigger, 'Failed to copy')
+  })
+
+  // Get rid of clipboard before the next page visit to avoid memory leak
+  document.addEventListener('turbolinks:before-visit', () =>
+    clipboard.destroy()
+  )
+}
+
+initFunction(addCopyButtonToCodeCells);
+</script>
+
+
+  <!-- Hide cell code -->
+  <script>
+    /**
+    Add buttons to hide code cells
+    */
+
+
+    var setCodeCellVisibility = function (inputField, kind) {
+        // Update the image and class for hidden
+        var id = inputField.getAttribute('data-id');
+        var codeCell = document.querySelector(`#${id} div.highlight`);
+
+        if (kind === "visible") {
+            codeCell.classList.remove('hidden');
+            inputField.checked = true;
+        } else {
+            codeCell.classList.add('hidden');
+            inputField.checked = false;
+        }
+    }
+
+    var toggleCodeCellVisibility = function (event) {
+        // The label is clicked, and now we decide what to do based on the input field's clicked status
+        if (event.target.tagName === "LABEL") {
+            var inputField = event.target.previousElementSibling;
+        } else {
+            // It is the span inside the target
+            var inputField = event.target.parentElement.previousElementSibling;
+        }
+
+        if (inputField.checked === true) {
+            setCodeCellVisibility(inputField, "visible");
+        } else {
+            setCodeCellVisibility(inputField, "hidden");
+        }
+    }
+
+
+    // Button constructor
+    const hideCodeButton = id => `<input class="hidebtn" type="checkbox" id="hidebtn${id}" data-id="${id}"><label title="Toggle cell" for="hidebtn${id}" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label>`
+
+    var addHideButton = function () {
+        // If a hide button is already added, don't add another
+        if (document.querySelector('div.hidecode input') !== null) {
+            return;
+        }
+
+        // Find the input cells and add a hide button
+        document.querySelectorAll('div.input_area').forEach(function (item, index) {
+            if (!item.classList.contains("hidecode")) {
+                // Skip the cell if it doesn't have a hidecode class
+                return;
+            }
+
+            const id = codeCellId(index)
+            item.setAttribute('id', id);
+            // Insert the button just inside the end of the next div
+            item.querySelector('div').insertAdjacentHTML('beforeend', hideCodeButton(id))
+
+            // Set up the visibility toggle
+            hideLink = document.querySelector(`#${id} div.highlight + input + label`);
+            hideLink.addEventListener('click', toggleCodeCellVisibility)
+        });
+    }
+
+
+    // Initialize the hide buttos
+    var initHiddenCells = function () {
+        // Add hide buttons to the cells
+        addHideButton();
+
+        // Toggle the code cells that should be hidden
+        document.querySelectorAll('div.hidecode input').forEach(function (item) {
+            setCodeCellVisibility(item, 'hidden');
+            item.checked = true;
+        })
+    }
+
+    initFunction(initHiddenCells);
+
+</script>
+
+  <!-- Load custom website scripts -->
+  <script src="/assets/js/scripts.js" async></script>
+
+  <!-- Load custom user CSS and JS  -->
+  <script src="/assets/custom/custom.js" async></script>
+  <link rel="stylesheet" href="/assets/custom/custom.css">
+
+  <!-- Update interact links w/ REST param, is defined in includes so we can use templates -->
+  
+
+  <!-- Lunr search code - will only be executed on the /search page -->
+  <script src="/assets/js/lunr/lunr.min.js" type="text/javascript"></script>
+  <script>var initQuery = function() {
+  // See if we have a search box
+  var searchInput = document.querySelector('input#lunr_search');
+  if (searchInput === null) {
+    return;
+  }
+
+  // Function to parse our lunr cache
+  var idx = lunr(function () {
+    this.field('title')
+    this.field('excerpt')
+    this.field('categories')
+    this.field('tags')
+    this.ref('id')
+
+    this.pipeline.remove(lunr.trimmer)
+
+    for (var item in store) {
+      this.add({
+        title: store[item].title,
+        excerpt: store[item].excerpt,
+        categories: store[item].categories,
+        tags: store[item].tags,
+        id: item
+      })
+    }
+  });
+
+  // Run search upon keyup
+  searchInput.addEventListener('keyup', function () {
+    var resultdiv = document.querySelector('#results');
+    var query = document.querySelector("input#lunr_search").value.toLowerCase();
+    var result =
+      idx.query(function (q) {
+        query.split(lunr.tokenizer.separator).forEach(function (term) {
+          q.term(term, { boost: 100 })
+          if(query.lastIndexOf(" ") != query.length-1){
+            q.term(term, {  usePipeline: false, wildcard: lunr.Query.wildcard.TRAILING, boost: 10 })
+          }
+          if (term != ""){
+            q.term(term, {  usePipeline: false, editDistance: 1, boost: 1 })
+          }
+        })
+      });
+
+      // Empty the results div
+      while (resultdiv.firstChild) {
+        resultdiv.removeChild(resultdiv.firstChild);
+      }
+
+    resultdiv.insertAdjacentHTML('afterbegin', '<p class="results__found">'+result.length+' Result(s) found</p>');
+    for (var item in result) {
+      var ref = result[item].ref;
+      if(store[ref].teaser){
+        var searchitem =
+          '<div class="list__item">'+
+            '<article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">'+
+              '<h2 class="archive__item-title" itemprop="headline">'+
+                '<a href="'+store[ref].url+'" rel="permalink">'+store[ref].title+'</a>'+
+              '</h2>'+
+              '<div class="archive__item-teaser">'+
+                '<img src="'+store[ref].teaser+'" alt="">'+
+              '</div>'+
+              '<p class="archive__item-excerpt" itemprop="description">'+store[ref].excerpt.split(" ").splice(0,20).join(" ")+'...</p>'+
+            '</article>'+
+          '</div>';
+      }
+      else{
+    	  var searchitem =
+          '<div class="list__item">'+
+            '<article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">'+
+              '<h2 class="archive__item-title" itemprop="headline">'+
+                '<a href="'+store[ref].url+'" rel="permalink">'+store[ref].title+'</a>'+
+              '</h2>'+
+              '<p class="archive__item-excerpt" itemprop="description">'+store[ref].excerpt.split(" ").splice(0,20).join(" ")+'...</p>'+
+            '</article>'+
+          '</div>';
+      }
+      resultdiv.insertAdjacentHTML('beforeend', searchitem);
+    }
+  });
+};
+
+initFunction(initQuery);
+</script>
+</head>
+
+  <body>
+    <!-- .js-show-sidebar shows sidebar by default -->
+    <div id="js-textbook" class="c-textbook js-show-sidebar">
+      
+
+
+
+<nav id="js-sidebar" class="c-textbook__sidebar">
+  <a href="http://earth-env-data-science.github.io"><img src="/images/logo/eeds-logo.png" class="textbook_logo" id="sidebar-logo" data-turbolinks-permanent/></a>
+  <h2 class="c-sidebar__title">Earth and Environmental Data Science</h2>
+  <ul class="c-sidebar__chapters">
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/intro.html"
+        >
+          
+          Intro
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/LICENSE.html"
+        >
+          
+          License
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+        <li class="c-sidebar__divider"></li>
+        
+      
+      
+        <li><h2 class="c-sidebar__title">The Interactive Computing Environment</li>
+        
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/lectures/environment/intro_to_jupyterlab.html"
+        >
+          
+            1.
+          
+          Intro to JupyterLab
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/lectures/environment/intro_to_unix.html"
+        >
+          
+            2.
+          
+          Intro to Unix
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/lectures/environment/intro_to_git.html"
+        >
+          
+            3.
+          
+          Intro to Git
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+        <li><h2 class="c-sidebar__title">The Core Python Language</li>
+        
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/lectures/core_python/python_fundamentals.html"
+        >
+          
+            4.
+          
+          Python Fundamentals
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/lectures/core_python/functions_classes.html"
+        >
+          
+            5.
+          
+          Functions and Classes
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/lectures/core_python/organization_and_packaging.html"
+        >
+          
+            6.
+          
+          Organization and Packaging of Python Projects
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+        <li><h2 class="c-sidebar__title">Scientific Python Fundamentals</li>
+        
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/lectures/basic_scipy/numpy_and_matplotlib.html"
+        >
+          
+            7.
+          
+          Numpy and Matplotlib
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/lectures/basic_scipy/more_matplotlib.html"
+        >
+          
+            8.
+          
+          Advanced Matplotlib
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+        <li><h2 class="c-sidebar__title">High Level Data Analysis Frameworks</li>
+        
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/lectures/pandas/pandas_intro.html"
+        >
+          
+            9.
+          
+          Pandas for Tabular Data
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections ">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/lectures/pandas/basic_pandas.html"
+                >
+                  
+                    9.1
+                  
+                  Pandas Fundamentals
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/lectures/pandas/pandas_groupby.html"
+                >
+                  
+                    9.2
+                  
+                  The Split-Apply-Combine Workflow
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/lectures/xarray/xarray_intro.html"
+        >
+          
+            10.
+          
+          Xarray for Multidimensional Data
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections ">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry c-sidebar__entry--active"
+                  href="/lectures/xarray/xarray.html"
+                >
+                  
+                    10.1
+                  
+                  Basic Xarray
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/lectures/xarray/xarray-part2.html"
+                >
+                  
+                    10.2
+                  
+                  Intermediate Xarray
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/lectures/xarray/xarray_tips_and_tricks.html"
+                >
+                  
+                    10.3
+                  
+                  Xarray Tips And Tricks
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+  </ul>
+  <p class="sidebar_footer">Powered by <a href="https://github.com/jupyter/jupyter-book">Jupyter Book</a></p>
+</nav>
+
+      
+      <!-- Empty sidebar placeholder that we'll auto-fill with javascript -->
+      <aside class="sidebar__right">
+          <header><h4 class="nav__title"><i class="fa fa-list"></i>   On this page</h4></header>
+          <nav class="onthispage">
+          </nav>
+      </aside>
+      
+      <main class="c-textbook__page" tabindex="-1">
+          <div class="o-wrapper">
+            <div class="c-sidebar-toggle">
+  <!-- We show the sidebar by default so we use .is-active -->
+  <button
+    id="js-sidebar-toggle"
+    class="hamburger hamburger--arrowalt is-active"
+  >
+    <span class="hamburger-box">
+      <span class="hamburger-inner"></span>
+    </span>
+    <span class="c-sidebar-toggle__label">Toggle Sidebar</span>
+  </button>
+</div>
+
+            
+<div class="buttons">
+<a href="/content/lectures/xarray/xarray.ipynb" download>
+<button id="interact-button-download" class="interact-button">Download</button>
+</a>
+
+<button id="interact-button-thebelab" class="interact-button">Thebelab</button>
+
+
+
+
+
+</div>
+
+
+            <div class="c-textbook__content">
+              <h1 id="lesson-1-xarray-fundamentals">Lesson 1: Xarray Fundamentals</h1>
+
+<h2 id="xarray-data-structures">Xarray data structures</h2>
+
+<p>Like Pandas, xarray has two fundamental data structures:</p>
+<ul>
+  <li>a <code class="highlighter-rouge">DataArray</code>, which holds a single multi-dimensional variable and its coordinates</li>
+  <li>a <code class="highlighter-rouge">Dataset</code>, which holds multiple variables that potentially share the same coordinates</li>
+</ul>
+
+<h3 id="dataarray">DataArray</h3>
+
+<p>A <code class="highlighter-rouge">DataArray</code> has four essential attributes:</p>
+<ul>
+  <li><code class="highlighter-rouge">values</code>: a <code class="highlighter-rouge">numpy.ndarray</code> holding the array’s values</li>
+  <li><code class="highlighter-rouge">dims</code>: dimension names for each axis (e.g., <code class="highlighter-rouge">('x', 'y', 'z')</code>)</li>
+  <li><code class="highlighter-rouge">coords</code>: a dict-like container of arrays (coordinates) that label each point (e.g., 1-dimensional arrays of numbers, datetime objects or strings)</li>
+  <li><code class="highlighter-rouge">attrs</code>: an <code class="highlighter-rouge">OrderedDict</code> to hold arbitrary metadata (attributes)</li>
+</ul>
+
+<p>Let’s start by constructing some DataArrays manually</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="n">xr</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s">'figure.figsize'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+
+</code></pre></div>    </div>
+  </div>
+
+</div>
+
+<p>A simple DataArray without dimensions or coordinates isn’t much use.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">da</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">([</span><span class="mi">9</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">da</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;xarray.DataArray (dim_0: 5)&gt;
+array([9, 0, 2, 1, 0])
+Dimensions without coordinates: dim_0
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+</div>
+
+<p>We can add a dimension name…</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">da</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">([</span><span class="mi">9</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s">'x'</span><span class="p">])</span>
+<span class="n">da</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;xarray.DataArray (x: 5)&gt;
+array([9, 0, 2, 1, 0])
+Dimensions without coordinates: x
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+</div>
+
+<p>But things get most interesting when we add a coordinate:</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">da</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">([</span><span class="mi">9</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                  <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s">'x'</span><span class="p">],</span>
+                  <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s">'x'</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">]})</span>
+<span class="n">da</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;xarray.DataArray (x: 5)&gt;
+array([9, 0, 2, 1, 0])
+Coordinates:
+  * x        (x) int64 10 20 30 40 50
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+</div>
+
+<p>Xarray has built-in plotting, like pandas.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">da</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="s">'o'</span><span class="p">)</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[&lt;matplotlib.lines.Line2D at 0x112d401d0&gt;]
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <p class="output_png"><img src="../../images/lectures/xarray/xarray_10_1.png" alt="png" /></p>
+
+    </div>
+  </div>
+</div>
+
+<h3 id="multidimensional-dataarray">Multidimensional DataArray</h3>
+
+<p>If we are just dealing with 1D data, Pandas and Xarray have very similar capabilities. Xarray’s real potential comes with multidimensional data.</p>
+
+<p>Let’s go back to the multidimensional ARGO data we loaded in the numpy lesson. If you haven’t already downloaded it, you can do so at the command line with</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-O</span> http://www.ldeo.columbia.edu/~rpa/argo_float_4901412.npz
+</code></pre></div></div>
+
+<p>We reload this data and examine its keys.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">argo_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">'argo_float_4901412.npz'</span><span class="p">)</span>
+<span class="n">argo_data</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>['S', 'T', 'levels', 'lon', 'date', 'P', 'lat']
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+</div>
+
+<p>The values of the <code class="highlighter-rouge">argo_data</code> object are numpy arrays.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">S</span> <span class="o">=</span> <span class="n">argo_data</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="n">S</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">argo_data</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="n">T</span>
+<span class="n">P</span> <span class="o">=</span> <span class="n">argo_data</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="n">P</span>
+<span class="n">levels</span> <span class="o">=</span> <span class="n">argo_data</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="n">levels</span>
+<span class="n">lon</span> <span class="o">=</span> <span class="n">argo_data</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="n">lon</span>
+<span class="n">lat</span> <span class="o">=</span> <span class="n">argo_data</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="n">lat</span>
+<span class="n">date</span> <span class="o">=</span> <span class="n">argo_data</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="n">date</span>
+<span class="k">print</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">lon</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">date</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+      <div class="output_stream highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(78, 75) (75,) (75,)
+</code></pre></div>      </div>
+    </div>
+  </div>
+</div>
+
+<p>Let’s organize the data and coordinates of the salinity variable into a DataArray.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">da_salinity</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s">'level'</span><span class="p">,</span> <span class="s">'date'</span><span class="p">],</span>
+                           <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s">'level'</span><span class="p">:</span> <span class="n">levels</span><span class="p">,</span>
+                                   <span class="s">'date'</span><span class="p">:</span> <span class="n">date</span><span class="p">},)</span>
+<span class="n">da_salinity</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;xarray.DataArray (level: 78, date: 75)&gt;
+array([[ 35.638939,  35.514957,  35.572971, ...,  35.820938,  35.777939,
+         35.668911],
+       [ 35.633938,  35.521957,  35.573971, ...,  35.810932,  35.583897,
+         35.667912],
+       [ 35.681946,  35.525959,  35.572971, ...,  35.795929,  35.662907,
+         35.665913],
+       ..., 
+       [ 34.915859,  34.923904,  34.923904, ...,  34.934811,  34.940811,
+         34.946808],
+       [ 34.915859,  34.923904,  34.921906, ...,  34.932808,  34.93681 ,
+         34.94381 ],
+       [ 34.917858,  34.923904,  34.923904, ...,        nan,  34.93681 ,
+               nan]])
+Coordinates:
+  * level    (level) int64 0 1 2 3 4 5 6 7 8 9 ... 68 69 70 71 72 73 74 75 76 77
+  * date     (date) datetime64[ns] 2012-07-13T22:33:06.019200 ... 2014-07-24T03:02:33.014400
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">da_salinity</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">yincrease</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.collections.QuadMesh at 0x112dcc630&gt;
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <p class="output_png"><img src="../../images/lectures/xarray/xarray_17_1.png" alt="png" /></p>
+
+    </div>
+  </div>
+</div>
+
+<p>Attributes can be used to store metadata. What metadata should you store? The <a href="http://cfconventions.org/Data/cf-conventions/cf-conventions-1.7/cf-conventions.html#_description_of_the_data">CF Conventions</a> are a great resource for thinking about climate metadata. Below we define two of the required CF-conventions attributes.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">da_salinity</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">'units'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'PSU'</span>
+<span class="n">da_salinity</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">'standard_name'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'sea_water_salinity'</span>
+<span class="n">da_salinity</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;xarray.DataArray (level: 78, date: 75)&gt;
+array([[ 35.638939,  35.514957,  35.572971, ...,  35.820938,  35.777939,
+         35.668911],
+       [ 35.633938,  35.521957,  35.573971, ...,  35.810932,  35.583897,
+         35.667912],
+       [ 35.681946,  35.525959,  35.572971, ...,  35.795929,  35.662907,
+         35.665913],
+       ..., 
+       [ 34.915859,  34.923904,  34.923904, ...,  34.934811,  34.940811,
+         34.946808],
+       [ 34.915859,  34.923904,  34.921906, ...,  34.932808,  34.93681 ,
+         34.94381 ],
+       [ 34.917858,  34.923904,  34.923904, ...,        nan,  34.93681 ,
+               nan]])
+Coordinates:
+  * level    (level) int64 0 1 2 3 4 5 6 7 8 9 ... 68 69 70 71 72 73 74 75 76 77
+  * date     (date) datetime64[ns] 2012-07-13T22:33:06.019200 ... 2014-07-24T03:02:33.014400
+Attributes:
+    units:          PSU
+    standard_name:  sea_water_salinity
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+</div>
+
+<h3 id="datasets">Datasets</h3>
+
+<p>A Dataset holds many DataArrays which potentially can share coordinates. In analogy to pandas:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pandas.Series : pandas.Dataframe :: xarray.DataArray : xarray.Dataset
+</code></pre></div></div>
+
+<p>Constructing Datasets manually is a bit more involved in terms of syntax. The Dataset constructor takes three arguments:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">data_vars</code> should be a dictionary with each key as the name of the variable and each value as one of:
+    <ul>
+      <li>A <code class="highlighter-rouge">DataArray</code> or Variable</li>
+      <li>A tuple of the form <code class="highlighter-rouge">(dims, data[, attrs])</code>, which is converted into arguments for Variable</li>
+      <li>A pandas object, which is converted into a <code class="highlighter-rouge">DataArray</code></li>
+      <li>A 1D array or list, which is interpreted as values for a one dimensional coordinate variable along the same dimension as it’s name</li>
+    </ul>
+  </li>
+  <li><code class="highlighter-rouge">coords</code> should be a dictionary of the same form as data_vars.</li>
+  <li><code class="highlighter-rouge">attrs</code> should be a dictionary.</li>
+</ul>
+
+<p>Let’s put together a Dataset with temperature, salinity and pressure all together</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">argo</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
+        <span class="n">data_vars</span><span class="o">=</span><span class="p">{</span><span class="s">'salinity'</span><span class="p">:</span>    <span class="p">((</span><span class="s">'level'</span><span class="p">,</span> <span class="s">'date'</span><span class="p">),</span> <span class="n">S</span><span class="p">),</span>
+                   <span class="s">'temperature'</span><span class="p">:</span> <span class="p">((</span><span class="s">'level'</span><span class="p">,</span> <span class="s">'date'</span><span class="p">),</span> <span class="n">T</span><span class="p">),</span>
+                   <span class="s">'pressure'</span><span class="p">:</span>    <span class="p">((</span><span class="s">'level'</span><span class="p">,</span> <span class="s">'date'</span><span class="p">),</span> <span class="n">P</span><span class="p">)},</span>
+        <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s">'level'</span><span class="p">:</span> <span class="n">levels</span><span class="p">,</span>
+                <span class="s">'date'</span><span class="p">:</span> <span class="n">date</span><span class="p">})</span>
+<span class="n">argo</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;xarray.Dataset&gt;
+Dimensions:      (date: 75, level: 78)
+Coordinates:
+  * level        (level) int64 0 1 2 3 4 5 6 7 8 ... 69 70 71 72 73 74 75 76 77
+  * date         (date) datetime64[ns] 2012-07-13T22:33:06.019200 ... 2014-07-24T03:02:33.014400
+Data variables:
+    salinity     (level, date) float64 35.64 35.51 35.57 35.4 ... nan 34.94 nan
+    temperature  (level, date) float64 18.97 18.44 19.1 19.79 ... nan 3.714 nan
+    pressure     (level, date) float64 6.8 6.1 6.5 5.0 ... 2e+03 nan 2e+03 nan
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+</div>
+
+<p>What about lon and lat? We forgot them in the creation process, but we can add them after the fact.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">argo</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s">'lon'</span><span class="p">]</span> <span class="o">=</span> <span class="n">lon</span>
+<span class="n">argo</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;xarray.Dataset&gt;
+Dimensions:      (date: 75, level: 78, lon: 75)
+Coordinates:
+  * level        (level) int64 0 1 2 3 4 5 6 7 8 ... 69 70 71 72 73 74 75 76 77
+  * date         (date) datetime64[ns] 2012-07-13T22:33:06.019200 ... 2014-07-24T03:02:33.014400
+  * lon          (lon) float64 -39.13 -37.28 -36.9 ... -33.83 -34.11 -34.38
+Data variables:
+    salinity     (level, date) float64 35.64 35.51 35.57 35.4 ... nan 34.94 nan
+    temperature  (level, date) float64 18.97 18.44 19.1 19.79 ... nan 3.714 nan
+    pressure     (level, date) float64 6.8 6.1 6.5 5.0 ... 2e+03 nan 2e+03 nan
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+</div>
+
+<p>That was not quite right…we want lon to have dimension <code class="highlighter-rouge">date</code>:</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">del</span> <span class="n">argo</span><span class="p">[</span><span class="s">'lon'</span><span class="p">]</span>
+<span class="n">argo</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s">'lon'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s">'date'</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
+<span class="n">argo</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s">'lat'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s">'date'</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>
+<span class="n">argo</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;xarray.Dataset&gt;
+Dimensions:      (date: 75, level: 78)
+Coordinates:
+  * level        (level) int64 0 1 2 3 4 5 6 7 8 ... 69 70 71 72 73 74 75 76 77
+  * date         (date) datetime64[ns] 2012-07-13T22:33:06.019200 ... 2014-07-24T03:02:33.014400
+    lon          (date) float64 -39.13 -37.28 -36.9 ... -33.83 -34.11 -34.38
+    lat          (date) float64 47.19 46.72 46.45 46.23 ... 42.6 42.46 42.38
+Data variables:
+    salinity     (level, date) float64 35.64 35.51 35.57 35.4 ... nan 34.94 nan
+    temperature  (level, date) float64 18.97 18.44 19.1 19.79 ... nan 3.714 nan
+    pressure     (level, date) float64 6.8 6.1 6.5 5.0 ... 2e+03 nan 2e+03 nan
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+</div>
+
+<h3 id="coordinates-vs-data-variables">Coordinates vs. Data Variables</h3>
+
+<p>Data variables can be modified through arithmentic operations or other functions. Coordinates are always keept the same.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">argo</span> <span class="o">*</span> <span class="mi">10000</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;xarray.Dataset&gt;
+Dimensions:      (date: 75, level: 78)
+Coordinates:
+  * level        (level) int64 0 1 2 3 4 5 6 7 8 ... 69 70 71 72 73 74 75 76 77
+  * date         (date) datetime64[ns] 2012-07-13T22:33:06.019200 ... 2014-07-24T03:02:33.014400
+    lat          (date) float64 47.19 46.72 46.45 46.23 ... 42.6 42.46 42.38
+    lon          (date) float64 -39.13 -37.28 -36.9 ... -33.83 -34.11 -34.38
+Data variables:
+    salinity     (level, date) float64 3.564e+05 3.551e+05 ... 3.494e+05 nan
+    temperature  (level, date) float64 1.897e+05 1.844e+05 ... 3.714e+04 nan
+    pressure     (level, date) float64 6.8e+04 6.1e+04 6.5e+04 ... nan 2e+07 nan
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+</div>
+
+<p>Clearly lon and lat are coordinates rather than data variables. We can change their status as follows:</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">argo</span> <span class="o">=</span> <span class="n">argo</span><span class="o">.</span><span class="n">set_coords</span><span class="p">([</span><span class="s">'lon'</span><span class="p">,</span> <span class="s">'lat'</span><span class="p">])</span>
+<span class="n">argo</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;xarray.Dataset&gt;
+Dimensions:      (date: 75, level: 78)
+Coordinates:
+  * level        (level) int64 0 1 2 3 4 5 6 7 8 ... 69 70 71 72 73 74 75 76 77
+  * date         (date) datetime64[ns] 2012-07-13T22:33:06.019200 ... 2014-07-24T03:02:33.014400
+    lon          (date) float64 -39.13 -37.28 -36.9 ... -33.83 -34.11 -34.38
+    lat          (date) float64 47.19 46.72 46.45 46.23 ... 42.6 42.46 42.38
+Data variables:
+    salinity     (level, date) float64 35.64 35.51 35.57 35.4 ... nan 34.94 nan
+    temperature  (level, date) float64 18.97 18.44 19.1 19.79 ... nan 3.714 nan
+    pressure     (level, date) float64 6.8 6.1 6.5 5.0 ... 2e+03 nan 2e+03 nan
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+</div>
+
+<p>The <code class="highlighter-rouge">*</code> symbol in the representation above indicates that <code class="highlighter-rouge">level</code> and <code class="highlighter-rouge">date</code> are “dimension coordinates” (they describe the coordinates associated with data variable axes) while <code class="highlighter-rouge">lon</code> and <code class="highlighter-rouge">lat</code> are “non-dimension coordinates”. We can make any variable a non-dimension coordiante.</p>
+
+<p>Alternatively, we could have assigned directly to coords as follows:</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">argo</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s">'lon'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s">'date'</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
+<span class="n">argo</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s">'lat'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s">'date'</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>
+
+</code></pre></div>    </div>
+  </div>
+
+</div>
+
+<h2 id="working-with-labeled-data">Working with Labeled Data</h2>
+
+<p>Xarray’s labels make working with multidimensional data much easier.</p>
+
+<h3 id="selecting-data-indexing">Selecting Data (Indexing)</h3>
+
+<p>We can always use regular numpy indexing and slicing on DataArrays</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">argo</span><span class="o">.</span><span class="n">salinity</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[&lt;matplotlib.lines.Line2D at 0x112fe0c18&gt;]
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <p class="output_png"><img src="../../images/lectures/xarray/xarray_33_1.png" alt="png" /></p>
+
+    </div>
+  </div>
+</div>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">argo</span><span class="o">.</span><span class="n">salinity</span><span class="p">[:,</span> <span class="mi">10</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[&lt;matplotlib.lines.Line2D at 0x1130faf28&gt;]
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <p class="output_png"><img src="../../images/lectures/xarray/xarray_34_1.png" alt="png" /></p>
+
+    </div>
+  </div>
+</div>
+
+<p>However, it is often much more powerful to use xarray’s <code class="highlighter-rouge">.sel()</code> method to use label-based indexing.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">argo</span><span class="o">.</span><span class="n">salinity</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[&lt;matplotlib.lines.Line2D at 0x1131e3e10&gt;]
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <p class="output_png"><img src="../../images/lectures/xarray/xarray_36_1.png" alt="png" /></p>
+
+    </div>
+  </div>
+</div>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">argo</span><span class="o">.</span><span class="n">salinity</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">date</span><span class="o">=</span><span class="s">'2012-10-22'</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="s">'level'</span><span class="p">,</span> <span class="n">yincrease</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[&lt;matplotlib.lines.Line2D at 0x11331b160&gt;]
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <p class="output_png"><img src="../../images/lectures/xarray/xarray_37_1.png" alt="png" /></p>
+
+    </div>
+  </div>
+</div>
+
+<p><code class="highlighter-rouge">.sel()</code> also supports slicing. Unfortunately we have to use a somewhat awkward syntax, but it still works.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">argo</span><span class="o">.</span><span class="n">salinity</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">date</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="s">'2012-10-01'</span><span class="p">,</span> <span class="s">'2012-12-01'</span><span class="p">))</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.collections.QuadMesh at 0x1133fcb00&gt;
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <p class="output_png"><img src="../../images/lectures/xarray/xarray_39_1.png" alt="png" /></p>
+
+    </div>
+  </div>
+</div>
+
+<p><code class="highlighter-rouge">.sel()</code> also works on the whole Dataset</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">argo</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">date</span><span class="o">=</span><span class="s">'2012-10-22'</span><span class="p">)</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;xarray.Dataset&gt;
+Dimensions:      (date: 1, level: 78)
+Coordinates:
+  * level        (level) int64 0 1 2 3 4 5 6 7 8 ... 69 70 71 72 73 74 75 76 77
+  * date         (date) datetime64[ns] 2012-10-22T02:50:32.006400
+    lon          (date) float64 -32.97
+    lat          (date) float64 44.13
+Data variables:
+    salinity     (level, date) float64 35.47 35.47 35.47 ... 34.93 34.92 nan
+    temperature  (level, date) float64 17.13 17.13 17.13 ... 3.736 3.639 nan
+    pressure     (level, date) float64 6.4 10.3 15.4 ... 1.9e+03 1.951e+03 nan
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+</div>
+
+<h3 id="computation">Computation</h3>
+
+<p>Xarray dataarrays and datasets work seamlessly with arithmetic operators and numpy array functions.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">temp_kelvin</span> <span class="o">=</span> <span class="n">argo</span><span class="o">.</span><span class="n">temperature</span> <span class="o">+</span> <span class="mf">273.15</span>
+<span class="n">temp_kelvin</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">yincrease</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.collections.QuadMesh at 0x11355a8d0&gt;
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <p class="output_png"><img src="../../images/lectures/xarray/xarray_43_1.png" alt="png" /></p>
+
+    </div>
+  </div>
+</div>
+
+<p>We can also combine multiple xarray datasets in arithemtic operations</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">g</span> <span class="o">=</span> <span class="mf">9.8</span>
+<span class="n">buoyancy</span> <span class="o">=</span> <span class="n">g</span> <span class="o">*</span> <span class="p">(</span><span class="mf">2e-4</span> <span class="o">*</span> <span class="n">argo</span><span class="o">.</span><span class="n">temperature</span> <span class="o">-</span> <span class="mf">7e-4</span> <span class="o">*</span> <span class="n">argo</span><span class="o">.</span><span class="n">salinity</span><span class="p">)</span>
+<span class="n">buoyancy</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">yincrease</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.collections.QuadMesh at 0x113608cc0&gt;
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <p class="output_png"><img src="../../images/lectures/xarray/xarray_45_1.png" alt="png" /></p>
+
+    </div>
+  </div>
+</div>
+
+<h3 id="broadcasting">Broadcasting</h3>
+
+<p>Broadcasting arrays in numpy is a nightmare. It is much easier when the data axes are labeled!</p>
+
+<p>This is a useless calculation, but it illustrates how perfoming an operation on arrays with differenty coordinates will result in automatic broadcasting</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">level_times_lat</span> <span class="o">=</span> <span class="n">argo</span><span class="o">.</span><span class="n">level</span> <span class="o">*</span> <span class="n">argo</span><span class="o">.</span><span class="n">lat</span>
+<span class="n">level_times_lat</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;xarray.DataArray (level: 78, date: 75)&gt;
+array([[    0.   ,     0.   ,     0.   , ...,     0.   ,     0.   ,     0.   ],
+       [   47.187,    46.716,    46.45 , ...,    42.601,    42.457,    42.379],
+       [   94.374,    93.432,    92.9  , ...,    85.202,    84.914,    84.758],
+       ..., 
+       [ 3539.025,  3503.7  ,  3483.75 , ...,  3195.075,  3184.275,  3178.425],
+       [ 3586.212,  3550.416,  3530.2  , ...,  3237.676,  3226.732,  3220.804],
+       [ 3633.399,  3597.132,  3576.65 , ...,  3280.277,  3269.189,  3263.183]])
+Coordinates:
+  * level    (level) int64 0 1 2 3 4 5 6 7 8 9 ... 68 69 70 71 72 73 74 75 76 77
+  * date     (date) datetime64[ns] 2012-07-13T22:33:06.019200 ... 2014-07-24T03:02:33.014400
+    lon      (date) float64 -39.13 -37.28 -36.9 -36.89 ... -33.83 -34.11 -34.38
+    lat      (date) float64 47.19 46.72 46.45 46.23 ... 42.72 42.6 42.46 42.38
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">level_times_lat</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.collections.QuadMesh at 0x11376d208&gt;
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <p class="output_png"><img src="../../images/lectures/xarray/xarray_48_1.png" alt="png" /></p>
+
+    </div>
+  </div>
+</div>
+
+<h3 id="reductions">Reductions</h3>
+
+<p>Just like in numpy, we can reduce xarray DataArrays along any number of axes:</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">argo</span><span class="o">.</span><span class="n">temperature</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">dims</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>('date',)
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">argo</span><span class="o">.</span><span class="n">temperature</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">dims</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>('level',)
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+</div>
+
+<p>However, rather than performing reductions on axes (as in numpy), we can perform them on dimensions. This turns out to be a huge convenience</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">argo_mean</span> <span class="o">=</span> <span class="n">argo</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s">'date'</span><span class="p">)</span>
+<span class="n">argo_mean</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;xarray.Dataset&gt;
+Dimensions:      (level: 78)
+Coordinates:
+  * level        (level) int64 0 1 2 3 4 5 6 7 8 ... 69 70 71 72 73 74 75 76 77
+Data variables:
+    salinity     (level) float64 35.91 35.9 35.9 35.9 ... 34.94 34.94 34.93
+    temperature  (level) float64 17.6 17.57 17.51 17.42 ... 3.789 3.73 3.662
+    pressure     (level) float64 6.435 10.57 15.54 ... 1.95e+03 1.999e+03
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">argo_mean</span><span class="o">.</span><span class="n">salinity</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="s">'level'</span><span class="p">,</span> <span class="n">yincrease</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[&lt;matplotlib.lines.Line2D at 0x11397d828&gt;]
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <p class="output_png"><img src="../../images/lectures/xarray/xarray_54_1.png" alt="png" /></p>
+
+    </div>
+  </div>
+</div>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">argo_std</span> <span class="o">=</span> <span class="n">argo</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s">'date'</span><span class="p">)</span>
+<span class="n">argo_std</span><span class="o">.</span><span class="n">salinity</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="s">'level'</span><span class="p">,</span> <span class="n">yincrease</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[&lt;matplotlib.lines.Line2D at 0x1139ea080&gt;]
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <p class="output_png"><img src="../../images/lectures/xarray/xarray_55_1.png" alt="png" /></p>
+
+    </div>
+  </div>
+</div>
+
+<h2 id="loading-data-from-netcdf-files">Loading Data from netCDF Files</h2>
+
+<p>NetCDF (Network Common Data Format) is the most widely used format for distributing geoscience data. NetCDF is maintained by the <a href="https://www.unidata.ucar.edu/">Unidata</a> organization.</p>
+
+<p>Below we quote from the <a href="https://www.unidata.ucar.edu/software/netcdf/docs/faq.html#whatisit">NetCDF website</a>:</p>
+
+<blockquote>
+  <p>NetCDF (network Common Data Form) is a set of interfaces for array-oriented data access and a freely distributed collection of data access libraries for C, Fortran, C++, Java, and other languages. The netCDF libraries support a machine-independent format for representing scientific data. Together, the interfaces, libraries, and format support the creation, access, and sharing of scientific data.</p>
+
+  <p>NetCDF data is:</p>
+
+  <ul>
+    <li>Self-Describing. A netCDF file includes information about the data it contains.</li>
+    <li>Portable. A netCDF file can be accessed by computers with different ways of storing integers, characters, and floating-point numbers.</li>
+    <li>Scalable. A small subset of a large dataset may be accessed efficiently.</li>
+    <li>Appendable. Data may be appended to a properly structured netCDF file without copying the dataset or redefining its structure.</li>
+    <li>Sharable. One writer and multiple readers may simultaneously access the same netCDF file.</li>
+    <li>Archivable. Access to all earlier forms of netCDF data will be supported by current and future versions of the software.</li>
+  </ul>
+</blockquote>
+
+<p>Xarray was designed to make reading netCDF files in python as easy, powerful, and flexible as possible. (See <a href="http://xarray.pydata.org/en/latest/io.html#netcdf">xarray netCDF docs</a> for more details.)</p>
+
+<p>Below we download and load some the NASA <a href="https://data.giss.nasa.gov/gistemp/">GISSTemp</a> global temperature anomaly dataset.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">!</span> <span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">data</span><span class="o">.</span><span class="n">giss</span><span class="o">.</span><span class="n">nasa</span><span class="o">.</span><span class="n">gov</span><span class="o">/</span><span class="n">pub</span><span class="o">/</span><span class="n">gistemp</span><span class="o">/</span><span class="n">gistemp1200_ERSSTv5</span><span class="o">.</span><span class="n">nc</span><span class="o">.</span><span class="n">gz</span>
+<span class="err">!</span> <span class="n">gunzip</span> <span class="n">gistemp1200_ERSSTv5</span><span class="o">.</span><span class="n">nc</span><span class="o">.</span><span class="n">gz</span>
+
+</code></pre></div>    </div>
+  </div>
+
+</div>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s">'gistemp1200_ERSSTv5.nc'</span><span class="p">)</span>
+<span class="n">ds</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;xarray.Dataset&gt;
+Dimensions:      (lat: 90, lon: 180, nv: 2, time: 1665)
+Coordinates:
+  * lat          (lat) float32 -89.0 -87.0 -85.0 -83.0 ... 83.0 85.0 87.0 89.0
+  * lon          (lon) float32 -179.0 -177.0 -175.0 -173.0 ... 175.0 177.0 179.0
+  * time         (time) datetime64[ns] 1880-01-15 1880-02-15 ... 2018-09-15
+Dimensions without coordinates: nv
+Data variables:
+    time_bnds    (time, nv) int32 ...
+    tempanomaly  (time, lat, lon) float32 ...
+Attributes:
+    title:        GISTEMP Surface Temperature Analysis
+    institution:  NASA Goddard Institute for Space Studies
+    source:       http://data.giss.nasa.gov/gistemp/
+    Conventions:  CF-1.6
+    history:      Created 2018-10-12 16:36:37 by SBBX_to_nc 2.0 - ILAND=1200,...
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ds</span><span class="o">.</span><span class="n">tempanomaly</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">time</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.collections.QuadMesh at 0x1179bc7f0&gt;
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <p class="output_png"><img src="../../images/lectures/xarray/xarray_59_1.png" alt="png" /></p>
+
+    </div>
+  </div>
+</div>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ds</span><span class="o">.</span><span class="n">tempanomaly</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">(</span><span class="s">'lon'</span><span class="p">,</span> <span class="s">'lat'</span><span class="p">))</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[&lt;matplotlib.lines.Line2D at 0x117b186d8&gt;]
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <p class="output_png"><img src="../../images/lectures/xarray/xarray_60_1.png" alt="png" /></p>
+
+    </div>
+  </div>
+</div>
+
+
+              <nav class="c-page__nav">
+  
+    
+    <a id="js-page__nav__prev" class="c-page__nav__prev" href="/lectures/xarray/xarray_intro.html">
+      〈 <span class="u-margin-right-tiny"></span> Xarray for Multidimensional Data
+    </a>
+  
+
+  
+    
+    <a id="js-page__nav__next" class="c-page__nav__next" href="/lectures/xarray/xarray-part2.html">
+      Intermediate Xarray <span class="u-margin-right-tiny"></span> 〉
+    </a>
+  
+</nav>
+
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+  </body>
+</html>

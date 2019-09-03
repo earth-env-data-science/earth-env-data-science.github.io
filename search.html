@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,minimum-scale=1">
+
+  <title>Search the site</title>
+  <meta name="description" content="An introduction to Earth and Environmental Data Science with Python.">
+
+  <link rel="canonical" href="http://earth-env-data-science.github.io//search">
+  <link rel="alternate" type="application/rss+xml" title="Earth and Environmental Data Science" href="http://earth-env-data-science.github.io//feed.xml">
+
+  <meta property="og:url"         content="http://earth-env-data-science.github.io//search" />
+<meta property="og:type"        content="article" />
+<meta property="og:title"       content="Search the site" />
+<meta property="og:description" content="An introduction to Earth and Environmental Data Science with Python." />
+<meta property="og:image"       content="" />
+
+
+  <script type="application/ld+json">
+  {
+  "@context": "http://schema.org",
+  "@type": "NewsArticle",
+  "mainEntityOfPage":
+    "http://earth-env-data-science.github.io//search",
+  "headline":
+    "Search the site",
+  "datePublished":
+    "2019-09-03T04:19:38+00:00",
+  "dateModified":
+    "2019-09-03T04:19:38+00:00",
+  "description":
+    "An introduction to Earth and Environmental Data Science with Python.",
+  "author": {
+    "@type": "Person",
+    "name": "Ryan Abernathey"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Data 100 at UC Berkeley",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://earth-env-data-science.github.io/",
+      "width": 60,
+      "height": 60
+    }
+  },
+  "image": {
+    "@type": "ImageObject",
+    "url": "http://earth-env-data-science.github.io/",
+    "height": 60,
+    "width": 60
+  }
+}
+
+  </script>
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css ">
+  <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+
+  <!-- <link rel="manifest" href="/manifest.json"> -->
+  <!-- <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#efae0a"> -->
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+  <meta name="theme-color" content="#233947">
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="image/x-icon" href="/images/logo/favicon.ico">
+
+  <!-- MathJax Config -->
+  <!-- Allow inline math using $ and automatically break long math lines -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true,
+        processEnvironments: true
+    },
+    CommonHTML: {
+        linebreaks: {
+            automatic: true,
+        },
+    },
+});
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_CHTML' async></script>
+
+  <!-- DOM updating function -->
+  <script>
+const runWhenDOMLoaded = cb => {
+  if (document.readyState != 'loading') {
+    cb()
+  } else if (document.addEventListener) {
+    document.addEventListener('DOMContentLoaded', cb)
+  } else {
+    document.attachEvent('onreadystatechange', function() {
+      if (document.readyState == 'complete') cb()
+    })
+  }
+}
+
+// Helper function to init things quickly
+initFunction = function(myfunc) {
+  runWhenDOMLoaded(myfunc);
+  document.addEventListener('turbolinks:load', myfunc);
+};
+</script>
+
+  <!-- Define some javascript variables that will be useful in other javascript -->
+  <script>
+    const site_basename = '/';
+  </script>
+
+  <!-- Add AnchorJS to let headers be linked -->
+  <script src="/assets/js/anchor.min.js"  type="text/javascript"></script>
+  <script>
+
+initFunction(function () {
+    anchors.add("main h1, main h2, main h3, main h4")
+});
+
+</script>
+
+  <!-- Include Turbolinks to make page loads fast -->
+  <!-- https://github.com/turbolinks/turbolinks -->
+  <script src="/assets/js/turbolinks.js" async></script>
+  <meta name="turbolinks-cache-control" content="no-cache">
+
+  <!-- Load nbinteract for widgets -->
+  
+
+  <!-- Load Thebelab for interactive widgets -->
+  <!-- Include Thebelab for interactive code if it's enabled -->
+
+
+<!-- Display Thebelab button in each code cell -->
+<script>
+/**
+ * Set up thebelab button for code blocks
+ */
+
+const thebelabCellButton = id =>
+  `<a id="thebelab-cell-button-${id}" class="btn thebebtn o-tooltip--left" data-tooltip="Interactive Mode">
+    <img src="/assets/images/edit-button.svg" alt="Start interactive mode">
+  </a>`
+
+
+const addThebelabButtonToCodeCells =  () => {
+
+  const codeCells = document.querySelectorAll('div.input_area > div.highlighter-rouge:not(.output) pre')
+  codeCells.forEach((codeCell, index) => {
+    const id = codeCellId(index)
+    codeCell.setAttribute('id', id)
+    if (document.getElementById("thebelab-cell-button-" + id) == null) {
+      codeCell.insertAdjacentHTML('afterend', thebelabCellButton(id));
+    }
+  })
+}
+
+initFunction(addThebelabButtonToCodeCells);
+</script>
+
+
+
+<script type="text/x-thebe-config">
+    {
+      requestKernel: true,
+      binderOptions: {
+        repo: 'YOUR-ORG/YOUR-REPO',
+        ref: 'gh-pages',
+      },
+      codeMirrorConfig: {
+        theme: "abcdef"
+      },
+      kernelOptions: {
+        name: 'python3',
+      }
+    }
+</script>
+<script src="https://unpkg.com/thebelab@0.4.0/lib/index.js"></script>
+<script>
+    /**
+     * Add attributes to Thebelab blocks
+     */
+
+    const initThebelab = () => {
+        const addThebelabToCodeCells = () => {
+            console.log("Adding thebelab to code cells...");
+            // If Thebelab hasn't loaded, wait a bit and try again. This
+            // happens because we load ClipboardJS asynchronously.
+            if (window.thebelab === undefined) {
+                setTimeout(addThebelabToCodeCells, 250)
+            return
+            }
+
+            // If we already detect a Thebelab cell, don't re-run
+            if (document.querySelectorAll('div.thebelab-cell').length > 0) {
+                return;
+            }
+
+            // Find all code cells, replace with Thebelab interactive code cells
+            const codeCells = document.querySelectorAll('.input_area pre')
+            codeCells.forEach((codeCell, index) => {
+                const id = codeCellId(index)
+                codeCell.setAttribute('data-executable', 'true')
+
+                // Figure out the language it uses and add this too
+                var parentDiv = codeCell.parentElement.parentElement;
+                var arrayLength = parentDiv.classList.length;
+                for (var ii = 0; ii < arrayLength; ii++) {
+                    var parts = parentDiv.classList[ii].split('language-');
+                    if (parts.length === 2) {
+                        // If found, assign dataLanguage and break the loop
+                        var dataLanguage = parts[1];
+                        break;
+                    }
+                }
+                codeCell.setAttribute('data-language', dataLanguage)
+
+                // If the code cell is hidden, show it
+                var inputCheckbox = document.querySelector(`input#hidebtn${codeCell.id}`);
+                if (inputCheckbox !== null) {
+                    setCodeCellVisibility(inputCheckbox, 'visible');
+                }
+            });
+
+            // Remove the event listener from the page so keyboard press doesn't
+            // Change page
+            document.removeEventListener('keydown', initPageNav)
+            keyboardListener = false;
+
+            // Init thebelab
+            thebelab.bootstrap();
+
+            // Remove copy buttons since they won't work anymore
+            const copyAndThebeButtons = document.querySelectorAll('.copybtn, .thebebtn')
+            copyAndThebeButtons.forEach((button, index) => {
+                button.remove();
+            });
+
+            // Remove outputs since they'll be stale
+            const outputs = document.querySelectorAll('.output *, .output')
+            outputs.forEach((output, index) => {
+                output.remove();
+            });
+        }
+
+        // Add event listener for the function to modify code cells
+        const thebelabButtons = document.querySelectorAll('[id^=thebelab], [id$=thebelab]')
+        thebelabButtons.forEach((thebelabButton,index) => {
+            if (thebelabButton === null) {
+                setTimeout(initThebelab, 250)
+                return
+            };
+            thebelabButton.addEventListener('click', addThebelabToCodeCells);
+        });
+    }
+
+    // Initialize Thebelab
+    initFunction(initThebelab);
+</script>
+
+
+
+  <!-- Load the auto-generating TOC -->
+  <script src="/assets/js/tocbot.min.js"  type="text/javascript"></script>
+  <script>
+var initToc = function () {
+  tocbot.init({
+    tocSelector: 'nav.onthispage',
+    contentSelector: '.c-textbook__content',
+    headingSelector: 'h2, h3',
+    orderedList: false,
+    collapseDepth: 6,
+    listClass: 'toc__menu',
+    activeListItemClass: "",  // Not using
+    activeLinkClass: "", // Not using
+  });
+  tocbot.refresh();
+}
+initFunction(initToc);
+</script>
+
+  <!-- Google analytics -->
+  <script src="/assets/js/ga.js" async></script>
+
+  <!-- Clipboard copy button -->
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" async></script>
+
+  <!-- Load JS that depends on site variables -->
+  <script>
+/**
+ * Set up copy/paste for code blocks
+ */
+const codeCellId = index => `codecell${index}`
+
+const clipboardButton = id =>
+  `<a id="copy-button-${id}" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#${id}">
+    <img src="/assets/images/copy-button.svg" alt="Copy to clipboard">
+  </a>`
+
+// Clears selected text since ClipboardJS will select the text when copying
+const clearSelection = () => {
+  if (window.getSelection) {
+    window.getSelection().removeAllRanges()
+  } else if (document.selection) {
+    document.selection.empty()
+  }
+}
+
+// Changes tooltip text for two seconds, then changes it back
+const temporarilyChangeTooltip = (el, newText) => {
+  const oldText = el.getAttribute('data-tooltip')
+  el.setAttribute('data-tooltip', newText)
+  setTimeout(() => el.setAttribute('data-tooltip', oldText), 2000)
+}
+
+const addCopyButtonToCodeCells = () => {
+  // If ClipboardJS hasn't loaded, wait a bit and try again. This
+  // happens because we load ClipboardJS asynchronously.
+  if (window.ClipboardJS === undefined) {
+    setTimeout(addCopyButtonToCodeCells, 250)
+    return
+  }
+
+  const codeCells = document.querySelectorAll('div.c-textbook__content > div.highlighter-rouge > div.highlight > pre, div.input_area pre')
+  codeCells.forEach((codeCell, index) => {
+    const id = codeCellId(index)
+    codeCell.setAttribute('id', id)
+    if (document.getElementById("copy-button" + id) == null) {
+      codeCell.insertAdjacentHTML('afterend', clipboardButton(id));
+    }
+  })
+
+  const clipboard = new ClipboardJS('.copybtn')
+  clipboard.on('success', event => {
+    clearSelection()
+    temporarilyChangeTooltip(event.trigger, 'Copied!')
+  })
+
+  clipboard.on('error', event => {
+    temporarilyChangeTooltip(event.trigger, 'Failed to copy')
+  })
+
+  // Get rid of clipboard before the next page visit to avoid memory leak
+  document.addEventListener('turbolinks:before-visit', () =>
+    clipboard.destroy()
+  )
+}
+
+initFunction(addCopyButtonToCodeCells);
+</script>
+
+
+  <!-- Hide cell code -->
+  <script>
+    /**
+    Add buttons to hide code cells
+    */
+
+
+    var setCodeCellVisibility = function (inputField, kind) {
+        // Update the image and class for hidden
+        var id = inputField.getAttribute('data-id');
+        var codeCell = document.querySelector(`#${id} div.highlight`);
+
+        if (kind === "visible") {
+            codeCell.classList.remove('hidden');
+            inputField.checked = true;
+        } else {
+            codeCell.classList.add('hidden');
+            inputField.checked = false;
+        }
+    }
+
+    var toggleCodeCellVisibility = function (event) {
+        // The label is clicked, and now we decide what to do based on the input field's clicked status
+        if (event.target.tagName === "LABEL") {
+            var inputField = event.target.previousElementSibling;
+        } else {
+            // It is the span inside the target
+            var inputField = event.target.parentElement.previousElementSibling;
+        }
+
+        if (inputField.checked === true) {
+            setCodeCellVisibility(inputField, "visible");
+        } else {
+            setCodeCellVisibility(inputField, "hidden");
+        }
+    }
+
+
+    // Button constructor
+    const hideCodeButton = id => `<input class="hidebtn" type="checkbox" id="hidebtn${id}" data-id="${id}"><label title="Toggle cell" for="hidebtn${id}" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label>`
+
+    var addHideButton = function () {
+        // If a hide button is already added, don't add another
+        if (document.querySelector('div.hidecode input') !== null) {
+            return;
+        }
+
+        // Find the input cells and add a hide button
+        document.querySelectorAll('div.input_area').forEach(function (item, index) {
+            if (!item.classList.contains("hidecode")) {
+                // Skip the cell if it doesn't have a hidecode class
+                return;
+            }
+
+            const id = codeCellId(index)
+            item.setAttribute('id', id);
+            // Insert the button just inside the end of the next div
+            item.querySelector('div').insertAdjacentHTML('beforeend', hideCodeButton(id))
+
+            // Set up the visibility toggle
+            hideLink = document.querySelector(`#${id} div.highlight + input + label`);
+            hideLink.addEventListener('click', toggleCodeCellVisibility)
+        });
+    }
+
+
+    // Initialize the hide buttos
+    var initHiddenCells = function () {
+        // Add hide buttons to the cells
+        addHideButton();
+
+        // Toggle the code cells that should be hidden
+        document.querySelectorAll('div.hidecode input').forEach(function (item) {
+            setCodeCellVisibility(item, 'hidden');
+            item.checked = true;
+        })
+    }
+
+    initFunction(initHiddenCells);
+
+</script>
+
+  <!-- Load custom website scripts -->
+  <script src="/assets/js/scripts.js" async></script>
+
+  <!-- Load custom user CSS and JS  -->
+  <script src="/assets/custom/custom.js" async></script>
+  <link rel="stylesheet" href="/assets/custom/custom.css">
+
+  <!-- Update interact links w/ REST param, is defined in includes so we can use templates -->
+  
+
+  <!-- Lunr search code - will only be executed on the /search page -->
+  <script src="/assets/js/lunr/lunr.min.js" type="text/javascript"></script>
+  <script>var initQuery = function() {
+  // See if we have a search box
+  var searchInput = document.querySelector('input#lunr_search');
+  if (searchInput === null) {
+    return;
+  }
+
+  // Function to parse our lunr cache
+  var idx = lunr(function () {
+    this.field('title')
+    this.field('excerpt')
+    this.field('categories')
+    this.field('tags')
+    this.ref('id')
+
+    this.pipeline.remove(lunr.trimmer)
+
+    for (var item in store) {
+      this.add({
+        title: store[item].title,
+        excerpt: store[item].excerpt,
+        categories: store[item].categories,
+        tags: store[item].tags,
+        id: item
+      })
+    }
+  });
+
+  // Run search upon keyup
+  searchInput.addEventListener('keyup', function () {
+    var resultdiv = document.querySelector('#results');
+    var query = document.querySelector("input#lunr_search").value.toLowerCase();
+    var result =
+      idx.query(function (q) {
+        query.split(lunr.tokenizer.separator).forEach(function (term) {
+          q.term(term, { boost: 100 })
+          if(query.lastIndexOf(" ") != query.length-1){
+            q.term(term, {  usePipeline: false, wildcard: lunr.Query.wildcard.TRAILING, boost: 10 })
+          }
+          if (term != ""){
+            q.term(term, {  usePipeline: false, editDistance: 1, boost: 1 })
+          }
+        })
+      });
+
+      // Empty the results div
+      while (resultdiv.firstChild) {
+        resultdiv.removeChild(resultdiv.firstChild);
+      }
+
+    resultdiv.insertAdjacentHTML('afterbegin', '<p class="results__found">'+result.length+' Result(s) found</p>');
+    for (var item in result) {
+      var ref = result[item].ref;
+      if(store[ref].teaser){
+        var searchitem =
+          '<div class="list__item">'+
+            '<article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">'+
+              '<h2 class="archive__item-title" itemprop="headline">'+
+                '<a href="'+store[ref].url+'" rel="permalink">'+store[ref].title+'</a>'+
+              '</h2>'+
+              '<div class="archive__item-teaser">'+
+                '<img src="'+store[ref].teaser+'" alt="">'+
+              '</div>'+
+              '<p class="archive__item-excerpt" itemprop="description">'+store[ref].excerpt.split(" ").splice(0,20).join(" ")+'...</p>'+
+            '</article>'+
+          '</div>';
+      }
+      else{
+    	  var searchitem =
+          '<div class="list__item">'+
+            '<article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">'+
+              '<h2 class="archive__item-title" itemprop="headline">'+
+                '<a href="'+store[ref].url+'" rel="permalink">'+store[ref].title+'</a>'+
+              '</h2>'+
+              '<p class="archive__item-excerpt" itemprop="description">'+store[ref].excerpt.split(" ").splice(0,20).join(" ")+'...</p>'+
+            '</article>'+
+          '</div>';
+      }
+      resultdiv.insertAdjacentHTML('beforeend', searchitem);
+    }
+  });
+};
+
+initFunction(initQuery);
+</script>
+</head>
+
+  <body>
+    <!-- .js-show-sidebar shows sidebar by default -->
+    <div id="js-textbook" class="c-textbook js-show-sidebar">
+      
+
+
+
+<nav id="js-sidebar" class="c-textbook__sidebar">
+  <a href="http://earth-env-data-science.github.io"><img src="/images/logo/eeds-logo.png" class="textbook_logo" id="sidebar-logo" data-turbolinks-permanent/></a>
+  <h2 class="c-sidebar__title">Earth and Environmental Data Science</h2>
+  <ul class="c-sidebar__chapters">
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/intro.html"
+        >
+          
+          Intro
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/LICENSE.html"
+        >
+          
+          License
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+        <li class="c-sidebar__divider"></li>
+        
+      
+      
+        <li><h2 class="c-sidebar__title">The Interactive Computing Environment</li>
+        
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/lectures/environment/intro_to_jupyterlab.html"
+        >
+          
+            1.
+          
+          Intro to JupyterLab
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/lectures/environment/intro_to_unix.html"
+        >
+          
+            2.
+          
+          Intro to Unix
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/lectures/environment/intro_to_git.html"
+        >
+          
+            3.
+          
+          Intro to Git
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+        <li><h2 class="c-sidebar__title">The Core Python Language</li>
+        
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/lectures/core_python/python_fundamentals.html"
+        >
+          
+            4.
+          
+          Python Fundamentals
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/lectures/core_python/functions_classes.html"
+        >
+          
+            5.
+          
+          Functions and Classes
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/lectures/core_python/organization_and_packaging.html"
+        >
+          
+            6.
+          
+          Organization and Packaging of Python Projects
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+        <li><h2 class="c-sidebar__title">Scientific Python Fundamentals</li>
+        
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/lectures/basic_scipy/numpy_and_matplotlib.html"
+        >
+          
+            7.
+          
+          Numpy and Matplotlib
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/lectures/basic_scipy/more_matplotlib.html"
+        >
+          
+            8.
+          
+          Advanced Matplotlib
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+        <li><h2 class="c-sidebar__title">High Level Data Analysis Frameworks</li>
+        
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/lectures/pandas/pandas_intro.html"
+        >
+          
+            9.
+          
+          Pandas for Tabular Data
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections ">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/lectures/pandas/basic_pandas.html"
+                >
+                  
+                    9.1
+                  
+                  Pandas Fundamentals
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/lectures/pandas/pandas_groupby.html"
+                >
+                  
+                    9.2
+                  
+                  The Split-Apply-Combine Workflow
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/lectures/xarray/xarray_intro.html"
+        >
+          
+            10.
+          
+          Xarray for Multidimensional Data
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections ">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/lectures/xarray/xarray.html"
+                >
+                  
+                    10.1
+                  
+                  Basic Xarray
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/lectures/xarray/xarray-part2.html"
+                >
+                  
+                    10.2
+                  
+                  Intermediate Xarray
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/lectures/xarray/xarray_tips_and_tricks.html"
+                >
+                  
+                    10.3
+                  
+                  Xarray Tips And Tricks
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+  </ul>
+  <p class="sidebar_footer">Powered by <a href="https://github.com/jupyter/jupyter-book">Jupyter Book</a></p>
+</nav>
+
+      
+      <main class="c-textbook__page" tabindex="-1">
+          <div class="o-wrapper">
+            <div class="c-sidebar-toggle">
+  <!-- We show the sidebar by default so we use .is-active -->
+  <button
+    id="js-sidebar-toggle"
+    class="hamburger hamburger--arrowalt is-active"
+  >
+    <span class="hamburger-box">
+      <span class="hamburger-inner"></span>
+    </span>
+    <span class="c-sidebar-toggle__label">Toggle Sidebar</span>
+  </button>
+</div>
+
+            
+
+            <div class="c-textbook__content">
+              <div class="search-content__inner-wrap">
+    <input type="text" id="lunr_search" class="search-input" tabindex="-1" placeholder="'Enter your search term...''" />
+    <div id="results" class="results"></div>
+</div>
+
+<script>
+    // Add the lunr store since we will now search it
+    var store = [{
+        "title": "License",
+        
+        "excerpt":
+            "License for this book   All content in this book (ie, any files and content in the content/ folder) is licensed under the Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) license.  ",
+        "categories": [],
+        "tags": [],
+        "url": "http://earth-env-data-science.github.io/LICENSE.html",
+        "teaser":null},{
+        "title": "Intro",
+        
+        "excerpt":
+            "An Introduction to Earth and Environmental Data Science History This book grew out of a course developed at Columbia University called Research Computing in Earth Science. It was written mostly by Ryan Abernathey, with significant contributions from Kerry Key. By separating the book from the class, we hope to create an open-source community resource for python education in the Earth and Environmental Sciences. Motivation and Scope Computing has become an indispensable tool for nearly all Earth and Environmental Scientists, but it doesn’t often appear in our curriculums. This book focuses on data analysis, a subset of computing in which the...",
+        "categories": [],
+        "tags": [],
+        "url": "http://earth-env-data-science.github.io/intro.html",
+        "teaser":null},{
+        "title": "Advanced Matplotlib",
+        
+        "excerpt":
+            "More Matplotlib Matplotlib is the dominant plotting / visualization package in python. It is important to learn to use it well. In the last lecture, we saw some basic examples in the context of learning numpy. This week, we dive much deeper. The goal is to understand how matplotlib represents figures internally. from matplotlib import pyplot as plt %matplotlib inline Figure and Axes The figure is the highest level of organization of matplotlib objects. If we want, we can create a figure explicitly. fig = plt.figure() &lt;matplotlib.figure.Figure at 0x116913b38&gt; fig = plt.figure(figsize=(13, 5)) &lt;matplotlib.figure.Figure at 0x116b31c50&gt; fig = plt.figure() ax...",
+        "categories": [],
+        "tags": [],
+        "url": "http://earth-env-data-science.github.io/lectures/basic_scipy/more_matplotlib.html",
+        "teaser":null},{
+        "title": "Numpy and Matplotlib",
+        
+        "excerpt":
+            "Numpy and Matplotlib These are two of the most fundamental parts of the scientific python “ecosystem”. Most everything else is built on top of them. import numpy as np What did we just do? We imported a package. This brings new variables (mostly functions) into our interpreter. We access them as follows. # find out what is in our namespace dir() ['In', 'Out', '_', '__', '___', '__builtin__', '__builtins__', '__doc__', '__loader__', '__name__', '__package__', '__spec__', '_dh', '_i', '_i1', '_i2', '_ih', '_ii', '_iii', '_oh', 'exit', 'get_ipython', 'np', 'quit'] # find out what's in numpy dir(np) ['ALLOW_THREADS', 'AxisError', 'BUFSIZE', 'CLIP', 'ComplexWarning', 'DataSource', 'ERR_CALL', 'ERR_DEFAULT',...",
+        "categories": [],
+        "tags": [],
+        "url": "http://earth-env-data-science.github.io/lectures/basic_scipy/numpy_and_matplotlib.html",
+        "teaser":null},{
+        "title": "Functions and Classes",
+        
+        "excerpt":
+            "Python Functions and Classes For longer and more complex tasks, it is important to organize your code into reuseable elements. For example, if you find yourself cutting and pasting the same or similar lines of code over and over, you probably need to define a function to encapsulate that code and make it reusable. An important principle in programming in DRY: “don’t repeat yourself”. Repetition is tedious and opens you up to errors. Strive for elegance and simplicity in your programs. Functions Functions are a central part of advanced python programming. Functions take some inputs (“arguments”) and do something in...",
+        "categories": [],
+        "tags": [],
+        "url": "http://earth-env-data-science.github.io/lectures/core_python/functions_classes.html",
+        "teaser":null},{
+        "title": "Organization and Packaging of Python Projects",
+        
+        "excerpt":
+            "Organization and Packaging of Python Projects A complex research project often relies and many different programs and software packages to accomplish the research goals. An important part of scientific computing is deciding how to organize and structure the code you use for research. A well-structured project can make you a more efficient and effective researcher. It is also a key component of scientific reproducibility. Just putting all of your code into git repositories won’t magically turn a mess of scripts into a beautiful, well-organized project. More deliberate effort is required. Types of Projects Not all projects are created equal. Based...",
+        "categories": [],
+        "tags": [],
+        "url": "http://earth-env-data-science.github.io/lectures/core_python/organization_and_packaging.html",
+        "teaser":null},{
+        "title": "Python Fundamentals",
+        
+        "excerpt":
+            "Python Fundamentals This material is mostly adapted from the official python tutorial, Copyright 2001-2019, Python Software Foundation. It is used here under the terms of the Python License. Invoking Python There are three main ways to use python. By running a python file, e.g. python myscript.py Through an interactive console (python interpreter or ipython shell) In an interactive notebook (e.g. Jupyter) In this course, we will mostly be interacting with python via Jupyter notebooks. Python Versions There are two versions of the python language out there: python 2 and python 3. In 2019, the vast majority of the scientific community...",
+        "categories": [],
+        "tags": [],
+        "url": "http://earth-env-data-science.github.io/lectures/core_python/python_fundamentals.html",
+        "teaser":null},{
+        "title": "Intro to Git",
+        
+        "excerpt":
+            "Intro to Git Follow the tutorial Version Control with Git on Software Carpentry website. Summary of useful Git commands Set up your username and email git config --global user.name \"Ryan Abernathey\" git config --global user.email \"rpa@ldeo.columbia.edu\" Create a new repository: cd my_project git init Stage files for addition to the repository: git add &lt;filenames&gt; Commit staged files: git commit -m \"your brief commit message goes here\" Other useful commands: git status # tells you what files are staged, which ones have been modified, are new,... ) git log # view the commit log git diff # view file content differences...",
+        "categories": [],
+        "tags": [],
+        "url": "http://earth-env-data-science.github.io/lectures/environment/intro_to_git.html",
+        "teaser":null},{
+        "title": "Intro to JupyterLab",
+        
+        "excerpt":
+            "Intro to JupyterLab JupyterLab will be our primary method for interacting with the computer. JupyterLab contains a complete environment for interactive scientific computing which runs in your web browser. Jupyter is an open source python project that was started by scientists like yourselves who wanted a more effective way to interact with their computers. JupyterLab has excellent documentation. Rather than repeat that documentation here, we point you to their docs. The following pages are particularly relevant: The JupyterLab Interface Working with Files The Text Editor Notebooks Terminals Managing Kernels and Terminals You will gain experience and familiarity with JupyterLab over...",
+        "categories": [],
+        "tags": [],
+        "url": "http://earth-env-data-science.github.io/lectures/environment/intro_to_jupyterlab.html",
+        "teaser":null},{
+        "title": "Intro to Unix",
+        
+        "excerpt":
+            "Intro to Unix An introduction to basic Unix commands and the file system. The notes below are modified from the excellent Unix Shell tutorial that is freely available on the Software Carpentry website. We highly recommend checking out the full version for further reading. The material is being used here under the terms of the Creative Commons Attribution license. Navigating Files and Directories Several commands are frequently used to create, inspect, rename, and delete files and directories. To get started, open a terminal using the JupyterLab launcher. You will see something like this. jovyan@jupyter-rabernat:~$ The dollar sign is a prompt,...",
+        "categories": [],
+        "tags": [],
+        "url": "http://earth-env-data-science.github.io/lectures/environment/intro_to_unix.html",
+        "teaser":null},{
+        "title": "Pandas Fundamentals",
+        
+        "excerpt":
+            "Pandas Fundamentals import pandas as pd import numpy as np from matplotlib import pyplot as plt %matplotlib inline Pandas Data Structures: Series A Series represents a one-dimensional array of data. The main difference between a Series and numpy array is that a Series has an index. The index contains the labels that we use to access the data. There are many ways to create a Series. We will just show a few. names = ['Ryan', 'Chiara', 'Johnny'] values = [36, 37, 2.7] ages = pd.Series(values, index=names) ages Ryan 36.0 Chiara 37.0 Johnny 2.7 dtype: float64 Series have built in plotting...",
+        "categories": [],
+        "tags": [],
+        "url": "http://earth-env-data-science.github.io/lectures/pandas/basic_pandas.html",
+        "teaser":null},{
+        "title": "The Split-Apply-Combine Workflow",
+        
+        "excerpt":
+            "Pandas: Groupby groupby is an amazingly powerful function in pandas. But it is also complicated to use and understand. The point of this lesson is to make you feel confident in using groupby and its cousins, resample and rolling. These notes are loosely based on the Pandas GroupBy Documentation. Imports: import numpy as np from matplotlib import pyplot as plt plt.rcParams['figure.figsize'] = (12,7) %matplotlib inline import pandas as pd First we read the Earthquake data from our previous assignment: df = pd.read_csv('http://www.ldeo.columbia.edu/~rpa/usgs_earthquakes_2014.csv', parse_dates=['time'], index_col='id') df['country'] = df.place.str.split(', ').str[-1] df_small = df[df.mag&lt;4] df = df[df.mag&gt;4] df.head() time latitude longitude depth mag...",
+        "categories": [],
+        "tags": [],
+        "url": "http://earth-env-data-science.github.io/lectures/pandas/pandas_groupby.html",
+        "teaser":null},{
+        "title": "Pandas for Tabular Data",
+        
+        "excerpt":
+            "Pandas Pandas is a an open source library providing high-performance, easy-to-use data structures and data analysis tools. Pandas is particularly suited to the analysis of tabular data, i.e. data that can can go into a table. In other words, if you can imagine the data in an Excel spreadsheet, then Pandas is the tool for the job. A recent analysis of questions from Stack Overflow showed that python is the fastest growing and most widely used programming language in the world (in developed countries). A follow-up analysis showed that this growth is driven by the data science packages such as...",
+        "categories": [],
+        "tags": [],
+        "url": "http://earth-env-data-science.github.io/lectures/pandas/pandas_intro.html",
+        "teaser":null},{
+        "title": "Intermediate Xarray",
+        
+        "excerpt":
+            "import xarray as xr from matplotlib import pyplot as plt plt.rcParams['figure.figsize'] = (12,7) %matplotlib inline ! wget http://ldeo.columbia.edu/~rpa/NOAA_NCDC_ERSST_v3b_SST.nc --2018-10-25 13:33:39-- http://ldeo.columbia.edu/~rpa/NOAA_NCDC_ERSST_v3b_SST.nc Resolving ldeo.columbia.edu (ldeo.columbia.edu)... 129.236.10.30 Connecting to ldeo.columbia.edu (ldeo.columbia.edu)|129.236.10.30|:80... connected. HTTP request sent, awaiting response... 302 Found Location: http://www.ldeo.columbia.edu/~rpa/NOAA_NCDC_ERSST_v3b_SST.nc [following] --2018-10-25 13:33:39-- http://www.ldeo.columbia.edu/~rpa/NOAA_NCDC_ERSST_v3b_SST.nc Resolving www.ldeo.columbia.edu (www.ldeo.columbia.edu)... 129.236.14.15 Connecting to www.ldeo.columbia.edu (www.ldeo.columbia.edu)|129.236.14.15|:80... connected. HTTP request sent, awaiting response... 302 Found Location: https://www.ldeo.columbia.edu/~rpa/NOAA_NCDC_ERSST_v3b_SST.nc [following] --2018-10-25 13:33:40-- https://www.ldeo.columbia.edu/~rpa/NOAA_NCDC_ERSST_v3b_SST.nc Connecting to www.ldeo.columbia.edu (www.ldeo.columbia.edu)|129.236.14.15|:443... connected. HTTP request sent, awaiting response... 200 OK Length: 43852246 (42M) [application/x-netcdf] Saving to: ‘NOAA_NCDC_ERSST_v3b_SST.nc’ NOAA_NCDC_ERSST_v3b 100%[===================&gt;] 41.82M 62.8MB/s in 0.7s 2018-10-25 13:33:41 (62.8 MB/s) - ‘NOAA_NCDC_ERSST_v3b_SST.nc’ saved [43852246/43852246] ds =...",
+        "categories": [],
+        "tags": [],
+        "url": "http://earth-env-data-science.github.io/lectures/xarray/xarray-part2.html",
+        "teaser":null},{
+        "title": "Basic Xarray",
+        
+        "excerpt":
+            "Lesson 1: Xarray Fundamentals Xarray data structures Like Pandas, xarray has two fundamental data structures: a DataArray, which holds a single multi-dimensional variable and its coordinates a Dataset, which holds multiple variables that potentially share the same coordinates DataArray A DataArray has four essential attributes: values: a numpy.ndarray holding the array’s values dims: dimension names for each axis (e.g., ('x', 'y', 'z')) coords: a dict-like container of arrays (coordinates) that label each point (e.g., 1-dimensional arrays of numbers, datetime objects or strings) attrs: an OrderedDict to hold arbitrary metadata (attributes) Let’s start by constructing some DataArrays manually import numpy as...",
+        "categories": [],
+        "tags": [],
+        "url": "http://earth-env-data-science.github.io/lectures/xarray/xarray.html",
+        "teaser":null},{
+        "title": "Xarray for Multidimensional Data",
+        
+        "excerpt":
+            "Xarray for multidimensional gridded data In the previous set of lectures, we saw how Pandas provided a way to keep track of additional “metadata” surrounding tabular datasets, including “indexes” for each row and labels for each column. These features, together with Pandas’ many useful routines for all kinds of data munging and analysis, have made Pandas one of the most popular python packages in the world. However, not all Earth science datasets easily fit into the “tabular” model (i.e. rows and columns) imposed by Pandas. In particular, we often deal with multidimensional data. By multidimensional data (also often called N-dimensional),...",
+        "categories": [],
+        "tags": [],
+        "url": "http://earth-env-data-science.github.io/lectures/xarray/xarray_intro.html",
+        "teaser":null},{
+        "title": "Xarray Tips And Tricks",
+        
+        "excerpt":
+            "Xarray Tips and Tricks Build a multi-file dataset from an OpenDAP server One thing we love about xarray is the open_mfdataset function, which combines many netCDF files into a single xarray Dataset. But what if the files are stored on a remote server and accessed over OpenDAP. An example can be found in NOAA’s NCEP Reanalysis catalog. https://www.esrl.noaa.gov/psd/thredds/catalog/Datasets/ncep.reanalysis/surface/catalog.html The dataset is split into different files for each variable and year. For example, a single file for surface air temperature looks like: http://www.esrl.noaa.gov/psd/thredds/dodsC/Datasets/ncep.reanalysis/surface/air.sig995.1948.nc We can’t just call open_mfdataset(\"http://www.esrl.noaa.gov/psd/thredds/dodsC/Datasets/ncep.reanalysis/surface/air.sig995.*.nc\") Because wildcard expansion doesn’t work with OpenDAP endpoints. The solution is to manually...",
+        "categories": [],
+        "tags": [],
+        "url": "http://earth-env-data-science.github.io/lectures/xarray/xarray_tips_and_tricks.html",
+        "teaser":null},]
+</script>
+              <nav class="c-page__nav">
+  
+
+  
+</nav>
+
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+  </body>
+</html>
