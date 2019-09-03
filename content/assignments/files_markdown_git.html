@@ -7,15 +7,15 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width,minimum-scale=1">
 
-  <title>Intro to Git</title>
+  <title>Assignment: Files, Git, and Github</title>
   <meta name="description" content="An introduction to Earth and Environmental Data Science with Python.">
 
-  <link rel="canonical" href="http://earth-env-data-science.github.io//content/lectures/environment/intro_to_git.html">
+  <link rel="canonical" href="http://earth-env-data-science.github.io//content/assignments/files_markdown_git.html">
   <link rel="alternate" type="application/rss+xml" title="Earth and Environmental Data Science" href="http://earth-env-data-science.github.io//feed.xml">
 
-  <meta property="og:url"         content="http://earth-env-data-science.github.io//content/lectures/environment/intro_to_git.html" />
+  <meta property="og:url"         content="http://earth-env-data-science.github.io//content/assignments/files_markdown_git.html" />
 <meta property="og:type"        content="article" />
-<meta property="og:title"       content="Intro to Git" />
+<meta property="og:title"       content="Assignment: Files, Git, and Github" />
 <meta property="og:description" content="An introduction to Earth and Environmental Data Science with Python." />
 <meta property="og:image"       content="" />
 
@@ -25,9 +25,9 @@
   "@context": "http://schema.org",
   "@type": "NewsArticle",
   "mainEntityOfPage":
-    "http://earth-env-data-science.github.io//content/lectures/environment/intro_to_git.html",
+    "http://earth-env-data-science.github.io//content/assignments/files_markdown_git.html",
   "headline":
-    "Intro to Git",
+    "Assignment: Files, Git, and Github",
   "datePublished":
     "2019-09-03T04:59:49+00:00",
   "dateModified":
@@ -579,7 +579,7 @@ initFunction(initQuery);
       
       
       <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry c-sidebar__entry--active"
+        <a class="c-sidebar__entry "
           href="/intro.html"
         >
           
@@ -675,7 +675,7 @@ initFunction(initQuery);
       
       
       <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry c-sidebar__entry--active"
+        <a class="c-sidebar__entry "
           href="/lectures/environment/intro_to_git.html"
         >
           
@@ -699,7 +699,7 @@ initFunction(initQuery);
               
 
               <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
+                <a class="c-sidebar__entry c-sidebar__entry--active"
                   href="/assignments/files_markdown_git.html"
                 >
                   
@@ -1042,53 +1042,66 @@ initFunction(initQuery);
             
 
             <div class="c-textbook__content">
-              <h1 id="intro-to-git">Intro to Git</h1>
+              <h1 id="assignment-files-git-and-github">Assignment: Files, Git, and Github</h1>
 
-<p>Follow the tutorial
- <a href="http://swcarpentry.github.io/git-novice/">Version Control with Git</a> on Software Carpentry website.</p>
+<h2 id="create-a-dummy-resume-repository">Create a Dummy Resume Repository</h2>
 
-<p><strong>Summary of useful Git commands</strong></p>
+<p>Use JupyterLab to launch a terminal and use the terminal to do the following tasks:</p>
 
-<p>Set up your username and email</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git config --global user.name "Ryan Abernathey"
-git config --global user.email "rpa@ldeo.columbia.edu"
-</code></pre></div></div>
+<ol>
+  <li>Create a new directory called <code class="highlighter-rouge">resume</code> within your home directory</li>
+  <li>Create an empty file within this directory called <code class="highlighter-rouge">Readme.md</code></li>
+</ol>
 
-<p>Create a new repository:</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd my_project
-git init      
-</code></pre></div></div>
+<p>Now use JupyterLab to edit the file:</p>
 
-<p>Stage files for addition to the repository:</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git add &lt;filenames&gt;  
-</code></pre></div></div>
+<ol>
+  <li>Navigate to the directory in the file browser</li>
+  <li>Open <code class="highlighter-rouge">Readme.md</code> in the text editor</li>
+  <li>Open <code class="highlighter-rouge">Readme.md</code> in in Markdown Preview</li>
+  <li>Arrange these files side-by-side so you can see your document rendered</li>
+  <li>
+    <p>Edit the file in the editor. Add the following information:</p>
 
-<p>Commit staged files:</p>
+    <ol>
+      <li>Top level heading with your name</li>
+      <li>An image. It can be a photo of you or, if you prefer, a photo of your spirit animal.</li>
+      <li>Secondary heading entitled “Education”</li>
+      <li>A list of schools you attended, hyperlinked to the websites of those insitutions</li>
+    </ol>
+  </li>
+  <li>Save the file</li>
+</ol>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git commit -m "your brief commit message goes here"
-</code></pre></div></div>
+<p>Now go back to the terminal and do the following:</p>
 
-<p>Other useful commands:</p>
+<ol>
+  <li>Initialize a new git repository in the <code class="highlighter-rouge">resume</code> directory</li>
+  <li>Add the <code class="highlighter-rouge">Readme.md</code> file to the repository</li>
+  <li>Create a new commit with a commit message</li>
+  <li>Check the git log to see your commit history</li>
+  <li>Go to github and create a <a href="https://github.com/new">new public repository</a> entitled <code class="highlighter-rouge">resume</code></li>
+  <li>Push your local resume repository to GitHub following the instructions.</li>
+  <li>View your online resume at <code class="highlighter-rouge">http://github.com/&lt;your github username&gt;/resume</code></li>
+</ol>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git status    # tells you what files are staged, which ones have been modified, are new,... )
-git log       # view the commit log
-git diff      # view file content differences
-</code></pre></div></div>
+<p>Finally, go back to the editor and add a new subsection called “Research Interests” to your <code class="highlighter-rouge">Readme.md</code> file. Update your local git repository and push your changes to GitHub. Verify that the remote repository is updated.</p>
 
-<p>Working with a remote repository on GitHub:</p>
+<p>To “hand in” this part of the assignment, just provide the link to your repository in the notebook cell below.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git remote add ...
-git push
-git pull
-</code></pre></div></div>
+<h2 id="create-your-assignments-repository">Create your Assignments Repository</h2>
 
-<p>Basic collaboration workflow:</p>
+<p>Now that you know how to create a git repository, you should create your assignments repository.</p>
 
 <ul>
-  <li>update your local repo with <code class="highlighter-rouge">git pull origin master</code>,</li>
-  <li>make your changes and stage them with <code class="highlighter-rouge">git add</code>,</li>
-  <li>commit your changes with <code class="highlighter-rouge">git commit -m</code>, and</li>
-  <li>upload the changes to GitHub with<code class="highlighter-rouge"> git push origin master</code></li>
+  <li>Create a new directory called <code class="highlighter-rouge">rces-assignments</code> in your home directory.</li>
+  <li>Create a <code class="highlighter-rouge">Readme.md</code> markdown file that contains your name</li>
+  <li>Initialize a new git repository</li>
+  <li>Add the file and make your first commit</li>
+  <li>Create a new <strong>private</strong> repository on GitHub called <code class="highlighter-rouge">rces-assignments</code>. (Call it exactly like that. Do not vary the spelling, capitalization, or punctuation.)</li>
+  <li>Push your <code class="highlighter-rouge">rces-assignments</code> repository to github</li>
+  <li>On github, go to “settings” -&gt; “collaborators” and add <code class="highlighter-rouge">rabernat</code>, <code class="highlighter-rouge">kerrykey</code>, and <code class="highlighter-rouge">JanineBirnbaum18</code></li>
+  <li>Push new commits to this repository whenever you are ready to hand in your assignments</li>
 </ul>
 
               <nav class="c-page__nav">
