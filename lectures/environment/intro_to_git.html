@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width,minimum-scale=1">
 
   <title>Intro to Git</title>
-  <meta name="description" content="Intro to Git">
+  <meta name="description" content="Intro to Git for Version Control">
 
   <link rel="canonical" href="http://earth-env-data-science.github.io//lectures/environment/intro_to_git.html">
   <link rel="alternate" type="application/rss+xml" title="Earth and Environmental Data Science" href="http://earth-env-data-science.github.io//feed.xml">
@@ -16,7 +16,7 @@
   <meta property="og:url"         content="http://earth-env-data-science.github.io//lectures/environment/intro_to_git.html" />
 <meta property="og:type"        content="article" />
 <meta property="og:title"       content="Intro to Git" />
-<meta property="og:description" content="Intro to Git" />
+<meta property="og:description" content="Intro to Git for Version Control" />
 <meta property="og:image"       content="" />
 
 
@@ -29,11 +29,11 @@
   "headline":
     "Intro to Git",
   "datePublished":
-    "2019-09-03T04:59:49+00:00",
+    "2019-09-05T13:23:50+00:00",
   "dateModified":
-    "2019-09-03T04:59:49+00:00",
+    "2019-09-05T13:23:50+00:00",
   "description":
-    "Intro to Git",
+    "Intro to Git for Version Control",
   "author": {
     "@type": "Person",
     "name": "Ryan Abernathey"
@@ -1042,24 +1042,50 @@ initFunction(initQuery);
             
 
             <div class="c-textbook__content">
-              <h1 id="intro-to-git">Intro to Git</h1>
+              <h1 id="intro-to-git-for-version-control">Intro to Git for Version Control</h1>
 
-<p>Follow the tutorial
- <a href="http://swcarpentry.github.io/git-novice/">Version Control with Git</a> on Software Carpentry website.</p>
+<h2 id="overview">Overview</h2>
 
-<p><strong>Summary of useful Git commands</strong></p>
+<p><a href="https://en.wikipedia.org/wiki/Version_control"><em>Version control</em></a> is a powerful way to organize, back up, and share with collaborators your research computing code.
+A Verson control system keeps track of a set of files and saves snapshots (i.e. <em>versions</em>, <em>commits</em>) of the files at any point in time. 
+Using version control allows you to confidently make changes to your code (any any other files), with the ability to roll back to any previous state. This help avoid filling our directories up with files that look like this:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>my_code.py
+my_code_version2.py
+my_code_version2B-RPA-edit.py
+my_code_FINAL_VERSION.py
+my_code_THIS_IS_ACTUALLY_THE FINAL VERSION.py
+</code></pre></div></div>
+
+<p>Version control also allows you to share code with collaborators, make simultaneous edits, and merge your changes in a systematic, controlled way.</p>
+
+<p>Version control has been used for a long time in software development.
+More recently, it has become an essential part of modern data and computational science.
+Our strong recommendation is that <em>all of your research code be stored in a version control system</em>.</p>
+
+<p>The tool we will be using for version control is called <a href="https://git-scm.com">Git</a>.
+Git is incredibly powerful–it also has a somewhat steep learning curve.
+Fortunately, in this class, we will only be using a small subset of what git can do, avoiding the more complex aspects.</p>
+
+<p>For a full-length tutorial, we recommend the article <a href="http://swcarpentry.github.io/git-novice/">Version Control with Git</a> on Software Carpentry website.
+Here we simply enumerate the most common git commands.</p>
+
+<h2 id="summary-of-useful-git-commands">Summary of useful Git commands</h2>
 
 <p>Set up your username and email</p>
+
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git config --global user.name "Ryan Abernathey"
 git config --global user.email "rpa@ldeo.columbia.edu"
 </code></pre></div></div>
 
 <p>Create a new repository:</p>
+
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd my_project
 git init      
 </code></pre></div></div>
 
 <p>Stage files for addition to the repository:</p>
+
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git add &lt;filenames&gt;  
 </code></pre></div></div>
 
@@ -1068,27 +1094,27 @@ git init
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git commit -m "your brief commit message goes here"
 </code></pre></div></div>
 
-<p>Other useful commands:</p>
+<p>Get information about your repository:</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git status    # tells you what files are staged, which ones have been modified, are new,... )
 git log       # view the commit log
 git diff      # view file content differences
 </code></pre></div></div>
 
-<p>Working with a remote repository on GitHub:</p>
+<p>Revert a file to an earlier version:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git remote add ...
-git push
-git pull
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git checkout &lt;commit tag&gt; &lt;filenames&gt;
 </code></pre></div></div>
 
-<p>Basic collaboration workflow:</p>
+<h2 id="collaborating-with-git-and-github">Collaborating with Git and Github</h2>
 
 <ul>
-  <li>update your local repo with <code class="highlighter-rouge">git pull origin master</code>,</li>
+  <li>Create a new repository on GitHub</li>
+  <li>Follow the instructions and run <code class="highlighter-rouge">git remote add &lt;repo url&gt;</code> on your local repo</li>
   <li>make your changes and stage them with <code class="highlighter-rouge">git add</code>,</li>
   <li>commit your changes with <code class="highlighter-rouge">git commit -m</code>, and</li>
   <li>upload the changes to GitHub with<code class="highlighter-rouge"> git push origin master</code></li>
+  <li>update your local repo with <code class="highlighter-rouge">git pull origin master</code></li>
 </ul>
 
               <nav class="c-page__nav">
