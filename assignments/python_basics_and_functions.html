@@ -7,16 +7,16 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width,minimum-scale=1">
 
-  <title>Pandas</title>
-  <meta name="description" content="An introduction to Earth and Environmental Data Science with Python.">
+  <title>Assignment: Python Basics and Functions</title>
+  <meta name="description" content="Assignment: Basic Python">
 
-  <link rel="canonical" href="http://earth-env-data-science.github.io//content/lectures/pandas/pandas_intro.html">
+  <link rel="canonical" href="http://earth-env-data-science.github.io//assignments/python_basics_and_functions.html">
   <link rel="alternate" type="application/rss+xml" title="Earth and Environmental Data Science" href="http://earth-env-data-science.github.io//feed.xml">
 
-  <meta property="og:url"         content="http://earth-env-data-science.github.io//content/lectures/pandas/pandas_intro.html" />
+  <meta property="og:url"         content="http://earth-env-data-science.github.io//assignments/python_basics_and_functions.html" />
 <meta property="og:type"        content="article" />
-<meta property="og:title"       content="Pandas" />
-<meta property="og:description" content="An introduction to Earth and Environmental Data Science with Python." />
+<meta property="og:title"       content="Assignment: Python Basics and Functions" />
+<meta property="og:description" content="Assignment: Basic Python" />
 <meta property="og:image"       content="" />
 
 
@@ -25,15 +25,15 @@
   "@context": "http://schema.org",
   "@type": "NewsArticle",
   "mainEntityOfPage":
-    "http://earth-env-data-science.github.io//content/lectures/pandas/pandas_intro.html",
+    "http://earth-env-data-science.github.io//assignments/python_basics_and_functions.html",
   "headline":
-    "Pandas",
+    "Assignment: Python Basics and Functions",
   "datePublished":
     "2019-09-10T13:59:18+00:00",
   "dateModified":
     "2019-09-10T13:59:18+00:00",
   "description":
-    "An introduction to Earth and Environmental Data Science with Python.",
+    "Assignment: Basic Python",
   "author": {
     "@type": "Person",
     "name": "Ryan Abernathey"
@@ -579,7 +579,7 @@ initFunction(initQuery);
       
       
       <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry c-sidebar__entry--active"
+        <a class="c-sidebar__entry "
           href="/intro.html"
         >
           
@@ -780,7 +780,7 @@ initFunction(initQuery);
               
 
               <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
+                <a class="c-sidebar__entry c-sidebar__entry--active"
                   href="/assignments/python_basics_and_functions.html"
                 >
                   
@@ -887,7 +887,7 @@ initFunction(initQuery);
       
       
       <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry c-sidebar__entry--active"
+        <a class="c-sidebar__entry "
           href="/lectures/pandas/pandas_intro.html"
         >
           
@@ -1071,46 +1071,157 @@ initFunction(initQuery);
 </div>
 
             
+<div class="buttons">
+<a href="/content/assignments/python_basics_and_functions.ipynb" download>
+<button id="interact-button-download" class="interact-button">Download</button>
+</a>
+
+
+
+
+
+
+
+
+
+
+<a href="https://ocean.pangeo.io/hub/user-redirect/git-pull?repo=https://github.com//earth-env-data-science/earth-env-data-science-book&amp;branch=master&amp;subPath=content%2Fassignments%2Fpython_basics_and_functions.ipynb&amp;app=lab"><button class="interact-button" id="interact-button-jupyterhub"><img class="interact-button-logo" src="/assets/images/logo_jupyterhub.svg" alt="Interact" />ocean.pangeo.io</button></a>
+
+
+
+</div>
+
 
             <div class="c-textbook__content">
-              <h1 id="pandas">Pandas</h1>
+              <h1 id="assignment-basic-python">Assignment: Basic Python</h1>
 
-<p><a href="http://pandas.pydata.org/">Pandas</a> is a an open source library providing high-performance, easy-to-use data structures and data analysis tools. Pandas is particularly suited to the analysis of <em>tabular</em> data, i.e. data that can can go into a table. In other words, if you can imagine the data in an Excel spreadsheet, then Pandas is the tool for the job.</p>
+<h2 id="part-i-lists-and-loops">Part I: Lists and Loops</h2>
 
-<p>A <a href="https://stackoverflow.blog/2017/09/06/incredible-growth-python/">recent analysis</a> of questions from Stack Overflow showed that python is the fastest growing and most widely used programming language in the world (in developed countries).</p>
+<p>In this problem, we will explore the basic data structures and flow controls of python by <em>manually parsing a CSV file</em>.</p>
 
-<p><img src="https://zgab33vy595fw5zq-zippykid.netdna-ssl.com/wp-content/uploads/2017/09/growth_major_languages-1-1024x878.png" alt="python growth" /></p>
+<p>Note that this is a futile exercise. In the “real world” you should never manually parse a CSV file. There are utilities out there that will do it for you much more quickly and efficiently. However, it is a useful exercise for learning python.</p>
 
-<p>A <a href="https://stackoverflow.blog/2017/09/14/python-growing-quickly/">follow-up analysis</a> showed that this growth is driven by the data science packages such as numpy, matplotlib, and especially pandas.</p>
+<p>First we need to download a data file to parse. We can do this from the terminal, OR we can use <code class="highlighter-rouge">!</code> to run shell commands directly from the notebook. However you do it, you need to run these commands:</p>
 
-<p><img src="https://zgab33vy595fw5zq-zippykid.netdna-ssl.com/wp-content/uploads/2017/09/related_tags_over_time-1-1024x1024.png" alt="pandas growth" /></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget https://www.ldeo.columbia.edu/~rpa/rces-roster-2019.csv
+</code></pre></div></div>
 
-<p>The exponential growth of pandas is due to the fact that it <em>just works</em>. It saves you time and helps you do science more efficiently and effictively.</p>
+<p>Before starting the python part, use the JupyterLab file browser to browse to this file. Click to open it. What do you see?</p>
 
-<h2 id="pandas-capabilities-from-the-pandas-website">Pandas capabilities (from the Pandas website):</h2>
+<p>Now we will begin the process of reading the file with python</p>
 
-<ul>
-  <li>A fast and efficient DataFrame object for data manipulation with integrated indexing;</li>
-  <li>Tools for reading and writing data between in-memory data structures and different formats: CSV and text files, Microsoft Excel, SQL databases, and the fast HDF5 format;</li>
-  <li>Intelligent data alignment and integrated handling of missing data: gain automatic label-based alignment in computations and easily manipulate messy data into an orderly form;</li>
-  <li>Flexible reshaping and pivoting of data sets;</li>
-  <li>Intelligent label-based slicing, fancy indexing, and subsetting of large data sets;</li>
-  <li>Columns can be inserted and deleted from data structures for size mutability;</li>
-  <li>Aggregating or transforming data with a powerful group by engine allowing split-apply-combine operations on data sets;</li>
-  <li>High performance merging and joining of data sets;</li>
-  <li>Hierarchical axis indexing provides an intuitive way of working with high-dimensional data in a lower-dimensional data structure;</li>
-  <li>Time series-functionality: date range generation and frequency conversion, moving window statistics, moving window linear regressions, date shifting and lagging. Even create domain-specific time offsets and join time series without losing data;</li>
-  <li>Highly optimized for performance, with critical code paths written in Cython or C.</li>
-  <li>Python with pandas is in use in a wide variety of academic and commercial domains, including Finance, Neuroscience, Economics, Statistics, Advertising, Web Analytics, and more.</li>
-</ul>
+<h3 id="open-the-file-using-the-open-function">Open the file using the <code class="highlighter-rouge">open</code> function</h3>
 
-<p>In this lecture, we will go over the basic capabilities of Pandas. It is a very deep library, and you will need to dig into the <a href="http://pandas.pydata.org/pandas-docs/stable/">documentation</a> for more advanced usage.</p>
+<p>Specifically, run the command</p>
 
-<p>Pandas was created by <a href="http://wesmckinney.com/">Wes McKinney</a>. Many of the examples here are drawn from Wes McKinney’s book <a href="http://shop.oreilly.com/product/0636920023784.do">Python for Data Analysis</a>, which includes a github repo of <a href="https://github.com/wesm/pydata-book">code samples</a>.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>file = open('rces-roster-2019.csv')
+</code></pre></div></div>
+
+<h3 id="use-the-help-function-to-get-the-documentation-for-your-new-variable-file">Use the <code class="highlighter-rouge">help</code> function to get the documentation for your new variable <code class="highlighter-rouge">file</code></h3>
+
+<p>This will produce a long list of methods you can use with <code class="highlighter-rouge">file</code>.</p>
+
+<h3 id="read-the-lines-of-the-file-into-a-variable-called-lines">Read the lines of the file into a variable called <code class="highlighter-rouge">lines</code></h3>
+
+<p>Hint: use the documentation above to find the method that sounds most likely to do what you want.</p>
+
+<p>What type of object is <code class="highlighter-rouge">lines</code>?</p>
+
+<p>It should be a familiar type we learned about in class.</p>
+
+<h3 id="display-lines-at-the-end-of-a-cell-in-order-to-see-its-contents">Display <code class="highlighter-rouge">lines</code> at the end of a cell in order to see its contents</h3>
+
+<h3 id="use-slicing-to-display-the-first-three-items-of-the-list-and-the-last-3">Use slicing to display the first three items of the list. And the last 3</h3>
+
+<h3 id="create-a-new-list-called-data-that-does-not-contain-the-header-row">Create a new list called <code class="highlighter-rouge">data</code> that does not contain the header row</h3>
+
+<h3 id="now-iterate-through-lines-and-print-the-item-if-it-contains-your-uni">Now iterate through <code class="highlighter-rouge">lines</code> and <code class="highlighter-rouge">print</code> the item if it contains your uni</h3>
+
+<p>By now you have figured out what is in this data. Let’s now transform it into a more useful format.</p>
+
+<h3 id="write-code-to-transform-the-data-into-a-dictionary-whose-keys-are-unis-and-whose-values-are-full-names">Write code to transform the data into a dictionary whose keys are UNIs and whose values are full names.</h3>
+
+<p>(You might need to review Python’s <a href="https://docs.python.org/3/library/stdtypes.html#textseq">string methods</a>.)</p>
+
+<h3 id="use-this-dictionary-to-look-up-your-own-name-using-your-uni">Use this dictionary to look up your own name using your uni</h3>
+
+<h3 id="figure-out-who-has-the-longest-last-name-in-the-class">Figure out who has the longest last name in the class</h3>
+
+<h2 id="part-ii-exploring-the-python-standard-library">Part II: Exploring the Python Standard Library</h2>
+
+<p>Skim the <a href="https://docs.python.org/3/library/datetime.html">documentation for the datetime module</a></p>
+
+<h3 id="1-import-the-datetime-module">1. Import the <code class="highlighter-rouge">datetime</code> module</h3>
+
+<h3 id="2-create-a-datetime-object-for-the-day-you-were-born">2. Create a <code class="highlighter-rouge">datetime</code> object for the day you were born</h3>
+
+<p>and print its representation in your notebook</p>
+
+<h3 id="3-create-a-timedelta-object-representing-100-days-10-hours-and-13-minutes">3. Create a <code class="highlighter-rouge">timedelta</code> object representing 100 days, 10 hours, and 13 minutes</h3>
+
+<h3 id="4-verify-that-these-two-objects-do-not-have-the-same-type">4. Verify that these two objects do not have the same type</h3>
+
+<p>Use an <code class="highlighter-rouge">assert</code> statement</p>
+
+<h3 id="5-add-the-timedelta-to-the-datetime">5. Add the timedelta to the datetime</h3>
+
+<p>and assign it to a new variable</p>
+
+<h3 id="6-display-the-month-of-the-new-date">6. Display the month of the new date</h3>
+
+<h3 id="7-create-a-list-of-datetimes-for-all-of-your-birthdays">7. Create a list of datetimes for all of your birthdays</h3>
+
+<p>beginning from your 1st birthday and ending on your most recent birthday. (Don’t do this manually; use a loop or a list comprehension!)</p>
+
+<h3 id="8-count-how-many-of-your-birthdays-occured-on-a-tuesday">8. Count how many of your birthdays occured on a Tuesday</h3>
+
+<p>Don’t forget about the <a href="https://docs.python.org/3/library/datetime.html">docs</a>!</p>
+
+<h2 id="part-iii-functions">Part III: Functions</h2>
+
+<h3 id="1-write-a-function-to-convert-temperature-from-kelvin-to-celsius">1. Write a function to convert temperature from kelvin to celsius</h3>
+
+<p>and celsius to kelvin</p>
+
+<h3 id="2-write-a-function-to-convert-temperature-to-fahrenheit">2. Write a function to convert temperature to fahrenheit</h3>
+
+<p>Include an optional keyword argument to specify whether the input is in  celcius or kelvin.
+Call your previously defined functions if necessary.</p>
+
+<h3 id="3-check-that-the-outputs-are-sensible">3. Check that the outputs are sensible</h3>
+
+<p>by trying a few examples</p>
+
+<h3 id="4-now-write-a-function-that-converts-from-farenheit">4. Now write a function that converts <em>from</em> farenheit</h3>
+
+<p>and uses a keyword argument to specify whether you want the output in celcius or kelvin</p>
+
+<h3 id="5-write-a-function-that-takes-two-arguments-feet-and-inches-and-returns-height-in-meters">5. Write a function that takes two arguments (feet and inches) and returns height in meters</h3>
+
+<p>Verify it gives sensible answers</p>
+
+<h3 id="6-write-a-function-takes-one-argument-height-in-meters-and-returns-two-arguments-feet-and-inches">6. Write a function takes one argument (height in meters) and returns two arguments (feet and inches)</h3>
+
+<p>(Consult the <a href="https://docs.python.org/3/tutorial/introduction.html#numbers">tutorial on numbers</a> if you are stuck on how to implement this.)</p>
+
+<h3 id="7-verify-that-the-round-trip-conversion-from-and-back-to-meters-is-consistent">7. Verify that the “round trip” conversion from and back to meters is consistent</h3>
+
+<p>Check for 3 different values of height in meters</p>
+
 
               <nav class="c-page__nav">
   
+    
+    <a id="js-page__nav__prev" class="c-page__nav__prev" href="/lectures/core_python/functions_classes.html">
+      〈 <span class="u-margin-right-tiny"></span> Functions and Classes
+    </a>
+  
 
+  
+    
+    <a id="js-page__nav__next" class="c-page__nav__next" href="/lectures/core_python/organization_and_packaging.html">
+      Organization and Packaging of Pyth... <span class="u-margin-right-tiny"></span> 〉
+    </a>
   
 </nav>
 
