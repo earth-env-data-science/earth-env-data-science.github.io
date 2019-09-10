@@ -29,9 +29,9 @@
   "headline":
     "Functions and Classes",
   "datePublished":
-    "2019-09-05T13:48:28+00:00",
+    "2019-09-10T13:42:05+00:00",
   "dateModified":
-    "2019-09-05T13:48:28+00:00",
+    "2019-09-10T13:42:05+00:00",
   "description":
     "Python Functions and Classes",
   "author": {
@@ -1115,9 +1115,9 @@ Usually functions return something, but not always.</p>
 
   <div class="output_wrapper">
     <div class="output_subarea">
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[0;31mSignature:[0m [0msay_hello[0m[0;34m([0m[0;34m)[0m[0;34m[0m[0m
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[0;31mSignature:[0m [0msay_hello[0m[0;34m([0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
 [0;31mDocstring:[0m Return the word hello.
-[0;31mFile:[0m      ~/Teaching/research_computing/content/Lectures/&lt;ipython-input-1-5cff6abf0dfe&gt;
+[0;31mFile:[0m      ~/Teaching/rces_book/content/lectures/core_python/&lt;ipython-input-1-5cff6abf0dfe&gt;
 [0;31mType:[0m      function
 
 </code></pre></div>      </div>
@@ -1401,22 +1401,25 @@ Hola Juan
   <div class="input_area">
     <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">name</span> <span class="o">=</span> <span class="s">'Ryan'</span>
 
-<span class="k">def</span> <span class="nf">_name</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">print_name</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">print_name_v2</span><span class="p">():</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s">'Kerry'</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
     
+<span class="n">print_name</span><span class="p">()</span>
+<span class="n">print_name_v2</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
 </code></pre></div>    </div>
   </div>
 
   <div class="output_wrapper">
     <div class="output_subarea">
-      <div class="output_traceback_line highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-      File "&lt;ipython-input-19-71b094865ff6&gt;", line 4
-        
-        ^
-    SyntaxError: unexpected EOF while parsing
-
-
-
+      <div class="output_stream highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Ryan
+Kerry
+Ryan
 </code></pre></div>      </div>
     </div>
   </div>
@@ -1488,7 +1491,7 @@ Hola Juan
   <div class="output_wrapper">
     <div class="output_subarea">
 
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;__main__.Hurricane at 0x10f842518&gt;
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;__main__.Hurricane at 0x108680940&gt;
 </code></pre></div>      </div>
 
     </div>
@@ -1545,7 +1548,7 @@ Hola Juan
   <div class="output_wrapper">
     <div class="output_subarea">
 
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;__main__.Hurricane at 0x10f84f668&gt;
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;__main__.Hurricane at 0x1086966a0&gt;
 </code></pre></div>      </div>
 
     </div>
