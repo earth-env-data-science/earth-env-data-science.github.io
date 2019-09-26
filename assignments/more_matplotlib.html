@@ -7,16 +7,16 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width,minimum-scale=1">
 
-  <title>Pandas for Tabular Data</title>
-  <meta name="description" content="Pandas">
+  <title>Assignment: More Matplotlib</title>
+  <meta name="description" content="Assignment 4: More Matplotlib">
 
-  <link rel="canonical" href="http://earth-env-data-science.github.io//lectures/pandas/pandas_intro.html">
+  <link rel="canonical" href="http://earth-env-data-science.github.io//assignments/more_matplotlib.html">
   <link rel="alternate" type="application/rss+xml" title="Earth and Environmental Data Science" href="http://earth-env-data-science.github.io//feed.xml">
 
-  <meta property="og:url"         content="http://earth-env-data-science.github.io//lectures/pandas/pandas_intro.html" />
+  <meta property="og:url"         content="http://earth-env-data-science.github.io//assignments/more_matplotlib.html" />
 <meta property="og:type"        content="article" />
-<meta property="og:title"       content="Pandas for Tabular Data" />
-<meta property="og:description" content="Pandas" />
+<meta property="og:title"       content="Assignment: More Matplotlib" />
+<meta property="og:description" content="Assignment 4: More Matplotlib" />
 <meta property="og:image"       content="" />
 
 
@@ -25,15 +25,15 @@
   "@context": "http://schema.org",
   "@type": "NewsArticle",
   "mainEntityOfPage":
-    "http://earth-env-data-science.github.io//lectures/pandas/pandas_intro.html",
+    "http://earth-env-data-science.github.io//assignments/more_matplotlib.html",
   "headline":
-    "Pandas for Tabular Data",
+    "Assignment: More Matplotlib",
   "datePublished":
     "2019-09-26T13:13:05+00:00",
   "dateModified":
     "2019-09-26T13:13:05+00:00",
   "description":
-    "Pandas",
+    "Assignment 4: More Matplotlib",
   "author": {
     "@type": "Person",
     "name": "Ryan Abernathey"
@@ -579,7 +579,7 @@ initFunction(initQuery);
       
       
       <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry c-sidebar__entry--active"
+        <a class="c-sidebar__entry "
           href="/intro.html"
         >
           
@@ -915,7 +915,7 @@ initFunction(initQuery);
               
 
               <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
+                <a class="c-sidebar__entry c-sidebar__entry--active"
                   href="/assignments/more_matplotlib.html"
                 >
                   
@@ -949,7 +949,7 @@ initFunction(initQuery);
       
       
       <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry c-sidebar__entry--active"
+        <a class="c-sidebar__entry "
           href="/lectures/pandas/pandas_intro.html"
         >
           
@@ -1133,55 +1133,191 @@ initFunction(initQuery);
 </div>
 
             
+<div class="buttons">
+<a href="/content/assignments/more_matplotlib.ipynb" download>
+<button id="interact-button-download" class="interact-button">Download</button>
+</a>
+
+
+
+
+
+
+
+
+
+
+<a href="https://ocean.pangeo.io/hub/user-redirect/git-pull?repo=https://github.com//earth-env-data-science/earth-env-data-science-book&amp;branch=master&amp;subPath=content%2Fassignments%2Fmore_matplotlib.ipynb&amp;app=lab"><button class="interact-button" id="interact-button-jupyterhub"><img class="interact-button-logo" src="/assets/images/logo_jupyterhub.svg" alt="Interact" />ocean.pangeo.io</button></a>
+
+
+
+</div>
+
 
             <div class="c-textbook__content">
-              <h1 id="pandas">Pandas</h1>
+              <h1 id="assignment-4-more-matplotlib">Assignment 4: More Matplotlib</h1>
 
-<p><a href="http://pandas.pydata.org/">Pandas</a> is a an open source library providing high-performance, easy-to-use data structures and data analysis tools. Pandas is particularly suited to the analysis of <em>tabular</em> data, i.e. data that can can go into a table. In other words, if you can imagine the data in an Excel spreadsheet, then Pandas is the tool for the job.</p>
+<p>The goal here is to replicate the figures you see as closely as possible.</p>
 
-<p>A <a href="https://stackoverflow.blog/2017/09/06/incredible-growth-python/">recent analysis</a> of questions from Stack Overflow showed that python is the fastest growing and most widely used programming language in the world (in developed countries).</p>
+<p>In order to get some data, you will have to run the code in the cells below. <strong>Don’t worry about how this code works.</strong> In the end, it will give you some numpy arrays, which you will use in your plots. You are not allowed to use any packages other than numpy and matplotlib to complete your assignment.</p>
 
-<p><img src="https://zgab33vy595fw5zq-zippykid.netdna-ssl.com/wp-content/uploads/2017/09/growth_major_languages-1-1024x878.png" alt="python growth" /></p>
+<h3 id="problem-1-line-plots">Problem 1: Line plots</h3>
 
-<p>A <a href="https://stackoverflow.blog/2017/09/14/python-growing-quickly/">follow-up analysis</a> showed that this growth is driven by the data science packages such as numpy, matplotlib, and especially pandas.</p>
+<p>In this problem, we will plot some daily weather data from a NOAA station in <a href="https://www.ncdc.noaa.gov/cdo-web/datasets/GHCND/stations/GHCND:US1NYDT0008/detail">Millbrook, NY</a>. A full description of this dataset is available at: <a href="https://www.ncdc.noaa.gov/data-access/land-based-station-data">https://www.ncdc.noaa.gov/data-access/land-based-station-data</a></p>
 
-<p><img src="https://zgab33vy595fw5zq-zippykid.netdna-ssl.com/wp-content/uploads/2017/09/related_tags_over_time-1-1024x1024.png" alt="pandas growth" /></p>
+<p>The cell below uses pandas to download the data and populate a bunch of numpy arrays (<code class="highlighter-rouge">t_daily_min</code>, <code class="highlighter-rouge">t_daily_max</code>, etc.) Run the cell and then use the numpy arrays to try to re-create the plot you see.</p>
 
-<p>The exponential growth of pandas is due to the fact that it <em>just works</em>. It saves you time and helps you do science more efficiently and effictively.</p>
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">urllib</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
 
-<h2 id="pandas-capabilities-from-the-pandas-website">Pandas capabilities (from the Pandas website):</h2>
+<span class="n">header_url</span> <span class="o">=</span> <span class="s">'ftp://ftp.ncdc.noaa.gov/pub/data/uscrn/products/daily01/HEADERS.txt'</span>
+<span class="k">with</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">header_url</span><span class="p">)</span> <span class="k">as</span> <span class="n">response</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">'utf-8'</span><span class="p">)</span>
+<span class="n">lines</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">' '</span><span class="p">)</span>
 
-<ul>
-  <li>A fast and efficient DataFrame object for data manipulation with integrated indexing;</li>
-  <li>Tools for reading and writing data between in-memory data structures and different formats: CSV and text files, Microsoft Excel, SQL databases, and the fast HDF5 format;</li>
-  <li>Intelligent data alignment and integrated handling of missing data: gain automatic label-based alignment in computations and easily manipulate messy data into an orderly form;</li>
-  <li>Flexible reshaping and pivoting of data sets;</li>
-  <li>Intelligent label-based slicing, fancy indexing, and subsetting of large data sets;</li>
-  <li>Columns can be inserted and deleted from data structures for size mutability;</li>
-  <li>Aggregating or transforming data with a powerful group by engine allowing split-apply-combine operations on data sets;</li>
-  <li>High performance merging and joining of data sets;</li>
-  <li>Hierarchical axis indexing provides an intuitive way of working with high-dimensional data in a lower-dimensional data structure;</li>
-  <li>Time series-functionality: date range generation and frequency conversion, moving window statistics, moving window linear regressions, date shifting and lagging. Even create domain-specific time offsets and join time series without losing data;</li>
-  <li>Highly optimized for performance, with critical code paths written in Cython or C.</li>
-  <li>Python with pandas is in use in a wide variety of academic and commercial domains, including Finance, Neuroscience, Economics, Statistics, Advertising, Web Analytics, and more.</li>
-</ul>
+<span class="n">ftp_base</span> <span class="o">=</span> <span class="s">'ftp://ftp.ncdc.noaa.gov/pub/data/uscrn/products/daily01/'</span>
+<span class="n">dframes</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2016</span><span class="p">,</span> <span class="mi">2019</span><span class="p">):</span>
+    <span class="n">data_url</span> <span class="o">=</span> <span class="n">f</span><span class="s">'{year}/CRND0103-{year}-NY_Millbrook_3_W.txt'</span>               
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">ftp_base</span> <span class="o">+</span> <span class="n">data_url</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                     <span class="n">names</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">'</span><span class="err">\</span><span class="s">s+'</span><span class="p">,</span>
+                     <span class="n">na_values</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">9999.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">99.0</span><span class="p">])</span>
+    <span class="n">dframes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
-<p>In this lecture, we will go over the basic capabilities of Pandas. It is a very deep library, and you will need to dig into the <a href="http://pandas.pydata.org/pandas-docs/stable/">documentation</a> for more advanced usage.</p>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">dframes</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s">'LST_DATE'</span><span class="p">)</span>
 
-<p>Pandas was created by <a href="http://wesmckinney.com/">Wes McKinney</a>. Many of the examples here are drawn from Wes McKinney’s book <a href="http://shop.oreilly.com/product/0636920023784.do">Python for Data Analysis</a>, which includes a github repo of <a href="https://github.com/wesm/pydata-book">code samples</a>.</p>
+<span class="c">#########################################################</span>
+<span class="c">#### BELOW ARE THE VARIABLES YOU SHOULD USE IN THE PLOTS!</span>
+<span class="c">#### (numpy arrays)  </span>
+<span class="c">#### NO PANDAS ALLOWED!</span>
+<span class="c">#########################################################</span>
+
+<span class="n">t_daily_min</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">T_DAILY_MIN</span><span class="o">.</span><span class="n">values</span>
+<span class="n">t_daily_max</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">T_DAILY_MAX</span><span class="o">.</span><span class="n">values</span>
+<span class="n">t_daily_mean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">T_DAILY_MEAN</span><span class="o">.</span><span class="n">values</span>
+<span class="n">p_daily_calc</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">P_DAILY_CALC</span><span class="o">.</span><span class="n">values</span>
+<span class="n">soil_moisture_5</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">SOIL_MOISTURE_5_DAILY</span><span class="o">.</span><span class="n">values</span>
+<span class="n">soil_moisture_10</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">SOIL_MOISTURE_10_DAILY</span><span class="o">.</span><span class="n">values</span>
+<span class="n">soil_moisture_20</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">SOIL_MOISTURE_20_DAILY</span><span class="o">.</span><span class="n">values</span>
+<span class="n">soil_moisture_50</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">SOIL_MOISTURE_50_DAILY</span><span class="o">.</span><span class="n">values</span>
+<span class="n">soil_moisture_100</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">SOIL_MOISTURE_100_DAILY</span><span class="o">.</span><span class="n">values</span>
+<span class="n">date</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span>
+
+</code></pre></div>    </div>
+  </div>
+
+</div>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">units</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">' '</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">unit</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">headers</span><span class="p">,</span> <span class="n">units</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">'{name}: {unit}'</span><span class="p">)</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+      <div class="output_stream highlighter-rouge"><div class="highlight"><pre class="highlight"><code>WBANNO: XXXXX
+LST_DATE: YYYYMMDD
+CRX_VN: XXXXXX
+LONGITUDE: Decimal_degrees
+LATITUDE: Decimal_degrees
+T_DAILY_MAX: Celsius
+T_DAILY_MIN: Celsius
+T_DAILY_MEAN: Celsius
+T_DAILY_AVG: Celsius
+P_DAILY_CALC: mm
+SOLARAD_DAILY: MJ/m^2
+SUR_TEMP_DAILY_TYPE: X
+SUR_TEMP_DAILY_MAX: Celsius
+SUR_TEMP_DAILY_MIN: Celsius
+SUR_TEMP_DAILY_AVG: Celsius
+RH_DAILY_MAX: %
+RH_DAILY_MIN: %
+RH_DAILY_AVG: %
+SOIL_MOISTURE_5_DAILY: m^3/m^3
+SOIL_MOISTURE_10_DAILY: m^3/m^3
+SOIL_MOISTURE_20_DAILY: m^3/m^3
+SOIL_MOISTURE_50_DAILY: m^3/m^3
+SOIL_MOISTURE_100_DAILY: m^3/m^3
+SOIL_TEMP_5_DAILY: Celsius
+SOIL_TEMP_10_DAILY: Celsius
+SOIL_TEMP_20_DAILY: Celsius
+SOIL_TEMP_50_DAILY: Celsius
+SOIL_TEMP_100_DAILY: Celsius
+: 
+</code></pre></div>      </div>
+    </div>
+  </div>
+</div>
+
+<h3 id="problem-2-contour-plots">Problem 2: Contour Plots</h3>
+
+<p>Now we will visualize some global temperature data from the NCEP-NCAR atmospheric reanalysis.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="n">xr</span>
+<span class="n">ds_url</span> <span class="o">=</span> <span class="s">'http://iridl.ldeo.columbia.edu/SOURCES/.NOAA/.NCEP-NCAR/.CDAS-1/.MONTHLY/.Diagnostic/.surface/.temp/dods'</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">ds_url</span><span class="p">,</span> <span class="n">decode_times</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+<span class="c">#########################################################</span>
+<span class="c">#### BELOW ARE THE VARIABLES YOU SHOULD USE IN THE PLOTS!</span>
+<span class="c">#### (numpy arrays) </span>
+<span class="c">#### NO XARRAY ALLOWED!</span>
+<span class="c">#########################################################</span>
+
+<span class="n">temp</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">temp</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">-</span> <span class="mf">273.15</span>
+<span class="n">lon</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">values</span>
+<span class="n">lat</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">Y</span><span class="o">.</span><span class="n">values</span>
+
+</code></pre></div>    </div>
+  </div>
+
+</div>
+
+<h3 id="problem-3-scatter-plots">Problem 3: Scatter plots</h3>
+<p>Here we will make a map plot of earthquakes from a USGS catalog of historic large earthquakes. Color the earthquakes by log10(depth) and adjust the marker size to be magntiude$^2$/100</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">!</span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">rabernat</span><span class="o">.</span><span class="n">github</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">research_computing</span><span class="o">/</span><span class="n">signif</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">tsv</span><span class="o">.</span><span class="nb">zip</span>
+<span class="err">!</span><span class="n">unzip</span> <span class="o">-</span><span class="n">o</span> <span class="n">signif</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">tsv</span><span class="o">.</span><span class="nb">zip</span>
+
+<span class="c">#########################################################</span>
+<span class="c">#### BELOW ARE THE VARIABLES YOU SHOULD USE IN THE PLOTS!</span>
+<span class="c">#########################################################</span>
+
+<span class="n">earthquakes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="s">'signif.txt.tsv'</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s">'</span><span class="se">\t</span><span class="s">'</span><span class="p">)</span>
+<span class="n">depth</span> <span class="o">=</span> <span class="n">earthquakes</span><span class="p">[:,</span> <span class="mi">8</span><span class="p">]</span>
+<span class="n">magnitude</span> <span class="o">=</span> <span class="n">earthquakes</span><span class="p">[:,</span> <span class="mi">9</span><span class="p">]</span>
+<span class="n">latitude</span> <span class="o">=</span> <span class="n">earthquakes</span><span class="p">[:,</span> <span class="mi">20</span><span class="p">]</span>
+<span class="n">longitude</span> <span class="o">=</span> <span class="n">earthquakes</span><span class="p">[:,</span> <span class="mi">21</span><span class="p">]</span>
+
+</code></pre></div>    </div>
+  </div>
+
+</div>
+
 
               <nav class="c-page__nav">
   
     
-    <a id="js-page__nav__prev" class="c-page__nav__prev" href="/assignments/more_matplotlib.html">
-      〈 <span class="u-margin-right-tiny"></span> Assignment: More Matplotlib
+    <a id="js-page__nav__prev" class="c-page__nav__prev" href="/lectures/basic_scipy/more_matplotlib.html">
+      〈 <span class="u-margin-right-tiny"></span> Advanced Matplotlib
     </a>
   
 
   
     
-    <a id="js-page__nav__next" class="c-page__nav__next" href="/lectures/pandas/basic_pandas.html">
-      Pandas Fundamentals <span class="u-margin-right-tiny"></span> 〉
+    <a id="js-page__nav__next" class="c-page__nav__next" href="/lectures/pandas/pandas_intro.html">
+      Pandas for Tabular Data <span class="u-margin-right-tiny"></span> 〉
     </a>
   
 </nav>
