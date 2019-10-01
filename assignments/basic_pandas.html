@@ -7,16 +7,16 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width,minimum-scale=1">
 
-  <title>Search the site</title>
-  <meta name="description" content="An introduction to Earth and Environmental Data Science with Python.">
+  <title>Assignment: Pandas Fundamentals with Earthquake Data</title>
+  <meta name="description" content="Assignment: Pandas Fundamentals w/ Earthquake Data">
 
-  <link rel="canonical" href="http://earth-env-data-science.github.io//search">
+  <link rel="canonical" href="http://earth-env-data-science.github.io//assignments/basic_pandas.html">
   <link rel="alternate" type="application/rss+xml" title="Earth and Environmental Data Science" href="http://earth-env-data-science.github.io//feed.xml">
 
-  <meta property="og:url"         content="http://earth-env-data-science.github.io//search" />
+  <meta property="og:url"         content="http://earth-env-data-science.github.io//assignments/basic_pandas.html" />
 <meta property="og:type"        content="article" />
-<meta property="og:title"       content="Search the site" />
-<meta property="og:description" content="An introduction to Earth and Environmental Data Science with Python." />
+<meta property="og:title"       content="Assignment: Pandas Fundamentals with Earthquake Data" />
+<meta property="og:description" content="Assignment: Pandas Fundamentals w/ Earthquake Data" />
 <meta property="og:image"       content="" />
 
 
@@ -25,15 +25,15 @@
   "@context": "http://schema.org",
   "@type": "NewsArticle",
   "mainEntityOfPage":
-    "http://earth-env-data-science.github.io//search",
+    "http://earth-env-data-science.github.io//assignments/basic_pandas.html",
   "headline":
-    "Search the site",
+    "Assignment: Pandas Fundamentals with Earthquake Data",
   "datePublished":
     "2019-10-01T13:31:59+00:00",
   "dateModified":
     "2019-10-01T13:31:59+00:00",
   "description":
-    "An introduction to Earth and Environmental Data Science with Python.",
+    "Assignment: Pandas Fundamentals w/ Earthquake Data",
   "author": {
     "@type": "Person",
     "name": "Ryan Abernathey"
@@ -992,7 +992,7 @@ initFunction(initQuery);
               
 
               <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
+                <a class="c-sidebar__entry c-sidebar__entry--active"
                   href="/assignments/basic_pandas.html"
                 >
                   
@@ -1129,6 +1129,13 @@ initFunction(initQuery);
 </nav>
 
       
+      <!-- Empty sidebar placeholder that we'll auto-fill with javascript -->
+      <aside class="sidebar__right">
+          <header><h4 class="nav__title"><i class="fa fa-list"></i>   On this page</h4></header>
+          <nav class="onthispage">
+          </nav>
+      </aside>
+      
       <main class="c-textbook__page" tabindex="-1">
           <div class="o-wrapper">
             <div class="c-sidebar-toggle">
@@ -1145,196 +1152,122 @@ initFunction(initQuery);
 </div>
 
             
+<div class="buttons">
+<a href="/content/assignments/basic_pandas.ipynb" download>
+<button id="interact-button-download" class="interact-button">Download</button>
+</a>
 
-            <div class="c-textbook__content">
-              <div class="search-content__inner-wrap">
-    <input type="text" id="lunr_search" class="search-input" tabindex="-1" placeholder="'Enter your search term...''" />
-    <div id="results" class="results"></div>
+
+
+
+
+
+
+
+
+
+<a href="https://ocean.pangeo.io/hub/user-redirect/git-pull?repo=https://github.com//earth-env-data-science/earth-env-data-science-book&amp;branch=master&amp;subPath=content%2Fassignments%2Fbasic_pandas.ipynb&amp;app=lab"><button class="interact-button" id="interact-button-jupyterhub"><img class="interact-button-logo" src="/assets/images/logo_jupyterhub.svg" alt="Interact" />ocean.pangeo.io</button></a>
+
+
+
 </div>
 
-<script>
-    // Add the lunr store since we will now search it
-    var store = [{
-        "title": "License",
-        
-        "excerpt":
-            "License for this book   All content in this book (ie, any files and content in the content/ folder) is licensed under the Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) license.  ",
-        "categories": [],
-        "tags": [],
-        "url": "http://earth-env-data-science.github.io/LICENSE.html",
-        "teaser":null},{
-        "title": "Assignment: Pandas Fundamentals with Earthquake Data",
-        
-        "excerpt":
-            "Assignment: Pandas Fundamentals w/ Earthquake Data In this assignment, we will review pandas fundamentals, such as how to Open csv files Manipulate dataframe indexes Parse date columns Examine basic dataframe statistics Manipulate text columns and extract values Plot dataframe contents using Bar charts Histograms Scatter plots # do imports here I saved you some time by pre-downloading some data in .csv format from the USGS Earthquakes Database. It is located at: http://www.ldeo.columbia.edu/~rpa/usgs_earthquakes_2014.csv You don’t even need to download it. You can open it directly with Pandas. 1) Use Pandas’ read_csv function directly on this url to open it as a...",
-        "categories": [],
-        "tags": [],
-        "url": "http://earth-env-data-science.github.io/assignments/basic_pandas.html",
-        "teaser":null},{
-        "title": "Assignment: Files, Git, and Github",
-        
-        "excerpt":
-            "Assignment: Files, Git, and Github Create a Dummy Resume Repository Use JupyterLab to launch a terminal and use the terminal to do the following tasks: Create a new directory called resume within your home directory Create an empty file within this directory called Readme.md Now use JupyterLab to edit the file: Navigate to the directory in the file browser Open Readme.md in the text editor Open Readme.md in in Markdown Preview Arrange these files side-by-side so you can see your document rendered Edit the file in the editor. Add the following information: Top level heading with your name An image....",
-        "categories": [],
-        "tags": [],
-        "url": "http://earth-env-data-science.github.io/assignments/files_markdown_git.html",
-        "teaser":null},{
-        "title": "Assignment: More Matplotlib",
-        
-        "excerpt":
-            "Assignment 4: More Matplotlib The goal here is to replicate the figures you see as closely as possible. In order to get some data, you will have to run the code in the cells below. Don’t worry about how this code works. In the end, it will give you some numpy arrays, which you will use in your plots. You are not allowed to use any packages other than numpy and matplotlib to complete your assignment. Problem 1: Line plots In this problem, we will plot some daily weather data from a NOAA station in Millbrook, NY. A full description...",
-        "categories": [],
-        "tags": [],
-        "url": "http://earth-env-data-science.github.io/assignments/more_matplotlib.html",
-        "teaser":null},{
-        "title": "Assignment: Basic Numpy and Matplotlib",
-        
-        "excerpt":
-            "Assignment 3 - Numpy and Matplotlib The goal of this assignment is to gain comfort creating, visualizating, and computing with numpy array. By the end of the assignment, you should feel comfortable: Creating new arrays using linspace and arange Computing basic formulas with numpy arrays Loading data from .npz files Performing reductions (e.g. mean, std on numpy arrays) Making 1D line plots Making 2D pcolormesh plots Making scatterplots Annotating plots with titles and axes 1 Creating and Manipulating Arrays First import numpy and matplotlib 1.1. Create two 2D arrays representing coordinates x, y on the cartesian plan Both should cover...",
-        "categories": [],
-        "tags": [],
-        "url": "http://earth-env-data-science.github.io/assignments/numpy_matplotlib.html",
-        "teaser":null},{
-        "title": "Assignment: Python Basics and Functions",
-        
-        "excerpt":
-            "Assignment: Basic Python Part I: Lists and Loops In this problem, we will explore the basic data structures and flow controls of python by manually parsing a CSV file. Note that this is a futile exercise. In the “real world” you should never manually parse a CSV file. There are utilities out there that will do it for you much more quickly and efficiently. However, it is a useful exercise for learning python. First we need to download a data file to parse. We can do this from the terminal, OR we can use ! to run shell commands directly...",
-        "categories": [],
-        "tags": [],
-        "url": "http://earth-env-data-science.github.io/assignments/python_basics_and_functions.html",
-        "teaser":null},{
-        "title": "Intro",
-        
-        "excerpt":
-            "An Introduction to Earth and Environmental Data Science History This book grew out of a course developed at Columbia University called Research Computing in Earth Science. It was written mostly by Ryan Abernathey, with significant contributions from Kerry Key. By separating the book from the class, we hope to create an open-source community resource for python education in the Earth and Environmental Sciences. Motivation and Scope Computing has become an indispensable tool for nearly all Earth and Environmental Scientists, but it doesn’t often appear in our curriculums. This book focuses on data analysis, a subset of computing in which the...",
-        "categories": [],
-        "tags": [],
-        "url": "http://earth-env-data-science.github.io/intro.html",
-        "teaser":null},{
-        "title": "Advanced Matplotlib",
-        
-        "excerpt":
-            "More Matplotlib Matplotlib is the dominant plotting / visualization package in python. It is important to learn to use it well. In the last lecture, we saw some basic examples in the context of learning numpy. This week, we dive much deeper. The goal is to understand how matplotlib represents figures internally. from matplotlib import pyplot as plt %matplotlib inline Figure and Axes The figure is the highest level of organization of matplotlib objects. If we want, we can create a figure explicitly. fig = plt.figure() &lt;matplotlib.figure.Figure at 0x116913b38&gt; fig = plt.figure(figsize=(13, 5)) &lt;matplotlib.figure.Figure at 0x116b31c50&gt; fig = plt.figure() ax...",
-        "categories": [],
-        "tags": [],
-        "url": "http://earth-env-data-science.github.io/lectures/basic_scipy/more_matplotlib.html",
-        "teaser":null},{
-        "title": "Numpy and Matplotlib",
-        
-        "excerpt":
-            "Numpy and Matplotlib These are two of the most fundamental parts of the scientific python “ecosystem”. Most everything else is built on top of them. import numpy as np What did we just do? We imported a package. This brings new variables (mostly functions) into our interpreter. We access them as follows. # find out what is in our namespace dir() ['In', 'Out', '_', '__', '___', '__builtin__', '__builtins__', '__doc__', '__loader__', '__name__', '__package__', '__spec__', '_dh', '_i', '_i1', '_i2', '_ih', '_ii', '_iii', '_oh', 'exit', 'get_ipython', 'np', 'quit'] # find out what's in numpy dir(np) ['ALLOW_THREADS', 'AxisError', 'BUFSIZE', 'CLIP', 'ComplexWarning', 'DataSource', 'ERR_CALL', 'ERR_DEFAULT',...",
-        "categories": [],
-        "tags": [],
-        "url": "http://earth-env-data-science.github.io/lectures/basic_scipy/numpy_and_matplotlib.html",
-        "teaser":null},{
-        "title": "Functions and Classes",
-        
-        "excerpt":
-            "Python Functions and Classes For longer and more complex tasks, it is important to organize your code into reuseable elements. For example, if you find yourself cutting and pasting the same or similar lines of code over and over, you probably need to define a function to encapsulate that code and make it reusable. An important principle in programming in DRY: “don’t repeat yourself”. Repetition is tedious and opens you up to errors. Strive for elegance and simplicity in your programs. Functions Functions are a central part of advanced python programming. Functions take some inputs (“arguments”) and do something in...",
-        "categories": [],
-        "tags": [],
-        "url": "http://earth-env-data-science.github.io/lectures/core_python/functions_classes.html",
-        "teaser":null},{
-        "title": "Organization and Packaging of Python Projects",
-        
-        "excerpt":
-            "Organization and Packaging of Python Projects A complex research project often relies and many different programs and software packages to accomplish the research goals. An important part of scientific computing is deciding how to organize and structure the code you use for research. A well-structured project can make you a more efficient and effective researcher. It is also a key component of scientific reproducibility. Just putting all of your code into git repositories won’t magically turn a mess of scripts into a beautiful, well-organized project. More deliberate effort is required. Types of Projects Not all projects are created equal. Based...",
-        "categories": [],
-        "tags": [],
-        "url": "http://earth-env-data-science.github.io/lectures/core_python/organization_and_packaging.html",
-        "teaser":null},{
-        "title": "Python Fundamentals",
-        
-        "excerpt":
-            "Python Fundamentals This material is mostly adapted from the official python tutorial, Copyright 2001-2019, Python Software Foundation. It is used here under the terms of the Python License. Invoking Python There are three main ways to use python. By running a python file, e.g. python myscript.py Through an interactive console (python interpreter or ipython shell) In an interactive notebook (e.g. Jupyter) In this course, we will mostly be interacting with python via Jupyter notebooks. Python Versions There are two versions of the python language out there: python 2 and python 3. In 2019, the vast majority of the scientific community...",
-        "categories": [],
-        "tags": [],
-        "url": "http://earth-env-data-science.github.io/lectures/core_python/python_fundamentals.html",
-        "teaser":null},{
-        "title": "Intro to Git",
-        
-        "excerpt":
-            "Intro to Git for Version Control Overview Version control is a powerful way to organize, back up, and share with collaborators your research computing code. A Verson control system keeps track of a set of files and saves snapshots (i.e. versions, commits) of the files at any point in time. Using version control allows you to confidently make changes to your code (any any other files), with the ability to roll back to any previous state. This help avoid filling our directories up with files that look like this: my_code.py my_code_version2.py my_code_version2B-RPA-edit.py my_code_FINAL_VERSION.py my_code_THIS_IS_ACTUALLY_THE FINAL VERSION.py Version control also allows...",
-        "categories": [],
-        "tags": [],
-        "url": "http://earth-env-data-science.github.io/lectures/environment/intro_to_git.html",
-        "teaser":null},{
-        "title": "Intro to JupyterLab",
-        
-        "excerpt":
-            "Intro to JupyterLab JupyterLab will be our primary method for interacting with the computer. JupyterLab contains a complete environment for interactive scientific computing which runs in your web browser. Jupyter is an open source python project that was started by scientists like yourselves who wanted a more effective way to interact with their computers. JupyterLab has excellent documentation. Rather than repeat that documentation here, we point you to their docs. The following pages are particularly relevant: The JupyterLab Interface Working with Files The Text Editor Notebooks Terminals Managing Kernels and Terminals You will gain experience and familiarity with JupyterLab over...",
-        "categories": [],
-        "tags": [],
-        "url": "http://earth-env-data-science.github.io/lectures/environment/intro_to_jupyterlab.html",
-        "teaser":null},{
-        "title": "Intro to Unix",
-        
-        "excerpt":
-            "Intro to Unix An introduction to basic Unix commands and the file system. The notes below are modified from the excellent Unix Shell tutorial that is freely available on the Software Carpentry website. We highly recommend checking out the full version for further reading. The material is being used here under the terms of the Creative Commons Attribution license. Navigating Files and Directories Several commands are frequently used to create, inspect, rename, and delete files and directories. To get started, open a terminal using the JupyterLab launcher. You will see something like this. jovyan@jupyter-rabernat:~$ The dollar sign is a prompt,...",
-        "categories": [],
-        "tags": [],
-        "url": "http://earth-env-data-science.github.io/lectures/environment/intro_to_unix.html",
-        "teaser":null},{
-        "title": "Pandas Fundamentals",
-        
-        "excerpt":
-            "Pandas Fundamentals import pandas as pd import numpy as np from matplotlib import pyplot as plt %matplotlib inline Pandas Data Structures: Series A Series represents a one-dimensional array of data. The main difference between a Series and numpy array is that a Series has an index. The index contains the labels that we use to access the data. There are many ways to create a Series. We will just show a few. names = ['Ryan', 'Chiara', 'Johnny'] values = [36, 37, 2.7] ages = pd.Series(values, index=names) ages Ryan 36.0 Chiara 37.0 Johnny 2.7 dtype: float64 Series have built in plotting...",
-        "categories": [],
-        "tags": [],
-        "url": "http://earth-env-data-science.github.io/lectures/pandas/basic_pandas.html",
-        "teaser":null},{
-        "title": "The Split-Apply-Combine Workflow",
-        
-        "excerpt":
-            "Pandas: Groupby groupby is an amazingly powerful function in pandas. But it is also complicated to use and understand. The point of this lesson is to make you feel confident in using groupby and its cousins, resample and rolling. These notes are loosely based on the Pandas GroupBy Documentation. Imports: import numpy as np from matplotlib import pyplot as plt plt.rcParams['figure.figsize'] = (12,7) %matplotlib inline import pandas as pd First we read the Earthquake data from our previous assignment: df = pd.read_csv('http://www.ldeo.columbia.edu/~rpa/usgs_earthquakes_2014.csv', parse_dates=['time'], index_col='id') df['country'] = df.place.str.split(', ').str[-1] df_small = df[df.mag&lt;4] df = df[df.mag&gt;4] df.head() time latitude longitude depth mag...",
-        "categories": [],
-        "tags": [],
-        "url": "http://earth-env-data-science.github.io/lectures/pandas/pandas_groupby.html",
-        "teaser":null},{
-        "title": "Pandas for Tabular Data",
-        
-        "excerpt":
-            "Pandas Pandas is a an open source library providing high-performance, easy-to-use data structures and data analysis tools. Pandas is particularly suited to the analysis of tabular data, i.e. data that can can go into a table. In other words, if you can imagine the data in an Excel spreadsheet, then Pandas is the tool for the job. A recent analysis of questions from Stack Overflow showed that python is the fastest growing and most widely used programming language in the world (in developed countries). A follow-up analysis showed that this growth is driven by the data science packages such as...",
-        "categories": [],
-        "tags": [],
-        "url": "http://earth-env-data-science.github.io/lectures/pandas/pandas_intro.html",
-        "teaser":null},{
-        "title": "Intermediate Xarray",
-        
-        "excerpt":
-            "import xarray as xr from matplotlib import pyplot as plt plt.rcParams['figure.figsize'] = (12,7) %matplotlib inline ! wget http://ldeo.columbia.edu/~rpa/NOAA_NCDC_ERSST_v3b_SST.nc --2018-10-25 13:33:39-- http://ldeo.columbia.edu/~rpa/NOAA_NCDC_ERSST_v3b_SST.nc Resolving ldeo.columbia.edu (ldeo.columbia.edu)... 129.236.10.30 Connecting to ldeo.columbia.edu (ldeo.columbia.edu)|129.236.10.30|:80... connected. HTTP request sent, awaiting response... 302 Found Location: http://www.ldeo.columbia.edu/~rpa/NOAA_NCDC_ERSST_v3b_SST.nc [following] --2018-10-25 13:33:39-- http://www.ldeo.columbia.edu/~rpa/NOAA_NCDC_ERSST_v3b_SST.nc Resolving www.ldeo.columbia.edu (www.ldeo.columbia.edu)... 129.236.14.15 Connecting to www.ldeo.columbia.edu (www.ldeo.columbia.edu)|129.236.14.15|:80... connected. HTTP request sent, awaiting response... 302 Found Location: https://www.ldeo.columbia.edu/~rpa/NOAA_NCDC_ERSST_v3b_SST.nc [following] --2018-10-25 13:33:40-- https://www.ldeo.columbia.edu/~rpa/NOAA_NCDC_ERSST_v3b_SST.nc Connecting to www.ldeo.columbia.edu (www.ldeo.columbia.edu)|129.236.14.15|:443... connected. HTTP request sent, awaiting response... 200 OK Length: 43852246 (42M) [application/x-netcdf] Saving to: ‘NOAA_NCDC_ERSST_v3b_SST.nc’ NOAA_NCDC_ERSST_v3b 100%[===================&gt;] 41.82M 62.8MB/s in 0.7s 2018-10-25 13:33:41 (62.8 MB/s) - ‘NOAA_NCDC_ERSST_v3b_SST.nc’ saved [43852246/43852246] ds =...",
-        "categories": [],
-        "tags": [],
-        "url": "http://earth-env-data-science.github.io/lectures/xarray/xarray-part2.html",
-        "teaser":null},{
-        "title": "Basic Xarray",
-        
-        "excerpt":
-            "Lesson 1: Xarray Fundamentals Xarray data structures Like Pandas, xarray has two fundamental data structures: a DataArray, which holds a single multi-dimensional variable and its coordinates a Dataset, which holds multiple variables that potentially share the same coordinates DataArray A DataArray has four essential attributes: values: a numpy.ndarray holding the array’s values dims: dimension names for each axis (e.g., ('x', 'y', 'z')) coords: a dict-like container of arrays (coordinates) that label each point (e.g., 1-dimensional arrays of numbers, datetime objects or strings) attrs: an OrderedDict to hold arbitrary metadata (attributes) Let’s start by constructing some DataArrays manually import numpy as...",
-        "categories": [],
-        "tags": [],
-        "url": "http://earth-env-data-science.github.io/lectures/xarray/xarray.html",
-        "teaser":null},{
-        "title": "Xarray for Multidimensional Data",
-        
-        "excerpt":
-            "Xarray for multidimensional gridded data In the previous set of lectures, we saw how Pandas provided a way to keep track of additional “metadata” surrounding tabular datasets, including “indexes” for each row and labels for each column. These features, together with Pandas’ many useful routines for all kinds of data munging and analysis, have made Pandas one of the most popular python packages in the world. However, not all Earth science datasets easily fit into the “tabular” model (i.e. rows and columns) imposed by Pandas. In particular, we often deal with multidimensional data. By multidimensional data (also often called N-dimensional),...",
-        "categories": [],
-        "tags": [],
-        "url": "http://earth-env-data-science.github.io/lectures/xarray/xarray_intro.html",
-        "teaser":null},{
-        "title": "Xarray Tips And Tricks",
-        
-        "excerpt":
-            "Xarray Tips and Tricks Build a multi-file dataset from an OpenDAP server One thing we love about xarray is the open_mfdataset function, which combines many netCDF files into a single xarray Dataset. But what if the files are stored on a remote server and accessed over OpenDAP. An example can be found in NOAA’s NCEP Reanalysis catalog. https://www.esrl.noaa.gov/psd/thredds/catalog/Datasets/ncep.reanalysis/surface/catalog.html The dataset is split into different files for each variable and year. For example, a single file for surface air temperature looks like: http://www.esrl.noaa.gov/psd/thredds/dodsC/Datasets/ncep.reanalysis/surface/air.sig995.1948.nc We can’t just call open_mfdataset(\"http://www.esrl.noaa.gov/psd/thredds/dodsC/Datasets/ncep.reanalysis/surface/air.sig995.*.nc\") Because wildcard expansion doesn’t work with OpenDAP endpoints. The solution is to manually...",
-        "categories": [],
-        "tags": [],
-        "url": "http://earth-env-data-science.github.io/lectures/xarray/xarray_tips_and_tricks.html",
-        "teaser":null},]
-</script>
+
+            <div class="c-textbook__content">
+              <h1 id="assignment-pandas-fundamentals-w-earthquake-data">Assignment: Pandas Fundamentals w/ Earthquake Data</h1>
+
+<p>In this assignment, we will review pandas fundamentals, such as how to</p>
+
+<ul>
+  <li>Open csv files</li>
+  <li>Manipulate dataframe indexes</li>
+  <li>Parse date columns</li>
+  <li>Examine basic dataframe statistics</li>
+  <li>Manipulate text columns and extract values</li>
+  <li>Plot dataframe contents using
+    <ul>
+      <li>Bar charts</li>
+      <li>Histograms</li>
+      <li>Scatter plots</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># do imports here</span>
+
+
+</code></pre></div>    </div>
+  </div>
+
+</div>
+
+<p>I saved you some time by pre-downloading some data in .csv format from the <a href="https://earthquake.usgs.gov/earthquakes/search/">USGS Earthquakes Database</a>. It is located at:</p>
+
+<p>http://www.ldeo.columbia.edu/~rpa/usgs_earthquakes_2014.csv</p>
+
+<p>You don’t even need to download it. You can open it directly with Pandas.</p>
+
+<h3 id="1-use-pandas-read_csv-function-directly-on-this-url-to-open-it-as-a-dataframe">1) Use Pandas’ read_csv function directly on this url to open it as a DataFrame</h3>
+<p>(Don’t use any special options). Display the first few rows and the DataFrame info.</p>
+
+<p>You should have seen that the dates were not automatically parsed into datetime types.</p>
+
+<h3 id="2-re-read-the-data-in-such-a-way-that-all-date-columns-are-identified-as-dates-and-the-earthquake-id-is-used-as-the-index">2) Re-read the data in such a way that all date columns are identified as dates and the earthquake id is used as the index</h3>
+
+<p>Verify that this worked using the <code class="highlighter-rouge">head</code> and <code class="highlighter-rouge">info</code> functions.</p>
+
+<h3 id="3-use-describe-to-get-the-basic-statistics-of-all-the-columns">3) Use <code class="highlighter-rouge">describe</code> to get the basic statistics of all the columns</h3>
+
+<p>Note the highest and lowest magnitude of earthquakes in the databse.</p>
+
+<h3 id="4-use-nlargest-to-get-the-top-20-earthquakes-by-magnitude">4) Use <code class="highlighter-rouge">nlargest</code> to get the top 20 earthquakes by magnitude</h3>
+
+<p>https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.nlargest.html</p>
+
+<p>Examine the structure of the <code class="highlighter-rouge">place</code> column. The state / country information seems to be in there. How would you get it out?</p>
+
+<h3 id="5-extract-the-state--country-using-pandas-text-data-functions">5) Extract the state / country using Pandas <a href="https://pandas.pydata.org/pandas-docs/stable/text.html">text data functions</a></h3>
+
+<p>Add it as a new column to the dataframe.</p>
+
+<h3 id="6-display-each-unique-value-from-the-new-column">6) Display each unique value from the new column</h3>
+
+<p>https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.unique.html</p>
+
+<h3 id="7-make-a-bar-chart-of-the-top-5-earthquake-magnitudes-vs-countrystate">7) Make a bar chart of the top 5 earthquake magnitudes vs country/state</h3>
+
+<h3 id="8-create-a-filtered-dataset-that-only-has-earthquakes-of-magnitude-4-or-larger-and">8) Create a filtered dataset that only has earthquakes of magnitude 4 or larger and</h3>
+
+<h3 id="9-make-a-histogram-the-distribution-of-the-earthquake-magnitudes">9) Make a histogram the distribution of the Earthquake magnitudes</h3>
+
+<p>https://pandas.pydata.org/pandas-docs/version/0.23/generated/pandas.DataFrame.hist.html
+https://matplotlib.org/api/_as_gen/matplotlib.pyplot.hist.html</p>
+
+<p>Do one subplot for the filtered and one for the unfiltered dataset.
+Use a Logarithmic scale. What sort of relationship do you see?</p>
+
+<h3 id="11-visualize-the-locations-of-earthquakes-by-making-a-scatterplot-of-their-latitude-and-longitude">11) Visualize the locations of earthquakes by making a scatterplot of their latitude and longitude.</h3>
+
+<p>Do both the filtered and unfiltered datasets. Color it by magnitude. Make it pretty</p>
+
+<p>What difference do you note between the filtered and unfiltered datasets?</p>
+
+
               <nav class="c-page__nav">
   
+    
+    <a id="js-page__nav__prev" class="c-page__nav__prev" href="/lectures/pandas/basic_pandas.html">
+      〈 <span class="u-margin-right-tiny"></span> Pandas Fundamentals
+    </a>
+  
 
+  
+    
+    <a id="js-page__nav__next" class="c-page__nav__next" href="/lectures/pandas/pandas_groupby.html">
+      The Split-Apply-Combine Workflow <span class="u-margin-right-tiny"></span> 〉
+    </a>
   
 </nav>
 
