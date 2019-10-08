@@ -29,9 +29,9 @@
   "headline":
     "Search the site",
   "datePublished":
-    "2019-10-08T13:16:26+00:00",
+    "2019-10-08T13:27:13+00:00",
   "dateModified":
-    "2019-10-08T13:16:26+00:00",
+    "2019-10-08T13:27:13+00:00",
   "description":
     "An introduction to Earth and Environmental Data Science with Python.",
   "author": {
@@ -1313,7 +1313,7 @@ initFunction(initQuery);
         "title": "The Split-Apply-Combine Workflow",
         
         "excerpt":
-            "Pandas: Groupby groupby is an amazingly powerful function in pandas. But it is also complicated to use and understand. The point of this lesson is to make you feel confident in using groupby and its cousins, resample and rolling. These notes are loosely based on the Pandas GroupBy Documentation. Imports: import numpy as np from matplotlib import pyplot as plt plt.rcParams['figure.figsize'] = (12,7) %matplotlib inline import pandas as pd First we read the Earthquake data from our previous assignment: df = pd.read_csv('http://www.ldeo.columbia.edu/~rpa/usgs_earthquakes_2014.csv', parse_dates=['time'], index_col='id') df['country'] = df.place.str.split(', ').str[-1] df_small = df[df.mag&lt;4] df = df[df.mag&gt;4] df.head() time latitude longitude depth mag...",
+            "Pandas: Groupby groupby is an amazingly powerful function in pandas. But it is also complicated to use and understand. The point of this lesson is to make you feel confident in using groupby and its cousins, resample and rolling. These notes are loosely based on the Pandas GroupBy Documentation. The “split/apply/combine” concept was first introduced in a paper by Hadley Wickham: https://www.jstatsoft.org/article/view/v040i01. Imports: import numpy as np from matplotlib import pyplot as plt plt.rcParams['figure.figsize'] = (12,7) %matplotlib inline import pandas as pd First we read the Earthquake data from our previous assignment: df = pd.read_csv('http://www.ldeo.columbia.edu/~rpa/usgs_earthquakes_2014.csv', parse_dates=['time'], index_col='id') df['country'] = df.place.str.split(',...",
         "categories": [],
         "tags": [],
         "url": "http://earth-env-data-science.github.io/lectures/pandas/pandas_groupby.html",

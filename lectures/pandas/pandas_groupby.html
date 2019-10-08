@@ -29,9 +29,9 @@
   "headline":
     "The Split-Apply-Combine Workflow",
   "datePublished":
-    "2019-10-08T13:16:26+00:00",
+    "2019-10-08T13:27:13+00:00",
   "dateModified":
-    "2019-10-08T13:16:26+00:00",
+    "2019-10-08T13:27:13+00:00",
   "description":
     "Pandas: Groupby",
   "author": {
@@ -1200,6 +1200,8 @@ The point of this lesson is to make you feel confident in using <code class="hig
 
 <p>These notes are loosely based on the <a href="http://pandas.pydata.org/pandas-docs/stable/groupby.html">Pandas GroupBy Documentation</a>.</p>
 
+<p>The “split/apply/combine” concept was first introduced in a paper by Hadley Wickham: <a href="https://www.jstatsoft.org/article/view/v040i01">https://www.jstatsoft.org/article/view/v040i01</a>.</p>
+
 <p>Imports:</p>
 
 <div class="cell code_cell">
@@ -1450,9 +1452,13 @@ The point of this lesson is to make you feel confident in using <code class="hig
   <li><strong>Combine</strong>: Put the results back together into a single object.</li>
 </ol>
 
+<p><img src="https://miro.medium.com/max/1840/1*JbF6nhrQsn4f-TaSF6IR9g.png" alt="split-apply-combine" /></p>
+
 <h3 id="the-groupby-method">The <code class="highlighter-rouge">groupby</code> method</h3>
 
 <p>Both <code class="highlighter-rouge">Series</code> and <code class="highlighter-rouge">DataFrame</code> objects have a groupby method. It accepts a variety of arguments, but the simplest way to think about it is that you pass another series, whose unique values are used to split the original object into different groups.</p>
+
+<p>via <a href="https://medium.com/analytics-vidhya/split-apply-combine-strategy-for-data-mining-4fd6e2a0cc99">https://medium.com/analytics-vidhya/split-apply-combine-strategy-for-data-mining-4fd6e2a0cc99</a></p>
 
 <div class="cell code_cell">
   <div class="input_area">
