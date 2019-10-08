@@ -29,9 +29,9 @@
   "headline":
     "Search the site",
   "datePublished":
-    "2019-10-01T13:31:59+00:00",
+    "2019-10-08T13:16:26+00:00",
   "dateModified":
-    "2019-10-01T13:31:59+00:00",
+    "2019-10-08T13:16:26+00:00",
   "description":
     "An introduction to Earth and Environmental Data Science with Python.",
   "author": {
@@ -1026,6 +1026,25 @@ initFunction(initQuery);
               </li>
               
             
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/assignments/pandas_groupby.html"
+                >
+                  
+                    9.4
+                  
+                  Assignment: Pandas Groupby with Hurrican Data
+                </a>
+
+                
+                
+
+              </li>
+              
+            
           </ul>
         
       </li>
@@ -1194,6 +1213,14 @@ initFunction(initQuery);
         "categories": [],
         "tags": [],
         "url": "http://earth-env-data-science.github.io/assignments/numpy_matplotlib.html",
+        "teaser":null},{
+        "title": "Assignment: Pandas Groupby with Hurrican Data",
+        
+        "excerpt":
+            "Assignment: Pandas Groupby with Hurricane Data Import pandas and matplotlib Use the following code to download and unzip a CSV file of the NOAA IBTrACS hurricane dataset. ! wget ftp://eclipse.ncdc.noaa.gov/pub/ibtracs/v03r10/all/csv/Allstorms.ibtracs_all.v03r10.csv.gz ! gunzip Allstorms.ibtracs_all.v03r10.csv.gz Examine the first few lines of the file. Then use the following code to load as a pandas dataframe. Think about the options being used and why. df = pd.read_csv('Allstorms.ibtracs_all.v03r10.csv', parse_dates=['ISO_time'], usecols=range(12), skiprows=[0, 2], na_values=[-999, 'NOT NAMED']) df.head() 1) Get the unique values of the Basin, Sub_basin, and Nature columns 2) Fix these columns by eliminating the whitespace at the beginning of each 3) Filter the dataframe...",
+        "categories": [],
+        "tags": [],
+        "url": "http://earth-env-data-science.github.io/assignments/pandas_groupby.html",
         "teaser":null},{
         "title": "Assignment: Python Basics and Functions",
         

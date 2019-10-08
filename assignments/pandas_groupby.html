@@ -7,16 +7,16 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width,minimum-scale=1">
 
-  <title>Intro to Git</title>
-  <meta name="description" content="Intro to Git for Version Control">
+  <title>Assignment: Pandas Groupby with Hurrican Data</title>
+  <meta name="description" content="Assignment: Pandas Groupby with Hurricane Data">
 
-  <link rel="canonical" href="http://earth-env-data-science.github.io//lectures/environment/intro_to_git.html">
+  <link rel="canonical" href="http://earth-env-data-science.github.io//assignments/pandas_groupby.html">
   <link rel="alternate" type="application/rss+xml" title="Earth and Environmental Data Science" href="http://earth-env-data-science.github.io//feed.xml">
 
-  <meta property="og:url"         content="http://earth-env-data-science.github.io//lectures/environment/intro_to_git.html" />
+  <meta property="og:url"         content="http://earth-env-data-science.github.io//assignments/pandas_groupby.html" />
 <meta property="og:type"        content="article" />
-<meta property="og:title"       content="Intro to Git" />
-<meta property="og:description" content="Intro to Git for Version Control" />
+<meta property="og:title"       content="Assignment: Pandas Groupby with Hurrican Data" />
+<meta property="og:description" content="Assignment: Pandas Groupby with Hurricane Data" />
 <meta property="og:image"       content="" />
 
 
@@ -25,15 +25,15 @@
   "@context": "http://schema.org",
   "@type": "NewsArticle",
   "mainEntityOfPage":
-    "http://earth-env-data-science.github.io//lectures/environment/intro_to_git.html",
+    "http://earth-env-data-science.github.io//assignments/pandas_groupby.html",
   "headline":
-    "Intro to Git",
+    "Assignment: Pandas Groupby with Hurrican Data",
   "datePublished":
     "2019-10-08T13:16:26+00:00",
   "dateModified":
     "2019-10-08T13:16:26+00:00",
   "description":
-    "Intro to Git for Version Control",
+    "Assignment: Pandas Groupby with Hurricane Data",
   "author": {
     "@type": "Person",
     "name": "Ryan Abernathey"
@@ -579,7 +579,7 @@ initFunction(initQuery);
       
       
       <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry c-sidebar__entry--active"
+        <a class="c-sidebar__entry "
           href="/intro.html"
         >
           
@@ -675,7 +675,7 @@ initFunction(initQuery);
       
       
       <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry c-sidebar__entry--active"
+        <a class="c-sidebar__entry "
           href="/lectures/environment/intro_to_git.html"
         >
           
@@ -1030,7 +1030,7 @@ initFunction(initQuery);
               
 
               <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
+                <a class="c-sidebar__entry c-sidebar__entry--active"
                   href="/assignments/pandas_groupby.html"
                 >
                   
@@ -1171,95 +1171,135 @@ initFunction(initQuery);
 </div>
 
             
+<div class="buttons">
+<a href="/content/assignments/pandas_groupby.ipynb" download>
+<button id="interact-button-download" class="interact-button">Download</button>
+</a>
+
+
+
+
+
+
+
+
+
+
+<a href="https://ocean.pangeo.io/hub/user-redirect/git-pull?repo=https://github.com//earth-env-data-science/earth-env-data-science-book&amp;branch=master&amp;subPath=content%2Fassignments%2Fpandas_groupby.ipynb&amp;app=lab"><button class="interact-button" id="interact-button-jupyterhub"><img class="interact-button-logo" src="/assets/images/logo_jupyterhub.svg" alt="Interact" />ocean.pangeo.io</button></a>
+
+
+
+</div>
+
 
             <div class="c-textbook__content">
-              <h1 id="intro-to-git-for-version-control">Intro to Git for Version Control</h1>
+              <h1 id="assignment-pandas-groupby-with-hurricane-data">Assignment: Pandas Groupby with Hurricane Data</h1>
 
-<h2 id="overview">Overview</h2>
+<p>Import pandas and matplotlib</p>
 
-<p><a href="https://en.wikipedia.org/wiki/Version_control"><em>Version control</em></a> is a powerful way to organize, back up, and share with collaborators your research computing code.
-A Verson control system keeps track of a set of files and saves snapshots (i.e. <em>versions</em>, <em>commits</em>) of the files at any point in time. 
-Using version control allows you to confidently make changes to your code (any any other files), with the ability to roll back to any previous state. This help avoid filling our directories up with files that look like this:</p>
+<p>Use the following code to download and unzip a CSV file of the <a href="https://www.ncdc.noaa.gov/ibtracs/index.php?name=ibtracs-data">NOAA IBTrACS</a> hurricane dataset.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>my_code.py
-my_code_version2.py
-my_code_version2B-RPA-edit.py
-my_code_FINAL_VERSION.py
-my_code_THIS_IS_ACTUALLY_THE FINAL VERSION.py
-</code></pre></div></div>
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">!</span> <span class="n">wget</span> <span class="n">ftp</span><span class="p">:</span><span class="o">//</span><span class="n">eclipse</span><span class="o">.</span><span class="n">ncdc</span><span class="o">.</span><span class="n">noaa</span><span class="o">.</span><span class="n">gov</span><span class="o">/</span><span class="n">pub</span><span class="o">/</span><span class="n">ibtracs</span><span class="o">/</span><span class="n">v03r10</span><span class="o">/</span><span class="nb">all</span><span class="o">/</span><span class="n">csv</span><span class="o">/</span><span class="n">Allstorms</span><span class="o">.</span><span class="n">ibtracs_all</span><span class="o">.</span><span class="n">v03r10</span><span class="o">.</span><span class="n">csv</span><span class="o">.</span><span class="n">gz</span>
+<span class="err">!</span> <span class="n">gunzip</span> <span class="n">Allstorms</span><span class="o">.</span><span class="n">ibtracs_all</span><span class="o">.</span><span class="n">v03r10</span><span class="o">.</span><span class="n">csv</span><span class="o">.</span><span class="n">gz</span>
 
-<p>Version control also allows you to share code with collaborators, make simultaneous edits, and merge your changes in a systematic, controlled way.</p>
+</code></pre></div>    </div>
+  </div>
 
-<p>Version control has been used for a long time in software development.
-More recently, it has become an essential part of modern data and computational science.
-Our strong recommendation is that <em>all of your research code be stored in a version control system</em>.</p>
+</div>
 
-<p>The tool we will be using for version control is called <a href="https://git-scm.com">Git</a>.
-Git is incredibly powerful–it also has a somewhat steep learning curve.
-Fortunately, in this class, we will only be using a small subset of what git can do, avoiding the more complex aspects.</p>
+<p>Examine the first few lines of the file.</p>
 
-<p>For a full-length tutorial, we recommend the article <a href="http://swcarpentry.github.io/git-novice/">Version Control with Git</a> on Software Carpentry website.
-Here we simply enumerate the most common git commands.</p>
+<p>Then use the following code to load as a pandas dataframe. Think about the options being used and why.</p>
 
-<h2 id="summary-of-useful-git-commands">Summary of useful Git commands</h2>
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">'Allstorms.ibtracs_all.v03r10.csv'</span><span class="p">,</span>
+                 <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s">'ISO_time'</span><span class="p">],</span> <span class="n">usecols</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">),</span>
+                 <span class="n">skiprows</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">na_values</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">999</span><span class="p">,</span> <span class="s">'NOT NAMED'</span><span class="p">])</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 
-<p>Set up your username and email</p>
+</code></pre></div>    </div>
+  </div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git config --global user.name "Ryan Abernathey"
-git config --global user.email "rpa@ldeo.columbia.edu"
-</code></pre></div></div>
+</div>
 
-<p>Create a new repository:</p>
+<h3 id="1-get-the-unique-values-of-the-basin-sub_basin-and-nature-columns">1) Get the unique values of the <code class="highlighter-rouge">Basin</code>, <code class="highlighter-rouge">Sub_basin</code>, and <code class="highlighter-rouge">Nature</code> columns</h3>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd my_project
-git init      
-</code></pre></div></div>
+<h3 id="2-fix-these-columns-by-eliminating-the-whitespace-at-the-beginning-of-each">2) Fix these columns by eliminating the whitespace at the beginning of each</h3>
 
-<p>Stage files for addition to the repository:</p>
+<h3 id="3-filter-the-dataframe-to-eliminate-columns-with-no-position-information">3) Filter the dataframe to eliminate columns with no position information</h3>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git add &lt;filenames&gt;  
-</code></pre></div></div>
+<h3 id="4-rename-the-windwmo-and-preswmo-columns-to-eliminate-the-parentheses">4) Rename the <code class="highlighter-rouge">Wind(WMO)</code> and <code class="highlighter-rouge">Pres(WMO)</code> columns to eliminate the parentheses</h3>
 
-<p>Commit staged files:</p>
+<p>This makes them accessible to TAB completion.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git commit -m "your brief commit message goes here"
-</code></pre></div></div>
+<h3 id="5-get-the-10-largest-rows-in-the-dataset-by-wind">5) Get the 10 largest rows in the dataset by <code class="highlighter-rouge">Wind</code></h3>
 
-<p>Get information about your repository:</p>
+<p>You will notice some names are repeated.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git status    # tells you what files are staged, which ones have been modified, are new,... )
-git log       # view the commit log
-git diff      # view file content differences
-</code></pre></div></div>
+<h3 id="6-group-the-data-on-serial_num-and-get-the-10-largest-hurricanes-by-wind">6) Group the data on <code class="highlighter-rouge">Serial_Num</code> and get the 10 largest hurricanes by <code class="highlighter-rouge">Wind</code></h3>
 
-<p>Revert a file to an earlier version:</p>
+<h3 id="7-make-a-bar-chart-of-the-wind-speed-of-the-20-strongest-wind-hurricanes">7) Make a bar chart of the wind speed of the 20 strongest-wind hurricanes</h3>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git checkout &lt;commit tag&gt; &lt;filenames&gt;
-</code></pre></div></div>
+<p>Use the name on the x-axis</p>
 
-<h2 id="collaborating-with-git-and-github">Collaborating with Git and Github</h2>
+<h3 id="8-plot-the-count-of-all-datapoints-by-basin">8) Plot the count of all datapoints by Basin</h3>
 
-<ul>
-  <li>Create a new repository on GitHub</li>
-  <li>Follow the instructions and run <code class="highlighter-rouge">git remote add origin &lt;repo url&gt;</code> on your local repo</li>
-  <li>make your changes and stage them with <code class="highlighter-rouge">git add</code>,</li>
-  <li>commit your changes with <code class="highlighter-rouge">git commit -m</code>, and</li>
-  <li>upload the changes to GitHub with<code class="highlighter-rouge"> git push origin master</code></li>
-  <li>update your local repo with <code class="highlighter-rouge">git pull origin master</code></li>
-</ul>
+<p>as a bar chart</p>
+
+<h3 id="9-plot-the-count-of-unique-hurricanes-by-basin">9) Plot the count of unique hurricanes by Basin</h3>
+
+<p>as a bar chart. (You will need to call <code class="highlighter-rouge">groupby</code> twice.)</p>
+
+<h3 id="10-make-a-hexbin-of-the-location-of-datapoints-in-latitude-and-longitude">10) Make a <code class="highlighter-rouge">hexbin</code> of the location of datapoints in Latitude and Longitude</h3>
+
+<h3 id="11-find-hurricane-katrina-from-2005-and-plot-its-track-as-a-scatter-plot">11) Find Hurricane Katrina (from 2005) and plot its track as a scatter plot</h3>
+
+<p>Use wind speed to color the points.</p>
+
+<h3 id="12-make-time-the-index-on-your-dataframe">12) Make time the index on your dataframe</h3>
+
+<h3 id="13-plot-the-count-of-all-datapoints-per-year-as-a-timeseries">13) Plot the count of all datapoints per year as a timeseries</h3>
+
+<p>You should use <code class="highlighter-rouge">resample</code></p>
+
+<h3 id="14-plot-all-tracks-from-the-north-atlantic-in-2005">14) Plot all tracks from the North Atlantic in 2005</h3>
+
+<p>You will probably have to iterate through a <code class="highlighter-rouge">GroupBy</code> object</p>
+
+<h3 id="15-create-a-filtered-dataframe-that-contains-only-data-since-1970-from-the-north-atlantic-na-basin">15) Create a filtered dataframe that contains only data since 1970 from the North Atlantic (“NA”) Basin</h3>
+
+<p>Use this for the rest of the assignment</p>
+
+<h3 id="16-plot-the-number-of-datapoints-per-day">16) Plot the number of datapoints per day</h3>
+
+<p>Make sure you figure is big enough to actually see the plot</p>
+
+<h3 id="17-calculate-the-climatology-of-datapoint-counts-as-a-function-of-dayofyear">17) Calculate the climatology of datapoint counts as a function of <code class="highlighter-rouge">dayofyear</code></h3>
+
+<p>Plot the mean and standard deviation on a single figure</p>
+
+<h3 id="18-use-transform-to-calculate-the-anomaly-of-daily-counts-from-the-climatology">18) Use <code class="highlighter-rouge">transform</code> to calculate the anomaly of daily counts from the climatology</h3>
+
+<p>Resample the anomaly timeseries at annual resolution and plot</p>
+
+<p>Which years stand out as having anomalous hurricane activity?</p>
+
 
               <nav class="c-page__nav">
   
     
-    <a id="js-page__nav__prev" class="c-page__nav__prev" href="/lectures/environment/intro_to_unix.html">
-      〈 <span class="u-margin-right-tiny"></span> Intro to Unix
+    <a id="js-page__nav__prev" class="c-page__nav__prev" href="/lectures/pandas/pandas_groupby.html">
+      〈 <span class="u-margin-right-tiny"></span> The Split-Apply-Combine Workflow
     </a>
   
 
   
     
-    <a id="js-page__nav__next" class="c-page__nav__next" href="/assignments/files_markdown_git.html">
-      Assignment: Files, Git, and Github <span class="u-margin-right-tiny"></span> 〉
+    <a id="js-page__nav__next" class="c-page__nav__next" href="/lectures/xarray/xarray_intro.html">
+      Xarray for Multidimensional Data <span class="u-margin-right-tiny"></span> 〉
     </a>
   
 </nav>
