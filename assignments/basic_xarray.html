@@ -7,16 +7,16 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width,minimum-scale=1">
 
-  <title>Pandas</title>
-  <meta name="description" content="An introduction to Earth and Environmental Data Science with Python.">
+  <title>Assignment: Xarray Fundamentals with Earth Radiation Data</title>
+  <meta name="description" content="Assignment 7 : Xarray">
 
-  <link rel="canonical" href="http://earth-env-data-science.github.io//content/lectures/pandas/pandas_intro.html">
+  <link rel="canonical" href="http://earth-env-data-science.github.io//assignments/basic_xarray.html">
   <link rel="alternate" type="application/rss+xml" title="Earth and Environmental Data Science" href="http://earth-env-data-science.github.io//feed.xml">
 
-  <meta property="og:url"         content="http://earth-env-data-science.github.io//content/lectures/pandas/pandas_intro.html" />
+  <meta property="og:url"         content="http://earth-env-data-science.github.io//assignments/basic_xarray.html" />
 <meta property="og:type"        content="article" />
-<meta property="og:title"       content="Pandas" />
-<meta property="og:description" content="An introduction to Earth and Environmental Data Science with Python." />
+<meta property="og:title"       content="Assignment: Xarray Fundamentals with Earth Radiation Data" />
+<meta property="og:description" content="Assignment 7 : Xarray" />
 <meta property="og:image"       content="" />
 
 
@@ -25,15 +25,15 @@
   "@context": "http://schema.org",
   "@type": "NewsArticle",
   "mainEntityOfPage":
-    "http://earth-env-data-science.github.io//content/lectures/pandas/pandas_intro.html",
+    "http://earth-env-data-science.github.io//assignments/basic_xarray.html",
   "headline":
-    "Pandas",
+    "Assignment: Xarray Fundamentals with Earth Radiation Data",
   "datePublished":
     "2019-10-15T13:42:19+00:00",
   "dateModified":
     "2019-10-15T13:42:19+00:00",
   "description":
-    "An introduction to Earth and Environmental Data Science with Python.",
+    "Assignment 7 : Xarray",
   "author": {
     "@type": "Person",
     "name": "Ryan Abernathey"
@@ -579,7 +579,7 @@ initFunction(initQuery);
       
       
       <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry c-sidebar__entry--active"
+        <a class="c-sidebar__entry "
           href="/intro.html"
         >
           
@@ -949,7 +949,7 @@ initFunction(initQuery);
       
       
       <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry c-sidebar__entry--active"
+        <a class="c-sidebar__entry "
           href="/lectures/pandas/pandas_intro.html"
         >
           
@@ -1103,7 +1103,7 @@ initFunction(initQuery);
               
 
               <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
+                <a class="c-sidebar__entry c-sidebar__entry--active"
                   href="/assignments/basic_xarray.html"
                 >
                   
@@ -1190,46 +1190,133 @@ initFunction(initQuery);
 </div>
 
             
+<div class="buttons">
+<a href="/content/assignments/basic_xarray.ipynb" download>
+<button id="interact-button-download" class="interact-button">Download</button>
+</a>
+
+
+
+
+
+
+
+
+
+
+<a href="https://ocean.pangeo.io/hub/user-redirect/git-pull?repo=https://github.com//earth-env-data-science/earth-env-data-science-book&amp;branch=master&amp;subPath=content%2Fassignments%2Fbasic_xarray.ipynb&amp;app=lab"><button class="interact-button" id="interact-button-jupyterhub"><img class="interact-button-logo" src="/assets/images/logo_jupyterhub.svg" alt="Interact" />ocean.pangeo.io</button></a>
+
+
+
+</div>
+
 
             <div class="c-textbook__content">
-              <h1 id="pandas">Pandas</h1>
+              <h1 id="assignment-7--xarray">Assignment 7 : Xarray</h1>
 
-<p><a href="http://pandas.pydata.org/">Pandas</a> is a an open source library providing high-performance, easy-to-use data structures and data analysis tools. Pandas is particularly suited to the analysis of <em>tabular</em> data, i.e. data that can can go into a table. In other words, if you can imagine the data in an Excel spreadsheet, then Pandas is the tool for the job.</p>
+<p>In this assignment, we will use Xarray to analyze top-of-atmosphere radiation data from <a href="https://eosweb.larc.nasa.gov/project/ceres/ceres_table">NASA’s CERES project</a>.</p>
 
-<p>A <a href="https://stackoverflow.blog/2017/09/06/incredible-growth-python/">recent analysis</a> of questions from Stack Overflow showed that python is the fastest growing and most widely used programming language in the world (in developed countries).</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/b/bb/The-NASA-Earth%27s-Energy-Budget-Poster-Radiant-Energy-System-satellite-infrared-radiation-fluxes.jpg" alt="radiation budget" />
+<em>Public domain, by NASA, from Wikimedia Commons</em></p>
 
-<p><img src="https://zgab33vy595fw5zq-zippykid.netdna-ssl.com/wp-content/uploads/2017/09/growth_major_languages-1-1024x878.png" alt="python growth" /></p>
+<p>I have pre-downloaded and subsetted a portion of this dataset for use in our class. You can download it here:
+http://ldeo.columbia.edu/~rpa/CERES_EBAF-TOA_Edition4.0_200003-201701.condensed.nc. The size of the data file is 702.53 MB. It will take a minute or two to download.</p>
 
-<p>A <a href="https://stackoverflow.blog/2017/09/14/python-growing-quickly/">follow-up analysis</a> showed that this growth is driven by the data science packages such as numpy, matplotlib, and especially pandas.</p>
+<p>Considering reviewing the <a href="https://eosweb.larc.nasa.gov/faq-page/ceres-faq#t67n120">FAQs</a> for this dataset before getting started.</p>
 
-<p><img src="https://zgab33vy595fw5zq-zippykid.netdna-ssl.com/wp-content/uploads/2017/09/related_tags_over_time-1-1024x1024.png" alt="pandas growth" /></p>
+<p>Start by importing xarray, numpy, and matplotlib</p>
 
-<p>The exponential growth of pandas is due to the fact that it <em>just works</em>. It saves you time and helps you do science more efficiently and effictively.</p>
+<h2 id="11-open-the-dataset-and-display-its-contents">1.1) Open the dataset and display its contents</h2>
 
-<h2 id="pandas-capabilities-from-the-pandas-website">Pandas capabilities (from the Pandas website):</h2>
+<h2 id="12-print-out-the-long_name-attribute-of-each-variable">1.2) Print out the <code class="highlighter-rouge">long_name</code> attribute of each variable</h2>
 
-<ul>
-  <li>A fast and efficient DataFrame object for data manipulation with integrated indexing;</li>
-  <li>Tools for reading and writing data between in-memory data structures and different formats: CSV and text files, Microsoft Excel, SQL databases, and the fast HDF5 format;</li>
-  <li>Intelligent data alignment and integrated handling of missing data: gain automatic label-based alignment in computations and easily manipulate messy data into an orderly form;</li>
-  <li>Flexible reshaping and pivoting of data sets;</li>
-  <li>Intelligent label-based slicing, fancy indexing, and subsetting of large data sets;</li>
-  <li>Columns can be inserted and deleted from data structures for size mutability;</li>
-  <li>Aggregating or transforming data with a powerful group by engine allowing split-apply-combine operations on data sets;</li>
-  <li>High performance merging and joining of data sets;</li>
-  <li>Hierarchical axis indexing provides an intuitive way of working with high-dimensional data in a lower-dimensional data structure;</li>
-  <li>Time series-functionality: date range generation and frequency conversion, moving window statistics, moving window linear regressions, date shifting and lagging. Even create domain-specific time offsets and join time series without losing data;</li>
-  <li>Highly optimized for performance, with critical code paths written in Cython or C.</li>
-  <li>Python with pandas is in use in a wide variety of academic and commercial domains, including Finance, Neuroscience, Economics, Statistics, Advertising, Web Analytics, and more.</li>
-</ul>
+<h2 id="21-calculate-the-time-mean-of-the-entire-dataset">2.1) Calculate the time-mean of the entire dataset</h2>
 
-<p>In this lecture, we will go over the basic capabilities of Pandas. It is a very deep library, and you will need to dig into the <a href="http://pandas.pydata.org/pandas-docs/stable/">documentation</a> for more advanced usage.</p>
+<h2 id="22-from-this-make-a-2d-plot-of-the-the-time-mean-toa-longwave-shortwave-and-solar-radiation">2.2) From this, make a 2D plot of the the time-mean TOA longwave, shortwave, and solar radiation</h2>
+<p>(All-Sky conditions)</p>
 
-<p>Pandas was created by <a href="http://wesmckinney.com/">Wes McKinney</a>. Many of the examples here are drawn from Wes McKinney’s book <a href="http://shop.oreilly.com/product/0636920023784.do">Python for Data Analysis</a>, which includes a github repo of <a href="https://github.com/wesm/pydata-book">code samples</a>.</p>
+<p>Note the sign conventions on each variable.</p>
+
+<h2 id="23-add-up-the-three-variables-above-and-verify-visually-that-they-are-equivalent-to-the-toa-net-flux">2.3) Add up the three variables above and verify (visually) that they are equivalent to the TOA net flux</h2>
+
+<p>Again, you have to pay attention to and think about the sign conventions for each variable in order to get this to work.</p>
+
+<h2 id="31-calculate-the-global-mean-of-toa-net-radiation-directly-from-the-dataset">3.1) Calculate the global mean of TOA net radiation directly from the dataset</h2>
+
+<p>Since the Earth is approximately in radiative balance, the net TOA radiation should be zero. But taking the naive mean from this dataset, you should find a number far from zero. Why?</p>
+
+<p>The answer is that each “pixel” or “grid point” of this dataset does not represent an equal area of Earth’s surface. So naively taking the mean, i.e. giving equal weight to each point, gives the wrong answer.</p>
+
+<p>On a lat / lon grid, the relative area of each grid point is proportional to $\cos(\lambda)$. ($\lambda$ is latitude)</p>
+
+<h2 id="32-create-a-weight-array-proportional-to-coslambda-with-a-mean-value-of-1">3.2) Create a <code class="highlighter-rouge">weight</code> array proportional to $\cos(\lambda)$ with a mean value of 1</h2>
+
+<p>Verify its mean is 1 and plot it. Be careful about radians vs. degrees.</p>
+
+<h2 id="33-redo-your-global-mean-toa-net-radiation-calculation-with-this-weight-factor">3.3) Redo your global mean TOA net radiation calculation with this weight factor</h2>
+
+<p>Remember Xarray’s <a href="http://xarray.pydata.org/en/stable/computation.html#broadcasting-by-dimension-name">handling of broadcasting</a>. Don’t make this harder than it needs to be.</p>
+
+<p>This time around, you should have found something much closer to zero. Ask a climate scientist what the net energy imbalance of Earth due to global warming is estimate to be. Do you think our calculation is precise enough to detect this?</p>
+
+<h2 id="34-now-that-you-have-a-weight-factor-verify-that-the-toa-incoming-solar-outgoing-longwave-and-outgoing-shortwave-approximately-match-up-with-the-cartoon-above">3.4) Now that you have a <code class="highlighter-rouge">weight</code> factor, verify that the TOA incoming solar, outgoing longwave, and outgoing shortwave approximately match up with the cartoon above</h2>
+
+<p>We can go beyond a weight factor and actually calculate the area of each pixel of the dataset, using the formula</p>
+
+<script type="math/tex; mode=display">dA = R^2 \cos(\lambda) d\lambda d \varphi</script>
+
+<p>where $d\lambda$ and $d\varphi$ are the spacing of the points in latitude and longitude (measured in radians). We can approximate Earth’s radius as $R = 6,371$ km.</p>
+
+<h2 id="41-calculate-the-pixel-area-using-this-formula-and-create-a-2d-lon-lat-dataarray-for-it">4.1) calculate the pixel area using this formula and create a 2D (lon, lat) DataArray for it</h2>
+
+<p>(Xarray’s <code class="highlighter-rouge">ones_like</code> function can help you easily create and broadcast DataArrays.) Verify that the sum of all the pixels equals the Earth’s true surface area as evaluated using the formula for the area of a sphere (yes, I know the Earth is not a sphere…it’s just a homework problem).</p>
+
+<p>Multiplying the pixel area from above with the radiative flux gives you the total amount of radiation absorbed in each pixel</p>
+
+<h2 id="42-calculate-and-plot-the-total-amount-of-net-radiation-in-each-1-degree-latitude-band">4.2) Calculate and plot the total amount of net radiation in each 1-degree latitude band</h2>
+
+<p>Label with correct units</p>
+
+<h2 id="43-plot-the-cumulatuve-sum-in-latitude-of-that-quantity">4.3) Plot the cumulatuve sum in latitude of that quantity</h2>
+
+<p>Label with correct units. (Hint: check out xarray’s <a href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.cumsum.html">cumsum</a> function.)</p>
+
+<p>This curve tells you how much energy must be transported meridionally by the ocean and atmosphere in order to account for the radiative imbalance at the top of the atmosphere.</p>
+
+<p>You should get a curve tht looks something like this</p>
+
+<p><img src="http://www.cgd.ucar.edu/cas/papers/jclim2001a/Fig7.gif" alt="meridional energy transport" /></p>
+
+<h2 id="51-plot-the-time-mean-cloud-area-fraction-day-and-night">5.1) Plot the time-mean cloud area fraction (day and night)</h2>
+
+<h2 id="52-define-boolean-masks-for-low-cloud-area-le-25-and-high-cloud-area-ge-75">5.2) Define boolean masks for low cloud area ($\le$ 25%) and high cloud area ($\ge$ 75%)</h2>
+
+<p>Use the whole dataset, not the time mean.</p>
+
+<h2 id="53-calculate-and-plot-composites-of-time-mean-outgoing-shortwave-and-longwave-radiation-for-low-and-high-cloud-area-regions">5.3) Calculate and plot composites of time-mean outgoing shortwave and longwave radiation for low and high cloud area regions</h2>
+
+<p>Your results should be 2D maps.</p>
+
+<p>Xarray’s <a href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.where.html">where</a> function will be helpful.</p>
+
+<h2 id="54-using-the-weight-factor-from-32-calculate-the-global-mean-values-of-shortwave-and-longwave-radiation-composited-in-high-and-low-cloud-regions">5.4) Using the <code class="highlighter-rouge">weight</code> factor from 3.2, calculate the global mean values of shortwave and longwave radiation, composited in high and low cloud regions</h2>
+
+<p>What is the overall effect of clouds on shortwave and longwave radiation?</p>
+
 
               <nav class="c-page__nav">
   
+    
+    <a id="js-page__nav__prev" class="c-page__nav__prev" href="/lectures/xarray/xarray.html">
+      〈 <span class="u-margin-right-tiny"></span> Xarray Fundamentals
+    </a>
+  
 
+  
+    
+    <a id="js-page__nav__next" class="c-page__nav__next" href="/lectures/xarray/xarray-part2.html">
+      Intermediate Xarray <span class="u-margin-right-tiny"></span> 〉
+    </a>
   
 </nav>
 
