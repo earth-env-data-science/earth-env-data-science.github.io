@@ -7,16 +7,16 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width,minimum-scale=1">
 
-  <title>Pandas for Tabular Data</title>
-  <meta name="description" content="Pandas">
+  <title>Assignment: Xarray Groupby and SST Data</title>
+  <meta name="description" content="Assignment: Xarray Groupby">
 
-  <link rel="canonical" href="http://earth-env-data-science.github.io//lectures/pandas/pandas_intro.html">
+  <link rel="canonical" href="http://earth-env-data-science.github.io//assignments/xarray_groupby.html">
   <link rel="alternate" type="application/rss+xml" title="Earth and Environmental Data Science" href="http://earth-env-data-science.github.io//feed.xml">
 
-  <meta property="og:url"         content="http://earth-env-data-science.github.io//lectures/pandas/pandas_intro.html" />
+  <meta property="og:url"         content="http://earth-env-data-science.github.io//assignments/xarray_groupby.html" />
 <meta property="og:type"        content="article" />
-<meta property="og:title"       content="Pandas for Tabular Data" />
-<meta property="og:description" content="Pandas" />
+<meta property="og:title"       content="Assignment: Xarray Groupby and SST Data" />
+<meta property="og:description" content="Assignment: Xarray Groupby" />
 <meta property="og:image"       content="" />
 
 
@@ -25,15 +25,15 @@
   "@context": "http://schema.org",
   "@type": "NewsArticle",
   "mainEntityOfPage":
-    "http://earth-env-data-science.github.io//lectures/pandas/pandas_intro.html",
+    "http://earth-env-data-science.github.io//assignments/xarray_groupby.html",
   "headline":
-    "Pandas for Tabular Data",
+    "Assignment: Xarray Groupby and SST Data",
   "datePublished":
     "2019-10-22T16:07:51+00:00",
   "dateModified":
     "2019-10-22T16:07:51+00:00",
   "description":
-    "Pandas",
+    "Assignment: Xarray Groupby",
   "author": {
     "@type": "Person",
     "name": "Ryan Abernathey"
@@ -579,7 +579,7 @@ initFunction(initQuery);
       
       
       <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry c-sidebar__entry--active"
+        <a class="c-sidebar__entry "
           href="/intro.html"
         >
           
@@ -949,7 +949,7 @@ initFunction(initQuery);
       
       
       <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry c-sidebar__entry--active"
+        <a class="c-sidebar__entry "
           href="/lectures/pandas/pandas_intro.html"
         >
           
@@ -1141,7 +1141,7 @@ initFunction(initQuery);
               
 
               <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
+                <a class="c-sidebar__entry c-sidebar__entry--active"
                   href="/assignments/xarray_groupby.html"
                 >
                   
@@ -1209,55 +1209,108 @@ initFunction(initQuery);
 </div>
 
             
+<div class="buttons">
+<a href="/content/assignments/xarray_groupby.ipynb" download>
+<button id="interact-button-download" class="interact-button">Download</button>
+</a>
+
+
+
+
+
+
+
+
+
+
+<a href="https://ocean.pangeo.io/hub/user-redirect/git-pull?repo=https://github.com//earth-env-data-science/earth-env-data-science-book&amp;branch=master&amp;subPath=content%2Fassignments%2Fxarray_groupby.ipynb&amp;app=lab"><button class="interact-button" id="interact-button-jupyterhub"><img class="interact-button-logo" src="/assets/images/logo_jupyterhub.svg" alt="Interact" />ocean.pangeo.io</button></a>
+
+
+
+</div>
+
 
             <div class="c-textbook__content">
-              <h1 id="pandas">Pandas</h1>
+              <h1 id="assignment-xarray-groupby">Assignment: Xarray Groupby</h1>
 
-<p><a href="http://pandas.pydata.org/">Pandas</a> is a an open source library providing high-performance, easy-to-use data structures and data analysis tools. Pandas is particularly suited to the analysis of <em>tabular</em> data, i.e. data that can can go into a table. In other words, if you can imagine the data in an Excel spreadsheet, then Pandas is the tool for the job.</p>
+<p>Here will will calculate the NINO 3.4 index of El Nino variabillity and use it to analyze datasets.</p>
 
-<p>A <a href="https://stackoverflow.blog/2017/09/06/incredible-growth-python/">recent analysis</a> of questions from Stack Overflow showed that python is the fastest growing and most widely used programming language in the world (in developed countries).</p>
-
-<p><img src="https://zgab33vy595fw5zq-zippykid.netdna-ssl.com/wp-content/uploads/2017/09/growth_major_languages-1-1024x878.png" alt="python growth" /></p>
-
-<p>A <a href="https://stackoverflow.blog/2017/09/14/python-growing-quickly/">follow-up analysis</a> showed that this growth is driven by the data science packages such as numpy, matplotlib, and especially pandas.</p>
-
-<p><img src="https://zgab33vy595fw5zq-zippykid.netdna-ssl.com/wp-content/uploads/2017/09/related_tags_over_time-1-1024x1024.png" alt="pandas growth" /></p>
-
-<p>The exponential growth of pandas is due to the fact that it <em>just works</em>. It saves you time and helps you do science more efficiently and effictively.</p>
-
-<h2 id="pandas-capabilities-from-the-pandas-website">Pandas capabilities (from the Pandas website):</h2>
+<p>First read <a href="https://www.ncdc.noaa.gov/teleconnections/enso/indicators/sst">this page from NOAA</a>. It tells you the following.</p>
 
 <ul>
-  <li>A fast and efficient DataFrame object for data manipulation with integrated indexing;</li>
-  <li>Tools for reading and writing data between in-memory data structures and different formats: CSV and text files, Microsoft Excel, SQL databases, and the fast HDF5 format;</li>
-  <li>Intelligent data alignment and integrated handling of missing data: gain automatic label-based alignment in computations and easily manipulate messy data into an orderly form;</li>
-  <li>Flexible reshaping and pivoting of data sets;</li>
-  <li>Intelligent label-based slicing, fancy indexing, and subsetting of large data sets;</li>
-  <li>Columns can be inserted and deleted from data structures for size mutability;</li>
-  <li>Aggregating or transforming data with a powerful group by engine allowing split-apply-combine operations on data sets;</li>
-  <li>High performance merging and joining of data sets;</li>
-  <li>Hierarchical axis indexing provides an intuitive way of working with high-dimensional data in a lower-dimensional data structure;</li>
-  <li>Time series-functionality: date range generation and frequency conversion, moving window statistics, moving window linear regressions, date shifting and lagging. Even create domain-specific time offsets and join time series without losing data;</li>
-  <li>Highly optimized for performance, with critical code paths written in Cython or C.</li>
-  <li>Python with pandas is in use in a wide variety of academic and commercial domains, including Finance, Neuroscience, Economics, Statistics, Advertising, Web Analytics, and more.</li>
+  <li>The Nino 3.4 region is defined as the region between +/- 5 deg. lat, 170 W - 120 W lon.</li>
+  <li>Warm or cold phases of the Oceanic Nino Index are defined by a five consecutive 3-month running mean of sea surface temperature (SST) anomalies in the Niño 3.4 region that is above (below) the threshold of +0.5°C (-0.5°C). This is known as the Oceanic Niño Index (ONI).</li>
 </ul>
 
-<p>In this lecture, we will go over the basic capabilities of Pandas. It is a very deep library, and you will need to dig into the <a href="http://pandas.pydata.org/pandas-docs/stable/">documentation</a> for more advanced usage.</p>
+<p>(Note that “anomaly” means that the seasonal cycle is removed.)</p>
 
-<p>Pandas was created by <a href="http://wesmckinney.com/">Wes McKinney</a>. Many of the examples here are drawn from Wes McKinney’s book <a href="http://shop.oreilly.com/product/0636920023784.do">Python for Data Analysis</a>, which includes a github repo of <a href="https://github.com/wesm/pydata-book">code samples</a>.</p>
+<h3 id="1-reproduce-the-sst-curve-from-the-figure-below">1. Reproduce the SST curve from the figure below</h3>
+
+<p>Use the NOAA ERSST v5 data  we worked with in class. (The OPeNDAP url is &lt;’http://www.esrl.noaa.gov/psd/thredds/dodsC/Datasets/noaa.ersst.v5/sst.mnmean.nc’&gt;.)</p>
+
+<p>You don’t have to match the stylistic details, just the “3mth running mean” curve.</p>
+
+<p><img src="https://www.ncdc.noaa.gov/monitoring-content/teleconnections/eln-f-pg.gif" alt="enso" /></p>
+
+<h3 id="2-calculate-boolean-timeseries-representing-the-positive--negative-enso-phases">2. Calculate boolean timeseries representing the positive / negative enso phases</h3>
+
+<p>Plot them somehow.</p>
+
+<h3 id="3-plot-composites-of-sst-anomaly-for-the-positive-and-negative-enso-regimes">3. Plot composites of SST anomaly for the positive and negative ENSO regimes</h3>
+
+<p>Now load the following dataset of precipitation.</p>
+
+<p>I have given you the code to fix a broken date variable.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="n">xr</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s">'http://iridl.ldeo.columbia.edu/SOURCES/.NASA/.GPCP/.V2p1/.multi-satellite/.prcp/dods'</span>
+<span class="n">dsp</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">decode_times</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="c"># fix IRIDL metadata that does not conform to standards</span>
+<span class="n">dsp</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">'calendar'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'360_day'</span>
+<span class="n">dsp</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">decode_cf</span><span class="p">(</span><span class="n">dsp</span><span class="p">)</span>
+<span class="n">dsp</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;xarray.Dataset&gt;
+Dimensions:  (T: 362, X: 144, Y: 72)
+Coordinates:
+  * Y        (Y) float32 88.75 86.25 83.75 81.25 ... -81.25 -83.75 -86.25 -88.75
+  * X        (X) float32 1.25 3.75 6.25 8.75 ... 351.25 353.75 356.25 358.75
+  * T        (T) object 1979-01-16 00:00:00 ... 2009-02-16 00:00:00
+Data variables:
+    prcp     (T, Y, X) float32 ...
+Attributes:
+    Conventions:  IRIDL
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+</div>
+
+<h3 id="4-calculate-the-composite-of-preciptiation-for-positive-and-negative-enso-phases">4. Calculate the composite of preciptiation for positive and negative ENSO phases.</h3>
+
+<p>Plot the <em>difference</em> between these two fields. How does precipitation change when ENSO is positive vs. negative?</p>
+
 
               <nav class="c-page__nav">
   
     
-    <a id="js-page__nav__prev" class="c-page__nav__prev" href="/assignments/more_matplotlib.html">
-      〈 <span class="u-margin-right-tiny"></span> Assignment: More Matplotlib
+    <a id="js-page__nav__prev" class="c-page__nav__prev" href="/lectures/xarray/xarray-part2.html">
+      〈 <span class="u-margin-right-tiny"></span> Intermediate Xarray
     </a>
   
 
   
     
-    <a id="js-page__nav__next" class="c-page__nav__next" href="/lectures/pandas/basic_pandas.html">
-      Pandas Fundamentals <span class="u-margin-right-tiny"></span> 〉
+    <a id="js-page__nav__next" class="c-page__nav__next" href="/lectures/xarray/xarray_tips_and_tricks.html">
+      Xarray Tips And Tricks <span class="u-margin-right-tiny"></span> 〉
     </a>
   
 </nav>
