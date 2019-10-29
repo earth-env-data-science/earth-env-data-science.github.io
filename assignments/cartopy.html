@@ -29,9 +29,9 @@
   "headline":
     "Assignment: Maps with Cartopy",
   "datePublished":
-    "2019-10-29T13:57:22+00:00",
+    "2019-10-29T16:32:34+00:00",
   "dateModified":
-    "2019-10-29T13:57:22+00:00",
+    "2019-10-29T16:32:34+00:00",
   "description":
     "Assignment: Making Maps with Cartopy",
   "author": {
@@ -1293,7 +1293,7 @@ initFunction(initQuery);
 
 <h3 id="1-plot-data-from-narr">1) Plot data from NARR</h3>
 
-<p>NARR is NCEP’s <a href="https://www.esrl.noaa.gov/psd/data/gridded/data.narr.html">North American Regional Reanalysis</a>, a widely used product for studying the weather and climate of the continental US. The data is available from NOAA’s <a href="https://www.esrl.noaa.gov/">Earth System Research Laboratory</a> via <a href="https://en.wikipedia.org/wiki/OPeNDAP">OPeNDAP</a>, meaing that xarray can opent the data “remotely” without downloading a file.</p>
+<p>NARR is NCEP’s <a href="https://www.esrl.noaa.gov/psd/data/gridded/data.narr.html">North American Regional Reanalysis</a>, a widely used product for studying the weather and climate of the continental US. The data is available from NOAA’s <a href="https://www.esrl.noaa.gov/">Earth System Research Laboratory</a> via <a href="https://en.wikipedia.org/wiki/OPeNDAP">OPeNDAP</a>, meaing that xarray can open the data “remotely” without downloading a file.</p>
 
 <p>For this problem, you should open this geopential height file:</p>
 
@@ -1309,18 +1309,18 @@ initFunction(initQuery);
 
 <p><em>Hint: examine the dataset variables and attirbutes carefully in order to determine the projection of the data.</em></p>
 
+<p><img src="cartopy_figures/narr_map.png" alt="narr_map" /></p>
+
 <h3 id="2-antarctic-sea-ice">2) Antarctic Sea Ice</h3>
 
 <p>Download this file and then use it to plot the concentration of Antarctic Sea Ice on Aug. 7, 2017. Again, you will need to explore the file contents in order to determine the correct projection.</p>
 
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">!</span> <span class="n">wget</span> <span class="n">ftp</span><span class="p">:</span><span class="o">//</span><span class="n">sidads</span><span class="o">.</span><span class="n">colorado</span><span class="o">.</span><span class="n">edu</span><span class="o">/</span><span class="n">pub</span><span class="o">/</span><span class="n">DATASETS</span><span class="o">/</span><span class="n">NOAA</span><span class="o">/</span><span class="n">G02202_V3</span><span class="o">/</span><span class="n">south</span><span class="o">/</span><span class="n">daily</span><span class="o">/</span><span class="mi">2017</span><span class="o">/</span><span class="n">seaice_conc_daily_sh_f17_20170807_v03r01</span><span class="o">.</span><span class="n">nc</span>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ftp://sidads.colorado.edu/pub/DATASETS/NOAA/G02202_V3/south/daily/2017/seaice_conc_daily_sh_f17_20170807_v03r01.nc
+</code></pre></div></div>
 
-</code></pre></div>    </div>
-  </div>
+<p>You’ll have to download this one with <code class="highlighter-rouge">wget</code>.</p>
 
-</div>
+<p><img src="cartopy_figures/sea_ice_map.png" alt="sea_ice_map" /></p>
 
 <h3 id="3-global-usgs-earthquakes">3) Global USGS Earthquakes</h3>
 
@@ -1330,6 +1330,8 @@ initFunction(initQuery);
 </code></pre></div></div>
 
 <p>and use the data to recreate this map.</p>
+
+<p><img src="cartopy_figures/earthquake_map.png" alt="earthquake_map" /></p>
 
 
               <nav class="c-page__nav">
