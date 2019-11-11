@@ -1,0 +1,2580 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,minimum-scale=1">
+
+  <title>Working with output from general circulation models using xesmf and xgcm</title>
+  <meta name="description" content="Working with output from general circulation models using xesmf and xgcm">
+
+  <link rel="canonical" href="http://earth-env-data-science.github.io//lectures/working_with_gcm_data.html">
+  <link rel="alternate" type="application/rss+xml" title="Earth and Environmental Data Science" href="http://earth-env-data-science.github.io//feed.xml">
+
+  <meta property="og:url"         content="http://earth-env-data-science.github.io//lectures/working_with_gcm_data.html" />
+<meta property="og:type"        content="article" />
+<meta property="og:title"       content="Working with output from general circulation models using xesmf and xgcm" />
+<meta property="og:description" content="Working with output from general circulation models using xesmf and xgcm" />
+<meta property="og:image"       content="" />
+
+
+  <script type="application/ld+json">
+  {
+  "@context": "http://schema.org",
+  "@type": "NewsArticle",
+  "mainEntityOfPage":
+    "http://earth-env-data-science.github.io//lectures/working_with_gcm_data.html",
+  "headline":
+    "Working with output from general circulation models using xesmf and xgcm",
+  "datePublished":
+    "2019-11-11T20:45:00+00:00",
+  "dateModified":
+    "2019-11-11T20:45:00+00:00",
+  "description":
+    "Working with output from general circulation models using xesmf and xgcm",
+  "author": {
+    "@type": "Person",
+    "name": "Ryan Abernathey"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Data 100 at UC Berkeley",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://earth-env-data-science.github.io/",
+      "width": 60,
+      "height": 60
+    }
+  },
+  "image": {
+    "@type": "ImageObject",
+    "url": "http://earth-env-data-science.github.io/",
+    "height": 60,
+    "width": 60
+  }
+}
+
+  </script>
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css ">
+  <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+
+  <!-- <link rel="manifest" href="/manifest.json"> -->
+  <!-- <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#efae0a"> -->
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+  <meta name="theme-color" content="#233947">
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="image/x-icon" href="/images/logo/favicon.ico">
+
+  <!-- MathJax Config -->
+  <!-- Allow inline math using $ and automatically break long math lines -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true,
+        processEnvironments: true
+    },
+    CommonHTML: {
+        linebreaks: {
+            automatic: true,
+        },
+    },
+});
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_CHTML' async></script>
+
+  <!-- DOM updating function -->
+  <script>
+const runWhenDOMLoaded = cb => {
+  if (document.readyState != 'loading') {
+    cb()
+  } else if (document.addEventListener) {
+    document.addEventListener('DOMContentLoaded', cb)
+  } else {
+    document.attachEvent('onreadystatechange', function() {
+      if (document.readyState == 'complete') cb()
+    })
+  }
+}
+
+// Helper function to init things quickly
+initFunction = function(myfunc) {
+  runWhenDOMLoaded(myfunc);
+  document.addEventListener('turbolinks:load', myfunc);
+};
+</script>
+
+  <!-- Define some javascript variables that will be useful in other javascript -->
+  <script>
+    const site_basename = '/';
+  </script>
+
+  <!-- Add AnchorJS to let headers be linked -->
+  <script src="/assets/js/anchor.min.js"  type="text/javascript"></script>
+  <script>
+
+initFunction(function () {
+    anchors.add("main h1, main h2, main h3, main h4")
+});
+
+</script>
+
+  <!-- Include Turbolinks to make page loads fast -->
+  <!-- https://github.com/turbolinks/turbolinks -->
+  <script src="/assets/js/turbolinks.js" async></script>
+  <meta name="turbolinks-cache-control" content="no-cache">
+
+  <!-- Load nbinteract for widgets -->
+  
+
+  <!-- Load Thebelab for interactive widgets -->
+  <!-- Include Thebelab for interactive code if it's enabled -->
+
+
+
+  <!-- Load the auto-generating TOC -->
+  <script src="/assets/js/tocbot.min.js"  type="text/javascript"></script>
+  <script>
+var initToc = function () {
+  tocbot.init({
+    tocSelector: 'nav.onthispage',
+    contentSelector: '.c-textbook__content',
+    headingSelector: 'h2, h3',
+    orderedList: false,
+    collapseDepth: 6,
+    listClass: 'toc__menu',
+    activeListItemClass: "",  // Not using
+    activeLinkClass: "", // Not using
+  });
+  tocbot.refresh();
+}
+initFunction(initToc);
+</script>
+
+  <!-- Google analytics -->
+  <script src="/assets/js/ga.js" async></script>
+
+  <!-- Clipboard copy button -->
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" async></script>
+
+  <!-- Load JS that depends on site variables -->
+  <script>
+/**
+ * Set up copy/paste for code blocks
+ */
+const codeCellId = index => `codecell${index}`
+
+const clipboardButton = id =>
+  `<a id="copy-button-${id}" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#${id}">
+    <img src="/assets/images/copy-button.svg" alt="Copy to clipboard">
+  </a>`
+
+// Clears selected text since ClipboardJS will select the text when copying
+const clearSelection = () => {
+  if (window.getSelection) {
+    window.getSelection().removeAllRanges()
+  } else if (document.selection) {
+    document.selection.empty()
+  }
+}
+
+// Changes tooltip text for two seconds, then changes it back
+const temporarilyChangeTooltip = (el, newText) => {
+  const oldText = el.getAttribute('data-tooltip')
+  el.setAttribute('data-tooltip', newText)
+  setTimeout(() => el.setAttribute('data-tooltip', oldText), 2000)
+}
+
+const addCopyButtonToCodeCells = () => {
+  // If ClipboardJS hasn't loaded, wait a bit and try again. This
+  // happens because we load ClipboardJS asynchronously.
+  if (window.ClipboardJS === undefined) {
+    setTimeout(addCopyButtonToCodeCells, 250)
+    return
+  }
+
+  const codeCells = document.querySelectorAll('div.c-textbook__content > div.highlighter-rouge > div.highlight > pre, div.input_area pre')
+  codeCells.forEach((codeCell, index) => {
+    const id = codeCellId(index)
+    codeCell.setAttribute('id', id)
+    if (document.getElementById("copy-button" + id) == null) {
+      codeCell.insertAdjacentHTML('afterend', clipboardButton(id));
+    }
+  })
+
+  const clipboard = new ClipboardJS('.copybtn')
+  clipboard.on('success', event => {
+    clearSelection()
+    temporarilyChangeTooltip(event.trigger, 'Copied!')
+  })
+
+  clipboard.on('error', event => {
+    temporarilyChangeTooltip(event.trigger, 'Failed to copy')
+  })
+
+  // Get rid of clipboard before the next page visit to avoid memory leak
+  document.addEventListener('turbolinks:before-visit', () =>
+    clipboard.destroy()
+  )
+}
+
+initFunction(addCopyButtonToCodeCells);
+</script>
+
+
+  <!-- Hide cell code -->
+  <script>
+    /**
+    Add buttons to hide code cells
+    */
+
+
+    var setCodeCellVisibility = function (inputField, kind) {
+        // Update the image and class for hidden
+        var id = inputField.getAttribute('data-id');
+        var codeCell = document.querySelector(`#${id} div.highlight`);
+
+        if (kind === "visible") {
+            codeCell.classList.remove('hidden');
+            inputField.checked = true;
+        } else {
+            codeCell.classList.add('hidden');
+            inputField.checked = false;
+        }
+    }
+
+    var toggleCodeCellVisibility = function (event) {
+        // The label is clicked, and now we decide what to do based on the input field's clicked status
+        if (event.target.tagName === "LABEL") {
+            var inputField = event.target.previousElementSibling;
+        } else {
+            // It is the span inside the target
+            var inputField = event.target.parentElement.previousElementSibling;
+        }
+
+        if (inputField.checked === true) {
+            setCodeCellVisibility(inputField, "visible");
+        } else {
+            setCodeCellVisibility(inputField, "hidden");
+        }
+    }
+
+
+    // Button constructor
+    const hideCodeButton = id => `<input class="hidebtn" type="checkbox" id="hidebtn${id}" data-id="${id}"><label title="Toggle cell" for="hidebtn${id}" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label>`
+
+    var addHideButton = function () {
+        // If a hide button is already added, don't add another
+        if (document.querySelector('div.hidecode input') !== null) {
+            return;
+        }
+
+        // Find the input cells and add a hide button
+        document.querySelectorAll('div.input_area').forEach(function (item, index) {
+            if (!item.classList.contains("hidecode")) {
+                // Skip the cell if it doesn't have a hidecode class
+                return;
+            }
+
+            const id = codeCellId(index)
+            item.setAttribute('id', id);
+            // Insert the button just inside the end of the next div
+            item.querySelector('div').insertAdjacentHTML('beforeend', hideCodeButton(id))
+
+            // Set up the visibility toggle
+            hideLink = document.querySelector(`#${id} div.highlight + input + label`);
+            hideLink.addEventListener('click', toggleCodeCellVisibility)
+        });
+    }
+
+
+    // Initialize the hide buttos
+    var initHiddenCells = function () {
+        // Add hide buttons to the cells
+        addHideButton();
+
+        // Toggle the code cells that should be hidden
+        document.querySelectorAll('div.hidecode input').forEach(function (item) {
+            setCodeCellVisibility(item, 'hidden');
+            item.checked = true;
+        })
+    }
+
+    initFunction(initHiddenCells);
+
+</script>
+
+  <!-- Load custom website scripts -->
+  <script src="/assets/js/scripts.js" async></script>
+
+  <!-- Load custom user CSS and JS  -->
+  <script src="/assets/custom/custom.js" async></script>
+  <link rel="stylesheet" href="/assets/custom/custom.css">
+
+  <!-- Update interact links w/ REST param, is defined in includes so we can use templates -->
+  
+<script>
+/**
+  * To auto-embed hub URLs in interact links if given in a RESTful fashion
+ */
+
+function getJsonFromUrl(url) {
+  var query = url.split('?');
+  if (query.length < 2) {
+    // No queries so just return false
+    return false;
+  }
+  query = query[1];
+  // Collect REST params into a dictionary
+  var result = {};
+  query.split("&").forEach(function(part) {
+    var item = part.split("=");
+    result[item[0]] = decodeURIComponent(item[1]);
+  });
+  return result;
+}
+    
+function dict2param(dict) {
+    params = Object.keys(dict).map(function(k) {
+        return encodeURIComponent(k) + '=' + encodeURIComponent(dict[k])
+    });
+    return params.join('&')
+}
+
+// Parse a Binder URL, converting it to the string needed for JupyterHub
+function binder2Jupyterhub(url) {
+  newUrl = {};
+  parts = url.split('v2/gh/')[1];
+  // Grab the base repo information
+  repoinfo = parts.split('?')[0];
+  var [org, repo, ref] = repoinfo.split('/');
+  newUrl['repo'] = ['https://github.com', org, repo].join('/');
+  newUrl['branch'] = ref
+  // Grab extra parameters passed
+  params = getJsonFromUrl(url);
+  if (params['filepath'] !== undefined) {
+    newUrl['subPath'] = params['filepath']
+  }
+  return dict2param(newUrl);
+}
+
+// Filter out potentially unsafe characters to prevent xss
+function safeUrl(url)
+{
+   return String(encodeURIComponent(url))
+            .replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+}
+
+function addParamToInternalLinks(hub) {
+  var links = document.querySelectorAll("a").forEach(function(link) {
+    var href = link.href;
+    // If the link is an internal link...
+    if (href.search("http://earth-env-data-science.github.io") !== -1 || href.startsWith('/') || href.search("127.0.0.1:") !== -1) {
+      // Assume we're an internal link, add the hub param to it
+      var params = getJsonFromUrl(href);
+      if (params !== false) {
+        // We have REST params, so append a new one
+        params['jupyterhub'] = hub;
+      } else {
+        // Create the REST params
+        params = {'jupyterhub': hub};
+      }
+      // Update the link
+      var newHref = href.split('?')[0] + '?' + dict2param(params);
+      link.setAttribute('href', decodeURIComponent(newHref));
+    }
+  });
+  return false;
+}
+
+
+// Update interact links
+function updateInteractLink() {
+    // hack to make this work since it expects a ? in the URL
+    rest = getJsonFromUrl("?" + location.search.substr(1));
+    jupyterHubUrl = rest['jupyterhub'];
+    var hubType = null;
+    var hubUrl = null;
+    if (jupyterHubUrl !== undefined) {
+      hubType = 'jupyterhub';
+      hubUrl = jupyterHubUrl;
+    }
+
+    if (hubType !== null) {
+      // Sanitize the hubUrl
+      hubUrl = safeUrl(hubUrl);
+
+      // Add HTTP text if omitted
+      if (hubUrl.indexOf('http') < 0) {hubUrl = 'http://' + hubUrl;}
+      var interactButtons = document.querySelectorAll("button.interact-button")
+      var lastButton = interactButtons[interactButtons.length-1];
+      var link = lastButton.parentElement;
+
+      // If we've already run this, skip the link updating
+      if (link.nextElementSibling !== null) {
+        return;
+      }
+
+      // Update the link and add context div
+      var href = link.getAttribute('href');
+      if (lastButton.id === 'interact-button-binder') {
+        // If binder links exist, we need to re-work them for jupyterhub
+        if (hubUrl.indexOf('http%3A%2F%2Flocalhost') > -1) {
+          // If localhost, assume we're working from a local Jupyter server and remove `/hub`
+          first = [hubUrl, 'git-sync'].join('/')
+        } else {
+          first = [hubUrl, 'hub', 'user-redirect', 'git-sync'].join('/')
+        }
+        href = first + '?' + binder2Jupyterhub(href);
+      } else {
+        // If interact button isn't binderhub, assume it's jupyterhub
+        // If JupyterHub links, we only need to replace the hub url
+        href = href.replace("https://ocean.pangeo.io", hubUrl);
+        if (hubUrl.indexOf('http%3A%2F%2Flocalhost') > -1) {
+          // Assume we're working from a local Jupyter server and remove `/hub`
+          href = href.replace("/hub/user-redirect", "");
+        }
+      }
+      link.setAttribute('href', decodeURIComponent(href));
+
+      // Add text after interact link saying where we're launching
+      hubUrlNoHttp = decodeURIComponent(hubUrl).replace('http://', '').replace('https://', '');
+      link.insertAdjacentHTML('afterend', '<div class="interact-context">on ' + hubUrlNoHttp + '</div>');
+
+      // Update internal links so we retain the hub url
+      addParamToInternalLinks(hubUrl);
+    }
+}
+
+runWhenDOMLoaded(updateInteractLink)
+document.addEventListener('turbolinks:load', updateInteractLink)
+</script>
+
+
+  <!-- Lunr search code - will only be executed on the /search page -->
+  <script src="/assets/js/lunr/lunr.min.js" type="text/javascript"></script>
+  <script>var initQuery = function() {
+  // See if we have a search box
+  var searchInput = document.querySelector('input#lunr_search');
+  if (searchInput === null) {
+    return;
+  }
+
+  // Function to parse our lunr cache
+  var idx = lunr(function () {
+    this.field('title')
+    this.field('excerpt')
+    this.field('categories')
+    this.field('tags')
+    this.ref('id')
+
+    this.pipeline.remove(lunr.trimmer)
+
+    for (var item in store) {
+      this.add({
+        title: store[item].title,
+        excerpt: store[item].excerpt,
+        categories: store[item].categories,
+        tags: store[item].tags,
+        id: item
+      })
+    }
+  });
+
+  // Run search upon keyup
+  searchInput.addEventListener('keyup', function () {
+    var resultdiv = document.querySelector('#results');
+    var query = document.querySelector("input#lunr_search").value.toLowerCase();
+    var result =
+      idx.query(function (q) {
+        query.split(lunr.tokenizer.separator).forEach(function (term) {
+          q.term(term, { boost: 100 })
+          if(query.lastIndexOf(" ") != query.length-1){
+            q.term(term, {  usePipeline: false, wildcard: lunr.Query.wildcard.TRAILING, boost: 10 })
+          }
+          if (term != ""){
+            q.term(term, {  usePipeline: false, editDistance: 1, boost: 1 })
+          }
+        })
+      });
+
+      // Empty the results div
+      while (resultdiv.firstChild) {
+        resultdiv.removeChild(resultdiv.firstChild);
+      }
+
+    resultdiv.insertAdjacentHTML('afterbegin', '<p class="results__found">'+result.length+' Result(s) found</p>');
+    for (var item in result) {
+      var ref = result[item].ref;
+      if(store[ref].teaser){
+        var searchitem =
+          '<div class="list__item">'+
+            '<article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">'+
+              '<h2 class="archive__item-title" itemprop="headline">'+
+                '<a href="'+store[ref].url+'" rel="permalink">'+store[ref].title+'</a>'+
+              '</h2>'+
+              '<div class="archive__item-teaser">'+
+                '<img src="'+store[ref].teaser+'" alt="">'+
+              '</div>'+
+              '<p class="archive__item-excerpt" itemprop="description">'+store[ref].excerpt.split(" ").splice(0,20).join(" ")+'...</p>'+
+            '</article>'+
+          '</div>';
+      }
+      else{
+    	  var searchitem =
+          '<div class="list__item">'+
+            '<article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">'+
+              '<h2 class="archive__item-title" itemprop="headline">'+
+                '<a href="'+store[ref].url+'" rel="permalink">'+store[ref].title+'</a>'+
+              '</h2>'+
+              '<p class="archive__item-excerpt" itemprop="description">'+store[ref].excerpt.split(" ").splice(0,20).join(" ")+'...</p>'+
+            '</article>'+
+          '</div>';
+      }
+      resultdiv.insertAdjacentHTML('beforeend', searchitem);
+    }
+  });
+};
+
+initFunction(initQuery);
+</script>
+</head>
+
+  <body>
+    <!-- .js-show-sidebar shows sidebar by default -->
+    <div id="js-textbook" class="c-textbook js-show-sidebar">
+      
+
+
+
+<nav id="js-sidebar" class="c-textbook__sidebar">
+  <a href="http://earth-env-data-science.github.io"><img src="/images/logo/eeds-logo.png" class="textbook_logo" id="sidebar-logo" data-turbolinks-permanent/></a>
+  <h2 class="c-sidebar__title">Earth and Environmental Data Science</h2>
+  <ul class="c-sidebar__chapters">
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/intro.html"
+        >
+          
+          Intro
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/LICENSE.html"
+        >
+          
+          License
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+        <li class="c-sidebar__divider"></li>
+        
+      
+      
+        <li><h2 class="c-sidebar__title">The Interactive Computing Environment</li>
+        
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/lectures/environment/intro_to_jupyterlab.html"
+        >
+          
+            1.
+          
+          Intro to JupyterLab
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/lectures/environment/intro_to_unix.html"
+        >
+          
+            2.
+          
+          Intro to Unix
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/lectures/environment/intro_to_git.html"
+        >
+          
+            3.
+          
+          Intro to Git
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections ">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/assignments/files_markdown_git.html"
+                >
+                  
+                    3.1
+                  
+                  Assignment: Files, Git, and Github
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/lectures/environment/python_environments.html"
+        >
+          
+            4.
+          
+          Managing Environments
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+        <li><h2 class="c-sidebar__title">The Core Python Language</li>
+        
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/lectures/core_python/python_fundamentals.html"
+        >
+          
+            5.
+          
+          Python Fundamentals
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/lectures/core_python/functions_classes.html"
+        >
+          
+            6.
+          
+          Functions and Classes
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections ">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/assignments/python_basics_and_functions.html"
+                >
+                  
+                    6.1
+                  
+                  Assignment: Python Basics and Functions
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/lectures/core_python/organization_and_packaging.html"
+        >
+          
+            7.
+          
+          Organization and Packaging of Python Projects
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+        <li><h2 class="c-sidebar__title">Scientific Python Fundamentals</li>
+        
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/lectures/basic_scipy/numpy_and_matplotlib.html"
+        >
+          
+            8.
+          
+          Numpy and Matplotlib
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections ">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/assignments/numpy_matplotlib.html"
+                >
+                  
+                    8.1
+                  
+                  Assignment: Basic Numpy and Matplotlib
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/lectures/basic_scipy/more_matplotlib.html"
+        >
+          
+            9.
+          
+          Advanced Matplotlib
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections ">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/assignments/more_matplotlib.html"
+                >
+                  
+                    9.1
+                  
+                  Assignment: More Matplotlib
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+        <li><h2 class="c-sidebar__title">High Level Data Analysis Frameworks</li>
+        
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/lectures/pandas/pandas_intro.html"
+        >
+          
+            10.
+          
+          Pandas for Tabular Data
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections ">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/lectures/pandas/basic_pandas.html"
+                >
+                  
+                    10.1
+                  
+                  Pandas Fundamentals
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/assignments/basic_pandas.html"
+                >
+                  
+                    10.2
+                  
+                  Assignment: Pandas Fundamentals with Earthquake Data
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/lectures/pandas/pandas_groupby.html"
+                >
+                  
+                    10.3
+                  
+                  The Split-Apply-Combine Workflow
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/assignments/pandas_groupby.html"
+                >
+                  
+                    10.4
+                  
+                  Assignment: Pandas Groupby with Hurrican Data
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/lectures/xarray/xarray_intro.html"
+        >
+          
+            11.
+          
+          Xarray for Multidimensional Data
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections ">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/lectures/xarray/xarray.html"
+                >
+                  
+                    11.1
+                  
+                  Xarray Fundamentals
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/assignments/basic_xarray.html"
+                >
+                  
+                    11.2
+                  
+                  Assignment: Xarray Fundamentals with Earth Radiation Data
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/lectures/xarray/xarray-part2.html"
+                >
+                  
+                    11.3
+                  
+                  Intermediate Xarray
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/assignments/xarray_groupby.html"
+                >
+                  
+                    11.4
+                  
+                  Assignment: Xarray Groupby and SST Data
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/lectures/xarray/xarray_tips_and_tricks.html"
+                >
+                  
+                    11.5
+                  
+                  Xarray Tips And Tricks
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+        <li><h2 class="c-sidebar__title">Geoscience Packages</li>
+        
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/lectures/mapping_cartopy.html"
+        >
+          
+            12.
+          
+          Making Maps with Cartopy
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections ">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/assignments/cartopy.html"
+                >
+                  
+                    12.1
+                  
+                  Assignment: Maps with Cartopy
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry c-sidebar__entry--active"
+          href="/lectures/working_with_gcm_data.html"
+        >
+          
+            13.
+          
+          Working with output from general circulation models using xesmf and xgcm
+        </a>
+
+        
+      </li>
+
+      
+    
+  </ul>
+  <p class="sidebar_footer">Powered by <a href="https://github.com/jupyter/jupyter-book">Jupyter Book</a></p>
+</nav>
+
+      
+      <!-- Empty sidebar placeholder that we'll auto-fill with javascript -->
+      <aside class="sidebar__right">
+          <header><h4 class="nav__title"><i class="fa fa-list"></i>   On this page</h4></header>
+          <nav class="onthispage">
+          </nav>
+      </aside>
+      
+      <main class="c-textbook__page" tabindex="-1">
+          <div class="o-wrapper">
+            <div class="c-sidebar-toggle">
+  <!-- We show the sidebar by default so we use .is-active -->
+  <button
+    id="js-sidebar-toggle"
+    class="hamburger hamburger--arrowalt is-active"
+  >
+    <span class="hamburger-box">
+      <span class="hamburger-inner"></span>
+    </span>
+    <span class="c-sidebar-toggle__label">Toggle Sidebar</span>
+  </button>
+</div>
+
+            
+<div class="buttons">
+<a href="/content/lectures/working_with_gcm_data.ipynb" download>
+<button id="interact-button-download" class="interact-button">Download</button>
+</a>
+
+
+
+
+
+
+
+
+
+
+<a href="https://ocean.pangeo.io/hub/user-redirect/git-pull?repo=https://github.com//earth-env-data-science/earth-env-data-science-book&amp;branch=master&amp;subPath=content%2Flectures%2Fworking_with_gcm_data.ipynb&amp;app=lab"><button class="interact-button" id="interact-button-jupyterhub"><img class="interact-button-logo" src="/assets/images/logo_jupyterhub.svg" alt="Interact" />ocean.pangeo.io</button></a>
+
+
+
+</div>
+
+
+            <div class="c-textbook__content">
+              <h1 id="working-with-output-from-general-circulation-models-using-xesmf-and-xgcm">Working with output from general circulation models using xesmf and xgcm</h1>
+
+<p>In this lecture, we will discuss some fundamental aspects and techniques to work with the output of general circulation models.</p>
+
+<h2 id="what-is-a-general-circulation-model">What is a general circulation model?</h2>
+
+<p>A general circulation model (GCM) is a computer model that simulates the circulation of a fluid (e.g., the ocean or atmosphere). The model is based on a set of partial differential equations, which describe the motion of a fluid in 3D space, and integrates these forward in time.  Most fundamentally, these models use a discrete representation of the <a href="https://en.wikipedia.org/wiki/Navier%E2%80%93Stokes_equations">Navier-Stokes Equations</a> but can include more equations to represent e.g., the thermodynamics, chemistry or biology of the coupled earth system.</p>
+
+<h3 id="the-globe-divided-into-boxes">The globe divided into boxes</h3>
+<p>Since there is no analytical solution to the full Navier-Stokes equation, modern GCMs solve them using numerical methods. They use a discretized version of the equations, which approximates them within a finite volume, or grid-cell. Each GCM splits the ocean or atmosphere into many cells, both in the horizontal and vertical.</p>
+
+<p><img src="https://www.ipcc-data.org/img/3d_gcm_structure.jpg" alt="gcm-schematic" /></p>
+<blockquote>
+  <p>Source: www.ipcc-data.org</p>
+</blockquote>
+
+<p>It is numerically favorable to shift (or ‘stagger’) the grid points where the model calculates the velocity with regard to the grid point where tracer values (temperature, salinity, or others) are calculated. There are several different ways to shift these points, commonly referred to as <a href="https://en.wikipedia.org/wiki/Arakawa_grids">Arakawa grids</a>. Most modern ocean models use a C-Grid. Thus, this lecture will focus on this particular grid configuration.
+In the C-grid, the zonal velocity $u$ is located on the right side (or east face) of the tracer location and the meridional velocity $v$ is located on the upper side (or north face). Similarly, the vertical velocity $w$ is shifted with depth, but horizontally (when looking at it from straight above), it is on the tracer location.</p>
+
+<p><img src="https://xgcm.readthedocs.io/en/latest/_images/grid2d_hv.svg" alt="c-grid" /></p>
+<blockquote>
+  <p>Source: xgcm.readthedocs.io</p>
+</blockquote>
+
+<h3 id="grid-resolution">Grid resolution</h3>
+<p>Discretizing the equations has consequences:</p>
+
+<ul>
+  <li>In order to get a realistic representation of the global circulation, the size of grid cells needs to be chosen so that all relevant processes are resolved.  In reality, this usually requires too much computing power for global models and so processes that are too small to be explicitly resolved, like <a href="https://www.gfdl.noaa.gov/ocean-mesoscale-eddies/">mesoscale eddies</a> or <a href="https://www.gfdl.noaa.gov/ocean-mixing/">vertical mixing</a>, need to be carefully parameterized since they influence the large scale circulation. The following video illustrates the representation of mesoscale eddies in global models of different grid resolution. It shows the surface nutrient fields of three coupled climate models (produced by NOAA/GFDL) around the Antarctic Peninsula with increasing ocean resolution from left to right.</li>
+</ul>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Video to show difference in resolution</span>
+<span class="c"># from IPython.display import HTML</span>
+<span class="c"># HTML('&lt;iframe src="https://player.vimeo.com/video/259423826" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen&gt;&lt;/iframe&gt;')</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">IFrame</span><span class="p">,</span> <span class="n">VimeoVideo</span><span class="p">,</span> <span class="n">HTML</span>
+<span class="c"># IFrame("https://player.vimeo.com/video/259423826", width="640", height="360", style='centered')</span>
+<span class="n">HTML</span><span class="p">(</span><span class="s">'&lt;div style="text-align: center"&gt;&lt;iframe width="640", height="360" src="https://player.vimeo.com/video/259423826" frameborder="4"&gt;&lt;/iframe&gt;&lt;/div&gt;'</span><span class="p">)</span>
+<span class="c"># VimeoVideo()</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output output_html">
+<div style="text-align: center">&lt;iframe width="640", height="360" src="https://player.vimeo.com/video/259423826" frameborder="4"&gt;&lt;/iframe&gt;</div>
+</div>
+
+    </div>
+  </div>
+</div>
+
+<p><strong>Nominal model resolution from left to right: 1 degree (CM2.1deg), 0.25 degree (CM2.5) and 0.1 degree (CM2.6). The left ocean model employs a parametrization for both the advective and diffusive effects of mesoscale eddies, while the middle and right model do not.</strong></p>
+
+<blockquote>
+  <p>We will learn how to <code class="highlighter-rouge">regrid</code> high-resolution model fields in order to compare them to observations in the first part of this lecture.</p>
+</blockquote>
+
+<ul>
+  <li>While regridding is necessary to compare model output to other datasets, some calculations should be performed on the native model grid for maximum accuracy. This is usually the case when you want to derive additional quantities, like the gradient or divergence of a field. Most GCMs use a <a href="https://en.wikipedia.org/wiki/Curvilinear_coordinates">curvilinear grid</a> to avoid infinitely small grid cells at the North Pole. Some examples of curvilinear grids are a tripolar grid (the Arctic region is defined by two poles, placed over landmasses, see Figure below) or a cubed-sphere grid (several connected patches of curvilinear grids, see Figure below).
+In most ocean models, due to these ‘warped’ coordinate systems, the boxes described are not perfectly rectangular<a href="https://en.wikipedia.org/wiki/Cuboid">cuboids</a>. To accurately represent the volume of the cell, we require so-called grid metrics - the distances, cell areas, and volume to calculate operators like e.g., divergence.</li>
+</ul>
+
+<blockquote>
+  <p>We will learn how to use <a href="https://xgcm.readthedocs.io/en/latest/">xgcm</a> in order to deal with computations on the raw model grid.</p>
+</blockquote>
+
+<h2 id="part-1-model-validation-comparing-a-state-estimate-to-observations">Part 1: Model validation: Comparing a state estimate to observations</h2>
+
+<p>We start by importing xarray, numpy and matplotlib as usual</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="n">xr</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+
+</code></pre></div>    </div>
+  </div>
+
+</div>
+
+<p>The model we will be using in this lecture is the <a href="http://sose.ucsd.edu">Southen Ocean State Estimate (SOSE)</a>, which is available in the pangeo cloud as an <a href="https://pangeo-data.github.io/pangeo-datastore/master/ocean.html">intake catalogue</a>. We will just follow the <a href="https://pangeo-data.github.io/pangeo-datastore/master/ocean.html#collapse1-sose">instructions</a> how to load the data into our notebook and inspect the dataset.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">intake</span>
+<span class="n">cat</span> <span class="o">=</span> <span class="n">intake</span><span class="o">.</span><span class="n">Catalog</span><span class="p">(</span><span class="s">"https://raw.githubusercontent.com/pangeo-data/pangeo-datastore/master/intake-catalogs/ocean.yaml"</span><span class="p">)</span>
+<span class="n">ds_model</span> <span class="o">=</span> <span class="n">cat</span><span class="p">[</span><span class="s">"SOSE"</span><span class="p">]</span><span class="o">.</span><span class="n">to_dask</span><span class="p">()</span>
+<span class="n">ds_model</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;xarray.Dataset&gt;
+Dimensions:   (XC: 2160, XG: 2160, YC: 320, YG: 320, Z: 42, Zl: 42, Zp1: 43, Zu: 42, time: 438)
+Coordinates:
+    Depth     (YC, XC) float32 dask.array&lt;shape=(320, 2160), chunksize=(320, 2160)&gt;
+    PHrefC    (Z) float32 dask.array&lt;shape=(42,), chunksize=(42,)&gt;
+    PHrefF    (Zp1) float32 dask.array&lt;shape=(43,), chunksize=(43,)&gt;
+  * XC        (XC) float32 0.083333336 0.25 0.4166667 ... 359.75 359.9167
+  * XG        (XG) float32 5.551115e-17 0.16666667 ... 359.6667 359.83334
+  * YC        (YC) float32 -77.87497 -77.7083 -77.54163 ... -24.874966 -24.7083
+  * YG        (YG) float32 -77.9583 -77.79163 -77.62497 ... -24.9583 -24.791632
+  * Z         (Z) float32 -5.0 -15.5 -27.0 -39.5 ... -5075.0 -5325.0 -5575.0
+  * Zl        (Zl) float32 0.0 -10.0 -21.0 -33.0 ... -4950.0 -5200.0 -5450.0
+  * Zp1       (Zp1) float32 0.0 -10.0 -21.0 -33.0 ... -5200.0 -5450.0 -5700.0
+  * Zu        (Zu) float32 -10.0 -21.0 -33.0 -46.0 ... -5200.0 -5450.0 -5700.0
+    drC       (Zp1) float32 dask.array&lt;shape=(43,), chunksize=(43,)&gt;
+    drF       (Z) float32 dask.array&lt;shape=(42,), chunksize=(42,)&gt;
+    dxC       (YC, XG) float32 dask.array&lt;shape=(320, 2160), chunksize=(320, 2160)&gt;
+    dxG       (YG, XC) float32 dask.array&lt;shape=(320, 2160), chunksize=(320, 2160)&gt;
+    dyC       (YG, XC) float32 dask.array&lt;shape=(320, 2160), chunksize=(320, 2160)&gt;
+    dyG       (YC, XG) float32 dask.array&lt;shape=(320, 2160), chunksize=(320, 2160)&gt;
+    hFacC     (Z, YC, XC) float32 dask.array&lt;shape=(42, 320, 2160), chunksize=(42, 320, 2160)&gt;
+    hFacS     (Z, YG, XC) float32 dask.array&lt;shape=(42, 320, 2160), chunksize=(42, 320, 2160)&gt;
+    hFacW     (Z, YC, XG) float32 dask.array&lt;shape=(42, 320, 2160), chunksize=(42, 320, 2160)&gt;
+    iter      (time) int64 dask.array&lt;shape=(438,), chunksize=(438,)&gt;
+    rA        (YC, XC) float32 dask.array&lt;shape=(320, 2160), chunksize=(320, 2160)&gt;
+    rAs       (YG, XC) float32 dask.array&lt;shape=(320, 2160), chunksize=(320, 2160)&gt;
+    rAw       (YC, XG) float32 dask.array&lt;shape=(320, 2160), chunksize=(320, 2160)&gt;
+    rAz       (YG, XG) float32 dask.array&lt;shape=(320, 2160), chunksize=(320, 2160)&gt;
+  * time      (time) datetime64[ns] 2005-01-06 2005-01-11 ... 2010-12-31
+Data variables:
+    ADVr_SLT  (time, Zl, YC, XC) float32 dask.array&lt;shape=(438, 42, 320, 2160), chunksize=(1, 42, 320, 2160)&gt;
+    ADVr_TH   (time, Zl, YC, XC) float32 dask.array&lt;shape=(438, 42, 320, 2160), chunksize=(1, 42, 320, 2160)&gt;
+    ADVx_SLT  (time, Z, YC, XG) float32 dask.array&lt;shape=(438, 42, 320, 2160), chunksize=(1, 42, 320, 2160)&gt;
+    ADVx_TH   (time, Z, YC, XG) float32 dask.array&lt;shape=(438, 42, 320, 2160), chunksize=(1, 42, 320, 2160)&gt;
+    ADVy_SLT  (time, Z, YG, XC) float32 dask.array&lt;shape=(438, 42, 320, 2160), chunksize=(1, 42, 320, 2160)&gt;
+    ADVy_TH   (time, Z, YG, XC) float32 dask.array&lt;shape=(438, 42, 320, 2160), chunksize=(1, 42, 320, 2160)&gt;
+    DFrE_SLT  (time, Zl, YC, XC) float32 dask.array&lt;shape=(438, 42, 320, 2160), chunksize=(1, 42, 320, 2160)&gt;
+    DFrE_TH   (time, Zl, YC, XC) float32 dask.array&lt;shape=(438, 42, 320, 2160), chunksize=(1, 42, 320, 2160)&gt;
+    DFrI_SLT  (time, Zl, YC, XC) float32 dask.array&lt;shape=(438, 42, 320, 2160), chunksize=(1, 42, 320, 2160)&gt;
+    DFrI_TH   (time, Zl, YC, XC) float32 dask.array&lt;shape=(438, 42, 320, 2160), chunksize=(1, 42, 320, 2160)&gt;
+    DFxE_SLT  (time, Z, YC, XG) float32 dask.array&lt;shape=(438, 42, 320, 2160), chunksize=(1, 42, 320, 2160)&gt;
+    DFxE_TH   (time, Z, YC, XG) float32 dask.array&lt;shape=(438, 42, 320, 2160), chunksize=(1, 42, 320, 2160)&gt;
+    DFyE_SLT  (time, Z, YG, XC) float32 dask.array&lt;shape=(438, 42, 320, 2160), chunksize=(1, 42, 320, 2160)&gt;
+    DFyE_TH   (time, Z, YG, XC) float32 dask.array&lt;shape=(438, 42, 320, 2160), chunksize=(1, 42, 320, 2160)&gt;
+    DRHODR    (time, Zl, YC, XC) float32 dask.array&lt;shape=(438, 42, 320, 2160), chunksize=(1, 42, 320, 2160)&gt;
+    ETAN      (time, YC, XC) float32 dask.array&lt;shape=(438, 320, 2160), chunksize=(1, 320, 2160)&gt;
+    EXFswnet  (time, YC, XC) float32 dask.array&lt;shape=(438, 320, 2160), chunksize=(1, 320, 2160)&gt;
+    KPPg_SLT  (time, Zl, YC, XC) float32 dask.array&lt;shape=(438, 42, 320, 2160), chunksize=(1, 42, 320, 2160)&gt;
+    KPPg_TH   (time, Zl, YC, XC) float32 dask.array&lt;shape=(438, 42, 320, 2160), chunksize=(1, 42, 320, 2160)&gt;
+    PHIHYD    (time, Z, YC, XC) float32 dask.array&lt;shape=(438, 42, 320, 2160), chunksize=(1, 42, 320, 2160)&gt;
+    SALT      (time, Z, YC, XC) float32 dask.array&lt;shape=(438, 42, 320, 2160), chunksize=(1, 42, 320, 2160)&gt;
+    SFLUX     (time, YC, XC) float32 dask.array&lt;shape=(438, 320, 2160), chunksize=(1, 320, 2160)&gt;
+    SIarea    (time, YC, XC) float32 dask.array&lt;shape=(438, 320, 2160), chunksize=(1, 320, 2160)&gt;
+    SIatmFW   (time, YC, XC) float32 dask.array&lt;shape=(438, 320, 2160), chunksize=(1, 320, 2160)&gt;
+    SIatmQnt  (time, YC, XC) float32 dask.array&lt;shape=(438, 320, 2160), chunksize=(1, 320, 2160)&gt;
+    SIdHbATC  (time, YC, XC) float32 dask.array&lt;shape=(438, 320, 2160), chunksize=(1, 320, 2160)&gt;
+    SIdHbATO  (time, YC, XC) float32 dask.array&lt;shape=(438, 320, 2160), chunksize=(1, 320, 2160)&gt;
+    SIdHbOCN  (time, YC, XC) float32 dask.array&lt;shape=(438, 320, 2160), chunksize=(1, 320, 2160)&gt;
+    SIdSbATC  (time, YC, XC) float32 dask.array&lt;shape=(438, 320, 2160), chunksize=(1, 320, 2160)&gt;
+    SIdSbOCN  (time, YC, XC) float32 dask.array&lt;shape=(438, 320, 2160), chunksize=(1, 320, 2160)&gt;
+    SIempmr   (time, YC, XC) float32 dask.array&lt;shape=(438, 320, 2160), chunksize=(1, 320, 2160)&gt;
+    SIfu      (time, YC, XG) float32 dask.array&lt;shape=(438, 320, 2160), chunksize=(1, 320, 2160)&gt;
+    SIfv      (time, YG, XC) float32 dask.array&lt;shape=(438, 320, 2160), chunksize=(1, 320, 2160)&gt;
+    SIheff    (time, YC, XC) float32 dask.array&lt;shape=(438, 320, 2160), chunksize=(1, 320, 2160)&gt;
+    SIhsnow   (time, YC, XC) float32 dask.array&lt;shape=(438, 320, 2160), chunksize=(1, 320, 2160)&gt;
+    SIsnPrcp  (time, YC, XC) float32 dask.array&lt;shape=(438, 320, 2160), chunksize=(1, 320, 2160)&gt;
+    SItflux   (time, YC, XC) float32 dask.array&lt;shape=(438, 320, 2160), chunksize=(1, 320, 2160)&gt;
+    SIuheff   (time, YC, XG) float32 dask.array&lt;shape=(438, 320, 2160), chunksize=(1, 320, 2160)&gt;
+    SIuice    (time, YC, XG) float32 dask.array&lt;shape=(438, 320, 2160), chunksize=(1, 320, 2160)&gt;
+    SIvheff   (time, YG, XC) float32 dask.array&lt;shape=(438, 320, 2160), chunksize=(1, 320, 2160)&gt;
+    SIvice    (time, YG, XC) float32 dask.array&lt;shape=(438, 320, 2160), chunksize=(1, 320, 2160)&gt;
+    TFLUX     (time, YC, XC) float32 dask.array&lt;shape=(438, 320, 2160), chunksize=(1, 320, 2160)&gt;
+    THETA     (time, Z, YC, XC) float32 dask.array&lt;shape=(438, 42, 320, 2160), chunksize=(1, 42, 320, 2160)&gt;
+    TOTSTEND  (time, Z, YC, XC) float32 dask.array&lt;shape=(438, 42, 320, 2160), chunksize=(1, 42, 320, 2160)&gt;
+    TOTTTEND  (time, Z, YC, XC) float32 dask.array&lt;shape=(438, 42, 320, 2160), chunksize=(1, 42, 320, 2160)&gt;
+    UVEL      (time, Z, YC, XG) float32 dask.array&lt;shape=(438, 42, 320, 2160), chunksize=(1, 42, 320, 2160)&gt;
+    VVEL      (time, Z, YG, XC) float32 dask.array&lt;shape=(438, 42, 320, 2160), chunksize=(1, 42, 320, 2160)&gt;
+    WSLTMASS  (time, Zl, YC, XC) float32 dask.array&lt;shape=(438, 42, 320, 2160), chunksize=(1, 42, 320, 2160)&gt;
+    WTHMASS   (time, Zl, YC, XC) float32 dask.array&lt;shape=(438, 42, 320, 2160), chunksize=(1, 42, 320, 2160)&gt;
+    WVEL      (time, Zl, YC, XC) float32 dask.array&lt;shape=(438, 42, 320, 2160), chunksize=(1, 42, 320, 2160)&gt;
+    oceFreez  (time, YC, XC) float32 dask.array&lt;shape=(438, 320, 2160), chunksize=(1, 320, 2160)&gt;
+    oceQsw    (time, YC, XC) float32 dask.array&lt;shape=(438, 320, 2160), chunksize=(1, 320, 2160)&gt;
+    oceTAUX   (time, YC, XG) float32 dask.array&lt;shape=(438, 320, 2160), chunksize=(1, 320, 2160)&gt;
+    oceTAUY   (time, YG, XC) float32 dask.array&lt;shape=(438, 320, 2160), chunksize=(1, 320, 2160)&gt;
+    surForcS  (time, YC, XC) float32 dask.array&lt;shape=(438, 320, 2160), chunksize=(1, 320, 2160)&gt;
+    surForcT  (time, YC, XC) float32 dask.array&lt;shape=(438, 320, 2160), chunksize=(1, 320, 2160)&gt;
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+</div>
+
+<p>This dataset has a lot of output variables. For this lecture we are going to focus on sea surface temperature. In the model this is represented by the surfac layer in the vertical (dimension <code class="highlighter-rouge">Z</code>) of the temperature dataarray <code class="highlighter-rouge">THETA</code>.</p>
+
+<p>Lets create a new <code class="highlighter-rouge">sst_model</code> dataarray and plot the first time step.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sst_model</span> <span class="o">=</span> <span class="n">ds_model</span><span class="o">.</span><span class="n">THETA</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">Z</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">sst_model</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.collections.QuadMesh at 0x7f466c068710&gt;
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <p class="output_png"><img src="../images/lectures/working_with_gcm_data_8_1.png" alt="png" /></p>
+
+    </div>
+  </div>
+</div>
+
+<p>As the name suggests, this model output is not global, but instead focusses on the Southern Ocean.
+A common analysis step is model validation - comparing model output to an observation of the same variable. We will use the previously used sea surface temperature dataset.</p>
+
+<p>We load the dataset as before, but limit the latitude dimension to exclude values in the tropics and the northern hemisphere.</p>
+<blockquote>
+  <p>Note that the <code class="highlighter-rouge">lon</code> dimension in the dataset is given in descending order, e.g. the first value is the northernmost. You can change the order by applying <code class="highlighter-rouge">sortby('lat')</code>, which will reshuffle the full dataset so that <code class="highlighter-rouge">lat</code> values are monotonically increasing.</p>
+</blockquote>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># xr.set_options(display_style='html') # !!! need to update xarray for this?</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s">'http://www.esrl.noaa.gov/psd/thredds/dodsC/Datasets/noaa.ersst.v5/sst.mnmean.nc'</span>
+<span class="n">ds_obs</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">chunk</span><span class="p">({</span><span class="s">'time'</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span><span class="o">.</span><span class="n">sortby</span><span class="p">(</span><span class="s">'lat'</span><span class="p">)</span>
+<span class="c"># restrict the obs to the southern ocean</span>
+<span class="n">ds_obs</span> <span class="o">=</span> <span class="n">ds_obs</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">lat</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="o">-</span><span class="mi">25</span><span class="p">))</span>
+<span class="n">ds_obs</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;xarray.Dataset&gt;
+Dimensions:    (lat: 32, lon: 180, nbnds: 2, time: 1990)
+Coordinates:
+  * lat        (lat) float64 -88.0 -86.0 -84.0 -82.0 ... -32.0 -30.0 -28.0 -26.0
+  * lon        (lon) float64 0.0 2.0 4.0 6.0 8.0 ... 352.0 354.0 356.0 358.0
+  * time       (time) datetime64[ns] 1854-01-01 1854-02-01 ... 2019-10-01
+Dimensions without coordinates: nbnds
+Data variables:
+    time_bnds  (time, nbnds) float64 dask.array&lt;shape=(1990, 2), chunksize=(12, 2)&gt;
+    sst        (time, lat, lon) float32 dask.array&lt;shape=(1990, 32, 180), chunksize=(12, 32, 180)&gt;
+Attributes:
+    climatology:                     Climatology is based on 1971-2000 SST, X...
+    description:                     In situ data: ICOADS2.5 before 2007 and ...
+    keywords_vocabulary:             NASA Global Change Master Directory (GCM...
+    keywords:                        Earth Science &gt; Oceans &gt; Ocean Temperatu...
+    instrument:                      Conventional thermometers
+    source_comment:                  SSTs were observed by conventional therm...
+    geospatial_lon_min:              -1.0
+    geospatial_lon_max:              359.0
+    geospatial_laty_max:             89.0
+    geospatial_laty_min:             -89.0
+    geospatial_lat_max:              89.0
+    geospatial_lat_min:              -89.0
+    geospatial_lat_units:            degrees_north
+    geospatial_lon_units:            degrees_east
+    cdm_data_type:                   Grid
+    project:                         NOAA Extended Reconstructed Sea Surface ...
+    original_publisher_url:          http://www.ncdc.noaa.gov
+    References:                      https://www.ncdc.noaa.gov/data-access/ma...
+    source:                          In situ data: ICOADS R3.0 before 2015, N...
+    title:                           NOAA ERSSTv5 (in situ only)
+    history:                         created 07/2017 by PSD data using NCEI's...
+    institution:                     This version written at NOAA/ESRL PSD: o...
+    citation:                        Huang et al, 2017: Extended Reconstructe...
+    platform:                        Ship and Buoy SSTs from ICOADS R3.0 and ...
+    standard_name_vocabulary:        CF Standard Name Table (v40, 25 January ...
+    processing_level:                NOAA Level 4
+    Conventions:                     CF-1.6, ACDD-1.3
+    metadata_link:                   :metadata_link = https://doi.org/10.7289...
+    creator_name:                    Boyin Huang (original)
+    date_created:                    2017-06-30T12:18:00Z (original)
+    product_version:                 Version 5
+    creator_url_original:            https://www.ncei.noaa.gov
+    license:                         No constraints on data access or use
+    comment:                         SSTs were observed by conventional therm...
+    summary:                         ERSST.v5 is developed based on v4 after ...
+    dataset_title:                   NOAA Extended Reconstructed SST V5
+    data_modified:                   2019-11-04
+    DODS_EXTRA.Unlimited_Dimension:  time
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+</div>
+
+<p>Lets now define a new dataarray so that we have a consistent naming between the model output and observations. As before we also plot the first time step of the data.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sst_obs</span> <span class="o">=</span> <span class="n">ds_obs</span><span class="o">.</span><span class="n">sst</span>
+<span class="n">sst_obs</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.collections.QuadMesh at 0x7f465431c8d0&gt;
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <p class="output_png"><img src="../images/lectures/working_with_gcm_data_12_1.png" alt="png" /></p>
+
+    </div>
+  </div>
+</div>
+
+<h3 id="considerations-for-model-validation">Considerations for model validation</h3>
+<p>Now that we have both datasets loaded, how do we approach the model validation?</p>
+
+<p>It is always crucial to put some thought into which time periods of a model and observations are actually comparable. In this case both should be directly comparable since SOSE is a state estimate, which incorporates observations to estimate the state of the ocean at the time observations were taken (and in between). If however the model data would be from a fully coupled climate model, we would have to take e.g. long averages due to the fact that internal variability - like for instance ENSO - can not be expected to happen in the same year as observations. But since we chose a state estimate, we can actually compare the data in a single year or even month (this will save us some computing time, but if you are interested, go ahead and choose a longer averaging period below and compare the results).</p>
+
+<p>Now select a time period that overlaps between model and observations, e.g. the year 2009 and average over the year.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sst_model</span> <span class="o">=</span> <span class="n">sst_model</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s">'2009'</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="s">'time'</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+<span class="n">sst_obs</span> <span class="o">=</span> <span class="n">sst_obs</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s">'2009'</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="s">'time'</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+
+</code></pre></div>    </div>
+  </div>
+
+</div>
+
+<p>For later we will also rename the model dimensions <code class="highlighter-rouge">XC</code> and <code class="highlighter-rouge">YC</code> into <code class="highlighter-rouge">lon</code> and <code class="highlighter-rouge">lat</code>, so that both model and observations are named consistently.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sst_model</span> <span class="o">=</span> <span class="n">sst_model</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s">'XC'</span><span class="p">:</span><span class="s">'lon'</span><span class="p">,</span> <span class="s">'YC'</span><span class="p">:</span><span class="s">'lat'</span><span class="p">})</span>
+
+</code></pre></div>    </div>
+  </div>
+
+</div>
+
+<p>We can now plot both fields next to each other. By specifying <code class="highlighter-rouge">vmax=30</code> in the plot command, we ensure that both plots have the exact same colorbar.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">16</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="c"># !!! is this taught before?</span>
+<span class="n">sst_obs</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">vmax</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span> <span class="c"># make sure to have the same colorlimit</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">80</span><span class="p">,</span> <span class="o">-</span><span class="mi">24</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">sst_model</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">vmax</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.collections.QuadMesh at 0x7f4654183c50&gt;
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <p class="output_png"><img src="../images/lectures/working_with_gcm_data_18_1.png" alt="png" /></p>
+
+    </div>
+  </div>
+</div>
+
+<p>This looks nice and the large scale structure (colder waters near Antarctica) agree. But since temperature differs over such a wide range, it is hard to quantify the differences with the naked eye. Naturally we would want to plot the difference between both datasets.</p>
+
+<h3 id="regridding-via-interpolation">Regridding via interpolation</h3>
+
+<p>There is however a major problem: Both datasets are on a different grid - the model has a much higher resolution (~ 1/5 deg) than the observations (~ 2 degree). In the model we can see signs of mesoscale eddies, even in the yearly average.</p>
+
+<p>To compare the dataset directly they have to be on the same grid, e.g. each point of the array has to correspond to the same position.</p>
+
+<p><em>We have 3 options to achieve this</em>:</p>
+
+<ol>
+  <li>Regrid the lower resolution dataset (observations) onto the higher resolution dataset (model).</li>
+  <li>Regrid the higher resolution dataset (model) onto the lower resolution dataset (observations).</li>
+  <li>Define a completely new grid and regrid both datasets onto that.</li>
+</ol>
+
+<p>Both 1. and 2. have unique advantages and disadvantages, whereas 3. can share some or all of these, depending on whether the new grid is defined on a higher, lower or intermediate resolution compared to the two datasets.</p>
+
+<p>Lets try both approaches and see how they compare. For this step we will use <a href="https://xesmf.readthedocs.io/en/latest/">xesmf</a> a very powerful geospatial regridding tool.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">xesmf</span> <span class="k">as</span> <span class="n">xe</span>
+
+</code></pre></div>    </div>
+  </div>
+
+</div>
+
+<p>To regrid a dataarray with xesmf you need to execute the following steps:</p>
+
+<ol>
+  <li>
+    <p>Create a target grid dataset (this can also be an existing dataset)</p>
+
+    <blockquote>
+      <p>Note: Rename the dataset appropriately. xesmf expects longitude and latitude to be labelled as <code class="highlighter-rouge">lon</code> and <code class="highlighter-rouge">lat</code> (this is the reason we renamed the model dataset previously).</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>Create a <code class="highlighter-rouge">regridder</code> object (using the target grid and the source dataset - e.g. the dataset that should be regridded)</p>
+
+    <blockquote>
+      <p>Note: You might have to clean existing files that the regridder might have written out using <code class="highlighter-rouge">regridder.clean_weight_file()</code> (this is only needed if the regridder has been previously applied, but it does not hurt to apply it just in case)</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>Apply the <code class="highlighter-rouge">regridder</code> to a dataset, e.g. <code class="highlighter-rouge">regridder(ds)</code></p>
+  </li>
+</ol>
+
+<p>We will start by regridding the low resolution observations onto the high resolution model grid, by using linear interpolation in two dimensions (<code class="highlighter-rouge">bilinear</code>) and specifying that our domain is periodic.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">regridder</span> <span class="o">=</span> <span class="n">xe</span><span class="o">.</span><span class="n">Regridder</span><span class="p">(</span><span class="n">sst_obs</span><span class="p">,</span> <span class="n">sst_model</span><span class="p">,</span> <span class="s">'bilinear'</span><span class="p">,</span> <span class="n">periodic</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> <span class="c">#since this is global we need to pass periodic</span>
+<span class="n">regridder</span><span class="o">.</span><span class="n">clean_weight_file</span><span class="p">()</span>
+<span class="n">regridder</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+      <div class="output_stream highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Create weight file: bilinear_32x180_320x2160_peri.nc
+Remove file bilinear_32x180_320x2160_peri.nc
+</code></pre></div>      </div>
+    </div>
+  </div>
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>xESMF Regridder 
+Regridding algorithm:       bilinear 
+Weight filename:            bilinear_32x180_320x2160_peri.nc 
+Reuse pre-computed weights? False 
+Input grid shape:           (32, 180) 
+Output grid shape:          (320, 2160) 
+Output grid dimension name: ('lat', 'lon') 
+Periodic in longitude?      True
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+</div>
+
+<p>We can now apply the regridder to the observed sea surface temperature.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sst_obs_regridded</span> <span class="o">=</span> <span class="n">regridder</span><span class="p">(</span><span class="n">sst_obs</span><span class="p">)</span>
+<span class="n">sst_obs_regridded</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;xarray.DataArray 'sst' (lat: 320, lon: 2160)&gt;
+array([[nan, nan, nan, ..., nan, nan, nan],
+       [nan, nan, nan, ..., nan, nan, nan],
+       [nan, nan, nan, ..., nan, nan, nan],
+       ...,
+       [ 0.,  0.,  0., ...,  0.,  0.,  0.],
+       [ 0.,  0.,  0., ...,  0.,  0.,  0.],
+       [ 0.,  0.,  0., ...,  0.,  0.,  0.]])
+Coordinates:
+  * lon      (lon) float32 0.083333336 0.25 0.4166667 ... 359.75 359.9167
+  * lat      (lat) float32 -77.87497 -77.7083 -77.54163 ... -24.874966 -24.7083
+Attributes:
+    regrid_method:  bilinear
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+</div>
+
+<p>You see that the size of the dimensions has increased. It is now the same as the model data. Lets see how the regridded data compares.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">16</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">sst_obs_regridded</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">vmax</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span> <span class="c"># make sure to have the same colorlimit</span>
+<span class="c"># plt.ylim(-80, -24)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">sst_model</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">vmax</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.collections.QuadMesh at 0x7f4648031320&gt;
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <p class="output_png"><img src="../images/lectures/working_with_gcm_data_26_1.png" alt="png" /></p>
+
+    </div>
+  </div>
+</div>
+
+<p>The observations now have more datapoints and look a lot smoother, but since the values are just linearly interpolated, there is no new information on smaller scales.</p>
+
+<p>Now lets compare both estimates by computing the difference.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">diff</span> <span class="o">=</span> <span class="n">sst_model</span> <span class="o">-</span> <span class="n">sst_obs_regridded</span> 
+<span class="n">diff</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">vmax</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.collections.QuadMesh at 0x7f4643f08320&gt;
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <p class="output_png"><img src="../images/lectures/working_with_gcm_data_28_1.png" alt="png" /></p>
+
+    </div>
+  </div>
+</div>
+
+<p>We can see that the model sea surface temperature is quite a bit different (up to 2 deg C in some places). But the comparison is hindered by a lot of smaller scale structure that stems from eddies in the model data, which are not resolved in the observations.</p>
+
+<p>This is the major disadvantage of Method 1. from above: The comparison becomes ‘unfair’ because we are usually only interested on larger scale differences. Even if the observations would have a higher resolution, from our physical understanding we would not expect that turbulent features like ocean eddies would happen at the exact same space and time in the model as the observations.</p>
+
+<p>So how do we solve this issue? Lets look at method 2. to compare the model and observations on a lower resolution.
+We first try the exact same procedure as befor (linear interpolation), but switch the source and target datasets.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">regridder</span> <span class="o">=</span> <span class="n">xe</span><span class="o">.</span><span class="n">Regridder</span><span class="p">(</span><span class="n">sst_model</span><span class="p">,</span><span class="n">sst_obs</span><span class="p">,</span> <span class="s">'bilinear'</span><span class="p">,</span> <span class="n">periodic</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> <span class="c">#since this is global we need to pass periodic</span>
+<span class="n">regridder</span><span class="o">.</span><span class="n">clean_weight_file</span><span class="p">()</span>
+<span class="n">sst_model_regridded</span> <span class="o">=</span> <span class="n">regridder</span><span class="p">(</span><span class="n">sst_model</span><span class="p">)</span>
+<span class="n">sst_model_regridded</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+      <div class="output_stream highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Create weight file: bilinear_320x2160_32x180_peri.nc
+Remove file bilinear_320x2160_32x180_peri.nc
+</code></pre></div>      </div>
+    </div>
+  </div>
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;xarray.DataArray 'THETA' (lat: 32, lon: 180)&gt;
+array([[ 0.      ,  0.      ,  0.      , ...,  0.      ,  0.      ,  0.      ],
+       [ 0.      ,  0.      ,  0.      , ...,  0.      ,  0.      ,  0.      ],
+       [ 0.      ,  0.      ,  0.      , ...,  0.      ,  0.      ,  0.      ],
+       ...,
+       [20.185935, 19.964374, 19.690668, ..., 20.646542, 20.335984, 20.317114],
+       [20.801154, 20.477957, 20.144566, ..., 21.67011 , 21.22205 , 21.067159],
+       [20.903206, 20.605169, 20.364102, ..., 21.828444, 21.537927, 21.231561]])
+Coordinates:
+    PHrefC   float32 49.05
+    Z        float32 -5.0
+    drF      float32 10.0
+  * lon      (lon) float64 0.0 2.0 4.0 6.0 8.0 ... 350.0 352.0 354.0 356.0 358.0
+  * lat      (lat) float64 -88.0 -86.0 -84.0 -82.0 ... -32.0 -30.0 -28.0 -26.0
+Attributes:
+    regrid_method:  bilinear
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+</div>
+
+<p>Lets compare the original observations against the regridded model data as before</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">diff</span> <span class="o">=</span> <span class="n">sst_model_regridded</span> <span class="o">-</span> <span class="n">sst_obs</span>
+<span class="n">diff</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">vmax</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.collections.QuadMesh at 0x7f4643ebf4a8&gt;
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <p class="output_png"><img src="../images/lectures/working_with_gcm_data_32_1.png" alt="png" /></p>
+
+    </div>
+  </div>
+</div>
+
+<p>That was easy enough, but there is a problem with this approach. Using linear interpolation works very well when we ‘upsample’ (going from lower to higher resolution), since most of the interpolated points are between the wider spaced original data. If we ‘downsample’ (going from higher resolution to lower resolution), this method will only use the two nearest points to infer a new value. This means most of the high resolution source data is not taken into consideration, and small noisy features can have a disproportionate influence on the regridded data. It also implies that properties like tracer concentrations over the full domain are not necessarily conserved.</p>
+
+<p>We can plot the original and the downsampled modeldata along a constant latitude to illustrate the problem</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sample_lat</span> <span class="o">=</span> <span class="o">-</span><span class="mi">46</span>
+<span class="n">sst_model</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">lat</span><span class="o">=</span><span class="n">sample_lat</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s">'nearest'</span><span class="p">)</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">lon</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">40</span><span class="p">))</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="s">'*'</span><span class="p">)</span>
+<span class="n">sst_model_regridded</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">lat</span><span class="o">=</span><span class="n">sample_lat</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s">'nearest'</span><span class="p">)</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">lon</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">40</span><span class="p">))</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="s">'*'</span><span class="p">)</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[&lt;matplotlib.lines.Line2D at 0x7f4638207898&gt;]
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <p class="output_png"><img src="../images/lectures/working_with_gcm_data_34_1.png" alt="png" /></p>
+
+    </div>
+  </div>
+</div>
+
+<p>As you can see the upsampled datapoints depend highly on the position of the target grid. What we should rather do in this case is average values around the wider target grid. This can be achieved by using a different method in xesmf.</p>
+
+<h3 id="regridding-using-conservative-interpolation">Regridding using conservative interpolation</h3>
+
+<p>The <code class="highlighter-rouge">conservative</code> option will take an average over several grid cells to reduce the resolution of the model. This ensures that no information is discarded and that for instance adjacent positive and negative anomalies are not increasing the noise in the regridded data.</p>
+
+<p>This method is always preferable, when moving to lower resolutions, especially when the data is not very smooth. Unfortunately this also requires some more input parameter, namely the bounding coordinates of each gridpoint (in addition to the center or tracer coordinate; see schematic in the introduction). xesmf expects those coordinates to be named <code class="highlighter-rouge">lon_b</code> and <code class="highlighter-rouge">lat_b</code>.</p>
+
+<p>When we look carefully at the model data, these bounding coordinates are already given (as the coodinates for the $u$ and $v$ velocities on a staggered grid - <code class="highlighter-rouge">XC</code> and <code class="highlighter-rouge">YC</code> respectively), but xesmf requires a bounding value at each side (This model does only provides the same amount of coordinate values for both tracer and velocity points).</p>
+
+<p>We have two options: a) Remove one of the tracer points and leave the velocity points as is, or b) add an additional coordinate value.</p>
+
+<p>Since the model has a significantly higher resolution, we will chose the simpler way a) and just remove one tracer point, omitting one out of 10 points for the new coarse grid (which is acceptable in this case).</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">modified_grid_model</span> <span class="o">=</span> <span class="n">ds_model</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">XC</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+                                    <span class="n">YC</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s">'XC'</span><span class="p">:</span><span class="s">'lon'</span><span class="p">,</span>
+                                                            <span class="s">'XG'</span><span class="p">:</span><span class="s">'lon_b'</span><span class="p">,</span>
+                                                            <span class="s">'YC'</span><span class="p">:</span><span class="s">'lat'</span><span class="p">,</span>
+                                                            <span class="s">'YG'</span><span class="p">:</span><span class="s">'lat_b'</span><span class="p">})</span>
+
+<span class="n">modified_grid_model</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;xarray.Dataset&gt;
+Dimensions:   (Z: 42, Zl: 42, Zp1: 43, Zu: 42, lat: 319, lat_b: 320, lon: 2159, lon_b: 2160, time: 438)
+Coordinates:
+    Depth     (lat, lon) float32 dask.array&lt;shape=(319, 2159), chunksize=(319, 2159)&gt;
+    PHrefC    (Z) float32 dask.array&lt;shape=(42,), chunksize=(42,)&gt;
+    PHrefF    (Zp1) float32 dask.array&lt;shape=(43,), chunksize=(43,)&gt;
+  * lon       (lon) float32 0.083333336 0.25 0.4166667 ... 359.58334 359.75
+  * lon_b     (lon_b) float32 5.551115e-17 0.16666667 ... 359.6667 359.83334
+  * lat       (lat) float32 -77.87497 -77.7083 ... -25.041632 -24.874966
+  * lat_b     (lat_b) float32 -77.9583 -77.79163 ... -24.9583 -24.791632
+  * Z         (Z) float32 -5.0 -15.5 -27.0 -39.5 ... -5075.0 -5325.0 -5575.0
+  * Zl        (Zl) float32 0.0 -10.0 -21.0 -33.0 ... -4950.0 -5200.0 -5450.0
+  * Zp1       (Zp1) float32 0.0 -10.0 -21.0 -33.0 ... -5200.0 -5450.0 -5700.0
+  * Zu        (Zu) float32 -10.0 -21.0 -33.0 -46.0 ... -5200.0 -5450.0 -5700.0
+    drC       (Zp1) float32 dask.array&lt;shape=(43,), chunksize=(43,)&gt;
+    drF       (Z) float32 dask.array&lt;shape=(42,), chunksize=(42,)&gt;
+    dxC       (lat, lon_b) float32 dask.array&lt;shape=(319, 2160), chunksize=(319, 2160)&gt;
+    dxG       (lat_b, lon) float32 dask.array&lt;shape=(320, 2159), chunksize=(320, 2159)&gt;
+    dyC       (lat_b, lon) float32 dask.array&lt;shape=(320, 2159), chunksize=(320, 2159)&gt;
+    dyG       (lat, lon_b) float32 dask.array&lt;shape=(319, 2160), chunksize=(319, 2160)&gt;
+    hFacC     (Z, lat, lon) float32 dask.array&lt;shape=(42, 319, 2159), chunksize=(42, 319, 2159)&gt;
+    hFacS     (Z, lat_b, lon) float32 dask.array&lt;shape=(42, 320, 2159), chunksize=(42, 320, 2159)&gt;
+    hFacW     (Z, lat, lon_b) float32 dask.array&lt;shape=(42, 319, 2160), chunksize=(42, 319, 2160)&gt;
+    iter      (time) int64 dask.array&lt;shape=(438,), chunksize=(438,)&gt;
+    rA        (lat, lon) float32 dask.array&lt;shape=(319, 2159), chunksize=(319, 2159)&gt;
+    rAs       (lat_b, lon) float32 dask.array&lt;shape=(320, 2159), chunksize=(320, 2159)&gt;
+    rAw       (lat, lon_b) float32 dask.array&lt;shape=(319, 2160), chunksize=(319, 2160)&gt;
+    rAz       (lat_b, lon_b) float32 dask.array&lt;shape=(320, 2160), chunksize=(320, 2160)&gt;
+  * time      (time) datetime64[ns] 2005-01-06 2005-01-11 ... 2010-12-31
+Data variables:
+    ADVr_SLT  (time, Zl, lat, lon) float32 dask.array&lt;shape=(438, 42, 319, 2159), chunksize=(1, 42, 319, 2159)&gt;
+    ADVr_TH   (time, Zl, lat, lon) float32 dask.array&lt;shape=(438, 42, 319, 2159), chunksize=(1, 42, 319, 2159)&gt;
+    ADVx_SLT  (time, Z, lat, lon_b) float32 dask.array&lt;shape=(438, 42, 319, 2160), chunksize=(1, 42, 319, 2160)&gt;
+    ADVx_TH   (time, Z, lat, lon_b) float32 dask.array&lt;shape=(438, 42, 319, 2160), chunksize=(1, 42, 319, 2160)&gt;
+    ADVy_SLT  (time, Z, lat_b, lon) float32 dask.array&lt;shape=(438, 42, 320, 2159), chunksize=(1, 42, 320, 2159)&gt;
+    ADVy_TH   (time, Z, lat_b, lon) float32 dask.array&lt;shape=(438, 42, 320, 2159), chunksize=(1, 42, 320, 2159)&gt;
+    DFrE_SLT  (time, Zl, lat, lon) float32 dask.array&lt;shape=(438, 42, 319, 2159), chunksize=(1, 42, 319, 2159)&gt;
+    DFrE_TH   (time, Zl, lat, lon) float32 dask.array&lt;shape=(438, 42, 319, 2159), chunksize=(1, 42, 319, 2159)&gt;
+    DFrI_SLT  (time, Zl, lat, lon) float32 dask.array&lt;shape=(438, 42, 319, 2159), chunksize=(1, 42, 319, 2159)&gt;
+    DFrI_TH   (time, Zl, lat, lon) float32 dask.array&lt;shape=(438, 42, 319, 2159), chunksize=(1, 42, 319, 2159)&gt;
+    DFxE_SLT  (time, Z, lat, lon_b) float32 dask.array&lt;shape=(438, 42, 319, 2160), chunksize=(1, 42, 319, 2160)&gt;
+    DFxE_TH   (time, Z, lat, lon_b) float32 dask.array&lt;shape=(438, 42, 319, 2160), chunksize=(1, 42, 319, 2160)&gt;
+    DFyE_SLT  (time, Z, lat_b, lon) float32 dask.array&lt;shape=(438, 42, 320, 2159), chunksize=(1, 42, 320, 2159)&gt;
+    DFyE_TH   (time, Z, lat_b, lon) float32 dask.array&lt;shape=(438, 42, 320, 2159), chunksize=(1, 42, 320, 2159)&gt;
+    DRHODR    (time, Zl, lat, lon) float32 dask.array&lt;shape=(438, 42, 319, 2159), chunksize=(1, 42, 319, 2159)&gt;
+    ETAN      (time, lat, lon) float32 dask.array&lt;shape=(438, 319, 2159), chunksize=(1, 319, 2159)&gt;
+    EXFswnet  (time, lat, lon) float32 dask.array&lt;shape=(438, 319, 2159), chunksize=(1, 319, 2159)&gt;
+    KPPg_SLT  (time, Zl, lat, lon) float32 dask.array&lt;shape=(438, 42, 319, 2159), chunksize=(1, 42, 319, 2159)&gt;
+    KPPg_TH   (time, Zl, lat, lon) float32 dask.array&lt;shape=(438, 42, 319, 2159), chunksize=(1, 42, 319, 2159)&gt;
+    PHIHYD    (time, Z, lat, lon) float32 dask.array&lt;shape=(438, 42, 319, 2159), chunksize=(1, 42, 319, 2159)&gt;
+    SALT      (time, Z, lat, lon) float32 dask.array&lt;shape=(438, 42, 319, 2159), chunksize=(1, 42, 319, 2159)&gt;
+    SFLUX     (time, lat, lon) float32 dask.array&lt;shape=(438, 319, 2159), chunksize=(1, 319, 2159)&gt;
+    SIarea    (time, lat, lon) float32 dask.array&lt;shape=(438, 319, 2159), chunksize=(1, 319, 2159)&gt;
+    SIatmFW   (time, lat, lon) float32 dask.array&lt;shape=(438, 319, 2159), chunksize=(1, 319, 2159)&gt;
+    SIatmQnt  (time, lat, lon) float32 dask.array&lt;shape=(438, 319, 2159), chunksize=(1, 319, 2159)&gt;
+    SIdHbATC  (time, lat, lon) float32 dask.array&lt;shape=(438, 319, 2159), chunksize=(1, 319, 2159)&gt;
+    SIdHbATO  (time, lat, lon) float32 dask.array&lt;shape=(438, 319, 2159), chunksize=(1, 319, 2159)&gt;
+    SIdHbOCN  (time, lat, lon) float32 dask.array&lt;shape=(438, 319, 2159), chunksize=(1, 319, 2159)&gt;
+    SIdSbATC  (time, lat, lon) float32 dask.array&lt;shape=(438, 319, 2159), chunksize=(1, 319, 2159)&gt;
+    SIdSbOCN  (time, lat, lon) float32 dask.array&lt;shape=(438, 319, 2159), chunksize=(1, 319, 2159)&gt;
+    SIempmr   (time, lat, lon) float32 dask.array&lt;shape=(438, 319, 2159), chunksize=(1, 319, 2159)&gt;
+    SIfu      (time, lat, lon_b) float32 dask.array&lt;shape=(438, 319, 2160), chunksize=(1, 319, 2160)&gt;
+    SIfv      (time, lat_b, lon) float32 dask.array&lt;shape=(438, 320, 2159), chunksize=(1, 320, 2159)&gt;
+    SIheff    (time, lat, lon) float32 dask.array&lt;shape=(438, 319, 2159), chunksize=(1, 319, 2159)&gt;
+    SIhsnow   (time, lat, lon) float32 dask.array&lt;shape=(438, 319, 2159), chunksize=(1, 319, 2159)&gt;
+    SIsnPrcp  (time, lat, lon) float32 dask.array&lt;shape=(438, 319, 2159), chunksize=(1, 319, 2159)&gt;
+    SItflux   (time, lat, lon) float32 dask.array&lt;shape=(438, 319, 2159), chunksize=(1, 319, 2159)&gt;
+    SIuheff   (time, lat, lon_b) float32 dask.array&lt;shape=(438, 319, 2160), chunksize=(1, 319, 2160)&gt;
+    SIuice    (time, lat, lon_b) float32 dask.array&lt;shape=(438, 319, 2160), chunksize=(1, 319, 2160)&gt;
+    SIvheff   (time, lat_b, lon) float32 dask.array&lt;shape=(438, 320, 2159), chunksize=(1, 320, 2159)&gt;
+    SIvice    (time, lat_b, lon) float32 dask.array&lt;shape=(438, 320, 2159), chunksize=(1, 320, 2159)&gt;
+    TFLUX     (time, lat, lon) float32 dask.array&lt;shape=(438, 319, 2159), chunksize=(1, 319, 2159)&gt;
+    THETA     (time, Z, lat, lon) float32 dask.array&lt;shape=(438, 42, 319, 2159), chunksize=(1, 42, 319, 2159)&gt;
+    TOTSTEND  (time, Z, lat, lon) float32 dask.array&lt;shape=(438, 42, 319, 2159), chunksize=(1, 42, 319, 2159)&gt;
+    TOTTTEND  (time, Z, lat, lon) float32 dask.array&lt;shape=(438, 42, 319, 2159), chunksize=(1, 42, 319, 2159)&gt;
+    UVEL      (time, Z, lat, lon_b) float32 dask.array&lt;shape=(438, 42, 319, 2160), chunksize=(1, 42, 319, 2160)&gt;
+    VVEL      (time, Z, lat_b, lon) float32 dask.array&lt;shape=(438, 42, 320, 2159), chunksize=(1, 42, 320, 2159)&gt;
+    WSLTMASS  (time, Zl, lat, lon) float32 dask.array&lt;shape=(438, 42, 319, 2159), chunksize=(1, 42, 319, 2159)&gt;
+    WTHMASS   (time, Zl, lat, lon) float32 dask.array&lt;shape=(438, 42, 319, 2159), chunksize=(1, 42, 319, 2159)&gt;
+    WVEL      (time, Zl, lat, lon) float32 dask.array&lt;shape=(438, 42, 319, 2159), chunksize=(1, 42, 319, 2159)&gt;
+    oceFreez  (time, lat, lon) float32 dask.array&lt;shape=(438, 319, 2159), chunksize=(1, 319, 2159)&gt;
+    oceQsw    (time, lat, lon) float32 dask.array&lt;shape=(438, 319, 2159), chunksize=(1, 319, 2159)&gt;
+    oceTAUX   (time, lat, lon_b) float32 dask.array&lt;shape=(438, 319, 2160), chunksize=(1, 319, 2160)&gt;
+    oceTAUY   (time, lat_b, lon) float32 dask.array&lt;shape=(438, 320, 2159), chunksize=(1, 320, 2159)&gt;
+    surForcS  (time, lat, lon) float32 dask.array&lt;shape=(438, 319, 2159), chunksize=(1, 319, 2159)&gt;
+    surForcT  (time, lat, lon) float32 dask.array&lt;shape=(438, 319, 2159), chunksize=(1, 319, 2159)&gt;
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+</div>
+
+<p>For the observations we choose method b.</p>
+
+<p>Since the data are given on a regular 2 by 2 degree grid, we construct the bounding coordinates by subtracting 1 deg of the center point and adding another point at the end.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">lon_boundary</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">ds_obs</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s">'lon'</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">ds_obs</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s">'lon'</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">lat_boundary</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">ds_obs</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s">'lat'</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">ds_obs</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s">'lat'</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+
+<span class="n">modified_grid_obs</span> <span class="o">=</span> <span class="n">ds_obs</span>
+<span class="n">modified_grid_obs</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s">'lon_b'</span><span class="p">]</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">lon_boundary</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s">'lon_b'</span><span class="p">])</span>
+<span class="n">modified_grid_obs</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s">'lat_b'</span><span class="p">]</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">lat_boundary</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s">'lat_b'</span><span class="p">])</span>
+<span class="n">modified_grid_obs</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;xarray.Dataset&gt;
+Dimensions:    (lat: 32, lat_b: 33, lon: 180, lon_b: 181, nbnds: 2, time: 1990)
+Coordinates:
+  * lat        (lat) float64 -88.0 -86.0 -84.0 -82.0 ... -32.0 -30.0 -28.0 -26.0
+  * lon        (lon) float64 0.0 2.0 4.0 6.0 8.0 ... 352.0 354.0 356.0 358.0
+  * time       (time) datetime64[ns] 1854-01-01 1854-02-01 ... 2019-10-01
+  * lon_b      (lon_b) float64 -1.0 1.0 3.0 5.0 7.0 ... 353.0 355.0 357.0 359.0
+  * lat_b      (lat_b) float64 -89.0 -87.0 -85.0 -83.0 ... -29.0 -27.0 -25.0
+Dimensions without coordinates: nbnds
+Data variables:
+    time_bnds  (time, nbnds) float64 dask.array&lt;shape=(1990, 2), chunksize=(12, 2)&gt;
+    sst        (time, lat, lon) float32 dask.array&lt;shape=(1990, 32, 180), chunksize=(12, 32, 180)&gt;
+Attributes:
+    climatology:                     Climatology is based on 1971-2000 SST, X...
+    description:                     In situ data: ICOADS2.5 before 2007 and ...
+    keywords_vocabulary:             NASA Global Change Master Directory (GCM...
+    keywords:                        Earth Science &gt; Oceans &gt; Ocean Temperatu...
+    instrument:                      Conventional thermometers
+    source_comment:                  SSTs were observed by conventional therm...
+    geospatial_lon_min:              -1.0
+    geospatial_lon_max:              359.0
+    geospatial_laty_max:             89.0
+    geospatial_laty_min:             -89.0
+    geospatial_lat_max:              89.0
+    geospatial_lat_min:              -89.0
+    geospatial_lat_units:            degrees_north
+    geospatial_lon_units:            degrees_east
+    cdm_data_type:                   Grid
+    project:                         NOAA Extended Reconstructed Sea Surface ...
+    original_publisher_url:          http://www.ncdc.noaa.gov
+    References:                      https://www.ncdc.noaa.gov/data-access/ma...
+    source:                          In situ data: ICOADS R3.0 before 2015, N...
+    title:                           NOAA ERSSTv5 (in situ only)
+    history:                         created 07/2017 by PSD data using NCEI's...
+    institution:                     This version written at NOAA/ESRL PSD: o...
+    citation:                        Huang et al, 2017: Extended Reconstructe...
+    platform:                        Ship and Buoy SSTs from ICOADS R3.0 and ...
+    standard_name_vocabulary:        CF Standard Name Table (v40, 25 January ...
+    processing_level:                NOAA Level 4
+    Conventions:                     CF-1.6, ACDD-1.3
+    metadata_link:                   :metadata_link = https://doi.org/10.7289...
+    creator_name:                    Boyin Huang (original)
+    date_created:                    2017-06-30T12:18:00Z (original)
+    product_version:                 Version 5
+    creator_url_original:            https://www.ncei.noaa.gov
+    license:                         No constraints on data access or use
+    comment:                         SSTs were observed by conventional therm...
+    summary:                         ERSST.v5 is developed based on v4 after ...
+    dataset_title:                   NOAA Extended Reconstructed SST V5
+    data_modified:                   2019-11-04
+    DODS_EXTRA.Unlimited_Dimension:  time
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+</div>
+
+<p>Now we can create a conservative <code class="highlighter-rouge">regridder</code> by passing the modified grids and the method <code class="highlighter-rouge">conservative</code>.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">regridder</span> <span class="o">=</span> <span class="n">xe</span><span class="o">.</span><span class="n">Regridder</span><span class="p">(</span><span class="n">modified_grid_model</span><span class="p">,</span> <span class="n">modified_grid_obs</span><span class="p">,</span> <span class="s">'conservative'</span><span class="p">)</span> <span class="c">#since this is global we need to pass periodic</span>
+<span class="n">regridder</span><span class="o">.</span><span class="n">clean_weight_file</span><span class="p">()</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+      <div class="output_stream highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Create weight file: conservative_319x2159_32x180.nc
+Remove file conservative_319x2159_32x180.nc
+</code></pre></div>      </div>
+    </div>
+  </div>
+</div>
+
+<p>We then apply this new regridder to the model again. Note that we have to cut one data point of again, as done above for the full dataset.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sst_model_regridded_cons</span> <span class="o">=</span> <span class="n">regridder</span><span class="p">(</span><span class="n">sst_model</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">lon</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">lat</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+<span class="n">sst_model_regridded_cons</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;xarray.DataArray 'THETA' (lat: 32, lon: 180)&gt;
+array([[ 0.      ,  0.      ,  0.      , ...,  0.      ,  0.      ,  0.      ],
+       [ 0.      ,  0.      ,  0.      , ...,  0.      ,  0.      ,  0.      ],
+       [ 0.      ,  0.      ,  0.      , ...,  0.      ,  0.      ,  0.      ],
+       ...,
+       [18.509935, 19.955008, 19.740049, ..., 20.661682, 20.400264, 20.323238],
+       [19.04155 , 20.459897, 20.165475, ..., 21.616568, 21.226791, 21.009231],
+       [19.162298, 20.607543, 20.363888, ..., 21.796622, 21.500974, 21.201145]])
+Coordinates:
+    PHrefC   float32 49.05
+    Z        float32 -5.0
+    drF      float32 10.0
+  * lon      (lon) float64 0.0 2.0 4.0 6.0 8.0 ... 350.0 352.0 354.0 356.0 358.0
+  * lat      (lat) float64 -88.0 -86.0 -84.0 -82.0 ... -32.0 -30.0 -28.0 -26.0
+Attributes:
+    regrid_method:  conservative
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+</div>
+
+<p>Now we can compare the difference between the datasets using both the interpolation and conservative method.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">16</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">diff</span> <span class="o">=</span> <span class="n">sst_model_regridded</span> <span class="o">-</span> <span class="n">sst_obs</span>
+<span class="n">diff</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">diff</span> <span class="o">=</span> <span class="n">sst_model_regridded_cons</span> <span class="o">-</span> <span class="n">sst_obs</span>
+<span class="n">diff</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.collections.QuadMesh at 0x7f464348bb38&gt;
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <p class="output_png"><img src="../images/lectures/working_with_gcm_data_45_1.png" alt="png" /></p>
+
+    </div>
+  </div>
+</div>
+
+<p>As expected the downsampling (regridding to lower resolution) via interpolation shows more noise. But even in the conservative regridding case there are still many alternating positive and negative anomalies, indicative of the fact that the observations so not resolve features down to the scale of the grid. This is a common issue with observational datasets, which have to use smoothing techniques to aquire a gridded dataset from point measurements.</p>
+
+<p>So lastly we will conservatively regrid both datasets to an even coarser resolution (Method 3.) to alleviate some of this problematic.</p>
+
+<p>To do this we define a coarse global grid using <code class="highlighter-rouge">xesmf.util.grid_global</code> and cut it appropriately (remember to leave the bounding coordinates <code class="highlighter-rouge">lon_b</code> and <code class="highlighter-rouge">lat_b</code> one element longer).</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">coarse_grid</span> <span class="o">=</span> <span class="n">xe</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">grid_global</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">16</span><span class="p">),</span> <span class="n">y_b</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">17</span><span class="p">))</span>
+<span class="n">coarse_grid</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;xarray.Dataset&gt;
+Dimensions:  (x: 72, x_b: 73, y: 16, y_b: 17)
+Coordinates:
+    lon      (y, x) float64 -177.5 -172.5 -167.5 -162.5 ... 167.5 172.5 177.5
+    lat      (y, x) float64 -87.5 -87.5 -87.5 -87.5 ... -12.5 -12.5 -12.5 -12.5
+    lon_b    (y_b, x_b) int64 -180 -175 -170 -165 -160 ... 160 165 170 175 180
+    lat_b    (y_b, x_b) int64 -90 -90 -90 -90 -90 -90 ... -10 -10 -10 -10 -10
+Dimensions without coordinates: x, x_b, y, y_b
+Data variables:
+    *empty*
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+</div>
+
+<p>Now we define two new regridders and create dataarrays like before.
+First with the modified model grid and the new coarse grid:</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">regridder</span> <span class="o">=</span> <span class="n">xe</span><span class="o">.</span><span class="n">Regridder</span><span class="p">(</span><span class="n">modified_grid_model</span><span class="p">,</span> <span class="n">coarse_grid</span><span class="p">,</span> <span class="s">'conservative'</span><span class="p">)</span> <span class="c">#since this is global we need to pass periodic</span>
+<span class="n">regridder</span><span class="o">.</span><span class="n">clean_weight_file</span><span class="p">()</span>
+<span class="n">sst_coarse_model</span> <span class="o">=</span> <span class="n">regridder</span><span class="p">(</span><span class="n">sst_model</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">lon</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">lat</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+      <div class="output_stream highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Create weight file: conservative_319x2159_16x72.nc
+Remove file conservative_319x2159_16x72.nc
+</code></pre></div>      </div>
+    </div>
+  </div>
+</div>
+
+<p>Then with the modified model grid and the new coarse grid:</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">regridder</span> <span class="o">=</span> <span class="n">xe</span><span class="o">.</span><span class="n">Regridder</span><span class="p">(</span><span class="n">modified_grid_obs</span><span class="p">,</span> <span class="n">coarse_grid</span><span class="p">,</span> <span class="s">'conservative'</span><span class="p">)</span> <span class="c">#since this is global we need to pass periodic</span>
+<span class="n">regridder</span><span class="o">.</span><span class="n">clean_weight_file</span><span class="p">()</span>
+<span class="n">sst_coarse_obs</span> <span class="o">=</span> <span class="n">regridder</span><span class="p">(</span><span class="n">sst_obs</span><span class="p">)</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+      <div class="output_stream highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Create weight file: conservative_32x180_16x72.nc
+Remove file conservative_32x180_16x72.nc
+</code></pre></div>      </div>
+    </div>
+  </div>
+</div>
+
+<p>As a final step we visualize all four comparisons next to each other usign a Stereographic projection of the South Pole:</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="n">ccrs</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axarr</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span><span class="s">'projection'</span><span class="p">:</span><span class="n">ccrs</span><span class="o">.</span><span class="n">SouthPolarStereo</span><span class="p">()},</span> <span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">ds</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="n">sst_model</span> <span class="o">-</span> <span class="n">sst_obs_regridded</span><span class="p">,</span> <span class="n">sst_model_regridded</span> <span class="o">-</span> <span class="n">sst_obs</span><span class="p">,</span> <span class="n">sst_model_regridded_cons</span> <span class="o">-</span> <span class="n">sst_obs</span><span class="p">,</span> <span class="n">sst_coarse_model</span> <span class="o">-</span> <span class="n">sst_coarse_obs</span><span class="p">],</span>
+                  <span class="n">axarr</span><span class="o">.</span><span class="n">flat</span><span class="p">):</span>
+    <span class="n">ds</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="mi">21</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s">'lon'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s">'lat'</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">([</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="o">-</span><span class="mi">30</span><span class="p">],</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <p class="output_png"><img src="../images/lectures/working_with_gcm_data_54_0.png" alt="png" /></p>
+
+    </div>
+  </div>
+</div>
+
+<p>Ultimately which method you use will depend on the particular use case. Before regridding, carefully inspect your datasets and think of what you want to achieve:</p>
+
+<ul>
+  <li>Are both datasets of a similar resolution and relatively smooth? Then using linear interpolation should be acceptable and is by far the easiest way to compare the datasets.</li>
+  <li>Is the goal of the comparison to evaluate differences on larger scales than the grid scale? Then create a coarser grid and interpolate conservatively to gain a larger scale perspective without getting distracted by smaller scale features.</li>
+</ul>
+
+<h2 id="part-2-calculating-properties-in-the-native-model-grid-using-xgcm">Part 2: Calculating properties in the native model grid using xgcm</h2>
+
+<p>For maximum accuracy it is always preferrable to calculate properties in the closest way possible to the model code, which at the least means executing calculations on the native grid. For comparison you can then regrid properties afterwards. To demonstrate how to do this we now calculate the meridional sea surface temperature gradient for the SOSE output.</p>
+
+<p>For these sort of calculations we use <a href="https://xgcm.readthedocs.io/en/latest/index.html">xgcm</a>, which helps us to deal with the staggered grids that models use:</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">xgcm</span> <span class="kn">import</span> <span class="n">Grid</span>
+
+</code></pre></div>    </div>
+  </div>
+
+</div>
+
+<p>in order to work with xgcm we have to create a <code class="highlighter-rouge">Grid</code> object which ‘understands’ which coordinates of a dataset are representing the various staggered grid positions.</p>
+
+<p>But first we need to check quickly how the model grid is designed.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">ds_model</span><span class="o">.</span><span class="n">XC</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">ds_model</span><span class="o">.</span><span class="n">XG</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="n">ds_model</span><span class="o">.</span><span class="n">YC</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">ds_model</span><span class="o">.</span><span class="n">YG</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+      <div class="output_stream highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;xarray.DataArray ()&gt;
+array(False)
+Coordinates:
+    XC       float32 0.083333336
+    XG       float32 5.551115e-17
+&lt;xarray.DataArray ()&gt;
+array(False)
+Coordinates:
+    YC       float32 -77.87497
+    YG       float32 -77.9583
+</code></pre></div>      </div>
+    </div>
+  </div>
+</div>
+
+<p>We can see that for the first datapoint of the dataset, the ‘grid coordinates’ (<code class="highlighter-rouge">XG</code> and <code class="highlighter-rouge">YG</code>) have smaller values than the ‘tracer coordinates’ (<code class="highlighter-rouge">XC</code> and <code class="highlighter-rouge">YC</code>). This means that for both <code class="highlighter-rouge">axes</code> (each axis decribes a logical direction and both tracer and grid coordinates), the tracer coordinate is at the center and the grid coordinate is on the left (this can be on the right for some model setups; thus, carefull checking beforehand is always recommended).</p>
+
+<p>With this information, we can now construct the <code class="highlighter-rouge">Grid</code> object and configure it properly (this step is only required once for a single grid).</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">grid</span> <span class="o">=</span> <span class="n">Grid</span><span class="p">(</span><span class="n">ds_model</span><span class="p">,</span>
+            <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s">'X'</span><span class="p">:</span> <span class="p">{</span><span class="s">'center'</span><span class="p">:</span> <span class="s">'XC'</span><span class="p">,</span> <span class="s">'left'</span><span class="p">:</span> <span class="s">'XG'</span><span class="p">},</span>
+                    <span class="s">'Y'</span><span class="p">:</span> <span class="p">{</span><span class="s">'center'</span><span class="p">:</span> <span class="s">'YC'</span><span class="p">,</span> <span class="s">'left'</span><span class="p">:</span> <span class="s">'YG'</span><span class="p">}})</span>
+
+</code></pre></div>    </div>
+  </div>
+
+</div>
+
+<p>The <code class="highlighter-rouge">grid</code> object can now be used to apply various operations on the data variables of the dataset. Most GCMs calculate all properties by using simple differences and interpolation between neighboring cells.</p>
+
+<p>We first select the surface layer of temperature and average over year 2009.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sst</span> <span class="o">=</span> <span class="n">ds_model</span><span class="o">.</span><span class="n">THETA</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">Z</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s">'2009'</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="s">'time'</span><span class="p">)</span>
+
+</code></pre></div>    </div>
+  </div>
+
+</div>
+
+<p>In order to compute the meridional gradient of sea surface temperature, we have to simply compute the finite difference along axis <code class="highlighter-rouge">Y</code>.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">deltay_sst</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">sst</span><span class="p">,</span> <span class="s">'Y'</span><span class="p">)</span>
+<span class="n">deltay_sst</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;xarray.DataArray 'sub-9563c8ac51aadebd24c532c2db11db98' (YG: 320, XC: 2160)&gt;
+dask.array&lt;shape=(320, 2160), dtype=float32, chunksize=(1, 2160)&gt;
+Coordinates:
+  * YG       (YG) float32 -77.9583 -77.79163 -77.62497 ... -24.9583 -24.791632
+  * XC       (XC) float32 0.083333336 0.25 0.4166667 ... 359.75 359.9167
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+</div>
+
+<p>If you look carefully, you see that the <code class="highlighter-rouge">Y</code> dimension has been shifted, from <code class="highlighter-rouge">YC</code> to <code class="highlighter-rouge">YG</code>. The gradient is defined on the cell face or $v$ velocity point. This is however just a difference between cells. To derive the gradient in the y direction in physical units <code class="highlighter-rouge">degC/m</code>, we need to divide the array by the distance along the <code class="highlighter-rouge">Y</code> axes between adjacent tracer points <code class="highlighter-rouge">dyC</code> , which itself is located at the $v$ velocity point.</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dsst_dy</span> <span class="o">=</span> <span class="n">deltay_sst</span> <span class="o">/</span> <span class="n">ds_model</span><span class="o">.</span><span class="n">dyC</span>
+<span class="n">dsst_dy</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;xarray.DataArray (YG: 320, XC: 2160)&gt;
+dask.array&lt;shape=(320, 2160), dtype=float32, chunksize=(1, 2160)&gt;
+Coordinates:
+  * YG       (YG) float32 -77.9583 -77.79163 -77.62497 ... -24.9583 -24.791632
+  * XC       (XC) float32 0.083333336 0.25 0.4166667 ... 359.75 359.9167
+    dxG      (YG, XC) float32 dask.array&lt;shape=(320, 2160), chunksize=(320, 2160)&gt;
+    dyC      (YG, XC) float32 dask.array&lt;shape=(320, 2160), chunksize=(320, 2160)&gt;
+    rAs      (YG, XC) float32 dask.array&lt;shape=(320, 2160), chunksize=(320, 2160)&gt;
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+</div>
+
+<p>Now lets select the surface layer and the first timestep and plot the results</p>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">SouthPolarStereo</span><span class="p">())</span>
+<span class="n">dsst_dy</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">robust</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;cartopy.mpl.feature_artist.FeatureArtist at 0x7f46382c17f0&gt;
+</code></pre></div>      </div>
+
+    </div>
+  </div>
+  <div class="output_wrapper">
+    <div class="output_subarea">
+
+      <p class="output_png"><img src="../images/lectures/working_with_gcm_data_69_1.png" alt="png" /></p>
+
+    </div>
+  </div>
+</div>
+
+<p>The meridional gradient is positive over the whole domain (temperature is increasing towards the equator), as might be expected. The stronges gradient is associated with the boundary between the retroflection of the warm <a href="https://en.wikipedia.org/wiki/Agulhas_Current">Agulhas current</a> and the cold waters of the <a href="https://en.wikipedia.org/wiki/Antarctic_Circumpolar_Current">Antarctic Circumpolar Current</a> in the Indian Ocean sector.</p>
+
+
+              <nav class="c-page__nav">
+  
+    
+    <a id="js-page__nav__prev" class="c-page__nav__prev" href="/assignments/cartopy.html">
+      〈 <span class="u-margin-right-tiny"></span> Assignment: Maps with Cartopy
+    </a>
+  
+
+  
+    
+    <a id="js-page__nav__next" class="c-page__nav__next" href="">
+       <span class="u-margin-right-tiny"></span> 〉
+    </a>
+  
+</nav>
+
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+  </body>
+</html>
