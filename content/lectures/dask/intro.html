@@ -7,15 +7,15 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width,minimum-scale=1">
 
-  <title>Xarray for multidimensional gridded data</title>
+  <title>Dask for Parallel Computing in Python</title>
   <meta name="description" content="An introduction to Earth and Environmental Data Science with Python.">
 
-  <link rel="canonical" href="http://earth-env-data-science.github.io//content/lectures/xarray/xarray_intro.html">
+  <link rel="canonical" href="http://earth-env-data-science.github.io//content/lectures/dask/intro.html">
   <link rel="alternate" type="application/rss+xml" title="Earth and Environmental Data Science" href="http://earth-env-data-science.github.io//feed.xml">
 
-  <meta property="og:url"         content="http://earth-env-data-science.github.io//content/lectures/xarray/xarray_intro.html" />
+  <meta property="og:url"         content="http://earth-env-data-science.github.io//content/lectures/dask/intro.html" />
 <meta property="og:type"        content="article" />
-<meta property="og:title"       content="Xarray for multidimensional gridded data" />
+<meta property="og:title"       content="Dask for Parallel Computing in Python" />
 <meta property="og:description" content="An introduction to Earth and Environmental Data Science with Python." />
 <meta property="og:image"       content="" />
 
@@ -25,9 +25,9 @@
   "@context": "http://schema.org",
   "@type": "NewsArticle",
   "mainEntityOfPage":
-    "http://earth-env-data-science.github.io//content/lectures/xarray/xarray_intro.html",
+    "http://earth-env-data-science.github.io//content/lectures/dask/intro.html",
   "headline":
-    "Xarray for multidimensional gridded data",
+    "Dask for Parallel Computing in Python",
   "datePublished":
     "2019-11-14T03:29:36+00:00",
   "dateModified":
@@ -1083,7 +1083,7 @@ initFunction(initQuery);
       
       
       <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry c-sidebar__entry--active"
+        <a class="c-sidebar__entry "
           href="/lectures/xarray/xarray_intro.html"
         >
           
@@ -1107,7 +1107,7 @@ initFunction(initQuery);
               
 
               <li class="c-sidebar__section">
-                <a class="c-sidebar__entry c-sidebar__entry--active"
+                <a class="c-sidebar__entry "
                   href="/lectures/xarray/xarray.html"
                 >
                   
@@ -1298,7 +1298,7 @@ initFunction(initQuery);
       
       
       <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
+        <a class="c-sidebar__entry c-sidebar__entry--active"
           href="/lectures/dask/intro.html"
         >
           
@@ -1373,110 +1373,39 @@ initFunction(initQuery);
             
 
             <div class="c-textbook__content">
-              <h1 id="xarray-for-multidimensional-gridded-data">Xarray for multidimensional gridded data</h1>
+              <h1 id="dask-for-parallel-computing-in-python">Dask for Parallel Computing in Python</h1>
 
-<p>In the previous set of lectures, we saw how Pandas provided a way to keep track of additional “metadata” surrounding tabular datasets, including “indexes” for each row and labels for each column. These features, together with Pandas’ many useful routines for all kinds of data munging and analysis, have made Pandas one of the most popular python packages in the world.</p>
+<p>In past lectures, we learned how to use numpy, pandas, and xarray to analyze various types of geoscience data.
+In this lecture, we address an incresingly common problem: what happens if the data we wish to analyze is “big data”</p>
 
-<p>However, not all Earth science datasets easily fit into the “tabular” model (i.e. rows and columns) imposed by Pandas. In particular, we often deal with <em>multidimensional data</em>. By <em>multidimensional data</em> (also often called <em>N-dimensional</em>), I mean data with many independent dimensions or axes. For example, we might represent Earth’s surface temperature $T$ as a three dimensional variable</p>
+<h2 id="what-is-big-data">What is “Big Data”?</h2>
 
-<script type="math/tex; mode=display">T(x, y, t)</script>
+<p>There is a lot of hype around the buzzword “big data” today.
+Some people may associate “big data” with specific sortware platforms (e.g. “Hadoop”, “spark”), while, for others, “big data” means specific machine learning techniques.
+But I think <a href="https://en.wikipedia.org/wiki/Big_data">wikipedia’s definition</a> is the most useful</p>
 
-<p>where $x$ is longitude, $y$ is latitude, and $t$ is time.</p>
+<blockquote>
+  <p>Big data is data sets that are so voluminous and complex that traditional data processing application software are inadequate to deal with them.</p>
+</blockquote>
 
-<p>The point of xarray is to provide pandas-level convenience for working with this type of data.</p>
+<p>By this definition, a great many datasets we regularly confront in Earth science are big data.</p>
 
-<p><img src="https://github.com/pydata/xarray/raw/master/doc/_static/dataset-diagram.png" alt="xarray data model" /></p>
+<p>A good threshold for when data becomes difficult to deal with is when the volume of data exceeds your computer’s RAM. Most modern laptops have between 2 and 16 GB of RAM. High-end workstations and servers can have 1 TB (1000 GB) or RAM or more. If the dataset you are trying to analyze can’t fit in you computer’s memory, some special care is required to carry out the analysis. Data that can’t fit in RAM but can fit on your hard drive is sometimes called “medium data.”</p>
 
-<h2 id="learning-goals-for-xarray">Learning Goals for Xarray</h2>
+<p>The next threshold of difficulty is when the data can’t fit on your hard drive. Most modern laptops have between 100 GB and 4 TB of storage space on the hard drive. If you can’t fit your dataset on your internal hard drive, you can buy an external hard drive. However, at that point you are better off using a high-end server, HPC system, or cloud-based storage for your dataset. Once you have many TB of data to analyze, you are definitely in the realm of “big data”</p>
 
-<p>Because of the importance of xarray for data analysis in geoscience, we are going to spend a long time on it.
-The goals of this section include the following.</p>
+<h2 id="what-is-dask">What is Dask?</h2>
 
-<h3 id="lesson-1-xarray-fundamentals">Lesson 1: Xarray Fundamentals</h3>
+<p>Dask is a tool that helps us easily extend our familiar python data analysis tools to medium and big data, i.e. dataset that can’t fit in our computer’s RAM. In many cases, dask also allows us to speed up our analysis by using mutiple CPU cores. Dask can help us work more efficiently on our laptop, and it can also help us scale up our analysis on HPC and cloud platforms. Most importantly, dask is almost invisible to the user, meaning that you can focus on your science, rather than the details of parallel computing.</p>
 
-<h4 id="dataset-creation">Dataset Creation</h4>
+<p>Dask was created by the brilliant <a href="http://matthewrocklin.com/">Matt Rocklin</a>. You can learn more about it on</p>
 
-<ol>
-  <li>Describe the core xarray data structures, the <code class="highlighter-rouge">DataArray</code> and the <code class="highlighter-rouge">Dataset</code>, and the components that make them up, including: Data Variables, Dimensions, Coordinates, Indexes, and Attributes</li>
-  <li>Create xarray <code class="highlighter-rouge">DataArrays</code> and <code class="highlighter-rouge">DataSets</code> out of raw numpy arrays</li>
-  <li>Create xarray objects with and without indexes</li>
-  <li>Load xarray datasets from netCDF files and openDAP servers</li>
-  <li>View and set attributes</li>
-</ol>
+<ul>
+  <li><a href="http://dask.readthedocs.io/en/latest/">The Dask Documentation</a></li>
+  <li><a href="https://github.com/dask/dask">The Dask Github Site</a></li>
+</ul>
 
-<h4 id="basic-indexing-and-interpolation">Basic Indexing and Interpolation</h4>
-
-<ol>
-  <li>Select data by position using <code class="highlighter-rouge">.isel</code> with values or slices</li>
-  <li>Select data by label using <code class="highlighter-rouge">.sel</code> with values or slices</li>
-  <li>Select timeseries data by date/time with values or slices</li>
-  <li>Use nearest-neighbor lookups with <code class="highlighter-rouge">.sel</code></li>
-  <li>Mask data with <code class="highlighter-rouge">.where</code></li>
-  <li>Interpolate data in one and several dimensions</li>
-</ol>
-
-<h4 id="basic-computation">Basic Computation</h4>
-
-<ol>
-  <li>Do basic arithmetic with DataArrays and Datasets</li>
-  <li>Use numpy universal function on DataArrays and Datasets, or use corresponding built-in xarray methods</li>
-  <li>Combine multiple xarray objects in arithmetic operations and understand how they are broadcasted / aligned</li>
-  <li>Perform aggregation (reduction) along one or multiple dimensions of a DataArray or Dataset</li>
-</ol>
-
-<h4 id="basic-plotting">Basic Plotting</h4>
-
-<ol>
-  <li>Use built-in xarray plotting for 1D and 2D DataArrays</li>
-  <li>Customize plots with options</li>
-</ol>
-
-<h3 id="lesson-2-advanced-usage">Lesson 2: Advanced Usage</h3>
-
-<h4 id="xarrays-groupby-resample-and-rolling">Xarray’s groupby, resample, and rolling</h4>
-
-<ol>
-  <li>Split xarray objects into groups using <code class="highlighter-rouge">groupby</code></li>
-  <li>Apply reduction operations to groups (e.g. mean)</li>
-  <li>Apply non-reducing functions to groups (e.g. standardize)</li>
-  <li>Use <code class="highlighter-rouge">groupby</code> with time coordinates (e.g. to create climatologies)</li>
-  <li>Use artimetic between <code class="highlighter-rouge">GroupBy</code> objects and regular DataArrays / Datasets</li>
-  <li>Use <code class="highlighter-rouge">groupby_bins</code> to aggregate data in bins</li>
-  <li>Use <code class="highlighter-rouge">resample</code> on time dimensions</li>
-  <li>Use <code class="highlighter-rouge">rolling</code> to apply rolling aggregations</li>
-</ol>
-
-<h4 id="merging-combining-datasets">Merging Combining Datasets</h4>
-
-<ol>
-  <li>Concatentate DataArrays and Datasets along a new or existing dimension</li>
-  <li>Merge multiple datasets with different variables</li>
-  <li>Add a new data variable to an existing Dataset</li>
-</ol>
-
-<h4 id="reshaping-data">Reshaping Data</h4>
-
-<ol>
-  <li>Transpose dimension order</li>
-  <li>Swap coordinates</li>
-  <li>Expand and squeeze dimensions</li>
-  <li>Convert between DataArray and Dataset</li>
-  <li>Use <code class="highlighter-rouge">stack</code> and <code class="highlighter-rouge">unstack</code> to transform data</li>
-</ol>
-
-<h4 id="advanced-computations">Advanced Computations</h4>
-
-<ol>
-  <li>Use <code class="highlighter-rouge">differentiate</code> to take derivatives of data</li>
-  <li>Use <code class="highlighter-rouge">apply_ufunc</code> to apply custom or specialized operations to data</li>
-</ol>
-
-<h4 id="plotting">Plotting</h4>
-
-<ol>
-  <li>Show multiple line plots over a dimension using the <code class="highlighter-rouge">hue</code> keyword</li>
-  <li>Create multiple 2D plots using faceting</li>
-</ol>
+<p>Dask provides <em>collections for big data</em> and <em>a scheduler for parallel computing</em>. It is probably easiest to illustrate what these mean through examples, so we will jump right in.</p>
 
               <nav class="c-page__nav">
   
