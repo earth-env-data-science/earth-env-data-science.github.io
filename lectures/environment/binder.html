@@ -7,16 +7,16 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width,minimum-scale=1">
 
-  <title>Assignment: Files, Git, and Github</title>
-  <meta name="description" content="Assignment: Files, Git, and Github">
+  <title>Sharing Reproducible Science with Binder</title>
+  <meta name="description" content="Binder for Reproducible Research">
 
-  <link rel="canonical" href="http://earth-env-data-science.github.io//assignments/files_markdown_git.html">
+  <link rel="canonical" href="http://earth-env-data-science.github.io//lectures/environment/binder.html">
   <link rel="alternate" type="application/rss+xml" title="Earth and Environmental Data Science" href="http://earth-env-data-science.github.io//feed.xml">
 
-  <meta property="og:url"         content="http://earth-env-data-science.github.io//assignments/files_markdown_git.html" />
+  <meta property="og:url"         content="http://earth-env-data-science.github.io//lectures/environment/binder.html" />
 <meta property="og:type"        content="article" />
-<meta property="og:title"       content="Assignment: Files, Git, and Github" />
-<meta property="og:description" content="Assignment: Files, Git, and Github" />
+<meta property="og:title"       content="Sharing Reproducible Science with Binder" />
+<meta property="og:description" content="Binder for Reproducible Research" />
 <meta property="og:image"       content="" />
 
 
@@ -25,15 +25,15 @@
   "@context": "http://schema.org",
   "@type": "NewsArticle",
   "mainEntityOfPage":
-    "http://earth-env-data-science.github.io//assignments/files_markdown_git.html",
+    "http://earth-env-data-science.github.io//lectures/environment/binder.html",
   "headline":
-    "Assignment: Files, Git, and Github",
+    "Sharing Reproducible Science with Binder",
   "datePublished":
     "2019-11-21T15:07:33+00:00",
   "dateModified":
     "2019-11-21T15:07:33+00:00",
   "description":
-    "Assignment: Files, Git, and Github",
+    "Binder for Reproducible Research",
   "author": {
     "@type": "Person",
     "name": "Ryan Abernathey"
@@ -699,7 +699,7 @@ initFunction(initQuery);
               
 
               <li class="c-sidebar__section">
-                <a class="c-sidebar__entry c-sidebar__entry--active"
+                <a class="c-sidebar__entry "
                   href="/assignments/files_markdown_git.html"
                 >
                   
@@ -752,7 +752,7 @@ initFunction(initQuery);
       
       
       <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
+        <a class="c-sidebar__entry c-sidebar__entry--active"
           href="/lectures/environment/binder.html"
         >
           
@@ -1394,82 +1394,180 @@ initFunction(initQuery);
 </div>
 
             
+<div class="buttons">
+<a href="/content/lectures/environment/binder.ipynb" download>
+<button id="interact-button-download" class="interact-button">Download</button>
+</a>
+
+
+
+
+
+
+
+
+
+
+<a href="https://ocean.pangeo.io/hub/user-redirect/git-pull?repo=https://github.com//earth-env-data-science/earth-env-data-science-book&amp;branch=master&amp;subPath=content%2Flectures%2Fenvironment%2Fbinder.ipynb&amp;app=lab"><button class="interact-button" id="interact-button-jupyterhub"><img class="interact-button-logo" src="/assets/images/logo_jupyterhub.svg" alt="Interact" />ocean.pangeo.io</button></a>
+
+
+
+</div>
+
 
             <div class="c-textbook__content">
-              <h1 id="assignment-files-git-and-github">Assignment: Files, Git, and Github</h1>
+              <h1 id="binder-for-reproducible-research">Binder for Reproducible Research</h1>
 
-<h2 id="create-a-dummy-resume-repository">Create a Dummy Resume Repository</h2>
+<p>This final lesson is concerned with the topic of reproducibility.
+Nearly everyone agrees that reproducibility is an important principle for science:
+if results are not reproducible, they are not valid.</p>
 
-<p>Use JupyterLab to launch a terminal and use the terminal to do the following tasks:</p>
+<p>But how do we achieve reproducibility in practice?
+In computational / data science, a particular analysis, calculation, or notebook may depend on hundreds of different software packages, each with many different versions.
+Reproducibility of our results depends on having the correct version.</p>
 
-<ol>
-  <li>Create a new directory called <code class="highlighter-rouge">resume</code> within your home directory</li>
-  <li>Create an empty file within this directory called <code class="highlighter-rouge">Readme.md</code></li>
-</ol>
+<p>In the <a href="{filename}/Lectures/python_environments.md">lesson on python environments</a>, we learned how to use <a href="https://conda.io/docs/">conda</a> to manage the packages in our environment.
+In this lesson, we will learn how to package our own code / notebooks together with an environment in such a way that it can be executed by anyone / anywhere, using cloud computing.</p>
 
-<p>Now use JupyterLab to edit the file:</p>
+<p>From the <a href="https://mybinder.readthedocs.io/en/latest/">Binder Documentation</a></p>
 
-<ol>
-  <li>Navigate to the directory in the file browser</li>
-  <li>Open <code class="highlighter-rouge">Readme.md</code> in the text editor</li>
-  <li>Open <code class="highlighter-rouge">Readme.md</code> in in Markdown Preview</li>
-  <li>Arrange these files side-by-side so you can see your document rendered</li>
-  <li>
-    <p>Edit the file in the editor. Add the following information:</p>
+<blockquote>
+  <p>Binder allows you to create custom computing environments that can be shared and used by many remote users. It is powered by <a href="https://github.com/jupyterhub/binderhub">BinderHub</a>, which is an open-source tool that deploys the Binder service in the cloud. One-such deployment lives … at mybinder.org and is free to use.</p>
+</blockquote>
 
-    <ol>
-      <li>Top level heading with your name</li>
-      <li>An image. It can be a photo of you or, if you prefer, a photo of your spirit animal.</li>
-      <li>Secondary heading entitled “Education”</li>
-      <li>A list of schools you attended, hyperlinked to the websites of those insitutions</li>
-    </ol>
-  </li>
-  <li>Save the file</li>
-</ol>
+<p>BinderHub uses a combination of open source technologies, including JupyterHub and <a href="https://docs.docker.com/">Docker</a> (a containerization service), to achieve this magic.</p>
 
-<p>Now go back to the terminal and do the following:</p>
+<p>In addition to the <a href="http://mybinder.org">http://mybinder.org</a> deployment, the Pangeo project operates a BinderHub service at <a href="http://binder.pangeo.io">http://binder.pangeo.io</a>. This BinderHub is customized to allow users to also launch Dask clusters in the cloud.</p>
 
-<ol>
-  <li>Initialize a new git repository in the <code class="highlighter-rouge">resume</code> directory</li>
-  <li>Add the <code class="highlighter-rouge">Readme.md</code> file to the repository</li>
-  <li>Create a new commit with a commit message</li>
-  <li>Check the git log to see your commit history</li>
-  <li>Go to github and create a <a href="https://github.com/new">new public repository</a> entitled <code class="highlighter-rouge">resume</code></li>
-  <li>Push your local resume repository to GitHub following the instructions.</li>
-  <li>View your online resume at <code class="highlighter-rouge">http://github.com/&lt;your github username&gt;/resume</code></li>
-</ol>
+<h2 id="an-example-binder">An Example Binder</h2>
 
-<p>Finally, go back to the editor and add a new subsection called “Research Interests” to your <code class="highlighter-rouge">Readme.md</code> file. Update your local git repository and push your changes to GitHub. Verify that the remote repository is updated.</p>
+<p>All binders start with a github repository. As an example, let’s consider the the official dask examples repo: <a href="https://github.com/dask/dask-examples">https://github.com/dask/dask-examples</a></p>
 
-<p>To “hand in” this part of the assignment, put a link to it in the <code class="highlighter-rouge">Readme.md</code> file in the next part.</p>
+<h3 id="contents">Contents</h3>
 
-<h2 id="create-your-assignments-repository">Create your Assignments Repository</h2>
-
-<p>Now that you know how to create a git repository, you should create your assignments repository.</p>
+<p>The repository should contain the following two elements:</p>
 
 <ul>
-  <li>Create a new directory called <code class="highlighter-rouge">rces-assignments</code> in your home directory.</li>
-  <li>Create a <code class="highlighter-rouge">Readme.md</code> markdown file that contains your name and a link to your “resume” repo.</li>
-  <li>Initialize a new git repository</li>
-  <li>Add the file and make your first commit</li>
-  <li>Create a new <strong>private</strong> repository on GitHub called <code class="highlighter-rouge">rces-assignments</code>. (Call it exactly like that. Do not vary the spelling, capitalization, or punctuation.)</li>
-  <li>Push your <code class="highlighter-rouge">rces-assignments</code> repository to github</li>
-  <li>On github, go to “settings” -&gt; “collaborators” and add <code class="highlighter-rouge">rabernat</code>, <code class="highlighter-rouge">kerrykey</code>, and <code class="highlighter-rouge">JanineBirnbaum18</code></li>
-  <li>Push new commits to this repository whenever you are ready to hand in your assignments</li>
+  <li>Python code and / or notebooks (these can live in sub-directories)</li>
+  <li>An <code class="highlighter-rouge">environment.yml</code> or <code class="highlighter-rouge">requirements.txt</code> file to specify the package dependencies (can be at the top level or in a subdirectory called <code class="highlighter-rouge">binder/</code>)</li>
 </ul>
+
+<p>The dask-examples repo contains about 10 different example notebooks.</p>
+
+<p>To specify the environment, the dask-example repo has the following file at <code class="highlighter-rouge">binder/environment.yml</code></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>channels:
+  - conda-forge
+dependencies:
+  - python=3
+  - bokeh=0.13
+  - dask=0.20
+  - dask-ml=0.10.0
+  - distributed=1.24
+  - jupyterlab=0.35.1
+  - nodejs=8.9
+  - numpy
+  - pandas
+  - pyarrow==0.10.0
+  - scikit-learn=0.20
+  - matplotlib
+  - nbserverproxy
+  - nomkl
+  - h5py
+  - xarray
+  - bottleneck
+  - py-xgboost
+  - pip:
+    - graphviz
+    - dask_xgboost
+    - seaborn
+    - mimesis
+</code></pre></div></div>
+
+<p>This is a rather complex set of dependencies.
+In addition, there are other files in the <code class="highlighter-rouge">binder/</code> directory that help further customize the environment.
+These customizations are described in the <a href="https://mybinder.readthedocs.io/en/latest/using.html#executing-post-build-commands">Binder Documentation</a>.</p>
+
+<h3 id="binder-link">Binder Link</h3>
+
+<p>Once the repository is ready, it’s time to generate a link to the BinderHub.
+These links have the following structure:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://mybinder.org/v2/&lt;provider-name&gt;/&lt;org-name&gt;/&lt;repo-name&gt;/&lt;branch|commit|tag&gt;?filepath=&lt;path/to/notebook.ipynb&gt;
+</code></pre></div></div>
+
+<p>For the dask-examples repo, the link used is:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab
+</code></pre></div></div>
+
+<p>In this case, <code class="highlighter-rouge">provider</code> is <code class="highlighter-rouge">gh</code> (i.e. github).</p>
+
+<p>The <a href="https://mybinder.org/">https://mybinder.org/</a> website has a nifty tool to automatically generate badges that can be placed on a website or markdown file to make it easy to launch the binder.
+For dask-examples, the markdown code looks like this:</p>
+
+<p><code class="highlighter-rouge">[![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab)</code></p>
+
+<p>And renders like this</p>
+
+<p><a href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"><img src="https://mybinder.org/badge.svg" alt="Binder" /></a></p>
+
+<p>Take some time to launch the binder and play around with it.</p>
+
+<h2 id="creating-your-own-binder">Creating your Own Binder</h2>
+
+<p>To create your own binder, you will need to have the same two ingredients:</p>
+
+<ul>
+  <li>Some code to share</li>
+  <li>An appropriate environment</li>
+</ul>
+
+<p>At this point, probably the best way to develop a binder is to start on your personal computer.</p>
+
+<p>First create or clone a github repo with the following file / directory structure:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>binder/environment.yml
+some-notebook.ipynb
+Readme.md
+</code></pre></div></div>
+
+<p><strong>Note: you should use your <a href="{filename}/Pages/final_project.md">final_project</a> repository for this.</strong>
+Modify the <code class="highlighter-rouge">environment.yml</code> to specify the packages you think you will be using, and then create and activate the environment.
+(See the <a href="{filename}/Lectures/python_environments.md">lesson on python environments</a> to review how to do this.)</p>
+
+<p>Then add some basic content to the notebook. For example, try importing the packages you might want to use:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import numpy as np
+import pandas as pd
+import xarray as xr
+import cartopy.crs as ccrs
+from matplotlib import pyplot as plt
+</code></pre></div></div>
+
+<p>Once things are working, push the repo to github. Then use <a href="https://mybinder.org">https://mybinder.org</a> to generate a binder badge and add it to your <code class="highlighter-rouge">Readme.md</code> file.</p>
+
+<p>You should now be able to run your binder on mybinder.org!</p>
+
+<h3 id="updating-your-binder">Updating your Binder</h3>
+
+<p>An important thing to remember is that <strong>you cannot save changes from within a running binder</strong>. The running notebooks will automatically shut down after 10 minutes of inactivity, and you will <strong>lose any modifications you made to the notebooks</strong>. (See <a href="https://mybinder.readthedocs.io/en/latest/faq.html">mybinder FAQ</a> for more details.) This is very different from our research computing jupyterhub, where all changes are saved. Binder is meant for demonstrating and sharing finished projects, not development of new ones.</p>
+
+<p>To update your binder, you need to go back to your personal copy of the repo, make changes, commit, and push back to github.</p>
+
 
               <nav class="c-page__nav">
   
     
-    <a id="js-page__nav__prev" class="c-page__nav__prev" href="/lectures/environment/intro_to_git.html">
-      〈 <span class="u-margin-right-tiny"></span> Intro to Git
+    <a id="js-page__nav__prev" class="c-page__nav__prev" href="/lectures/environment/python_environments.html">
+      〈 <span class="u-margin-right-tiny"></span> Managing Environments
     </a>
   
 
   
     
-    <a id="js-page__nav__next" class="c-page__nav__next" href="/lectures/environment/python_environments.html">
-      Managing Environments <span class="u-margin-right-tiny"></span> 〉
+    <a id="js-page__nav__next" class="c-page__nav__next" href="/lectures/core_python/python_fundamentals.html">
+      Python Fundamentals <span class="u-margin-right-tiny"></span> 〉
     </a>
   
 </nav>
