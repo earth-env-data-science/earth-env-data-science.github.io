@@ -29,9 +29,9 @@
   "headline":
     "Organization and Packaging of Python Projects",
   "datePublished":
-    "2019-11-21T15:07:33+00:00",
+    "2019-11-26T14:29:24+00:00",
   "dateModified":
-    "2019-11-21T15:07:33+00:00",
+    "2019-11-26T14:29:24+00:00",
   "description":
     "Organization and Packaging of Python Projects",
   "author": {
@@ -1454,17 +1454,7 @@ Gists are like mini repos you can easily share and embed.
 <p>You can upload any file (including an <code class="highlighter-rouge">.ipynb</code> notebook file) by dragging and dropping it into the gist website.
 You have the choice of making you gist public or secret. (There is no private option, but a secret gist can only be seen by others if you give them the URL.)</p>
 
-<p>There is also a fantastically easy way to create notebook gists directly from your notebook itself.
-This requires the jupyter <a href="https://github.com/minrk/ipython_extensions#gist">gist extension</a> by <a href="https://github.com/minrk">Min RK</a>. To install this extension, type the following from the command line:</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>jupyter nbextension install https://rawgithub.com/minrk/ipython_extensions/master/nbextensions/gist.js --user
-jupyter nbextension enable gist
-</code></pre></div></div>
-
-<p>When you restart your notebook, you will see a little arrow button in the notebook toolbar. Clicking on this button for the first time will prompt you to enter a <a href="https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/">Github personal access token</a>.
-Follow the link to go to <a href="https://github.com/settings/tokens">https://github.com/settings/tokens</a> and choose “Generate new token.” The only “scope” your token needs to have is “Create gist.” Once the token is generated, copy and paste it back into the notebook dialog. Your notebook will now automatically be posted as a gist, and a link to the <a href="http://nbviewer.jupyter.org/">nbviewer</a> view of it will appear in the toolbar. If you click the button again, the gist will update. Amazing!</p>
-
-<p>I have found this to be a great way to quickly save exploratory notebooks and share them with collaborators.</p>
+<p>GitHub’s rendering of Gists is a bit buggy. For a more consistent rendering experience, you can share your gist via <a href="http://nbviewer.ipython.org/">http://nbviewer.ipython.org/</a>.</p>
 
 <h2 id="a-single-paper">A Single Paper</h2>
 
@@ -1716,10 +1706,10 @@ FILE
   <li>Xarray: <a href="https://github.com/pydata/xarray">https://github.com/pydata/xarray</a></li>
 </ul>
 
-<p>An example of a smaller, more understandable package is my xrft package:</p>
+<p>An example of a smaller, more understandable package is our group’s xrft package:</p>
 
 <ul>
-  <li>xrft: https://github.com/rabernat/xrft</li>
+  <li>xrft: https://github.com/xgcm/xrft</li>
 </ul>
 
 <p>These packages all have a common basic structure. Imagine we wanted to turn our great-circle distance module into a package. It would look like this.</p>
@@ -1785,7 +1775,7 @@ gcdistancs/tests/test_gcdistance.py
 
 <span class="n">setup</span><span class="p">(</span>
     <span class="n">name</span> <span class="o">=</span> <span class="s">"gcdistance"</span><span class="p">,</span>
-    <span class="n">version</span> <span class="o">=</span> <span class="s">"0.0.1"</span><span class="p">,</span>
+    <span class="n">version</span> <span class="o">=</span> <span class="s">"0.1.0"</span><span class="p">,</span>
     <span class="n">author</span> <span class="o">=</span> <span class="s">"Ryan Abernathey"</span><span class="p">,</span>
     <span class="n">packages</span><span class="o">=</span><span class="p">[</span><span class="s">'gcdistance'</span><span class="p">],</span>
     <span class="n">install_requires</span><span class="o">=</span><span class="p">[</span><span class="s">'numpy'</span><span class="p">],</span>
@@ -1870,34 +1860,6 @@ If we plan to keep developing the package, we can install it in “developer mod
   <li>Add the file, commit, and push to github</li>
   <li>Go to <a href="https://travis-ci.org">https://travis-ci.org</a> and watch the magic happen!</li>
 </ol>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">round</span><span class="p">(</span><span class="mf">1.12345678</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mf">1.1</span>
-
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>True
-</code></pre></div>      </div>
-
-    </div>
-  </div>
-</div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">assert</span> <span class="mf">1.1</span> <span class="o">&lt;</span> <span class="mf">1.12</span>
-<span class="k">assert</span> <span class="mf">1.1</span> <span class="o">&gt;</span> <span class="mf">1.0</span>
-
-</code></pre></div>    </div>
-  </div>
-
-</div>
 
 
               <nav class="c-page__nav">
