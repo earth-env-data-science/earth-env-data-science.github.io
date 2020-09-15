@@ -29,9 +29,9 @@
   "headline":
     "Python Fundamentals",
   "datePublished":
-    "2020-09-11T17:01:18+00:00",
+    "2020-09-15T11:42:01+00:00",
   "dateModified":
-    "2020-09-11T17:01:18+00:00",
+    "2020-09-15T11:42:01+00:00",
   "description":
     "Python Fundamentals",
   "author": {
@@ -1445,21 +1445,21 @@ initFunction(initQuery);
 
 <h2 id="invoking-python">Invoking Python</h2>
 
-<p>There are three main ways to use python.</p>
+<p>There are three main ways to use Python.</p>
 
 <ol>
-  <li>By running a python file, e.g. <code class="highlighter-rouge">python myscript.py</code></li>
-  <li>Through an interactive console (python interpreter or ipython shell)</li>
+  <li>By running a Python file, e.g. <code class="highlighter-rouge">python myscript.py</code></li>
+  <li>Through an interactive console (Python interpreter or iPython shell)</li>
   <li>In an interactive notebook (e.g. Jupyter)</li>
 </ol>
 
-<p>In this course, we will mostly be interacting with python via Jupyter notebooks.</p>
+<p>In this course, we will mostly be interacting with Python via Jupyter notebooks.</p>
 
 <h2 id="python-versions">Python Versions</h2>
 
-<p>There are two versions of the python language out there: python 2 and python 3. In 2019, the vast majority of the scientific community now uses python 3. As new python learners, you should definitely learn python 3. But it is important to be aware that python 2 exists, since you might encounter it in the wild.</p>
+<p>There are two versions of the Python language out there: Python 2 and Python 3. In 2019, the vast majority of the scientific community now uses Python 3. As new Python learners, you should definitely learn Python 3. But it is important to be aware that Python 2 exists, since you might encounter it in the wild.</p>
 
-<p>Some of the main changes introduced in python 3 are:</p>
+<p>Some of the main changes introduced in Python 3 are:</p>
 
 <ul>
   <li><code class="highlighter-rouge">print</code> is a function</li>
@@ -1492,7 +1492,7 @@ assert     else       import     pass
 break      except     in         raise
 </code></pre></div></div>
 
-<p>Additionally, the following a built in functions which are always available in your namespace once you open a python interpreter</p>
+<p>Additionally, the following a built in functions which are always available in your namespace once you open a Python interpreter</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>abs() dict() help() min() setattr() all() dir() hex() next() slice() any()
 divmod() id() object() sorted() ascii() enumerate() input() oct() staticmethod()
@@ -1661,7 +1661,7 @@ False
 
 <h2 id="math">Math</h2>
 
-<p>Basic arithmetic and boolean logic is part of the core python library.</p>
+<p>Basic arithmetic and boolean logic is part of the core Python library.</p>
 
 <div class="cell code_cell">
   <div class="input_area">
@@ -1860,7 +1860,7 @@ False
 
 <h2 id="conditionals">Conditionals</h2>
 
-<p>The first step to programming. Plus an intro to python syntax.</p>
+<p>The first step to programming. Plus an intro to Python syntax.</p>
 
 <div class="cell code_cell">
   <div class="input_area">
@@ -1949,7 +1949,7 @@ Huge number!
   </div>
 </div>
 
-<p><strong>Important point</strong>: in python, we always count from 0!</p>
+<p><strong>Important point</strong>: in Python, we always count from 0!</p>
 
 <div class="cell code_cell">
   <div class="input_area">
@@ -1997,7 +1997,7 @@ fish 4
   </div>
 </div>
 
-<p>What is the thing in brackets? <strong>A list!</strong> Lists are one of the core python data structures.</p>
+<p>What is the thing in brackets? <strong>A list!</strong> Lists are one of the core Python data structures.</p>
 
 <h2 id="lists">Lists</h2>
 
@@ -2084,7 +2084,7 @@ r: []
   </div>
 </div>
 
-<p>There are many different ways to interact with lists. Exploring them is part of the fun of python.</p>
+<p>There are many different ways to interact with lists. Exploring them is part of the fun of Python.</p>
 
 <p><strong>list.append(x)</strong> Add an item to the end of the list. Equivalent to a[len(a):] = [x].</p>
 
@@ -2156,9 +2156,9 @@ middle, skipping every other item [10, 12, 14]
   </div>
 </div>
 
-<p><strong>MEMORIZE THIS SYNTAX!</strong> It is central to so much of python and often proves confusing for users coming from other languages.</p>
+<p><strong>MEMORIZE THIS SYNTAX!</strong> It is central to so much of Python and often proves confusing for users coming from other languages.</p>
 
-<p>In terms of set notation, python indexing is <em>left inclusive</em>, <em>right exclusive</em>. If you remember this, you will never go wrong.</p>
+<p>In terms of set notation, Python indexing is <em>left inclusive</em>, <em>right exclusive</em>. If you remember this, you will never go wrong.</p>
 
 <div class="cell code_cell">
   <div class="input_area">
@@ -2249,7 +2249,7 @@ middle, skipping every other item [10, 12, 14]
 
 <div class="cell code_cell">
   <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># a cool python trick: list comprehension</span>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># a cool Python trick: list comprehension</span>
 <span class="n">squares</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)]</span>
 <span class="n">squares</span>
 
@@ -2289,7 +2289,7 @@ first: 4 second: 14
 
 <h2 id="other-data-structures">Other Data Structures</h2>
 
-<p>We are almost there. We have the building blocks we need to do basic programming. But python has some other data structures we need to learn about.</p>
+<p>We are almost there. We have the building blocks we need to do basic programming. But Python has some other data structures we need to learn about.</p>
 
 <h2 id="tuples">Tuples</h2>
 
@@ -2387,7 +2387,7 @@ first: 4 second: 14
   </div>
 </div>
 
-<p>Square brackets <code class="highlighter-rouge">[...]</code> are python for “get item” in many different contexts.</p>
+<p>Square brackets <code class="highlighter-rouge">[...]</code> are Python for “get item” in many different contexts.</p>
 
 <div class="cell code_cell">
   <div class="input_area">
@@ -2496,7 +2496,7 @@ height (5, 11)
 <div class="cell code_cell">
   <div class="input_area">
     <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># better way</span>
-<span class="c">### python 2</span>
+<span class="c">### Python 2</span>
 <span class="c">### for key, val in d.iteritems()</span>
 <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="k">print</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>

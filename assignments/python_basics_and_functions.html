@@ -29,9 +29,9 @@
   "headline":
     "Assignment: Python Basics and Functions",
   "datePublished":
-    "2020-09-11T17:01:18+00:00",
+    "2020-09-15T11:42:01+00:00",
   "dateModified":
-    "2020-09-11T17:01:18+00:00",
+    "2020-09-15T11:42:01+00:00",
   "description":
     "Assignment: Basic Python",
   "author": {
@@ -1443,24 +1443,24 @@ initFunction(initQuery);
 
 <h2 id="part-i-lists-and-loops">Part I: Lists and Loops</h2>
 
-<p>In this problem, we will explore the basic data structures and flow controls of python by <em>manually parsing a CSV file</em>.</p>
+<p>In this problem, we will explore the basic data structures and flow controls of Python by <em>manually parsing a CSV file</em>.</p>
 
-<p>Note that this is a futile exercise. In the “real world” you should never manually parse a CSV file. There are utilities out there that will do it for you much more quickly and efficiently. However, it is a useful exercise for learning python.</p>
+<p>Note that this is a futile exercise. In the “real world” you should never manually parse a CSV file. There are utilities out there that will do it for you much more quickly and efficiently. However, it is a useful exercise for learning Python.</p>
 
-<p>First we need to download a data file to parse. We can do this from the terminal, OR we can use <code class="highlighter-rouge">!</code> to run shell commands directly from the notebook. However you do it, you need to run these commands:</p>
+<p>First we need to download a data file to parse. We can do this from the terminal, OR we can use <code class="highlighter-rouge">!</code> to run shell commands directly from the notebook. However you do it, you need to run this command (all one line):</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget https://www.ldeo.columbia.edu/~rpa/rces-roster-2019.csv
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl -L -o rces-roster-2020.csv "https://drive.google.com/uc?export=download&amp;id=1qMWDj55zbbRaVRE5SdqouTYRMQ-gCcka"
 </code></pre></div></div>
 
-<p>Before starting the python part, use the JupyterLab file browser to browse to this file. Click to open it. What do you see?</p>
+<p>Before starting the Python part, use the JupyterLab file browser to browse to this file. Click to open it. What do you see?</p>
 
-<p>Now we will begin the process of reading the file with python</p>
+<p>Now we will begin the process of reading the file with Python</p>
 
 <h3 id="open-the-file-using-the-open-function">Open the file using the <code class="highlighter-rouge">open</code> function</h3>
 
 <p>Specifically, run the command</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>file = open('rces-roster-2019.csv')
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>file = open('rces-roster-2020.csv')
 </code></pre></div></div>
 
 <h3 id="use-the-help-function-to-get-the-documentation-for-your-new-variable-file">Use the <code class="highlighter-rouge">help</code> function to get the documentation for your new variable <code class="highlighter-rouge">file</code></h3>
@@ -1481,7 +1481,7 @@ initFunction(initQuery);
 
 <h3 id="create-a-new-list-called-data-that-does-not-contain-the-header-row">Create a new list called <code class="highlighter-rouge">data</code> that does not contain the header row</h3>
 
-<h3 id="now-iterate-through-lines-and-print-the-item-if-it-contains-your-uni">Now iterate through <code class="highlighter-rouge">lines</code> and <code class="highlighter-rouge">print</code> the item if it contains your uni</h3>
+<h3 id="now-iterate-through-lines-and-print-the-item-if-it-contains-your-uni">Now iterate through <code class="highlighter-rouge">lines</code> and <code class="highlighter-rouge">print</code> the item if it contains your UNI</h3>
 
 <p>By now you have figured out what is in this data. Let’s now transform it into a more useful format.</p>
 
@@ -1489,7 +1489,7 @@ initFunction(initQuery);
 
 <p>(You might need to review Python’s <a href="https://docs.python.org/3/library/stdtypes.html#textseq">string methods</a>.)</p>
 
-<h3 id="use-this-dictionary-to-look-up-your-own-name-using-your-uni">Use this dictionary to look up your own name using your uni</h3>
+<h3 id="use-this-dictionary-to-look-up-your-own-name-using-your-uni">Use this dictionary to look up your own name using your UNI</h3>
 
 <h3 id="figure-out-who-has-the-longest-last-name-in-the-class">Figure out who has the longest last name in the class</h3>
 
