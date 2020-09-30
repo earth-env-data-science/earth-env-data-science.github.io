@@ -29,9 +29,9 @@
   "headline":
     "Assignment: More Matplotlib",
   "datePublished":
-    "2020-09-15T11:42:01+00:00",
+    "2020-09-30T16:52:17+00:00",
   "dateModified":
-    "2020-09-15T11:42:01+00:00",
+    "2020-09-30T16:52:17+00:00",
   "description":
     "Assignment 4: More Matplotlib",
   "author": {
@@ -1443,13 +1443,13 @@ initFunction(initQuery);
 
 <p>The goal here is to replicate the figures you see as closely as possible.</p>
 
-<p>In order to get some data, you will have to run the code in the cells below. <strong>Don’t worry about how this code works.</strong> In the end, it will give you some numpy arrays, which you will use in your plots. You are not allowed to use any packages other than numpy and matplotlib to complete your assignment.</p>
+<p>In order to get some data, you will have to run the code in the cells below. <strong>Don’t worry about how this code works.</strong> In the end, it will give you some Numpy arrays, which you will use in your plots. You are not allowed to use any packages other than Numpy and Matplotlib to complete your assignment.</p>
 
 <h3 id="problem-1-line-plots">Problem 1: Line plots</h3>
 
 <p>In this problem, we will plot some daily weather data from a NOAA station in <a href="https://www.ncdc.noaa.gov/cdo-web/datasets/GHCND/stations/GHCND:US1NYDT0008/detail">Millbrook, NY</a>. A full description of this dataset is available at: <a href="https://www.ncdc.noaa.gov/data-access/land-based-station-data">https://www.ncdc.noaa.gov/data-access/land-based-station-data</a></p>
 
-<p>The cell below uses pandas to download the data and populate a bunch of numpy arrays (<code class="highlighter-rouge">t_daily_min</code>, <code class="highlighter-rouge">t_daily_max</code>, etc.) Run the cell and then use the numpy arrays to try to re-create the plot you see.</p>
+<p>The cell below uses Pandas to download the data and populate a bunch of Numpy arrays (<code class="highlighter-rouge">t_daily_min</code>, <code class="highlighter-rouge">t_daily_max</code>, etc.) Run the cell and then use the Numpy arrays to try to re-create the plot you see.</p>
 
 <div class="cell code_cell">
   <div class="input_area">
@@ -1460,7 +1460,7 @@ initFunction(initQuery);
 <span class="k">with</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">header_url</span><span class="p">)</span> <span class="k">as</span> <span class="n">response</span><span class="p">:</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">'utf-8'</span><span class="p">)</span>
 <span class="n">lines</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>
-<span class="n">headers</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">' '</span><span class="p">)</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">' '</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
 <span class="n">ftp_base</span> <span class="o">=</span> <span class="s">'ftp://ftp.ncdc.noaa.gov/pub/data/uscrn/products/daily01/'</span>
 <span class="n">dframes</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1498,7 +1498,11 @@ initFunction(initQuery);
 
 <div class="cell code_cell">
   <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">units</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">' '</span><span class="p">)</span>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">units</span> <span class="o">=</span> <span class="p">[</span><span class="s">'XXXXX'</span><span class="p">,</span> <span class="s">'YYYYMMDD'</span><span class="p">,</span> <span class="s">'XXXXXX'</span><span class="p">,</span><span class="s">'Decimal_degrees'</span><span class="p">,</span> <span class="s">'Decimal_degrees'</span><span class="p">,</span> <span class="s">'Celsius'</span><span class="p">,</span> <span class="s">'Celsius'</span><span class="p">,</span> 
+         <span class="s">'Celsius'</span><span class="p">,</span> <span class="s">'Celsius'</span><span class="p">,</span> <span class="s">'mm'</span><span class="p">,</span> <span class="s">'MJ/m^2'</span><span class="p">,</span> <span class="s">'X'</span><span class="p">,</span> <span class="s">'Celsius'</span><span class="p">,</span> <span class="s">'Celsius'</span><span class="p">,</span> <span class="s">'Celsius'</span><span class="p">,</span> <span class="s">'</span><span class="si">%</span><span class="s">'</span><span class="p">,</span> <span class="s">'</span><span class="si">%</span><span class="s">'</span><span class="p">,</span> <span class="s">'</span><span class="si">%</span><span class="s">'</span><span class="p">,</span>
+         <span class="s">'m^3/m^3'</span><span class="p">,</span> <span class="s">'m^3/m^3'</span><span class="p">,</span> <span class="s">'m^3/m^3'</span><span class="p">,</span> <span class="s">'m^3/m^3'</span><span class="p">,</span> <span class="s">'m^3/m^3'</span><span class="p">,</span> <span class="s">'Celsius'</span><span class="p">,</span> <span class="s">'Celsius'</span><span class="p">,</span> <span class="s">'Celsius'</span><span class="p">,</span>
+         <span class="s">'Celsius'</span><span class="p">,</span> <span class="s">'Celsius'</span><span class="p">]</span>
+
 <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">unit</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">headers</span><span class="p">,</span> <span class="n">units</span><span class="p">):</span>
     <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">'{name}: {unit}'</span><span class="p">)</span>
 
@@ -1535,7 +1539,6 @@ SOIL_TEMP_10_DAILY: Celsius
 SOIL_TEMP_20_DAILY: Celsius
 SOIL_TEMP_50_DAILY: Celsius
 SOIL_TEMP_100_DAILY: Celsius
-: 
 </code></pre></div>      </div>
     </div>
   </div>
@@ -1571,18 +1574,42 @@ SOIL_TEMP_100_DAILY: Celsius
 <p><img src="more_matplotlib_figures/fig2.png" alt="fig2" /></p>
 
 <h3 id="problem-3-scatter-plots">Problem 3: Scatter plots</h3>
-<p>Here we will make a map plot of earthquakes from a USGS catalog of historic large earthquakes. Color the earthquakes by log10(depth) and adjust the marker size to be magntiude$^2$/100</p>
+<p>Here we will make a map plot of earthquakes from a USGS catalog of historic large earthquakes. Color the earthquakes by log10(depth) and adjust the marker size to be magntiude$^4$/100</p>
 
 <div class="cell code_cell">
   <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">!</span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">rabernat</span><span class="o">.</span><span class="n">github</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">research_computing</span><span class="o">/</span><span class="n">signif</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">tsv</span><span class="o">.</span><span class="nb">zip</span>
-<span class="err">!</span><span class="n">unzip</span> <span class="o">-</span><span class="n">o</span> <span class="n">signif</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">tsv</span><span class="o">.</span><span class="nb">zip</span>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">!</span><span class="n">curl</span> <span class="o">-</span><span class="n">L</span> <span class="o">-</span><span class="n">o</span> <span class="n">earthquakes</span><span class="o">.</span><span class="n">tsv</span> <span class="s">"https://drive.google.com/uc?export=download&amp;id=1dFZ4LbwNaw-Gr0G-ZlPAZ17n2qCkdQBP"</span>
 
-<span class="c">#########################################################</span>
-<span class="c">#### BELOW ARE THE VARIABLES YOU SHOULD USE IN THE PLOTS!</span>
+</code></pre></div>    </div>
+  </div>
+
+  <div class="output_wrapper">
+    <div class="output_subarea">
+      <div class="output_stream highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   388    0   388    0     0    560      0 --:--:-- --:--:-- --:--:--   559
+100  796k  100  796k    0     0   905k      0 --:--:-- --:--:-- --:--:--  905k
+</code></pre></div>      </div>
+    </div>
+  </div>
+</div>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+</code></pre></div>    </div>
+  </div>
+
+</div>
+
+<div class="cell code_cell">
+  <div class="input_area">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#########################################################</span>
+<span class="c">#### BELOW ARE THE VARIABLES YOU SHOULD USE IN THE PLOT!</span>
 <span class="c">#########################################################</span>
 
-<span class="n">earthquakes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="s">'signif.txt.tsv'</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s">'</span><span class="se">\t</span><span class="s">'</span><span class="p">)</span>
+<span class="n">earthquakes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="s">'earthquakes.tsv'</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s">'</span><span class="se">\t</span><span class="s">'</span><span class="p">)</span>
 <span class="n">depth</span> <span class="o">=</span> <span class="n">earthquakes</span><span class="p">[:,</span> <span class="mi">8</span><span class="p">]</span>
 <span class="n">magnitude</span> <span class="o">=</span> <span class="n">earthquakes</span><span class="p">[:,</span> <span class="mi">9</span><span class="p">]</span>
 <span class="n">latitude</span> <span class="o">=</span> <span class="n">earthquakes</span><span class="p">[:,</span> <span class="mi">20</span><span class="p">]</span>
