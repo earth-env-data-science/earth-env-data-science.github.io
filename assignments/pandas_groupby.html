@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width,minimum-scale=1">
 
   <title>Assignment: Pandas Groupby with Hurrican Data</title>
-  <meta name="description" content="Assignment: Pandas Groupby with Hurricane Data">
+  <meta name="description" content="Assignment 6: Pandas Groupby with Hurricane Data">
 
   <link rel="canonical" href="http://earth-env-data-science.github.io//assignments/pandas_groupby.html">
   <link rel="alternate" type="application/rss+xml" title="Earth and Environmental Data Science" href="http://earth-env-data-science.github.io//feed.xml">
@@ -16,7 +16,7 @@
   <meta property="og:url"         content="http://earth-env-data-science.github.io//assignments/pandas_groupby.html" />
 <meta property="og:type"        content="article" />
 <meta property="og:title"       content="Assignment: Pandas Groupby with Hurrican Data" />
-<meta property="og:description" content="Assignment: Pandas Groupby with Hurricane Data" />
+<meta property="og:description" content="Assignment 6: Pandas Groupby with Hurricane Data" />
 <meta property="og:image"       content="" />
 
 
@@ -29,11 +29,11 @@
   "headline":
     "Assignment: Pandas Groupby with Hurrican Data",
   "datePublished":
-    "2020-09-30T16:52:17+00:00",
+    "2020-10-14T15:52:27+00:00",
   "dateModified":
-    "2020-09-30T16:52:17+00:00",
+    "2020-10-14T15:52:27+00:00",
   "description":
-    "Assignment: Pandas Groupby with Hurricane Data",
+    "Assignment 6: Pandas Groupby with Hurricane Data",
   "author": {
     "@type": "Person",
     "name": "Ryan Abernathey"
@@ -1439,31 +1439,18 @@ initFunction(initQuery);
 
 
             <div class="c-textbook__content">
-              <h1 id="assignment-pandas-groupby-with-hurricane-data">Assignment: Pandas Groupby with Hurricane Data</h1>
+              <h1 id="assignment-6-pandas-groupby-with-hurricane-data">Assignment 6: Pandas Groupby with Hurricane Data</h1>
 
-<p>Import pandas and matplotlib</p>
+<p>Import Numpy, Pandas and Matplotlib and set the display options.</p>
 
-<p>Use the following code to download and unzip a CSV file of the <a href="https://www.ncdc.noaa.gov/ibtracs/index.php?name=ibtracs-data">NOAA IBTrACS</a> hurricane dataset.</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">!</span> <span class="n">wget</span> <span class="n">ftp</span><span class="p">:</span><span class="o">//</span><span class="n">eclipse</span><span class="o">.</span><span class="n">ncdc</span><span class="o">.</span><span class="n">noaa</span><span class="o">.</span><span class="n">gov</span><span class="o">/</span><span class="n">pub</span><span class="o">/</span><span class="n">ibtracs</span><span class="o">/</span><span class="n">v03r10</span><span class="o">/</span><span class="nb">all</span><span class="o">/</span><span class="n">csv</span><span class="o">/</span><span class="n">Allstorms</span><span class="o">.</span><span class="n">ibtracs_all</span><span class="o">.</span><span class="n">v03r10</span><span class="o">.</span><span class="n">csv</span><span class="o">.</span><span class="n">gz</span>
-<span class="err">!</span> <span class="n">gunzip</span> <span class="n">Allstorms</span><span class="o">.</span><span class="n">ibtracs_all</span><span class="o">.</span><span class="n">v03r10</span><span class="o">.</span><span class="n">csv</span><span class="o">.</span><span class="n">gz</span>
-
-</code></pre></div>    </div>
-  </div>
-
-</div>
-
-<p>Examine the first few lines of the file.</p>
-
-<p>Then use the following code to load as a pandas dataframe. Think about the options being used and why.</p>
+<p>Use the following code to load a CSV file of the <a href="https://www.ncdc.noaa.gov/ibtracs/index.php?name=ibtracs-data">NOAA IBTrACS</a> hurricane dataset:</p>
 
 <div class="cell code_cell">
   <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">'Allstorms.ibtracs_all.v03r10.csv'</span><span class="p">,</span>
-                 <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s">'ISO_time'</span><span class="p">],</span> <span class="n">usecols</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">),</span>
-                 <span class="n">skiprows</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">na_values</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">999</span><span class="p">,</span> <span class="s">'NOT NAMED'</span><span class="p">])</span>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">url</span> <span class="o">=</span> <span class="s">'https://www.ncei.noaa.gov/data/international-best-track-archive-for-climate-stewardship-ibtracs/v04r00/access/csv/ibtracs.ALL.list.v04r00.csv'</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s">'ISO_TIME'</span><span class="p">],</span> <span class="n">usecols</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">),</span>
+                 <span class="n">skiprows</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">na_values</span><span class="o">=</span><span class="p">[</span><span class="s">' '</span><span class="p">,</span> <span class="s">'NOT_NAMED'</span><span class="p">],</span>
+                 <span class="n">keep_default_na</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="p">{</span><span class="s">'NAME'</span><span class="p">:</span> <span class="nb">str</span><span class="p">})</span>
 <span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 
 </code></pre></div>    </div>
@@ -1471,65 +1458,67 @@ initFunction(initQuery);
 
 </div>
 
-<h3 id="1-get-the-unique-values-of-the-basin-sub_basin-and-nature-columns">1) Get the unique values of the <code class="highlighter-rouge">Basin</code>, <code class="highlighter-rouge">Sub_basin</code>, and <code class="highlighter-rouge">Nature</code> columns</h3>
+<p>Basin Key: (NI - North Indian, SI - South Indian, WP - Western Pacific, SP - Southern Pacific, EP - Eastern Pacific, NA - North Atlantic)</p>
 
-<h3 id="2-fix-these-columns-by-eliminating-the-whitespace-at-the-beginning-of-each">2) Fix these columns by eliminating the whitespace at the beginning of each</h3>
+<p>How many rows does this dataset have?</p>
 
-<h3 id="3-filter-the-dataframe-to-eliminate-columns-with-no-position-information">3) Filter the dataframe to eliminate columns with no position information</h3>
+<p>How many North Atlantic hurricanes are in this dataset?</p>
 
-<h3 id="4-rename-the-windwmo-and-preswmo-columns-to-eliminate-the-parentheses">4) Rename the <code class="highlighter-rouge">Wind(WMO)</code> and <code class="highlighter-rouge">Pres(WMO)</code> columns to eliminate the parentheses</h3>
+<h3 id="1-get-the-unique-values-of-the-basin-subbasin-and-nature-columns">1) Get the unique values of the <code class="highlighter-rouge">BASIN</code>, <code class="highlighter-rouge">SUBBASIN</code>, and <code class="highlighter-rouge">NATURE</code> columns</h3>
 
-<p>This makes them accessible to TAB completion.</p>
+<h3 id="2-rename-the-wmo_wind-and-wmo_pres-columns-to-wind-and-pres">2) Rename the <code class="highlighter-rouge">WMO_WIND</code> and <code class="highlighter-rouge">WMO_PRES</code> columns to <code class="highlighter-rouge">WIND</code> and <code class="highlighter-rouge">PRES</code></h3>
 
-<h3 id="5-get-the-10-largest-rows-in-the-dataset-by-wind">5) Get the 10 largest rows in the dataset by <code class="highlighter-rouge">Wind</code></h3>
+<h3 id="3-get-the-10-largest-rows-in-the-dataset-by-wind">3) Get the 10 largest rows in the dataset by <code class="highlighter-rouge">WIND</code></h3>
 
 <p>You will notice some names are repeated.</p>
 
-<h3 id="6-group-the-data-on-serial_num-and-get-the-10-largest-hurricanes-by-wind">6) Group the data on <code class="highlighter-rouge">Serial_Num</code> and get the 10 largest hurricanes by <code class="highlighter-rouge">Wind</code></h3>
+<h3 id="4-group-the-data-on-sid-and-get-the-10-largest-hurricanes-by-wind">4) Group the data on <code class="highlighter-rouge">SID</code> and get the 10 largest hurricanes by <code class="highlighter-rouge">WIND</code></h3>
 
-<h3 id="7-make-a-bar-chart-of-the-wind-speed-of-the-20-strongest-wind-hurricanes">7) Make a bar chart of the wind speed of the 20 strongest-wind hurricanes</h3>
+<h3 id="5-make-a-bar-chart-of-the-wind-speed-of-the-20-strongest-wind-hurricanes">5) Make a bar chart of the wind speed of the 20 strongest-wind hurricanes</h3>
 
-<p>Use the name on the x-axis</p>
+<p>Use the name on the x-axis.</p>
 
-<h3 id="8-plot-the-count-of-all-datapoints-by-basin">8) Plot the count of all datapoints by Basin</h3>
+<h3 id="6-plot-the-count-of-all-datapoints-by-basin">6) Plot the count of all datapoints by Basin</h3>
 
 <p>as a bar chart</p>
 
-<h3 id="9-plot-the-count-of-unique-hurricanes-by-basin">9) Plot the count of unique hurricanes by Basin</h3>
+<h3 id="7-plot-the-count-of-unique-hurricanes-by-basin">7) Plot the count of unique hurricanes by Basin</h3>
 
 <p>as a bar chart.</p>
 
-<h3 id="10-make-a-hexbin-of-the-location-of-datapoints-in-latitude-and-longitude">10) Make a <code class="highlighter-rouge">hexbin</code> of the location of datapoints in Latitude and Longitude</h3>
+<h3 id="8-make-a-hexbin-of-the-location-of-datapoints-in-latitude-and-longitude">8) Make a <code class="highlighter-rouge">hexbin</code> of the location of datapoints in Latitude and Longitude</h3>
 
-<h3 id="11-find-hurricane-katrina-from-2005-and-plot-its-track-as-a-scatter-plot">11) Find Hurricane Katrina (from 2005) and plot its track as a scatter plot</h3>
+<h3 id="9-find-hurricane-katrina-from-2005-and-plot-its-track-as-a-scatter-plot">9) Find Hurricane Katrina (from 2005) and plot its track as a scatter plot</h3>
 
-<p>Use wind speed to color the points.</p>
+<p>First find the SID of this hurricane.</p>
 
-<h3 id="12-make-time-the-index-on-your-dataframe">12) Make time the index on your dataframe</h3>
+<p>Next get this hurricane’s group and plot its position as a scatter plot. Use wind speed to color the points.</p>
 
-<h3 id="13-plot-the-count-of-all-datapoints-per-year-as-a-timeseries">13) Plot the count of all datapoints per year as a timeseries</h3>
+<h3 id="10-make-time-the-index-on-your-dataframe">10) Make time the index on your dataframe</h3>
+
+<h3 id="11-plot-the-count-of-all-datapoints-per-year-as-a-timeseries">11) Plot the count of all datapoints per year as a timeseries</h3>
 
 <p>You should use <code class="highlighter-rouge">resample</code></p>
 
-<h3 id="14-plot-all-tracks-from-the-north-atlantic-in-2005">14) Plot all tracks from the North Atlantic in 2005</h3>
+<h3 id="12-plot-all-tracks-from-the-north-atlantic-in-2005">12) Plot all tracks from the North Atlantic in 2005</h3>
 
 <p>You will probably have to iterate through a <code class="highlighter-rouge">GroupBy</code> object</p>
 
-<h3 id="15-create-a-filtered-dataframe-that-contains-only-data-since-1970-from-the-north-atlantic-na-basin">15) Create a filtered dataframe that contains only data since 1970 from the North Atlantic (“NA”) Basin</h3>
+<h3 id="13-create-a-filtered-dataframe-that-contains-only-data-since-1970-from-the-north-atlantic-na-basin">13) Create a filtered dataframe that contains only data since 1970 from the North Atlantic (“NA”) Basin</h3>
 
 <p>Use this for the rest of the assignment</p>
 
-<h3 id="16-plot-the-number-of-datapoints-per-day">16) Plot the number of datapoints per day</h3>
+<h3 id="14-plot-the-number-of-datapoints-per-day-from-this-filtered-dataframe">14) Plot the number of datapoints per day from this filtered dataframe</h3>
 
 <p>Make sure you figure is big enough to actually see the plot</p>
 
-<h3 id="17-calculate-the-climatology-of-datapoint-counts-as-a-function-of-dayofyear">17) Calculate the climatology of datapoint counts as a function of <code class="highlighter-rouge">dayofyear</code></h3>
+<h3 id="15-calculate-the-climatology-of-datapoint-counts-as-a-function-of-dayofyear">15) Calculate the climatology of datapoint counts as a function of <code class="highlighter-rouge">dayofyear</code></h3>
 
 <p>Plot the mean and standard deviation on a single figure</p>
 
-<h3 id="18-use-transform-to-calculate-the-anomaly-of-daily-counts-from-the-climatology">18) Use <code class="highlighter-rouge">transform</code> to calculate the anomaly of daily counts from the climatology</h3>
+<h3 id="16-use-transform-to-calculate-the-anomaly-of-daily-counts-from-the-climatology">16) Use <code class="highlighter-rouge">transform</code> to calculate the anomaly of daily counts from the climatology</h3>
 
-<p>Resample the anomaly timeseries at annual resolution and plot</p>
+<p>Resample the anomaly timeseries at annual resolution and plot a line with dots as markers.</p>
 
 <p>Which years stand out as having anomalous hurricane activity?</p>
 

@@ -29,9 +29,9 @@
   "headline":
     "Search the site",
   "datePublished":
-    "2020-09-30T16:52:17+00:00",
+    "2020-10-14T15:52:27+00:00",
   "dateModified":
-    "2020-09-30T16:52:17+00:00",
+    "2020-10-14T15:52:27+00:00",
   "description":
     "An introduction to Earth and Environmental Data Science with Python.",
   "author": {
@@ -1479,7 +1479,7 @@ initFunction(initQuery);
         "title": "Assignment: Pandas Groupby with Hurrican Data",
         
         "excerpt":
-            "Assignment: Pandas Groupby with Hurricane Data Import pandas and matplotlib Use the following code to download and unzip a CSV file of the NOAA IBTrACS hurricane dataset. ! wget ftp://eclipse.ncdc.noaa.gov/pub/ibtracs/v03r10/all/csv/Allstorms.ibtracs_all.v03r10.csv.gz ! gunzip Allstorms.ibtracs_all.v03r10.csv.gz Examine the first few lines of the file. Then use the following code to load as a pandas dataframe. Think about the options being used and why. df = pd.read_csv('Allstorms.ibtracs_all.v03r10.csv', parse_dates=['ISO_time'], usecols=range(12), skiprows=[0, 2], na_values=[-999, 'NOT NAMED']) df.head() 1) Get the unique values of the Basin, Sub_basin, and Nature columns 2) Fix these columns by eliminating the whitespace at the beginning of each 3) Filter the dataframe...",
+            "Assignment 6: Pandas Groupby with Hurricane Data Import Numpy, Pandas and Matplotlib and set the display options. Use the following code to load a CSV file of the NOAA IBTrACS hurricane dataset: url = 'https://www.ncei.noaa.gov/data/international-best-track-archive-for-climate-stewardship-ibtracs/v04r00/access/csv/ibtracs.ALL.list.v04r00.csv' df = pd.read_csv(url, parse_dates=['ISO_TIME'], usecols=range(12), skiprows=[1], na_values=[' ', 'NOT_NAMED'], keep_default_na=False, dtype={'NAME': str}) df.head() Basin Key: (NI - North Indian, SI - South Indian, WP - Western Pacific, SP - Southern Pacific, EP - Eastern Pacific, NA - North Atlantic) How many rows does this dataset have? How many North Atlantic hurricanes are in this dataset? 1) Get the unique values of the BASIN, SUBBASIN, and...",
         "categories": [],
         "tags": [],
         "url": "http://earth-env-data-science.github.io/assignments/pandas_groupby.html",
