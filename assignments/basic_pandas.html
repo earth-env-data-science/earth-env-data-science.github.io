@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width,minimum-scale=1">
 
   <title>Assignment: Pandas Fundamentals with Earthquake Data</title>
-  <meta name="description" content="Assignment: Pandas Fundamentals w/ Earthquake Data">
+  <meta name="description" content="Assignment 5: Pandas Fundamentals with Earthquake Data">
 
   <link rel="canonical" href="http://earth-env-data-science.github.io//assignments/basic_pandas.html">
   <link rel="alternate" type="application/rss+xml" title="Earth and Environmental Data Science" href="http://earth-env-data-science.github.io//feed.xml">
@@ -16,7 +16,7 @@
   <meta property="og:url"         content="http://earth-env-data-science.github.io//assignments/basic_pandas.html" />
 <meta property="og:type"        content="article" />
 <meta property="og:title"       content="Assignment: Pandas Fundamentals with Earthquake Data" />
-<meta property="og:description" content="Assignment: Pandas Fundamentals w/ Earthquake Data" />
+<meta property="og:description" content="Assignment 5: Pandas Fundamentals with Earthquake Data" />
 <meta property="og:image"       content="" />
 
 
@@ -29,11 +29,11 @@
   "headline":
     "Assignment: Pandas Fundamentals with Earthquake Data",
   "datePublished":
-    "2020-10-14T15:52:27+00:00",
+    "2020-10-14T16:35:10+00:00",
   "dateModified":
-    "2020-10-14T15:52:27+00:00",
+    "2020-10-14T16:35:10+00:00",
   "description":
-    "Assignment: Pandas Fundamentals w/ Earthquake Data",
+    "Assignment 5: Pandas Fundamentals with Earthquake Data",
   "author": {
     "@type": "Person",
     "name": "Ryan Abernathey"
@@ -1439,7 +1439,7 @@ initFunction(initQuery);
 
 
             <div class="c-textbook__content">
-              <h1 id="assignment-pandas-fundamentals-w-earthquake-data">Assignment: Pandas Fundamentals w/ Earthquake Data</h1>
+              <h1 id="assignment-5-pandas-fundamentals-with-earthquake-data">Assignment 5: Pandas Fundamentals with Earthquake Data</h1>
 
 <p>In this assignment, we will review pandas fundamentals, such as how to</p>
 
@@ -1458,28 +1458,20 @@ initFunction(initQuery);
   </li>
 </ul>
 
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># do imports here</span>
+<p>First, import Numpy, Pandas and Matplotlib and set the display options.</p>
 
-
-</code></pre></div>    </div>
-  </div>
-
-</div>
-
-<p>I saved you some time by pre-downloading some data in .csv format from the <a href="https://earthquake.usgs.gov/earthquakes/search/">USGS Earthquakes Database</a>. It is located at:</p>
+<p>Data for this assignment in .csv format downloaded from the <a href="https://earthquake.usgs.gov/earthquakes/search/">USGS Earthquakes Database</a> is available at:</p>
 
 <p>http://www.ldeo.columbia.edu/~rpa/usgs_earthquakes_2014.csv</p>
 
-<p>You don’t even need to download it. You can open it directly with Pandas.</p>
+<p>You don’t need to download this file. You can open it directly with Pandas.</p>
 
-<h3 id="1-use-pandas-read_csv-function-directly-on-this-url-to-open-it-as-a-dataframe">1) Use Pandas’ read_csv function directly on this url to open it as a DataFrame</h3>
+<h3 id="1-use-pandas-read_csv-function-directly-on-this-url-to-open-it-as-a-dataframe">1) Use Pandas’ read_csv function directly on this URL to open it as a DataFrame</h3>
 <p>(Don’t use any special options). Display the first few rows and the DataFrame info.</p>
 
 <p>You should have seen that the dates were not automatically parsed into datetime types.</p>
 
-<h3 id="2-re-read-the-data-in-such-a-way-that-all-date-columns-are-identified-as-dates-and-the-earthquake-id-is-used-as-the-index">2) Re-read the data in such a way that all date columns are identified as dates and the earthquake id is used as the index</h3>
+<h3 id="2-re-read-the-data-in-such-a-way-that-all-date-columns-are-identified-as-dates-and-the-earthquake-id-is-used-as-the-index">2) Re-read the data in such a way that all date columns are identified as dates and the earthquake ID is used as the index</h3>
 
 <p>Verify that this worked using the <code class="highlighter-rouge">head</code> and <code class="highlighter-rouge">info</code> functions.</p>
 
@@ -1493,9 +1485,9 @@ initFunction(initQuery);
 
 <p>Examine the structure of the <code class="highlighter-rouge">place</code> column. The state / country information seems to be in there. How would you get it out?</p>
 
-<h3 id="5-extract-the-state--country-using-pandas-text-data-functions">5) Extract the state / country using Pandas <a href="https://pandas.pydata.org/pandas-docs/stable/text.html">text data functions</a></h3>
+<h3 id="5-extract-the-state-or-country-using-pandas-text-data-functions">5) Extract the state or country using Pandas <a href="https://pandas.pydata.org/pandas-docs/stable/text.html">text data functions</a></h3>
 
-<p>Add it as a new column to the dataframe.</p>
+<p>Add it as a new column to the dataframe called <code class="highlighter-rouge">country</code>. Note that some of the “countries” are actually U.S. states.</p>
 
 <h3 id="6-display-each-unique-value-from-the-new-column">6) Display each unique value from the new column</h3>
 
@@ -1513,9 +1505,9 @@ https://matplotlib.org/api/_as_gen/matplotlib.pyplot.hist.html</p>
 <p>Do one subplot for the filtered and one for the unfiltered dataset.
 Use a Logarithmic scale. What sort of relationship do you see?</p>
 
-<h3 id="11-visualize-the-locations-of-earthquakes-by-making-a-scatterplot-of-their-latitude-and-longitude">11) Visualize the locations of earthquakes by making a scatterplot of their latitude and longitude.</h3>
+<h3 id="11-visualize-the-locations-of-earthquakes-by-making-a-scatterplot-of-their-latitude-and-longitude">11) Visualize the locations of earthquakes by making a scatterplot of their latitude and longitude</h3>
 
-<p>Do both the filtered and unfiltered datasets. Color it by magnitude. Make it pretty</p>
+<p>Use a two-column subplot with both the filtered and unfiltered datasets. Color the points by magnitude. Make it pretty</p>
 
 <p>What difference do you note between the filtered and unfiltered datasets?</p>
 
