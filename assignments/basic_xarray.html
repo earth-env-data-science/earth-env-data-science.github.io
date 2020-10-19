@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width,minimum-scale=1">
 
   <title>Assignment: Xarray Fundamentals with Earth Radiation Data</title>
-  <meta name="description" content="Assignment 7 : Xarray">
+  <meta name="description" content="Assignment 7: Xarray Fundamentals with Atmospheric Radiation Data">
 
   <link rel="canonical" href="http://earth-env-data-science.github.io//assignments/basic_xarray.html">
   <link rel="alternate" type="application/rss+xml" title="Earth and Environmental Data Science" href="http://earth-env-data-science.github.io//feed.xml">
@@ -16,7 +16,7 @@
   <meta property="og:url"         content="http://earth-env-data-science.github.io//assignments/basic_xarray.html" />
 <meta property="og:type"        content="article" />
 <meta property="og:title"       content="Assignment: Xarray Fundamentals with Earth Radiation Data" />
-<meta property="og:description" content="Assignment 7 : Xarray" />
+<meta property="og:description" content="Assignment 7: Xarray Fundamentals with Atmospheric Radiation Data" />
 <meta property="og:image"       content="" />
 
 
@@ -29,11 +29,11 @@
   "headline":
     "Assignment: Xarray Fundamentals with Earth Radiation Data",
   "datePublished":
-    "2020-10-14T16:35:10+00:00",
+    "2020-10-19T18:32:27+00:00",
   "dateModified":
-    "2020-10-14T16:35:10+00:00",
+    "2020-10-19T18:32:27+00:00",
   "description":
-    "Assignment 7 : Xarray",
+    "Assignment 7: Xarray Fundamentals with Atmospheric Radiation Data",
   "author": {
     "@type": "Person",
     "name": "Ryan Abernathey"
@@ -1439,23 +1439,26 @@ initFunction(initQuery);
 
 
             <div class="c-textbook__content">
-              <h1 id="assignment-7--xarray">Assignment 7 : Xarray</h1>
+              <h1 id="assignment-7-xarray-fundamentals-with-atmospheric-radiation-data">Assignment 7: Xarray Fundamentals with Atmospheric Radiation Data</h1>
 
-<p>In this assignment, we will use Xarray to analyze top-of-atmosphere radiation data from <a href="https://eosweb.larc.nasa.gov/project/ceres/ceres_table">NASA’s CERES project</a>.</p>
+<p>In this assignment, we will use Xarray to analyze top-of-atmosphere radiation data from <a href="https://ceres.larc.nasa.gov/">NASA’s CERES project</a>.</p>
 
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/b/bb/The-NASA-Earth%27s-Energy-Budget-Poster-Radiant-Energy-System-satellite-infrared-radiation-fluxes.jpg" alt="radiation budget" />
-<em>Public domain, by NASA, from Wikimedia Commons</em></p>
+<p>&lt;img src=”https://upload.wikimedia.org/wikipedia/commons/b/bb/The-NASA-Earth%27s-Energy-Budget-Poster-Radiant-Energy-System-satellite-infrared-radiation-fluxes.jpg” width=65%&gt;</p>
 
-<p>I have pre-downloaded and subsetted a portion of this dataset for use in our class. You can download it here:
-http://ldeo.columbia.edu/~rpa/CERES_EBAF-TOA_Edition4.0_200003-201701.condensed.nc. The size of the data file is 702.53 MB. It will take a minute or two to download.</p>
+<p><em>Public domain, by NASA, from Wikimedia Commons</em></p>
 
-<p>Considering reviewing the <a href="https://eosweb.larc.nasa.gov/faq-page/ceres-faq#t67n120">FAQs</a> for this dataset before getting started.</p>
+<p>A pre-downloaded and subsetted a portion of the CERES dataset is available here: http://ldeo.columbia.edu/~rpa/CERES_EBAF-TOA_Edition4.0_200003-201701.condensed.nc. The size of the data file is 702.53 MB. It may take a few minutes to download.</p>
 
-<p>Start by importing xarray, numpy, and matplotlib</p>
+<p>Please review the CERES <a href="https://ceres.larc.nasa.gov/resources/faqs">FAQs</a> before getting started.</p>
+
+<p>Start by importing Numpy, Matplotlib, and Xarray. Set the default figure size to (12, 6).</p>
+
+<p>Next, download the NetCDF file using wget.</p>
 
 <h2 id="11-open-the-dataset-and-display-its-contents">1.1) Open the dataset and display its contents</h2>
 
 <h2 id="12-print-out-the-long_name-attribute-of-each-variable">1.2) Print out the <code class="highlighter-rouge">long_name</code> attribute of each variable</h2>
+<p>Print <code class="highlighter-rouge">variable</code>: <code class="highlighter-rouge">long name</code> for each variable. Format the output so that the start of the <code class="highlighter-rouge">long name</code> attributes are aligned.</p>
 
 <h2 id="21-calculate-the-time-mean-of-the-entire-dataset">2.1) Calculate the time-mean of the entire dataset</h2>
 
@@ -1466,7 +1469,7 @@ http://ldeo.columbia.edu/~rpa/CERES_EBAF-TOA_Edition4.0_200003-201701.condensed.
 
 <h2 id="23-add-up-the-three-variables-above-and-verify-visually-that-they-are-equivalent-to-the-toa-net-flux">2.3) Add up the three variables above and verify (visually) that they are equivalent to the TOA net flux</h2>
 
-<p>Again, you have to pay attention to and think about the sign conventions for each variable in order to get this to work.</p>
+<p>You have to pay attention to and think carefully about the sign conventions for each variable in order to get this to work.</p>
 
 <h2 id="31-calculate-the-global-mean-of-toa-net-radiation-directly-from-the-dataset">3.1) Calculate the global mean of TOA net radiation directly from the dataset</h2>
 
@@ -1486,7 +1489,7 @@ http://ldeo.columbia.edu/~rpa/CERES_EBAF-TOA_Edition4.0_200003-201701.condensed.
 
 <p>This time around, you should have found something much closer to zero. Ask a climate scientist what the net energy imbalance of Earth due to global warming is estimate to be. Do you think our calculation is precise enough to detect this?</p>
 
-<h2 id="34-now-that-you-have-a-weight-factor-verify-that-the-toa-incoming-solar-outgoing-longwave-and-outgoing-shortwave-approximately-match-up-with-the-cartoon-above">3.4) Now that you have a <code class="highlighter-rouge">weight</code> factor, verify that the TOA incoming solar, outgoing longwave, and outgoing shortwave approximately match up with the cartoon above</h2>
+<h2 id="34-now-that-you-have-a-weight-factor-verify-that-the-toa-incoming-solar-outgoing-longwave-and-outgoing-shortwave-approximately-match-up-with-infographic-shown-in-the-first-cell-of-this-assignment">3.4) Now that you have a <code class="highlighter-rouge">weight</code> factor, verify that the TOA incoming solar, outgoing longwave, and outgoing shortwave approximately match up with infographic shown in the first cell of this assignment</h2>
 
 <p>We can go beyond a weight factor and actually calculate the area of each pixel of the dataset, using the formula</p>
 
@@ -1496,7 +1499,7 @@ http://ldeo.columbia.edu/~rpa/CERES_EBAF-TOA_Edition4.0_200003-201701.condensed.
 
 <h2 id="41-calculate-the-pixel-area-using-this-formula-and-create-a-2d-lon-lat-dataarray-for-it">4.1) calculate the pixel area using this formula and create a 2D (lon, lat) DataArray for it</h2>
 
-<p>(Xarray’s <code class="highlighter-rouge">ones_like</code> function can help you easily create and broadcast DataArrays.) Verify that the sum of all the pixels equals the Earth’s true surface area as evaluated using the formula for the area of a sphere (yes, I know the Earth is not a sphere…it’s just a homework problem).</p>
+<p>(Xarray’s <code class="highlighter-rouge">ones_like</code> function can help you easily create and broadcast DataArrays.) Verify that the sum of all the pixels equals the Earth’s true surface area as evaluated using the formula for the area of a sphere (yes, the Earth is not a sphere … it’s just a homework problem).</p>
 
 <p>Multiplying the pixel area from above with the radiative flux gives you the total amount of radiation absorbed in each pixel</p>
 
@@ -1510,9 +1513,7 @@ http://ldeo.columbia.edu/~rpa/CERES_EBAF-TOA_Edition4.0_200003-201701.condensed.
 
 <p>This curve tells you how much energy must be transported meridionally by the ocean and atmosphere in order to account for the radiative imbalance at the top of the atmosphere.</p>
 
-<p>You should get a curve tht looks something like this</p>
-
-<p><img src="http://www.cgd.ucar.edu/cas/papers/jclim2001a/Fig7.gif" alt="meridional energy transport" /></p>
+<p>You should get a curve that looks something like this: http://www.cgd.ucar.edu/cas/papers/jclim2001a/Fig7.html</p>
 
 <h2 id="51-plot-the-time-mean-cloud-area-fraction-day-and-night">5.1) Plot the time-mean cloud area fraction (day and night)</h2>
 
@@ -1524,7 +1525,7 @@ http://ldeo.columbia.edu/~rpa/CERES_EBAF-TOA_Edition4.0_200003-201701.condensed.
 
 <p>Your results should be 2D maps.</p>
 
-<p>Xarray’s <a href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.where.html">where</a> function will be helpful.</p>
+<p>Xarray’s <a href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.where.html">where</a> function will be helpful. This may generate a warning regarding the mean of an empty slice which you can ignore.</p>
 
 <h2 id="54-using-the-weight-factor-from-32-calculate-the-global-mean-values-of-shortwave-and-longwave-radiation-composited-in-high-and-low-cloud-regions">5.4) Using the <code class="highlighter-rouge">weight</code> factor from 3.2, calculate the global mean values of shortwave and longwave radiation, composited in high and low cloud regions</h2>
 
