@@ -1,2931 +1,1687 @@
+
 <!DOCTYPE html>
-<html lang="en">
-  
 
+<html>
   <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width,minimum-scale=1">
-
-  <title>Numpy and Matplotlib</title>
-  <meta name="description" content="Numpy and Matplotlib">
-
-  <link rel="canonical" href="http://earth-env-data-science.github.io//lectures/basic_scipy/numpy_and_matplotlib.html">
-  <link rel="alternate" type="application/rss+xml" title="Earth and Environmental Data Science" href="http://earth-env-data-science.github.io//feed.xml">
-
-  <meta property="og:url"         content="http://earth-env-data-science.github.io//lectures/basic_scipy/numpy_and_matplotlib.html" />
-<meta property="og:type"        content="article" />
-<meta property="og:title"       content="Numpy and Matplotlib" />
-<meta property="og:description" content="Numpy and Matplotlib" />
-<meta property="og:image"       content="" />
-
-
-  <script type="application/ld+json">
-  {
-  "@context": "http://schema.org",
-  "@type": "NewsArticle",
-  "mainEntityOfPage":
-    "http://earth-env-data-science.github.io//lectures/basic_scipy/numpy_and_matplotlib.html",
-  "headline":
-    "Numpy and Matplotlib",
-  "datePublished":
-    "2020-12-07T17:38:21+00:00",
-  "dateModified":
-    "2020-12-07T17:38:21+00:00",
-  "description":
-    "Numpy and Matplotlib",
-  "author": {
-    "@type": "Person",
-    "name": "Ryan Abernathey"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Data 100 at UC Berkeley",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "http://earth-env-data-science.github.io/",
-      "width": 60,
-      "height": 60
-    }
-  },
-  "image": {
-    "@type": "ImageObject",
-    "url": "http://earth-env-data-science.github.io/",
-    "height": 60,
-    "width": 60
-  }
-}
-
-  </script>
-  <link rel="stylesheet" href="/assets/css/styles.css">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css ">
-  <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
-  <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
-  <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
-  <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
-
-  <!-- <link rel="manifest" href="/manifest.json"> -->
-  <!-- <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#efae0a"> -->
-  <meta name="msapplication-TileColor" content="#da532c">
-  <meta name="msapplication-TileImage" content="/mstile-144x144.png">
-  <meta name="theme-color" content="#233947">
-
-  <!-- Favicon -->
-  <link rel="shortcut icon" type="image/x-icon" href="/images/logo/favicon.ico">
-
-  <!-- MathJax Config -->
-  <!-- Allow inline math using $ and automatically break long math lines -->
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-    tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-        processEscapes: true,
-        processEnvironments: true
-    },
-    CommonHTML: {
-        linebreaks: {
-            automatic: true,
-        },
-    },
-});
-</script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_CHTML' async></script>
-
-  <!-- DOM updating function -->
-  <script>
-const runWhenDOMLoaded = cb => {
-  if (document.readyState != 'loading') {
-    cb()
-  } else if (document.addEventListener) {
-    document.addEventListener('DOMContentLoaded', cb)
-  } else {
-    document.attachEvent('onreadystatechange', function() {
-      if (document.readyState == 'complete') cb()
-    })
-  }
-}
-
-// Helper function to init things quickly
-initFunction = function(myfunc) {
-  runWhenDOMLoaded(myfunc);
-  document.addEventListener('turbolinks:load', myfunc);
-};
-</script>
-
-  <!-- Define some javascript variables that will be useful in other javascript -->
-  <script>
-    const site_basename = '/';
-  </script>
-
-  <!-- Add AnchorJS to let headers be linked -->
-  <script src="/assets/js/anchor.min.js"  type="text/javascript"></script>
-  <script>
-
-initFunction(function () {
-    anchors.add("main h1, main h2, main h3, main h4")
-});
-
-</script>
-
-  <!-- Include Turbolinks to make page loads fast -->
-  <!-- https://github.com/turbolinks/turbolinks -->
-  <script src="/assets/js/turbolinks.js" async></script>
-  <meta name="turbolinks-cache-control" content="no-cache">
-
-  <!-- Load nbinteract for widgets -->
-  
-
-  <!-- Load Thebelab for interactive widgets -->
-  <!-- Include Thebelab for interactive code if it's enabled -->
-
-
-
-  <!-- Load the auto-generating TOC -->
-  <script src="/assets/js/tocbot.min.js"  type="text/javascript"></script>
-  <script>
-var initToc = function () {
-  tocbot.init({
-    tocSelector: 'nav.onthispage',
-    contentSelector: '.c-textbook__content',
-    headingSelector: 'h2, h3',
-    orderedList: false,
-    collapseDepth: 6,
-    listClass: 'toc__menu',
-    activeListItemClass: "",  // Not using
-    activeLinkClass: "", // Not using
-  });
-  tocbot.refresh();
-}
-initFunction(initToc);
-</script>
-
-  <!-- Google analytics -->
-  <script src="/assets/js/ga.js" async></script>
-
-  <!-- Clipboard copy button -->
-  <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" async></script>
-
-  <!-- Load JS that depends on site variables -->
-  <script>
-/**
- * Set up copy/paste for code blocks
- */
-const codeCellId = index => `codecell${index}`
-
-const clipboardButton = id =>
-  `<a id="copy-button-${id}" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#${id}">
-    <img src="/assets/images/copy-button.svg" alt="Copy to clipboard">
-  </a>`
-
-// Clears selected text since ClipboardJS will select the text when copying
-const clearSelection = () => {
-  if (window.getSelection) {
-    window.getSelection().removeAllRanges()
-  } else if (document.selection) {
-    document.selection.empty()
-  }
-}
-
-// Changes tooltip text for two seconds, then changes it back
-const temporarilyChangeTooltip = (el, newText) => {
-  const oldText = el.getAttribute('data-tooltip')
-  el.setAttribute('data-tooltip', newText)
-  setTimeout(() => el.setAttribute('data-tooltip', oldText), 2000)
-}
-
-const addCopyButtonToCodeCells = () => {
-  // If ClipboardJS hasn't loaded, wait a bit and try again. This
-  // happens because we load ClipboardJS asynchronously.
-  if (window.ClipboardJS === undefined) {
-    setTimeout(addCopyButtonToCodeCells, 250)
-    return
-  }
-
-  const codeCells = document.querySelectorAll('div.c-textbook__content > div.highlighter-rouge > div.highlight > pre, div.input_area pre')
-  codeCells.forEach((codeCell, index) => {
-    const id = codeCellId(index)
-    codeCell.setAttribute('id', id)
-    if (document.getElementById("copy-button" + id) == null) {
-      codeCell.insertAdjacentHTML('afterend', clipboardButton(id));
-    }
-  })
-
-  const clipboard = new ClipboardJS('.copybtn')
-  clipboard.on('success', event => {
-    clearSelection()
-    temporarilyChangeTooltip(event.trigger, 'Copied!')
-  })
-
-  clipboard.on('error', event => {
-    temporarilyChangeTooltip(event.trigger, 'Failed to copy')
-  })
-
-  // Get rid of clipboard before the next page visit to avoid memory leak
-  document.addEventListener('turbolinks:before-visit', () =>
-    clipboard.destroy()
-  )
-}
-
-initFunction(addCopyButtonToCodeCells);
-</script>
-
-
-  <!-- Hide cell code -->
-  <script>
-    /**
-    Add buttons to hide code cells
-    */
-
-
-    var setCodeCellVisibility = function (inputField, kind) {
-        // Update the image and class for hidden
-        var id = inputField.getAttribute('data-id');
-        var codeCell = document.querySelector(`#${id} div.highlight`);
-
-        if (kind === "visible") {
-            codeCell.classList.remove('hidden');
-            inputField.checked = true;
-        } else {
-            codeCell.classList.add('hidden');
-            inputField.checked = false;
-        }
-    }
-
-    var toggleCodeCellVisibility = function (event) {
-        // The label is clicked, and now we decide what to do based on the input field's clicked status
-        if (event.target.tagName === "LABEL") {
-            var inputField = event.target.previousElementSibling;
-        } else {
-            // It is the span inside the target
-            var inputField = event.target.parentElement.previousElementSibling;
-        }
-
-        if (inputField.checked === true) {
-            setCodeCellVisibility(inputField, "visible");
-        } else {
-            setCodeCellVisibility(inputField, "hidden");
-        }
-    }
-
-
-    // Button constructor
-    const hideCodeButton = id => `<input class="hidebtn" type="checkbox" id="hidebtn${id}" data-id="${id}"><label title="Toggle cell" for="hidebtn${id}" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label>`
-
-    var addHideButton = function () {
-        // If a hide button is already added, don't add another
-        if (document.querySelector('div.hidecode input') !== null) {
-            return;
-        }
-
-        // Find the input cells and add a hide button
-        document.querySelectorAll('div.input_area').forEach(function (item, index) {
-            if (!item.classList.contains("hidecode")) {
-                // Skip the cell if it doesn't have a hidecode class
-                return;
-            }
-
-            const id = codeCellId(index)
-            item.setAttribute('id', id);
-            // Insert the button just inside the end of the next div
-            item.querySelector('div').insertAdjacentHTML('beforeend', hideCodeButton(id))
-
-            // Set up the visibility toggle
-            hideLink = document.querySelector(`#${id} div.highlight + input + label`);
-            hideLink.addEventListener('click', toggleCodeCellVisibility)
-        });
-    }
-
-
-    // Initialize the hide buttos
-    var initHiddenCells = function () {
-        // Add hide buttons to the cells
-        addHideButton();
-
-        // Toggle the code cells that should be hidden
-        document.querySelectorAll('div.hidecode input').forEach(function (item) {
-            setCodeCellVisibility(item, 'hidden');
-            item.checked = true;
-        })
-    }
-
-    initFunction(initHiddenCells);
-
-</script>
-
-  <!-- Load custom website scripts -->
-  <script src="/assets/js/scripts.js" async></script>
-
-  <!-- Load custom user CSS and JS  -->
-  <script src="/assets/custom/custom.js" async></script>
-  <link rel="stylesheet" href="/assets/custom/custom.css">
-
-  <!-- Update interact links w/ REST param, is defined in includes so we can use templates -->
-  
-<script>
-/**
-  * To auto-embed hub URLs in interact links if given in a RESTful fashion
- */
-
-function getJsonFromUrl(url) {
-  var query = url.split('?');
-  if (query.length < 2) {
-    // No queries so just return false
-    return false;
-  }
-  query = query[1];
-  // Collect REST params into a dictionary
-  var result = {};
-  query.split("&").forEach(function(part) {
-    var item = part.split("=");
-    result[item[0]] = decodeURIComponent(item[1]);
-  });
-  return result;
-}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Numpy and Matplotlib &#8212; Earth and Environmental Data Science</title>
     
-function dict2param(dict) {
-    params = Object.keys(dict).map(function(k) {
-        return encodeURIComponent(k) + '=' + encodeURIComponent(dict[k])
-    });
-    return params.join('&')
-}
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
 
-// Parse a Binder URL, converting it to the string needed for JupyterHub
-function binder2Jupyterhub(url) {
-  newUrl = {};
-  parts = url.split('v2/gh/')[1];
-  // Grab the base repo information
-  repoinfo = parts.split('?')[0];
-  var [org, repo, ref] = repoinfo.split('/');
-  newUrl['repo'] = ['https://github.com', org, repo].join('/');
-  newUrl['branch'] = ref
-  // Grab extra parameters passed
-  params = getJsonFromUrl(url);
-  if (params['filepath'] !== undefined) {
-    newUrl['subPath'] = params['filepath']
-  }
-  return dict2param(newUrl);
-}
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-// Filter out potentially unsafe characters to prevent xss
-function safeUrl(url)
-{
-   return String(encodeURIComponent(url))
-            .replace(/&/g, '&amp;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#39;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;');
-}
-
-function addParamToInternalLinks(hub) {
-  var links = document.querySelectorAll("a").forEach(function(link) {
-    var href = link.href;
-    // If the link is an internal link...
-    if (href.search("http://earth-env-data-science.github.io") !== -1 || href.startsWith('/') || href.search("127.0.0.1:") !== -1) {
-      // Assume we're an internal link, add the hub param to it
-      var params = getJsonFromUrl(href);
-      if (params !== false) {
-        // We have REST params, so append a new one
-        params['jupyterhub'] = hub;
-      } else {
-        // Create the REST params
-        params = {'jupyterhub': hub};
-      }
-      // Update the link
-      var newHref = href.split('?')[0] + '?' + dict2param(params);
-      link.setAttribute('href', decodeURIComponent(newHref));
-    }
-  });
-  return false;
-}
-
-
-// Update interact links
-function updateInteractLink() {
-    // hack to make this work since it expects a ? in the URL
-    rest = getJsonFromUrl("?" + location.search.substr(1));
-    jupyterHubUrl = rest['jupyterhub'];
-    var hubType = null;
-    var hubUrl = null;
-    if (jupyterHubUrl !== undefined) {
-      hubType = 'jupyterhub';
-      hubUrl = jupyterHubUrl;
-    }
-
-    if (hubType !== null) {
-      // Sanitize the hubUrl
-      hubUrl = safeUrl(hubUrl);
-
-      // Add HTTP text if omitted
-      if (hubUrl.indexOf('http') < 0) {hubUrl = 'http://' + hubUrl;}
-      var interactButtons = document.querySelectorAll("button.interact-button")
-      var lastButton = interactButtons[interactButtons.length-1];
-      var link = lastButton.parentElement;
-
-      // If we've already run this, skip the link updating
-      if (link.nextElementSibling !== null) {
-        return;
-      }
-
-      // Update the link and add context div
-      var href = link.getAttribute('href');
-      if (lastButton.id === 'interact-button-binder') {
-        // If binder links exist, we need to re-work them for jupyterhub
-        if (hubUrl.indexOf('http%3A%2F%2Flocalhost') > -1) {
-          // If localhost, assume we're working from a local Jupyter server and remove `/hub`
-          first = [hubUrl, 'git-sync'].join('/')
-        } else {
-          first = [hubUrl, 'hub', 'user-redirect', 'git-sync'].join('/')
-        }
-        href = first + '?' + binder2Jupyterhub(href);
-      } else {
-        // If interact button isn't binderhub, assume it's jupyterhub
-        // If JupyterHub links, we only need to replace the hub url
-        href = href.replace("https://us-central1-b.gcp.pangeo.io/", hubUrl);
-        if (hubUrl.indexOf('http%3A%2F%2Flocalhost') > -1) {
-          // Assume we're working from a local Jupyter server and remove `/hub`
-          href = href.replace("/hub/user-redirect", "");
-        }
-      }
-      link.setAttribute('href', decodeURIComponent(href));
-
-      // Add text after interact link saying where we're launching
-      hubUrlNoHttp = decodeURIComponent(hubUrl).replace('http://', '').replace('https://', '');
-      link.insertAdjacentHTML('afterend', '<div class="interact-context">on ' + hubUrlNoHttp + '</div>');
-
-      // Update internal links so we retain the hub url
-      addParamToInternalLinks(hubUrl);
-    }
-}
-
-runWhenDOMLoaded(updateInteractLink)
-document.addEventListener('turbolinks:load', updateInteractLink)
-</script>
-
-
-  <!-- Lunr search code - will only be executed on the /search page -->
-  <script src="/assets/js/lunr/lunr.min.js" type="text/javascript"></script>
-  <script>var initQuery = function() {
-  // See if we have a search box
-  var searchInput = document.querySelector('input#lunr_search');
-  if (searchInput === null) {
-    return;
-  }
-
-  // Function to parse our lunr cache
-  var idx = lunr(function () {
-    this.field('title')
-    this.field('excerpt')
-    this.field('categories')
-    this.field('tags')
-    this.ref('id')
-
-    this.pipeline.remove(lunr.trimmer)
-
-    for (var item in store) {
-      this.add({
-        title: store[item].title,
-        excerpt: store[item].excerpt,
-        categories: store[item].categories,
-        tags: store[item].tags,
-        id: item
-      })
-    }
-  });
-
-  // Run search upon keyup
-  searchInput.addEventListener('keyup', function () {
-    var resultdiv = document.querySelector('#results');
-    var query = document.querySelector("input#lunr_search").value.toLowerCase();
-    var result =
-      idx.query(function (q) {
-        query.split(lunr.tokenizer.separator).forEach(function (term) {
-          q.term(term, { boost: 100 })
-          if(query.lastIndexOf(" ") != query.length-1){
-            q.term(term, {  usePipeline: false, wildcard: lunr.Query.wildcard.TRAILING, boost: 10 })
-          }
-          if (term != ""){
-            q.term(term, {  usePipeline: false, editDistance: 1, boost: 1 })
-          }
-        })
-      });
-
-      // Empty the results div
-      while (resultdiv.firstChild) {
-        resultdiv.removeChild(resultdiv.firstChild);
-      }
-
-    resultdiv.insertAdjacentHTML('afterbegin', '<p class="results__found">'+result.length+' Result(s) found</p>');
-    for (var item in result) {
-      var ref = result[item].ref;
-      if(store[ref].teaser){
-        var searchitem =
-          '<div class="list__item">'+
-            '<article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">'+
-              '<h2 class="archive__item-title" itemprop="headline">'+
-                '<a href="'+store[ref].url+'" rel="permalink">'+store[ref].title+'</a>'+
-              '</h2>'+
-              '<div class="archive__item-teaser">'+
-                '<img src="'+store[ref].teaser+'" alt="">'+
-              '</div>'+
-              '<p class="archive__item-excerpt" itemprop="description">'+store[ref].excerpt.split(" ").splice(0,20).join(" ")+'...</p>'+
-            '</article>'+
-          '</div>';
-      }
-      else{
-    	  var searchitem =
-          '<div class="list__item">'+
-            '<article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">'+
-              '<h2 class="archive__item-title" itemprop="headline">'+
-                '<a href="'+store[ref].url+'" rel="permalink">'+store[ref].title+'</a>'+
-              '</h2>'+
-              '<p class="archive__item-excerpt" itemprop="description">'+store[ref].excerpt.split(" ").splice(0,20).join(" ")+'...</p>'+
-            '</article>'+
-          '</div>';
-      }
-      resultdiv.insertAdjacentHTML('beforeend', searchitem);
-    }
-  });
-};
-
-initFunction(initQuery);
-</script>
-</head>
-
-  <body>
-    <!-- .js-show-sidebar shows sidebar by default -->
-    <div id="js-textbook" class="c-textbook js-show-sidebar">
-      
-
-
-
-<nav id="js-sidebar" class="c-textbook__sidebar">
-  <a href="http://earth-env-data-science.github.io"><img src="/images/logo/eeds-logo.png" class="textbook_logo" id="sidebar-logo" data-turbolinks-permanent/></a>
-  <h2 class="c-sidebar__title">Earth and Environmental Data Science</h2>
-  <ul class="c-sidebar__chapters">
     
       
-      
 
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/intro.html"
-        >
-          
-          Intro
-        </a>
-
-        
-      </li>
-
-      
     
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/projects.html"
-        >
-          
-            1.
-          
-          Final Projects
-        </a>
-
-        
-      </li>
-
-      
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.e8f53015daec13862f6db5e763c41738.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
-      
-      
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
 
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/LICENSE.html"
-        >
-          
-          License
-        </a>
-
-        
-      </li>
-
-      
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Assignment 3 - Numpy and Matplotlib" href="../../assignments/numpy_matplotlib.html" />
+    <link rel="prev" title="Assignment: Basic Python" href="../../assignments/python_basics_and_functions.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
     
-      
-      
-        <li class="c-sidebar__divider"></li>
-        
-      
-      
-        <li><h2 class="c-sidebar__title">The Interactive Computing Environment</li>
-        
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/environment/intro_to_jupyterlab.html"
-        >
-          
-            2.
-          
-          Intro to JupyterLab
-        </a>
-
-        
-      </li>
-
-      
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
-      
-      
+    <div class="container-fluid" id="banner"></div>
 
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/environment/intro_to_unix.html"
-        >
-          
-            3.
-          
-          Intro to Unix
-        </a>
-
-        
-      </li>
-
-      
     
-      
-      
 
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/environment/intro_to_git.html"
-        >
+    <div class="container-xl">
+      <div class="row">
           
-            4.
-          
-          Intro to Git
-        </a>
-
-        
-
-          
-          
-          
-          
-
-          
-
-          <ul class="c-sidebar__sections ">
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/assignments/files_markdown_git.html"
-                >
-                  
-                    4.1
-                  
-                  Assignment: Files, Git, and Github
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-          </ul>
-        
-      </li>
-
-      
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
     
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/environment/python_environments.html"
-        >
-          
-            5.
-          
-          Managing Environments
-        </a>
-
-        
-      </li>
-
-      
-    
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/environment/binder.html"
-        >
-          
-            6.
-          
-          Sharing Reproducible Science with Binder
-        </a>
-
-        
-      </li>
-
-      
-    
-      
-      
-        <li><h2 class="c-sidebar__title">The Core Python Language</li>
-        
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/core_python/python_fundamentals.html"
-        >
-          
-            7.
-          
-          Python Fundamentals
-        </a>
-
-        
-      </li>
-
-      
-    
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/core_python/functions_classes.html"
-        >
-          
-            8.
-          
-          Functions and Classes
-        </a>
-
-        
-
-          
-          
-          
-          
-
-          
-
-          <ul class="c-sidebar__sections ">
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/assignments/python_basics_and_functions.html"
-                >
-                  
-                    8.1
-                  
-                  Assignment: Python Basics and Functions
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-          </ul>
-        
-      </li>
-
-      
-    
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/core_python/organization_and_packaging.html"
-        >
-          
-            9.
-          
-          Organization and Packaging of Python Projects
-        </a>
-
-        
-      </li>
-
-      
-    
-      
-      
-        <li><h2 class="c-sidebar__title">Scientific Python Fundamentals</li>
-        
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry c-sidebar__entry--active"
-          href="/lectures/basic_scipy/numpy_and_matplotlib.html"
-        >
-          
-            10.
-          
-          Numpy and Matplotlib
-        </a>
-
-        
-
-          
-          
-          
-          
-
-          
-
-          <ul class="c-sidebar__sections ">
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/assignments/numpy_matplotlib.html"
-                >
-                  
-                    10.1
-                  
-                  Assignment: Basic Numpy and Matplotlib
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-          </ul>
-        
-      </li>
-
-      
-    
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/basic_scipy/more_matplotlib.html"
-        >
-          
-            11.
-          
-          Advanced Matplotlib
-        </a>
-
-        
-
-          
-          
-          
-          
-
-          
-
-          <ul class="c-sidebar__sections ">
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/assignments/more_matplotlib.html"
-                >
-                  
-                    11.1
-                  
-                  Assignment: More Matplotlib
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-          </ul>
-        
-      </li>
-
-      
-    
-      
-      
-        <li><h2 class="c-sidebar__title">High Level Data Analysis Frameworks</li>
-        
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/pandas/pandas_intro.html"
-        >
-          
-            12.
-          
-          Pandas for Tabular Data
-        </a>
-
-        
-
-          
-          
-          
-          
-
-          
-
-          <ul class="c-sidebar__sections ">
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/lectures/pandas/basic_pandas.html"
-                >
-                  
-                    12.1
-                  
-                  Pandas Fundamentals
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/assignments/basic_pandas.html"
-                >
-                  
-                    12.2
-                  
-                  Assignment: Pandas Fundamentals with Earthquake Data
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/lectures/pandas/pandas_groupby.html"
-                >
-                  
-                    12.3
-                  
-                  The Split-Apply-Combine Workflow
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/assignments/pandas_groupby.html"
-                >
-                  
-                    12.4
-                  
-                  Assignment: Pandas Groupby with Hurrican Data
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-          </ul>
-        
-      </li>
-
-      
-    
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/xarray/xarray_intro.html"
-        >
-          
-            13.
-          
-          Xarray for Multidimensional Data
-        </a>
-
-        
-
-          
-          
-          
-          
-
-          
-
-          <ul class="c-sidebar__sections ">
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/lectures/xarray/xarray.html"
-                >
-                  
-                    13.1
-                  
-                  Xarray Fundamentals
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/assignments/basic_xarray.html"
-                >
-                  
-                    13.2
-                  
-                  Assignment: Xarray Fundamentals with Earth Radiation Data
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/lectures/xarray/xarray-part2.html"
-                >
-                  
-                    13.3
-                  
-                  Intermediate Xarray
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/assignments/more_xarray.html"
-                >
-                  
-                    13.4
-                  
-                  Assignment: Xarray Groupby and SST Data
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/lectures/xarray/xarray_tips_and_tricks.html"
-                >
-                  
-                    13.5
-                  
-                  Xarray Tips And Tricks
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-          </ul>
-        
-      </li>
-
-      
-    
-      
-      
-        <li><h2 class="c-sidebar__title">Geoscience Packages</li>
-        
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/mapping_cartopy.html"
-        >
-          
-            14.
-          
-          Making Maps with Cartopy
-        </a>
-
-        
-
-          
-          
-          
-          
-
-          
-
-          <ul class="c-sidebar__sections ">
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/assignments/cartopy.html"
-                >
-                  
-                    14.1
-                  
-                  Assignment: Maps with Cartopy
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-          </ul>
-        
-      </li>
-
-      
-    
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/working_with_gcm_data.html"
-        >
-          
-            15.
-          
-          Working with output from general circulation models using xesmf and xgcm
-        </a>
-
-        
-      </li>
-
-      
-    
-      
-      
-        <li><h2 class="c-sidebar__title">Big Data</li>
-        
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/dask/intro.html"
-        >
-          
-            16.
-          
-          Dask
-        </a>
-
-        
-
-          
-          
-          
-          
-
-          
-
-          <ul class="c-sidebar__sections ">
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/lectures/dask/dask_arrays.html"
-                >
-                  
-                    16.1
-                  
-                  Dask Arrays and Xarray Integration
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-          </ul>
-        
-      </li>
-
-      
-    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      <h1 class="site-logo" id="site-title">Earth and Environmental Data Science</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../intro.html">
+   An Introduction to Earth and Environmental Data Science
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  About this Book
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../LICENSE.html">
+   License for this book
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../projects.html">
+   Final Projects
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  The Interactive Computing Environment
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../environment/intro_to_jupyterlab.html">
+   Intro to JupyterLab
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../environment/intro_to_unix.html">
+   Intro to Unix
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../environment/intro_to_git.html">
+   Intro to Git for Version Control
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../environment/python_environments.html">
+   Managing Python Environments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../environment/binder.html">
+   Binder for Reproducible Research
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  The Core Python Language
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../core_python/python_fundamentals.html">
+   Python Fundamentals
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../core_python/functions_classes.html">
+   Python Functions and Classes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../assignments/python_basics_and_functions.html">
+   Assignment: Basic Python
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Scientific Python Fundamentals
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Numpy and Matplotlib
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../assignments/numpy_matplotlib.html">
+   Assignment 3 - Numpy and Matplotlib
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="more_matplotlib.html">
+   More Matplotlib
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../assignments/more_matplotlib.html">
+   Assignment 4: More Matplotlib
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  High Level Data Analysis Frameworks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../pandas/pandas_intro.html">
+   Pandas
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../pandas/basic_pandas.html">
+     Pandas Fundamentals
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../assignments/basic_pandas.html">
+     Assignment 5: Pandas Fundamentals with Earthquake Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../pandas/pandas_groupby.html">
+     Pandas: Groupby
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../assignments/pandas_groupby.html">
+     Assignment 6: Pandas Groupby with Hurricane Data
+    </a>
+   </li>
   </ul>
-  <p class="sidebar_footer">Powered by <a href="https://github.com/jupyter/jupyter-book">Jupyter Book</a></p>
-</nav>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../xarray/xarray_intro.html">
+   Xarray for multidimensional gridded data
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../xarray/xarray.html">
+     Lesson 1: Xarray Fundamentals
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../assignments/basic_xarray.html">
+     Assignment 7: Xarray Fundamentals with Atmospheric Radiation Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../xarray/xarray-part2.html">
+     Lesson 2: Advanced Xarray
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../assignments/more_xarray.html">
+     Assignment: More Xarray with El Niño-Southern Oscillation (ENSO) Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../xarray/xarray_tips_and_tricks.html">
+     Xarray Tips and Tricks
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Geoscience Package
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mapping_cartopy.html">
+   Maps in Scientific Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../assignments/cartopy.html">
+   Assignment: Making Maps with Cartopy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../working_with_gcm_data.html">
+   Working with output from general circulation models using xesmf and xgcm
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Big Data
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../dask/intro.html">
+   Dask for Parallel Computing in Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../dask/dask_arrays.html">
+   Dask Arrays
+  </a>
+ </li>
+</ul>
 
-      
-      <!-- Empty sidebar placeholder that we'll auto-fill with javascript -->
-      <aside class="sidebar__right">
-          <header><h4 class="nav__title"><i class="fa fa-list"></i>   On this page</h4></header>
-          <nav class="onthispage">
-          </nav>
-      </aside>
-      
-      <main class="c-textbook__page" tabindex="-1">
-          <div class="o-wrapper">
-            <div class="c-sidebar-toggle">
-  <!-- We show the sidebar by default so we use .is-active -->
-  <button
-    id="js-sidebar-toggle"
-    class="hamburger hamburger--arrowalt is-active"
-  >
-    <span class="hamburger-box">
-      <span class="hamburger-inner"></span>
-    </span>
-    <span class="c-sidebar-toggle__label">Toggle Sidebar</span>
-  </button>
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
 </div>
 
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
             
-<div class="buttons">
-<a href="/content/lectures/basic_scipy/numpy_and_matplotlib.ipynb" download>
-<button id="interact-button-download" class="interact-button">Download</button>
-</a>
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
 
-
-
-
-
-
-
-
-
-
-<a href="https://binder.pangeo.io/v2/gh/earth-env-data-science/earth-env-data-science-book/master?urlpath=lab/tree/content%2Flectures%2Fbasic_scipy%2Fnumpy_and_matplotlib.ipynb"><button class="interact-button" id="interact-button-binder"><img class="interact-button-logo" src="/assets/images/logo_binder.svg" alt="Interact" />Interact</button></a>
-
-
-
-
-
-
-<a href="https://us-central1-b.gcp.pangeo.io//hub/user-redirect/git-pull?repo=https://github.com//earth-env-data-science/earth-env-data-science-book&amp;branch=master&amp;subPath=content%2Flectures%2Fbasic_scipy%2Fnumpy_and_matplotlib.ipynb&amp;app=lab"><button class="interact-button" id="interact-button-jupyterhub"><img class="interact-button-logo" src="/assets/images/logo_jupyterhub.svg" alt="Interact" />us-central1-b.gcp.pangeo.io</button></a>
-
-
-
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/lectures/basic_scipy/numpy_and_matplotlib.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
 </div>
 
+            <!-- Source interaction buttons -->
 
-            <div class="c-textbook__content">
-              <h1 id="numpy-and-matplotlib">Numpy and Matplotlib</h1>
+            <!-- Full screen (wrap in <a> to have style consistency -->
 
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/lectures/basic_scipy/numpy_and_matplotlib.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#ndarrays">
+   NDArrays
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#more-array-creation">
+   More array creation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#indexing">
+   Indexing
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#array-operations">
+   Array Operations
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#basic-math">
+     Basic Math
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#manipulating-array-dimensions">
+   Manipulating array dimensions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#broadcasting">
+   Broadcasting
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#reduction-operations">
+   Reduction Operations
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#fancy-plotting">
+   Fancy Plotting
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#real-data">
+   Real Data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#masked-arrays">
+   Masked Arrays
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="numpy-and-matplotlib">
+<h1>Numpy and Matplotlib<a class="headerlink" href="#numpy-and-matplotlib" title="Permalink to this headline">¶</a></h1>
 <p>These are two of the most fundamental parts of the scientific python “ecosystem”. Most everything else is built on top of them.</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
-
-</code></pre></div>    </div>
-  </div>
-
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
 </div>
-
+</div>
+</div>
 <p>What did we just do? We <em>imported</em> a package. This brings new variables (mostly functions) into our interpreter. We access them as follows.</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># find out what is in our namespace</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># find out what is in our namespace</span>
 <span class="nb">dir</span><span class="p">()</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>['In',
- 'Out',
- '_',
- '__',
- '___',
- '__builtin__',
- '__builtins__',
- '__doc__',
- '__loader__',
- '__name__',
- '__package__',
- '__spec__',
- '_dh',
- '_i',
- '_i1',
- '_i2',
- '_ih',
- '_ii',
- '_iii',
- '_oh',
- 'exit',
- 'get_ipython',
- 'np',
- 'quit']
-</code></pre></div>      </div>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># find out what's in numpy</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;In&#39;,
+ &#39;Out&#39;,
+ &#39;_&#39;,
+ &#39;__&#39;,
+ &#39;___&#39;,
+ &#39;__builtin__&#39;,
+ &#39;__builtins__&#39;,
+ &#39;__doc__&#39;,
+ &#39;__loader__&#39;,
+ &#39;__name__&#39;,
+ &#39;__package__&#39;,
+ &#39;__spec__&#39;,
+ &#39;_dh&#39;,
+ &#39;_i&#39;,
+ &#39;_i1&#39;,
+ &#39;_i2&#39;,
+ &#39;_ih&#39;,
+ &#39;_ii&#39;,
+ &#39;_iii&#39;,
+ &#39;_oh&#39;,
+ &#39;exit&#39;,
+ &#39;get_ipython&#39;,
+ &#39;np&#39;,
+ &#39;quit&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># find out what&#39;s in numpy</span>
 <span class="nb">dir</span><span class="p">(</span><span class="n">np</span><span class="p">)</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>['ALLOW_THREADS',
- 'AxisError',
- 'BUFSIZE',
- 'CLIP',
- 'ComplexWarning',
- 'DataSource',
- 'ERR_CALL',
- 'ERR_DEFAULT',
- 'ERR_IGNORE',
- 'ERR_LOG',
- 'ERR_PRINT',
- 'ERR_RAISE',
- 'ERR_WARN',
- 'FLOATING_POINT_SUPPORT',
- 'FPE_DIVIDEBYZERO',
- 'FPE_INVALID',
- 'FPE_OVERFLOW',
- 'FPE_UNDERFLOW',
- 'False_',
- 'Inf',
- 'Infinity',
- 'MAXDIMS',
- 'MAY_SHARE_BOUNDS',
- 'MAY_SHARE_EXACT',
- 'MachAr',
- 'ModuleDeprecationWarning',
- 'NAN',
- 'NINF',
- 'NZERO',
- 'NaN',
- 'PINF',
- 'PZERO',
- 'PackageLoader',
- 'RAISE',
- 'RankWarning',
- 'SHIFT_DIVIDEBYZERO',
- 'SHIFT_INVALID',
- 'SHIFT_OVERFLOW',
- 'SHIFT_UNDERFLOW',
- 'ScalarType',
- 'Tester',
- 'TooHardError',
- 'True_',
- 'UFUNC_BUFSIZE_DEFAULT',
- 'UFUNC_PYVALS_NAME',
- 'VisibleDeprecationWarning',
- 'WRAP',
- '_NoValue',
- '__NUMPY_SETUP__',
- '__all__',
- '__builtins__',
- '__cached__',
- '__config__',
- '__doc__',
- '__file__',
- '__git_revision__',
- '__loader__',
- '__mkl_version__',
- '__name__',
- '__package__',
- '__path__',
- '__spec__',
- '__version__',
- '_distributor_init',
- '_globals',
- '_import_tools',
- '_mat',
- 'abs',
- 'absolute',
- 'absolute_import',
- 'add',
- 'add_docstring',
- 'add_newdoc',
- 'add_newdoc_ufunc',
- 'add_newdocs',
- 'alen',
- 'all',
- 'allclose',
- 'alltrue',
- 'amax',
- 'amin',
- 'angle',
- 'any',
- 'append',
- 'apply_along_axis',
- 'apply_over_axes',
- 'arange',
- 'arccos',
- 'arccosh',
- 'arcsin',
- 'arcsinh',
- 'arctan',
- 'arctan2',
- 'arctanh',
- 'argmax',
- 'argmin',
- 'argpartition',
- 'argsort',
- 'argwhere',
- 'around',
- 'array',
- 'array2string',
- 'array_equal',
- 'array_equiv',
- 'array_repr',
- 'array_split',
- 'array_str',
- 'asanyarray',
- 'asarray',
- 'asarray_chkfinite',
- 'ascontiguousarray',
- 'asfarray',
- 'asfortranarray',
- 'asmatrix',
- 'asscalar',
- 'atleast_1d',
- 'atleast_2d',
- 'atleast_3d',
- 'average',
- 'bartlett',
- 'base_repr',
- 'bench',
- 'binary_repr',
- 'bincount',
- 'bitwise_and',
- 'bitwise_not',
- 'bitwise_or',
- 'bitwise_xor',
- 'blackman',
- 'block',
- 'bmat',
- 'bool',
- 'bool8',
- 'bool_',
- 'broadcast',
- 'broadcast_arrays',
- 'broadcast_to',
- 'busday_count',
- 'busday_offset',
- 'busdaycalendar',
- 'byte',
- 'byte_bounds',
- 'bytes0',
- 'bytes_',
- 'c_',
- 'can_cast',
- 'cast',
- 'cbrt',
- 'cdouble',
- 'ceil',
- 'cfloat',
- 'char',
- 'character',
- 'chararray',
- 'choose',
- 'clip',
- 'clongdouble',
- 'clongfloat',
- 'column_stack',
- 'common_type',
- 'compare_chararrays',
- 'compat',
- 'complex',
- 'complex128',
- 'complex256',
- 'complex64',
- 'complex_',
- 'complexfloating',
- 'compress',
- 'concatenate',
- 'conj',
- 'conjugate',
- 'convolve',
- 'copy',
- 'copysign',
- 'copyto',
- 'core',
- 'corrcoef',
- 'correlate',
- 'cos',
- 'cosh',
- 'count_nonzero',
- 'cov',
- 'cross',
- 'csingle',
- 'ctypeslib',
- 'cumprod',
- 'cumproduct',
- 'cumsum',
- 'datetime64',
- 'datetime_as_string',
- 'datetime_data',
- 'deg2rad',
- 'degrees',
- 'delete',
- 'deprecate',
- 'deprecate_with_doc',
- 'diag',
- 'diag_indices',
- 'diag_indices_from',
- 'diagflat',
- 'diagonal',
- 'diff',
- 'digitize',
- 'disp',
- 'divide',
- 'division',
- 'divmod',
- 'dot',
- 'double',
- 'dsplit',
- 'dstack',
- 'dtype',
- 'e',
- 'ediff1d',
- 'einsum',
- 'einsum_path',
- 'emath',
- 'empty',
- 'empty_like',
- 'equal',
- 'errstate',
- 'euler_gamma',
- 'exp',
- 'exp2',
- 'expand_dims',
- 'expm1',
- 'extract',
- 'eye',
- 'fabs',
- 'fastCopyAndTranspose',
- 'fft',
- 'fill_diagonal',
- 'find_common_type',
- 'finfo',
- 'fix',
- 'flatiter',
- 'flatnonzero',
- 'flexible',
- 'flip',
- 'fliplr',
- 'flipud',
- 'float',
- 'float128',
- 'float16',
- 'float32',
- 'float64',
- 'float_',
- 'float_power',
- 'floating',
- 'floor',
- 'floor_divide',
- 'fmax',
- 'fmin',
- 'fmod',
- 'format_parser',
- 'frexp',
- 'frombuffer',
- 'fromfile',
- 'fromfunction',
- 'fromiter',
- 'frompyfunc',
- 'fromregex',
- 'fromstring',
- 'full',
- 'full_like',
- 'fv',
- 'generic',
- 'genfromtxt',
- 'geomspace',
- 'get_array_wrap',
- 'get_include',
- 'get_printoptions',
- 'getbufsize',
- 'geterr',
- 'geterrcall',
- 'geterrobj',
- 'gradient',
- 'greater',
- 'greater_equal',
- 'half',
- 'hamming',
- 'hanning',
- 'heaviside',
- 'histogram',
- 'histogram2d',
- 'histogramdd',
- 'hsplit',
- 'hstack',
- 'hypot',
- 'i0',
- 'identity',
- 'iinfo',
- 'imag',
- 'in1d',
- 'index_exp',
- 'indices',
- 'inexact',
- 'inf',
- 'info',
- 'infty',
- 'inner',
- 'insert',
- 'int',
- 'int0',
- 'int16',
- 'int32',
- 'int64',
- 'int8',
- 'int_',
- 'int_asbuffer',
- 'intc',
- 'integer',
- 'interp',
- 'intersect1d',
- 'intp',
- 'invert',
- 'ipmt',
- 'irr',
- 'is_busday',
- 'isclose',
- 'iscomplex',
- 'iscomplexobj',
- 'isfinite',
- 'isfortran',
- 'isin',
- 'isinf',
- 'isnan',
- 'isnat',
- 'isneginf',
- 'isposinf',
- 'isreal',
- 'isrealobj',
- 'isscalar',
- 'issctype',
- 'issubclass_',
- 'issubdtype',
- 'issubsctype',
- 'iterable',
- 'ix_',
- 'kaiser',
- 'kron',
- 'ldexp',
- 'left_shift',
- 'less',
- 'less_equal',
- 'lexsort',
- 'lib',
- 'linalg',
- 'linspace',
- 'little_endian',
- 'load',
- 'loads',
- 'loadtxt',
- 'log',
- 'log10',
- 'log1p',
- 'log2',
- 'logaddexp',
- 'logaddexp2',
- 'logical_and',
- 'logical_not',
- 'logical_or',
- 'logical_xor',
- 'logspace',
- 'long',
- 'longcomplex',
- 'longdouble',
- 'longfloat',
- 'longlong',
- 'lookfor',
- 'ma',
- 'mafromtxt',
- 'mask_indices',
- 'mat',
- 'math',
- 'matmul',
- 'matrix',
- 'matrixlib',
- 'max',
- 'maximum',
- 'maximum_sctype',
- 'may_share_memory',
- 'mean',
- 'median',
- 'memmap',
- 'meshgrid',
- 'mgrid',
- 'min',
- 'min_scalar_type',
- 'minimum',
- 'mintypecode',
- 'mirr',
- 'mod',
- 'modf',
- 'moveaxis',
- 'msort',
- 'multiply',
- 'nan',
- 'nan_to_num',
- 'nanargmax',
- 'nanargmin',
- 'nancumprod',
- 'nancumsum',
- 'nanmax',
- 'nanmean',
- 'nanmedian',
- 'nanmin',
- 'nanpercentile',
- 'nanprod',
- 'nanstd',
- 'nansum',
- 'nanvar',
- 'nbytes',
- 'ndarray',
- 'ndenumerate',
- 'ndfromtxt',
- 'ndim',
- 'ndindex',
- 'nditer',
- 'negative',
- 'nested_iters',
- 'newaxis',
- 'nextafter',
- 'nonzero',
- 'not_equal',
- 'nper',
- 'npv',
- 'numarray',
- 'number',
- 'obj2sctype',
- 'object',
- 'object0',
- 'object_',
- 'ogrid',
- 'oldnumeric',
- 'ones',
- 'ones_like',
- 'outer',
- 'packbits',
- 'pad',
- 'partition',
- 'percentile',
- 'pi',
- 'piecewise',
- 'pkgload',
- 'place',
- 'pmt',
- 'poly',
- 'poly1d',
- 'polyadd',
- 'polyder',
- 'polydiv',
- 'polyfit',
- 'polyint',
- 'polymul',
- 'polynomial',
- 'polysub',
- 'polyval',
- 'positive',
- 'power',
- 'ppmt',
- 'print_function',
- 'prod',
- 'product',
- 'promote_types',
- 'ptp',
- 'put',
- 'putmask',
- 'pv',
- 'r_',
- 'rad2deg',
- 'radians',
- 'random',
- 'rank',
- 'rate',
- 'ravel',
- 'ravel_multi_index',
- 'real',
- 'real_if_close',
- 'rec',
- 'recarray',
- 'recfromcsv',
- 'recfromtxt',
- 'reciprocal',
- 'record',
- 'remainder',
- 'repeat',
- 'require',
- 'reshape',
- 'resize',
- 'result_type',
- 'right_shift',
- 'rint',
- 'roll',
- 'rollaxis',
- 'roots',
- 'rot90',
- 'round',
- 'round_',
- 'row_stack',
- 's_',
- 'safe_eval',
- 'save',
- 'savetxt',
- 'savez',
- 'savez_compressed',
- 'sctype2char',
- 'sctypeDict',
- 'sctypeNA',
- 'sctypes',
- 'searchsorted',
- 'select',
- 'set_numeric_ops',
- 'set_printoptions',
- 'set_string_function',
- 'setbufsize',
- 'setdiff1d',
- 'seterr',
- 'seterrcall',
- 'seterrobj',
- 'setxor1d',
- 'shape',
- 'shares_memory',
- 'short',
- 'show_config',
- 'sign',
- 'signbit',
- 'signedinteger',
- 'sin',
- 'sinc',
- 'single',
- 'singlecomplex',
- 'sinh',
- 'size',
- 'sometrue',
- 'sort',
- 'sort_complex',
- 'source',
- 'spacing',
- 'split',
- 'sqrt',
- 'square',
- 'squeeze',
- 'stack',
- 'std',
- 'str',
- 'str0',
- 'str_',
- 'string_',
- 'subtract',
- 'sum',
- 'swapaxes',
- 'take',
- 'tan',
- 'tanh',
- 'tensordot',
- 'test',
- 'testing',
- 'tile',
- 'timedelta64',
- 'trace',
- 'tracemalloc_domain',
- 'transpose',
- 'trapz',
- 'tri',
- 'tril',
- 'tril_indices',
- 'tril_indices_from',
- 'trim_zeros',
- 'triu',
- 'triu_indices',
- 'triu_indices_from',
- 'true_divide',
- 'trunc',
- 'typeDict',
- 'typeNA',
- 'typecodes',
- 'typename',
- 'ubyte',
- 'ufunc',
- 'uint',
- 'uint0',
- 'uint16',
- 'uint32',
- 'uint64',
- 'uint8',
- 'uintc',
- 'uintp',
- 'ulonglong',
- 'unicode',
- 'unicode_',
- 'union1d',
- 'unique',
- 'unpackbits',
- 'unravel_index',
- 'unsignedinteger',
- 'unwrap',
- 'ushort',
- 'vander',
- 'var',
- 'vdot',
- 'vectorize',
- 'version',
- 'void',
- 'void0',
- 'vsplit',
- 'vstack',
- 'warnings',
- 'where',
- 'who',
- 'zeros',
- 'zeros_like']
-</code></pre></div>      </div>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># find out what version we have</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;ALLOW_THREADS&#39;,
+ &#39;AxisError&#39;,
+ &#39;BUFSIZE&#39;,
+ &#39;CLIP&#39;,
+ &#39;ComplexWarning&#39;,
+ &#39;DataSource&#39;,
+ &#39;ERR_CALL&#39;,
+ &#39;ERR_DEFAULT&#39;,
+ &#39;ERR_IGNORE&#39;,
+ &#39;ERR_LOG&#39;,
+ &#39;ERR_PRINT&#39;,
+ &#39;ERR_RAISE&#39;,
+ &#39;ERR_WARN&#39;,
+ &#39;FLOATING_POINT_SUPPORT&#39;,
+ &#39;FPE_DIVIDEBYZERO&#39;,
+ &#39;FPE_INVALID&#39;,
+ &#39;FPE_OVERFLOW&#39;,
+ &#39;FPE_UNDERFLOW&#39;,
+ &#39;False_&#39;,
+ &#39;Inf&#39;,
+ &#39;Infinity&#39;,
+ &#39;MAXDIMS&#39;,
+ &#39;MAY_SHARE_BOUNDS&#39;,
+ &#39;MAY_SHARE_EXACT&#39;,
+ &#39;MachAr&#39;,
+ &#39;ModuleDeprecationWarning&#39;,
+ &#39;NAN&#39;,
+ &#39;NINF&#39;,
+ &#39;NZERO&#39;,
+ &#39;NaN&#39;,
+ &#39;PINF&#39;,
+ &#39;PZERO&#39;,
+ &#39;PackageLoader&#39;,
+ &#39;RAISE&#39;,
+ &#39;RankWarning&#39;,
+ &#39;SHIFT_DIVIDEBYZERO&#39;,
+ &#39;SHIFT_INVALID&#39;,
+ &#39;SHIFT_OVERFLOW&#39;,
+ &#39;SHIFT_UNDERFLOW&#39;,
+ &#39;ScalarType&#39;,
+ &#39;Tester&#39;,
+ &#39;TooHardError&#39;,
+ &#39;True_&#39;,
+ &#39;UFUNC_BUFSIZE_DEFAULT&#39;,
+ &#39;UFUNC_PYVALS_NAME&#39;,
+ &#39;VisibleDeprecationWarning&#39;,
+ &#39;WRAP&#39;,
+ &#39;_NoValue&#39;,
+ &#39;__NUMPY_SETUP__&#39;,
+ &#39;__all__&#39;,
+ &#39;__builtins__&#39;,
+ &#39;__cached__&#39;,
+ &#39;__config__&#39;,
+ &#39;__doc__&#39;,
+ &#39;__file__&#39;,
+ &#39;__git_revision__&#39;,
+ &#39;__loader__&#39;,
+ &#39;__mkl_version__&#39;,
+ &#39;__name__&#39;,
+ &#39;__package__&#39;,
+ &#39;__path__&#39;,
+ &#39;__spec__&#39;,
+ &#39;__version__&#39;,
+ &#39;_distributor_init&#39;,
+ &#39;_globals&#39;,
+ &#39;_import_tools&#39;,
+ &#39;_mat&#39;,
+ &#39;abs&#39;,
+ &#39;absolute&#39;,
+ &#39;absolute_import&#39;,
+ &#39;add&#39;,
+ &#39;add_docstring&#39;,
+ &#39;add_newdoc&#39;,
+ &#39;add_newdoc_ufunc&#39;,
+ &#39;add_newdocs&#39;,
+ &#39;alen&#39;,
+ &#39;all&#39;,
+ &#39;allclose&#39;,
+ &#39;alltrue&#39;,
+ &#39;amax&#39;,
+ &#39;amin&#39;,
+ &#39;angle&#39;,
+ &#39;any&#39;,
+ &#39;append&#39;,
+ &#39;apply_along_axis&#39;,
+ &#39;apply_over_axes&#39;,
+ &#39;arange&#39;,
+ &#39;arccos&#39;,
+ &#39;arccosh&#39;,
+ &#39;arcsin&#39;,
+ &#39;arcsinh&#39;,
+ &#39;arctan&#39;,
+ &#39;arctan2&#39;,
+ &#39;arctanh&#39;,
+ &#39;argmax&#39;,
+ &#39;argmin&#39;,
+ &#39;argpartition&#39;,
+ &#39;argsort&#39;,
+ &#39;argwhere&#39;,
+ &#39;around&#39;,
+ &#39;array&#39;,
+ &#39;array2string&#39;,
+ &#39;array_equal&#39;,
+ &#39;array_equiv&#39;,
+ &#39;array_repr&#39;,
+ &#39;array_split&#39;,
+ &#39;array_str&#39;,
+ &#39;asanyarray&#39;,
+ &#39;asarray&#39;,
+ &#39;asarray_chkfinite&#39;,
+ &#39;ascontiguousarray&#39;,
+ &#39;asfarray&#39;,
+ &#39;asfortranarray&#39;,
+ &#39;asmatrix&#39;,
+ &#39;asscalar&#39;,
+ &#39;atleast_1d&#39;,
+ &#39;atleast_2d&#39;,
+ &#39;atleast_3d&#39;,
+ &#39;average&#39;,
+ &#39;bartlett&#39;,
+ &#39;base_repr&#39;,
+ &#39;bench&#39;,
+ &#39;binary_repr&#39;,
+ &#39;bincount&#39;,
+ &#39;bitwise_and&#39;,
+ &#39;bitwise_not&#39;,
+ &#39;bitwise_or&#39;,
+ &#39;bitwise_xor&#39;,
+ &#39;blackman&#39;,
+ &#39;block&#39;,
+ &#39;bmat&#39;,
+ &#39;bool&#39;,
+ &#39;bool8&#39;,
+ &#39;bool_&#39;,
+ &#39;broadcast&#39;,
+ &#39;broadcast_arrays&#39;,
+ &#39;broadcast_to&#39;,
+ &#39;busday_count&#39;,
+ &#39;busday_offset&#39;,
+ &#39;busdaycalendar&#39;,
+ &#39;byte&#39;,
+ &#39;byte_bounds&#39;,
+ &#39;bytes0&#39;,
+ &#39;bytes_&#39;,
+ &#39;c_&#39;,
+ &#39;can_cast&#39;,
+ &#39;cast&#39;,
+ &#39;cbrt&#39;,
+ &#39;cdouble&#39;,
+ &#39;ceil&#39;,
+ &#39;cfloat&#39;,
+ &#39;char&#39;,
+ &#39;character&#39;,
+ &#39;chararray&#39;,
+ &#39;choose&#39;,
+ &#39;clip&#39;,
+ &#39;clongdouble&#39;,
+ &#39;clongfloat&#39;,
+ &#39;column_stack&#39;,
+ &#39;common_type&#39;,
+ &#39;compare_chararrays&#39;,
+ &#39;compat&#39;,
+ &#39;complex&#39;,
+ &#39;complex128&#39;,
+ &#39;complex256&#39;,
+ &#39;complex64&#39;,
+ &#39;complex_&#39;,
+ &#39;complexfloating&#39;,
+ &#39;compress&#39;,
+ &#39;concatenate&#39;,
+ &#39;conj&#39;,
+ &#39;conjugate&#39;,
+ &#39;convolve&#39;,
+ &#39;copy&#39;,
+ &#39;copysign&#39;,
+ &#39;copyto&#39;,
+ &#39;core&#39;,
+ &#39;corrcoef&#39;,
+ &#39;correlate&#39;,
+ &#39;cos&#39;,
+ &#39;cosh&#39;,
+ &#39;count_nonzero&#39;,
+ &#39;cov&#39;,
+ &#39;cross&#39;,
+ &#39;csingle&#39;,
+ &#39;ctypeslib&#39;,
+ &#39;cumprod&#39;,
+ &#39;cumproduct&#39;,
+ &#39;cumsum&#39;,
+ &#39;datetime64&#39;,
+ &#39;datetime_as_string&#39;,
+ &#39;datetime_data&#39;,
+ &#39;deg2rad&#39;,
+ &#39;degrees&#39;,
+ &#39;delete&#39;,
+ &#39;deprecate&#39;,
+ &#39;deprecate_with_doc&#39;,
+ &#39;diag&#39;,
+ &#39;diag_indices&#39;,
+ &#39;diag_indices_from&#39;,
+ &#39;diagflat&#39;,
+ &#39;diagonal&#39;,
+ &#39;diff&#39;,
+ &#39;digitize&#39;,
+ &#39;disp&#39;,
+ &#39;divide&#39;,
+ &#39;division&#39;,
+ &#39;divmod&#39;,
+ &#39;dot&#39;,
+ &#39;double&#39;,
+ &#39;dsplit&#39;,
+ &#39;dstack&#39;,
+ &#39;dtype&#39;,
+ &#39;e&#39;,
+ &#39;ediff1d&#39;,
+ &#39;einsum&#39;,
+ &#39;einsum_path&#39;,
+ &#39;emath&#39;,
+ &#39;empty&#39;,
+ &#39;empty_like&#39;,
+ &#39;equal&#39;,
+ &#39;errstate&#39;,
+ &#39;euler_gamma&#39;,
+ &#39;exp&#39;,
+ &#39;exp2&#39;,
+ &#39;expand_dims&#39;,
+ &#39;expm1&#39;,
+ &#39;extract&#39;,
+ &#39;eye&#39;,
+ &#39;fabs&#39;,
+ &#39;fastCopyAndTranspose&#39;,
+ &#39;fft&#39;,
+ &#39;fill_diagonal&#39;,
+ &#39;find_common_type&#39;,
+ &#39;finfo&#39;,
+ &#39;fix&#39;,
+ &#39;flatiter&#39;,
+ &#39;flatnonzero&#39;,
+ &#39;flexible&#39;,
+ &#39;flip&#39;,
+ &#39;fliplr&#39;,
+ &#39;flipud&#39;,
+ &#39;float&#39;,
+ &#39;float128&#39;,
+ &#39;float16&#39;,
+ &#39;float32&#39;,
+ &#39;float64&#39;,
+ &#39;float_&#39;,
+ &#39;float_power&#39;,
+ &#39;floating&#39;,
+ &#39;floor&#39;,
+ &#39;floor_divide&#39;,
+ &#39;fmax&#39;,
+ &#39;fmin&#39;,
+ &#39;fmod&#39;,
+ &#39;format_parser&#39;,
+ &#39;frexp&#39;,
+ &#39;frombuffer&#39;,
+ &#39;fromfile&#39;,
+ &#39;fromfunction&#39;,
+ &#39;fromiter&#39;,
+ &#39;frompyfunc&#39;,
+ &#39;fromregex&#39;,
+ &#39;fromstring&#39;,
+ &#39;full&#39;,
+ &#39;full_like&#39;,
+ &#39;fv&#39;,
+ &#39;generic&#39;,
+ &#39;genfromtxt&#39;,
+ &#39;geomspace&#39;,
+ &#39;get_array_wrap&#39;,
+ &#39;get_include&#39;,
+ &#39;get_printoptions&#39;,
+ &#39;getbufsize&#39;,
+ &#39;geterr&#39;,
+ &#39;geterrcall&#39;,
+ &#39;geterrobj&#39;,
+ &#39;gradient&#39;,
+ &#39;greater&#39;,
+ &#39;greater_equal&#39;,
+ &#39;half&#39;,
+ &#39;hamming&#39;,
+ &#39;hanning&#39;,
+ &#39;heaviside&#39;,
+ &#39;histogram&#39;,
+ &#39;histogram2d&#39;,
+ &#39;histogramdd&#39;,
+ &#39;hsplit&#39;,
+ &#39;hstack&#39;,
+ &#39;hypot&#39;,
+ &#39;i0&#39;,
+ &#39;identity&#39;,
+ &#39;iinfo&#39;,
+ &#39;imag&#39;,
+ &#39;in1d&#39;,
+ &#39;index_exp&#39;,
+ &#39;indices&#39;,
+ &#39;inexact&#39;,
+ &#39;inf&#39;,
+ &#39;info&#39;,
+ &#39;infty&#39;,
+ &#39;inner&#39;,
+ &#39;insert&#39;,
+ &#39;int&#39;,
+ &#39;int0&#39;,
+ &#39;int16&#39;,
+ &#39;int32&#39;,
+ &#39;int64&#39;,
+ &#39;int8&#39;,
+ &#39;int_&#39;,
+ &#39;int_asbuffer&#39;,
+ &#39;intc&#39;,
+ &#39;integer&#39;,
+ &#39;interp&#39;,
+ &#39;intersect1d&#39;,
+ &#39;intp&#39;,
+ &#39;invert&#39;,
+ &#39;ipmt&#39;,
+ &#39;irr&#39;,
+ &#39;is_busday&#39;,
+ &#39;isclose&#39;,
+ &#39;iscomplex&#39;,
+ &#39;iscomplexobj&#39;,
+ &#39;isfinite&#39;,
+ &#39;isfortran&#39;,
+ &#39;isin&#39;,
+ &#39;isinf&#39;,
+ &#39;isnan&#39;,
+ &#39;isnat&#39;,
+ &#39;isneginf&#39;,
+ &#39;isposinf&#39;,
+ &#39;isreal&#39;,
+ &#39;isrealobj&#39;,
+ &#39;isscalar&#39;,
+ &#39;issctype&#39;,
+ &#39;issubclass_&#39;,
+ &#39;issubdtype&#39;,
+ &#39;issubsctype&#39;,
+ &#39;iterable&#39;,
+ &#39;ix_&#39;,
+ &#39;kaiser&#39;,
+ &#39;kron&#39;,
+ &#39;ldexp&#39;,
+ &#39;left_shift&#39;,
+ &#39;less&#39;,
+ &#39;less_equal&#39;,
+ &#39;lexsort&#39;,
+ &#39;lib&#39;,
+ &#39;linalg&#39;,
+ &#39;linspace&#39;,
+ &#39;little_endian&#39;,
+ &#39;load&#39;,
+ &#39;loads&#39;,
+ &#39;loadtxt&#39;,
+ &#39;log&#39;,
+ &#39;log10&#39;,
+ &#39;log1p&#39;,
+ &#39;log2&#39;,
+ &#39;logaddexp&#39;,
+ &#39;logaddexp2&#39;,
+ &#39;logical_and&#39;,
+ &#39;logical_not&#39;,
+ &#39;logical_or&#39;,
+ &#39;logical_xor&#39;,
+ &#39;logspace&#39;,
+ &#39;long&#39;,
+ &#39;longcomplex&#39;,
+ &#39;longdouble&#39;,
+ &#39;longfloat&#39;,
+ &#39;longlong&#39;,
+ &#39;lookfor&#39;,
+ &#39;ma&#39;,
+ &#39;mafromtxt&#39;,
+ &#39;mask_indices&#39;,
+ &#39;mat&#39;,
+ &#39;math&#39;,
+ &#39;matmul&#39;,
+ &#39;matrix&#39;,
+ &#39;matrixlib&#39;,
+ &#39;max&#39;,
+ &#39;maximum&#39;,
+ &#39;maximum_sctype&#39;,
+ &#39;may_share_memory&#39;,
+ &#39;mean&#39;,
+ &#39;median&#39;,
+ &#39;memmap&#39;,
+ &#39;meshgrid&#39;,
+ &#39;mgrid&#39;,
+ &#39;min&#39;,
+ &#39;min_scalar_type&#39;,
+ &#39;minimum&#39;,
+ &#39;mintypecode&#39;,
+ &#39;mirr&#39;,
+ &#39;mod&#39;,
+ &#39;modf&#39;,
+ &#39;moveaxis&#39;,
+ &#39;msort&#39;,
+ &#39;multiply&#39;,
+ &#39;nan&#39;,
+ &#39;nan_to_num&#39;,
+ &#39;nanargmax&#39;,
+ &#39;nanargmin&#39;,
+ &#39;nancumprod&#39;,
+ &#39;nancumsum&#39;,
+ &#39;nanmax&#39;,
+ &#39;nanmean&#39;,
+ &#39;nanmedian&#39;,
+ &#39;nanmin&#39;,
+ &#39;nanpercentile&#39;,
+ &#39;nanprod&#39;,
+ &#39;nanstd&#39;,
+ &#39;nansum&#39;,
+ &#39;nanvar&#39;,
+ &#39;nbytes&#39;,
+ &#39;ndarray&#39;,
+ &#39;ndenumerate&#39;,
+ &#39;ndfromtxt&#39;,
+ &#39;ndim&#39;,
+ &#39;ndindex&#39;,
+ &#39;nditer&#39;,
+ &#39;negative&#39;,
+ &#39;nested_iters&#39;,
+ &#39;newaxis&#39;,
+ &#39;nextafter&#39;,
+ &#39;nonzero&#39;,
+ &#39;not_equal&#39;,
+ &#39;nper&#39;,
+ &#39;npv&#39;,
+ &#39;numarray&#39;,
+ &#39;number&#39;,
+ &#39;obj2sctype&#39;,
+ &#39;object&#39;,
+ &#39;object0&#39;,
+ &#39;object_&#39;,
+ &#39;ogrid&#39;,
+ &#39;oldnumeric&#39;,
+ &#39;ones&#39;,
+ &#39;ones_like&#39;,
+ &#39;outer&#39;,
+ &#39;packbits&#39;,
+ &#39;pad&#39;,
+ &#39;partition&#39;,
+ &#39;percentile&#39;,
+ &#39;pi&#39;,
+ &#39;piecewise&#39;,
+ &#39;pkgload&#39;,
+ &#39;place&#39;,
+ &#39;pmt&#39;,
+ &#39;poly&#39;,
+ &#39;poly1d&#39;,
+ &#39;polyadd&#39;,
+ &#39;polyder&#39;,
+ &#39;polydiv&#39;,
+ &#39;polyfit&#39;,
+ &#39;polyint&#39;,
+ &#39;polymul&#39;,
+ &#39;polynomial&#39;,
+ &#39;polysub&#39;,
+ &#39;polyval&#39;,
+ &#39;positive&#39;,
+ &#39;power&#39;,
+ &#39;ppmt&#39;,
+ &#39;print_function&#39;,
+ &#39;prod&#39;,
+ &#39;product&#39;,
+ &#39;promote_types&#39;,
+ &#39;ptp&#39;,
+ &#39;put&#39;,
+ &#39;putmask&#39;,
+ &#39;pv&#39;,
+ &#39;r_&#39;,
+ &#39;rad2deg&#39;,
+ &#39;radians&#39;,
+ &#39;random&#39;,
+ &#39;rank&#39;,
+ &#39;rate&#39;,
+ &#39;ravel&#39;,
+ &#39;ravel_multi_index&#39;,
+ &#39;real&#39;,
+ &#39;real_if_close&#39;,
+ &#39;rec&#39;,
+ &#39;recarray&#39;,
+ &#39;recfromcsv&#39;,
+ &#39;recfromtxt&#39;,
+ &#39;reciprocal&#39;,
+ &#39;record&#39;,
+ &#39;remainder&#39;,
+ &#39;repeat&#39;,
+ &#39;require&#39;,
+ &#39;reshape&#39;,
+ &#39;resize&#39;,
+ &#39;result_type&#39;,
+ &#39;right_shift&#39;,
+ &#39;rint&#39;,
+ &#39;roll&#39;,
+ &#39;rollaxis&#39;,
+ &#39;roots&#39;,
+ &#39;rot90&#39;,
+ &#39;round&#39;,
+ &#39;round_&#39;,
+ &#39;row_stack&#39;,
+ &#39;s_&#39;,
+ &#39;safe_eval&#39;,
+ &#39;save&#39;,
+ &#39;savetxt&#39;,
+ &#39;savez&#39;,
+ &#39;savez_compressed&#39;,
+ &#39;sctype2char&#39;,
+ &#39;sctypeDict&#39;,
+ &#39;sctypeNA&#39;,
+ &#39;sctypes&#39;,
+ &#39;searchsorted&#39;,
+ &#39;select&#39;,
+ &#39;set_numeric_ops&#39;,
+ &#39;set_printoptions&#39;,
+ &#39;set_string_function&#39;,
+ &#39;setbufsize&#39;,
+ &#39;setdiff1d&#39;,
+ &#39;seterr&#39;,
+ &#39;seterrcall&#39;,
+ &#39;seterrobj&#39;,
+ &#39;setxor1d&#39;,
+ &#39;shape&#39;,
+ &#39;shares_memory&#39;,
+ &#39;short&#39;,
+ &#39;show_config&#39;,
+ &#39;sign&#39;,
+ &#39;signbit&#39;,
+ &#39;signedinteger&#39;,
+ &#39;sin&#39;,
+ &#39;sinc&#39;,
+ &#39;single&#39;,
+ &#39;singlecomplex&#39;,
+ &#39;sinh&#39;,
+ &#39;size&#39;,
+ &#39;sometrue&#39;,
+ &#39;sort&#39;,
+ &#39;sort_complex&#39;,
+ &#39;source&#39;,
+ &#39;spacing&#39;,
+ &#39;split&#39;,
+ &#39;sqrt&#39;,
+ &#39;square&#39;,
+ &#39;squeeze&#39;,
+ &#39;stack&#39;,
+ &#39;std&#39;,
+ &#39;str&#39;,
+ &#39;str0&#39;,
+ &#39;str_&#39;,
+ &#39;string_&#39;,
+ &#39;subtract&#39;,
+ &#39;sum&#39;,
+ &#39;swapaxes&#39;,
+ &#39;take&#39;,
+ &#39;tan&#39;,
+ &#39;tanh&#39;,
+ &#39;tensordot&#39;,
+ &#39;test&#39;,
+ &#39;testing&#39;,
+ &#39;tile&#39;,
+ &#39;timedelta64&#39;,
+ &#39;trace&#39;,
+ &#39;tracemalloc_domain&#39;,
+ &#39;transpose&#39;,
+ &#39;trapz&#39;,
+ &#39;tri&#39;,
+ &#39;tril&#39;,
+ &#39;tril_indices&#39;,
+ &#39;tril_indices_from&#39;,
+ &#39;trim_zeros&#39;,
+ &#39;triu&#39;,
+ &#39;triu_indices&#39;,
+ &#39;triu_indices_from&#39;,
+ &#39;true_divide&#39;,
+ &#39;trunc&#39;,
+ &#39;typeDict&#39;,
+ &#39;typeNA&#39;,
+ &#39;typecodes&#39;,
+ &#39;typename&#39;,
+ &#39;ubyte&#39;,
+ &#39;ufunc&#39;,
+ &#39;uint&#39;,
+ &#39;uint0&#39;,
+ &#39;uint16&#39;,
+ &#39;uint32&#39;,
+ &#39;uint64&#39;,
+ &#39;uint8&#39;,
+ &#39;uintc&#39;,
+ &#39;uintp&#39;,
+ &#39;ulonglong&#39;,
+ &#39;unicode&#39;,
+ &#39;unicode_&#39;,
+ &#39;union1d&#39;,
+ &#39;unique&#39;,
+ &#39;unpackbits&#39;,
+ &#39;unravel_index&#39;,
+ &#39;unsignedinteger&#39;,
+ &#39;unwrap&#39;,
+ &#39;ushort&#39;,
+ &#39;vander&#39;,
+ &#39;var&#39;,
+ &#39;vdot&#39;,
+ &#39;vectorize&#39;,
+ &#39;version&#39;,
+ &#39;void&#39;,
+ &#39;void0&#39;,
+ &#39;vsplit&#39;,
+ &#39;vstack&#39;,
+ &#39;warnings&#39;,
+ &#39;where&#39;,
+ &#39;who&#39;,
+ &#39;zeros&#39;,
+ &#39;zeros_like&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># find out what version we have</span>
 <span class="n">np</span><span class="o">.</span><span class="n">__version__</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>'1.13.1'
-</code></pre></div>      </div>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;1.13.1&#39;
+</pre></div>
+</div>
+</div>
+</div>
 <p>The numpy documentation is crucial!</p>
-
-<p>http://docs.scipy.org/doc/numpy/reference/</p>
-
-<h2 id="ndarrays">NDArrays</h2>
-
+<p><a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/">http://docs.scipy.org/doc/numpy/reference/</a></p>
+<div class="section" id="ndarrays">
+<h2>NDArrays<a class="headerlink" href="#ndarrays" title="Permalink to this headline">¶</a></h2>
 <p>The core class is the numpy ndarray (n-dimensional array).</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
-<span class="n">Image</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s">'http://docs.scipy.org/doc/numpy/_images/threefundamental.png'</span><span class="p">)</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output output_html">
-<img src="http://docs.scipy.org/doc/numpy/_images/threefundamental.png" />
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="n">Image</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s1">&#39;http://docs.scipy.org/doc/numpy/_images/threefundamental.png&#39;</span><span class="p">)</span>
+</pre></div>
 </div>
-
-    </div>
-  </div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># create an array from a list</span>
+<div class="cell_output docutils container">
+<div class="output text_html"><img src="http://docs.scipy.org/doc/numpy/_images/threefundamental.png"/></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create an array from a list</span>
 <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">9</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
-
-</code></pre></div>    </div>
-  </div>
-
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># find out the datatype</span>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># find out the datatype</span>
 <span class="n">a</span><span class="o">.</span><span class="n">dtype</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dtype('int64')
-</code></pre></div>      </div>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># find out the shape</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dtype(&#39;int64&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># find out the shape</span>
 <span class="n">a</span><span class="o">.</span><span class="n">shape</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(5,)
-</code></pre></div>      </div>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># what is the shape</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(5,)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># what is the shape</span>
 <span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tuple
-</code></pre></div>      </div>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># another array with a different datatype and shape</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tuple
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># another array with a different datatype and shape</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">9</span><span class="p">],[</span><span class="mi">9</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
-
-</code></pre></div>    </div>
-  </div>
-
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># check dtype and shape</span>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># check dtype and shape</span>
 <span class="n">b</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">shape</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(dtype('float64'), (2, 4))
-</code></pre></div>      </div>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(dtype(&#39;float64&#39;), (2, 4))
+</pre></div>
+</div>
+</div>
+</div>
 <p><strong>Important Concept</strong>: The fastest varying dimension is the last dimension! The outer level of the hierarchy is the first dimension. (This is called “c-style” indexing)</p>
-
-<h2 id="more-array-creation">More array creation</h2>
-
+</div>
+<div class="section" id="more-array-creation">
+<h2>More array creation<a class="headerlink" href="#more-array-creation" title="Permalink to this headline">¶</a></h2>
 <p>There are lots of ways to create arrays.</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># create some uniform arrays</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create some uniform arrays</span>
 <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">9</span><span class="p">,</span><span class="mi">9</span><span class="p">))</span>
 <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
 <span class="n">e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
 <span class="n">e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
 <span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-
-</code></pre></div>    </div>
-  </div>
-
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># create some ranges</span>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create some ranges</span>
 <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
-</code></pre></div>      </div>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># arange is left inclusive, right exclusive</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># arange is left inclusive, right exclusive</span>
 <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mf">0.25</span><span class="p">)</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>array([ 2.  ,  2.25,  2.5 ,  2.75,  3.  ,  3.25,  3.5 ,  3.75])
-</code></pre></div>      </div>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># linearly spaced</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 2.  ,  2.25,  2.5 ,  2.75,  3.  ,  3.25,  3.5 ,  3.75])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># linearly spaced</span>
 <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>array([ 2.        ,  2.10526316,  2.21052632,  2.31578947,  2.42105263,
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 2.        ,  2.10526316,  2.21052632,  2.31578947,  2.42105263,
         2.52631579,  2.63157895,  2.73684211,  2.84210526,  2.94736842,
         3.05263158,  3.15789474,  3.26315789,  3.36842105,  3.47368421,
         3.57894737,  3.68421053,  3.78947368,  3.89473684,  4.        ])
-</code></pre></div>      </div>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># log spaced</span>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># log spaced</span>
 <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>array([  10.        ,   12.91549665,   16.68100537,   21.5443469 ,
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([  10.        ,   12.91549665,   16.68100537,   21.5443469 ,
          27.82559402,   35.93813664,   46.41588834,   59.94842503,
          77.42636827,  100.        ])
-</code></pre></div>      </div>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># two dimensional grids</span>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># two dimensional grids</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
 <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 <span class="n">xx</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">yy</span><span class="o">.</span><span class="n">shape</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>((50, 100), (50, 100))
-</code></pre></div>      </div>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<h2 id="indexing">Indexing</h2>
-
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>((50, 100), (50, 100))
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="indexing">
+<h2>Indexing<a class="headerlink" href="#indexing" title="Permalink to this headline">¶</a></h2>
 <p>Basic indexing is similar to lists</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># get some individual elements of xx</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># get some individual elements of xx</span>
 <span class="n">xx</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">xx</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">xx</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">5</span><span class="p">]</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(-6.2831853071795862, 6.2831853071795862, 5.7754531611448723)
-</code></pre></div>      </div>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># get some whole rows and columns</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(-6.2831853071795862, 6.2831853071795862, 5.7754531611448723)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># get some whole rows and columns</span>
 <span class="n">xx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">xx</span><span class="p">[:,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>((100,), (50,))
-</code></pre></div>      </div>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># get some ranges</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>((100,), (50,))
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># get some ranges</span>
 <span class="n">xx</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span><span class="mi">30</span><span class="p">:</span><span class="mi">40</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(7, 10)
-</code></pre></div>      </div>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(7, 10)
+</pre></div>
+</div>
+</div>
+</div>
 <p>There are many advanced ways to index arrays. You can read about them in the manual. Here is one example.</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># use a boolean array as an index</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># use a boolean array as an index</span>
 <span class="n">idx</span> <span class="o">=</span> <span class="n">xx</span><span class="o">&lt;</span><span class="mi">0</span>
 <span class="n">yy</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(2500,)
-</code></pre></div>      </div>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># the array got flattened</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2500,)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the array got flattened</span>
 <span class="n">xx</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(5000,)
-</code></pre></div>      </div>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<h2 id="array-operations">Array Operations</h2>
-
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(5000,)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="array-operations">
+<h2>Array Operations<a class="headerlink" href="#array-operations" title="Permalink to this headline">¶</a></h2>
 <p>There are a huge number of operations available on arrays. All the familiar arithemtic operators are applied on an element-by-element basis.</p>
-
-<h3 id="basic-math">Basic Math</h3>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">xx</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">yy</span><span class="p">)</span>
-
-</code></pre></div>    </div>
-  </div>
-
+<div class="section" id="basic-math">
+<h3>Basic Math<a class="headerlink" href="#basic-math" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">xx</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">yy</span><span class="p">)</span>
+</pre></div>
 </div>
-
+</div>
+</div>
 <p>At this point you might be getting curious what these arrays “look” like. So we need to introduce some visualization.</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
-<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
-
-</code></pre></div>    </div>
-  </div>
-
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.collections.QuadMesh at 0x1158477b8&gt;
-</code></pre></div>      </div>
-
-    </div>
-  </div>
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <p class="output_png"><img src="../../images/lectures/basic_scipy/numpy_and_matplotlib_33_1.png" alt="png" /></p>
-
-    </div>
-  </div>
 </div>
-
-<h2 id="manipulating-array-dimensions">Manipulating array dimensions</h2>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># transpose</span>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.QuadMesh at 0x1158477b8&gt;
+</pre></div>
+</div>
+<img alt="../../_images/numpy_and_matplotlib_33_1.png" src="../../_images/numpy_and_matplotlib_33_1.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="manipulating-array-dimensions">
+<h2>Manipulating array dimensions<a class="headerlink" href="#manipulating-array-dimensions" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># transpose</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.collections.QuadMesh at 0x115893ac8&gt;
-</code></pre></div>      </div>
-
-    </div>
-  </div>
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <p class="output_png"><img src="../../images/lectures/basic_scipy/numpy_and_matplotlib_35_1.png" alt="png" /></p>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># reshape an array (wrong size)</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.QuadMesh at 0x115893ac8&gt;
+</pre></div>
+</div>
+<img alt="../../_images/numpy_and_matplotlib_35_1.png" src="../../_images/numpy_and_matplotlib_35_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># reshape an array (wrong size)</span>
 <span class="n">g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">))</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-      <div class="output_traceback_line highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-    ---------------------------------------------------------------------------
-
-    ValueError                                Traceback (most recent call last)
-
-    &lt;ipython-input-27-294e006fc417&gt; in &lt;module&gt;()
-          1 # reshape an array (wrong size)
-    ----&gt; 2 g = np.reshape(f, (8,9))
-    
-
-    ~/miniconda3/envs/geo_scipy/lib/python3.6/site-packages/numpy/core/fromnumeric.py in reshape(a, newshape, order)
-        230            [5, 6]])
-        231     """
-    --&gt; 232     return _wrapfunc(a, 'reshape', newshape, order=order)
-        233 
-        234 
-
-
-    ~/miniconda3/envs/geo_scipy/lib/python3.6/site-packages/numpy/core/fromnumeric.py in _wrapfunc(obj, method, *args, **kwds)
-         55 def _wrapfunc(obj, method, *args, **kwds):
-         56     try:
-    ---&gt; 57         return getattr(obj, method)(*args, **kwds)
-         58 
-         59     # An AttributeError occurs if the object does not have
-
-
-    ValueError: cannot reshape array of size 5000 into shape (8,9)
-
-
-</code></pre></div>      </div>
-    </div>
-  </div>
+</pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="nn">&lt;ipython-input-27-294e006fc417&gt;</span> in <span class="ni">&lt;module&gt;</span><span class="nt">()</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># reshape an array (wrong size)</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">))</span>
 
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># reshape an array (right size) and mess it up</span>
-<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+<span class="nn">~/miniconda3/envs/geo_scipy/lib/python3.6/site-packages/numpy/core/fromnumeric.py</span> in <span class="ni">reshape</span><span class="nt">(a, newshape, order)</span>
+<span class="g g-Whitespace">    </span><span class="mi">230</span>            <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+<span class="g g-Whitespace">    </span><span class="mi">231</span>     <span class="s2">&quot;&quot;&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">232</span><span class="s2">     return _wrapfunc(a, &#39;reshape&#39;, newshape, order=order)</span>
+<span class="g g-Whitespace">    </span><span class="mi">233</span><span class="s2"> </span>
+<span class="g g-Whitespace">    </span><span class="mi">234</span><span class="s2"> </span>
+
+<span class="nn">~/miniconda3/envs/geo_scipy/lib/python3.6/site-packages/numpy/core/fromnumeric.py</span> in <span class="ni">_wrapfunc</span><span class="nt">(obj, method, *args, **kwds)</span>
+<span class="g g-Whitespace">     </span><span class="mi">55</span><span class="s2"> def _wrapfunc(obj, method, *args, **kwds):</span>
+<span class="g g-Whitespace">     </span><span class="mi">56</span><span class="s2">     try:</span>
+<span class="ne">---&gt; </span><span class="mi">57</span><span class="s2">         return getattr(obj, method)(*args, **kwds)</span>
+<span class="g g-Whitespace">     </span><span class="mi">58</span><span class="s2"> </span>
+<span class="g g-Whitespace">     </span><span class="mi">59</span><span class="s2">     # An AttributeError occurs if the object does not have</span>
+
+<span class="ne">ValueError</span>: cannot reshape array of size 5000 into shape (8,9)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># reshape an array (right size) and mess it up</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
 <span class="n">g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="mi">200</span><span class="p">,</span><span class="mi">25</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-      <div class="output_stream highlighter-rouge"><div class="highlight"><pre class="highlight"><code>5000
-</code></pre></div>      </div>
-    </div>
-  </div>
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.collections.QuadMesh at 0x115ab7860&gt;
-</code></pre></div>      </div>
-
-    </div>
-  </div>
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <p class="output_png"><img src="../../images/lectures/basic_scipy/numpy_and_matplotlib_37_2.png" alt="png" /></p>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># tile an array</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5000
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.QuadMesh at 0x115ab7860&gt;
+</pre></div>
+</div>
+<img alt="../../_images/numpy_and_matplotlib_37_2.png" src="../../_images/numpy_and_matplotlib_37_2.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># tile an array</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">f</span><span class="p">,(</span><span class="mi">6</span><span class="p">,</span><span class="mi">1</span><span class="p">)))</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.collections.QuadMesh at 0x115ba8f60&gt;
-</code></pre></div>      </div>
-
-    </div>
-  </div>
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <p class="output_png"><img src="../../images/lectures/basic_scipy/numpy_and_matplotlib_38_1.png" alt="png" /></p>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<h2 id="broadcasting">Broadcasting</h2>
-
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.QuadMesh at 0x115ba8f60&gt;
+</pre></div>
+</div>
+<img alt="../../_images/numpy_and_matplotlib_38_1.png" src="../../_images/numpy_and_matplotlib_38_1.png" />
+</div>
+</div>
+</div>
+<div class="section" id="broadcasting">
+<h2>Broadcasting<a class="headerlink" href="#broadcasting" title="Permalink to this headline">¶</a></h2>
 <p>Broadcasting is an efficient way to multiply arrays of different sizes</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Image</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s">'http://scipy-lectures.github.io/_images/numpy_broadcasting.png'</span><span class="p">,</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s1">&#39;http://scipy-lectures.github.io/_images/numpy_broadcasting.png&#39;</span><span class="p">,</span>
      <span class="n">width</span><span class="o">=</span><span class="mi">720</span><span class="p">)</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output output_html">
-<img src="http://scipy-lectures.github.io/_images/numpy_broadcasting.png" width="720" />
+</pre></div>
 </div>
-
-    </div>
-  </div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># multiply f by x</span>
-<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<div class="cell_output docutils container">
+<div class="output text_html"><img src="http://scipy-lectures.github.io/_images/numpy_broadcasting.png" width="720"/></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># multiply f by x</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="n">g</span> <span class="o">=</span> <span class="n">f</span> <span class="o">*</span> <span class="n">x</span>
-<span class="k">print</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-      <div class="output_stream highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(50, 100) (100,)
+<span class="nb">print</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(50, 100) (100,)
 (50, 100)
-</code></pre></div>      </div>
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># multiply f by y</span>
-<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># multiply f by y</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="n">h</span> <span class="o">=</span> <span class="n">f</span> <span class="o">*</span> <span class="n">y</span>
-<span class="k">print</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-      <div class="output_stream highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(50, 100) (50,)
-</code></pre></div>      </div>
-    </div>
-  </div>
-  <div class="output_wrapper">
-    <div class="output_subarea">
-      <div class="output_traceback_line highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-    ---------------------------------------------------------------------------
-
-    ValueError                                Traceback (most recent call last)
-
-    &lt;ipython-input-32-79198d42b1dc&gt; in &lt;module&gt;()
-          1 # multiply f by y
-          2 print(f.shape, y.shape)
-    ----&gt; 3 h = f * y
-          4 print(h.shape)
-
-
-    ValueError: operands could not be broadcast together with shapes (50,100) (50,) 
-
-
-</code></pre></div>      </div>
-    </div>
-  </div>
+<span class="nb">print</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(50, 100) (50,)
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="nn">&lt;ipython-input-32-79198d42b1dc&gt;</span> in <span class="ni">&lt;module&gt;</span><span class="nt">()</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># multiply f by y</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">h</span> <span class="o">=</span> <span class="n">f</span> <span class="o">*</span> <span class="n">y</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="nb">print</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># use newaxis special syntax</span>
+<span class="ne">ValueError</span>: operands could not be broadcast together with shapes (50,100) (50,) 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># use newaxis special syntax</span>
 <span class="n">h</span> <span class="o">=</span> <span class="n">f</span> <span class="o">*</span> <span class="n">y</span><span class="p">[:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
-<span class="k">print</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-      <div class="output_stream highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(50, 100)
-</code></pre></div>      </div>
-    </div>
-  </div>
+<span class="nb">print</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.collections.QuadMesh at 0x115b0f7b8&gt;
-</code></pre></div>      </div>
-
-    </div>
-  </div>
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <p class="output_png"><img src="../../images/lectures/basic_scipy/numpy_and_matplotlib_44_1.png" alt="png" /></p>
-
-    </div>
-  </div>
 </div>
-
-<h2 id="reduction-operations">Reduction Operations</h2>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># sum</span>
-<span class="n">g</span><span class="o">.</span><span class="nb">sum</span><span class="p">()</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-3083.0383878071548
-</code></pre></div>      </div>
-
-    </div>
-  </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(50, 100)
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># mean</span>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.QuadMesh at 0x115b0f7b8&gt;
+</pre></div>
+</div>
+<img alt="../../_images/numpy_and_matplotlib_44_1.png" src="../../_images/numpy_and_matplotlib_44_1.png" />
+</div>
+</div>
+</div>
+<div class="section" id="reduction-operations">
+<h2>Reduction Operations<a class="headerlink" href="#reduction-operations" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># sum</span>
+<span class="n">g</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-3083.0383878071548
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># mean</span>
 <span class="n">g</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-0.61660767756143098
-</code></pre></div>      </div>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># std</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-0.61660767756143098
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># std</span>
 <span class="n">g</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1.6402280119141424
-</code></pre></div>      </div>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># apply on just one axis</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.6402280119141424
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># apply on just one axis</span>
 <span class="n">g_ymean</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">g_xmean</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-</code></pre></div>    </div>
-  </div>
-
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">g_ymean</span><span class="p">)</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[&lt;matplotlib.lines.Line2D at 0x115e42668&gt;]
-</code></pre></div>      </div>
-
-    </div>
-  </div>
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <p class="output_png"><img src="../../images/lectures/basic_scipy/numpy_and_matplotlib_50_1.png" alt="png" /></p>
-
-    </div>
-  </div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">g_xmean</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[&lt;matplotlib.lines.Line2D at 0x115fa9eb8&gt;]
-</code></pre></div>      </div>
-
-    </div>
-  </div>
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <p class="output_png"><img src="../../images/lectures/basic_scipy/numpy_and_matplotlib_51_1.png" alt="png" /></p>
-
-    </div>
-  </div>
 </div>
-
-<h2 id="fancy-plotting">Fancy Plotting</h2>
-
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">g_ymean</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x115e42668&gt;]
+</pre></div>
+</div>
+<img alt="../../_images/numpy_and_matplotlib_50_1.png" src="../../_images/numpy_and_matplotlib_50_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">g_xmean</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x115fa9eb8&gt;]
+</pre></div>
+</div>
+<img alt="../../_images/numpy_and_matplotlib_51_1.png" src="../../_images/numpy_and_matplotlib_51_1.png" />
+</div>
+</div>
+</div>
+<div class="section" id="fancy-plotting">
+<h2>Fancy Plotting<a class="headerlink" href="#fancy-plotting" title="Permalink to this headline">¶</a></h2>
 <p>Enough lessons, let’s have some fun.</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
 <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot2grid</span><span class="p">((</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">colspan</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot2grid</span><span class="p">((</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">),(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span><span class="n">rowspan</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <p class="output_png"><img src="../../images/lectures/basic_scipy/numpy_and_matplotlib_53_0.png" alt="png" /></p>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/numpy_and_matplotlib_53_0.png" src="../../_images/numpy_and_matplotlib_53_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
 <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot2grid</span><span class="p">((</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">colspan</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot2grid</span><span class="p">((</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">),(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span><span class="n">rowspan</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <span class="n">ax3</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot2grid</span><span class="p">((</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">),(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">rowspan</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">colspan</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
@@ -2934,251 +1690,243 @@ initFunction(initQuery);
 <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">g_xmean</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 <span class="n">ax3</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span>  <span class="n">g</span><span class="p">)</span>
 
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="nb">min</span><span class="p">(),</span> <span class="n">x</span><span class="o">.</span><span class="nb">max</span><span class="p">()])</span>
-<span class="n">ax3</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="nb">min</span><span class="p">(),</span> <span class="n">x</span><span class="o">.</span><span class="nb">max</span><span class="p">()])</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="n">y</span><span class="o">.</span><span class="nb">min</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="nb">max</span><span class="p">()])</span>
-<span class="n">ax3</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="n">y</span><span class="o">.</span><span class="nb">min</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="nb">max</span><span class="p">()])</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">()])</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">()])</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="n">y</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">max</span><span class="p">()])</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="n">y</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">max</span><span class="p">()])</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <p class="output_png"><img src="../../images/lectures/basic_scipy/numpy_and_matplotlib_54_0.png" alt="png" /></p>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<h2 id="real-data">Real Data</h2>
-
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/numpy_and_matplotlib_54_0.png" src="../../_images/numpy_and_matplotlib_54_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="real-data">
+<h2>Real Data<a class="headerlink" href="#real-data" title="Permalink to this headline">¶</a></h2>
 <p>ARGO float profile from North Atlantic</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># download with curl</span>
-<span class="err">!</span><span class="n">curl</span> <span class="o">-</span><span class="n">O</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">ldeo</span><span class="o">.</span><span class="n">columbia</span><span class="o">.</span><span class="n">edu</span><span class="o">/~</span><span class="n">rpa</span><span class="o">/</span><span class="n">argo_float_4901412</span><span class="o">.</span><span class="n">npz</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-      <div class="output_stream highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># download with curl</span>
+<span class="o">!</span>curl -O https://www.ldeo.columbia.edu/~rpa/argo_float_4901412.npz
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100  140k  100  140k    0     0  2252k      0 --:--:-- --:--:-- --:--:-- 2384k
-</code></pre></div>      </div>
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># load numpy file and examine keys</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">'argo_float_4901412.npz'</span><span class="p">)</span>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load numpy file and examine keys</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;argo_float_4901412.npz&#39;</span><span class="p">)</span>
 <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>['S', 'T', 'levels', 'lon', 'date', 'P', 'lat']
-</code></pre></div>      </div>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># access some data</span>
-<span class="n">T</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">'T'</span><span class="p">]</span>
-
-</code></pre></div>    </div>
-  </div>
-
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># there are "nans", missing data, which screw up our routines</span>
-<span class="n">T</span><span class="o">.</span><span class="nb">min</span><span class="p">()</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nan
-</code></pre></div>      </div>
-
-    </div>
-  </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;S&#39;, &#39;T&#39;, &#39;levels&#39;, &#39;lon&#39;, &#39;date&#39;, &#39;P&#39;, &#39;lat&#39;]
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ar_w_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
-                        <span class="n">mask</span><span class="o">=</span><span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">False</span><span class="p">])</span>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># access some data</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;T&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># there are &quot;nans&quot;, missing data, which screw up our routines</span>
+<span class="n">T</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>nan
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ar_w_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+                        <span class="n">mask</span><span class="o">=</span><span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">])</span>
 <span class="n">ar_w_mask</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>masked_array(data = [-- -- 3 4 5],
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>masked_array(data = [-- -- 3 4 5],
              mask = [ True  True False False False],
        fill_value = 999999)
-</code></pre></div>      </div>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ar_w_mask</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>4.0
-</code></pre></div>      </div>
-
-    </div>
-  </div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">T_ma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_invalid</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ar_w_mask</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4.0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">T_ma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_invalid</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
 <span class="n">T_ma</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>11.104955983298781
-</code></pre></div>      </div>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<h2 id="masked-arrays">Masked Arrays</h2>
-
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>11.104955983298781
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="masked-arrays">
+<h2>Masked Arrays<a class="headerlink" href="#masked-arrays" title="Permalink to this headline">¶</a></h2>
 <p>This is how we deal with missing data in numpy</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># create masked array</span>
-<span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_invalid</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">'T'</span><span class="p">])</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create masked array</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_invalid</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;T&#39;</span><span class="p">])</span>
 <span class="nb">type</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>numpy.ma.core.MaskedArray
-</code></pre></div>      </div>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># max and min</span>
-<span class="n">T</span><span class="o">.</span><span class="nb">max</span><span class="p">(),</span> <span class="n">T</span><span class="o">.</span><span class="nb">min</span><span class="p">()</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(24.364999771118164, 3.5320000648498535)
-</code></pre></div>      </div>
-
-    </div>
-  </div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># load other data</span>
-<span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_invalid</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">'S'</span><span class="p">])</span>
-<span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_invalid</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">'P'</span><span class="p">])</span>
-
-</code></pre></div>    </div>
-  </div>
-
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>numpy.ma.core.MaskedArray
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># scatter plot</span>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># max and min</span>
+<span class="n">T</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">T</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(24.364999771118164, 3.5320000648498535)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load other data</span>
+<span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_invalid</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;S&#39;</span><span class="p">])</span>
+<span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_invalid</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;P&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># scatter plot</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">P</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.colorbar.Colorbar at 0x1166cbf28&gt;
-</code></pre></div>      </div>
-
-    </div>
-  </div>
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <p class="output_png"><img src="../../images/lectures/basic_scipy/numpy_and_matplotlib_67_1.png" alt="png" /></p>
-
-    </div>
-  </div>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.colorbar.Colorbar at 0x1166cbf28&gt;
+</pre></div>
+</div>
+<img alt="../../_images/numpy_and_matplotlib_67_1.png" src="../../_images/numpy_and_matplotlib_67_1.png" />
+</div>
+</div>
+</div>
 </div>
 
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./lectures/basic_scipy"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
 
-              <nav class="c-page__nav">
-  
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
     
-    <a id="js-page__nav__prev" class="c-page__nav__prev" href="/lectures/core_python/organization_and_packaging.html">
-      〈 <span class="u-margin-right-tiny"></span> Organization and Packaging of Pyth...
-    </a>
-  
-
-  
-    
-    <a id="js-page__nav__next" class="c-page__nav__next" href="/assignments/numpy_matplotlib.html">
-      Assignment: Basic Numpy and Matplo... <span class="u-margin-right-tiny"></span> 〉
-    </a>
-  
-</nav>
-
+    <div id="prev">
+        <a class="left-prev" href="../../assignments/python_basics_and_functions.html" title="previous page">
+            <i class="prevnext-label fas fa-angle-left"></i>
+            <div class="prevnext-info">
+                <p class="prevnext-label">previous</p>
+                <p class="prevnext-title">Assignment: Basic Python</p>
             </div>
-          </div>
-        </div>
-      </main>
+        </a>
     </div>
+     <div id="next">
+        <a class="right-next" href="../../assignments/numpy_matplotlib.html" title="next page">
+            <div class="prevnext-info">
+                <p class="prevnext-label">next</p>
+                <p class="prevnext-title">Assignment 3 - Numpy and Matplotlib</p>
+            </div>
+            <i class="prevnext-label fas fa-angle-right"></i>
+        </a>
+     </div>
 
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Ryan Abernathey<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
   </body>
 </html>

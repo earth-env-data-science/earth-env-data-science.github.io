@@ -1,1549 +1,573 @@
+
 <!DOCTYPE html>
-<html lang="en">
-  
 
+<html>
   <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width,minimum-scale=1">
-
-  <title>Making Maps with Cartopy</title>
-  <meta name="description" content="Maps in Scientific Python">
-
-  <link rel="canonical" href="http://earth-env-data-science.github.io//lectures/mapping_cartopy.html">
-  <link rel="alternate" type="application/rss+xml" title="Earth and Environmental Data Science" href="http://earth-env-data-science.github.io//feed.xml">
-
-  <meta property="og:url"         content="http://earth-env-data-science.github.io//lectures/mapping_cartopy.html" />
-<meta property="og:type"        content="article" />
-<meta property="og:title"       content="Making Maps with Cartopy" />
-<meta property="og:description" content="Maps in Scientific Python" />
-<meta property="og:image"       content="" />
-
-
-  <script type="application/ld+json">
-  {
-  "@context": "http://schema.org",
-  "@type": "NewsArticle",
-  "mainEntityOfPage":
-    "http://earth-env-data-science.github.io//lectures/mapping_cartopy.html",
-  "headline":
-    "Making Maps with Cartopy",
-  "datePublished":
-    "2020-12-07T17:38:21+00:00",
-  "dateModified":
-    "2020-12-07T17:38:21+00:00",
-  "description":
-    "Maps in Scientific Python",
-  "author": {
-    "@type": "Person",
-    "name": "Ryan Abernathey"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Data 100 at UC Berkeley",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "http://earth-env-data-science.github.io/",
-      "width": 60,
-      "height": 60
-    }
-  },
-  "image": {
-    "@type": "ImageObject",
-    "url": "http://earth-env-data-science.github.io/",
-    "height": 60,
-    "width": 60
-  }
-}
-
-  </script>
-  <link rel="stylesheet" href="/assets/css/styles.css">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css ">
-  <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
-  <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
-  <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
-  <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
-
-  <!-- <link rel="manifest" href="/manifest.json"> -->
-  <!-- <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#efae0a"> -->
-  <meta name="msapplication-TileColor" content="#da532c">
-  <meta name="msapplication-TileImage" content="/mstile-144x144.png">
-  <meta name="theme-color" content="#233947">
-
-  <!-- Favicon -->
-  <link rel="shortcut icon" type="image/x-icon" href="/images/logo/favicon.ico">
-
-  <!-- MathJax Config -->
-  <!-- Allow inline math using $ and automatically break long math lines -->
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-    tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-        processEscapes: true,
-        processEnvironments: true
-    },
-    CommonHTML: {
-        linebreaks: {
-            automatic: true,
-        },
-    },
-});
-</script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_CHTML' async></script>
-
-  <!-- DOM updating function -->
-  <script>
-const runWhenDOMLoaded = cb => {
-  if (document.readyState != 'loading') {
-    cb()
-  } else if (document.addEventListener) {
-    document.addEventListener('DOMContentLoaded', cb)
-  } else {
-    document.attachEvent('onreadystatechange', function() {
-      if (document.readyState == 'complete') cb()
-    })
-  }
-}
-
-// Helper function to init things quickly
-initFunction = function(myfunc) {
-  runWhenDOMLoaded(myfunc);
-  document.addEventListener('turbolinks:load', myfunc);
-};
-</script>
-
-  <!-- Define some javascript variables that will be useful in other javascript -->
-  <script>
-    const site_basename = '/';
-  </script>
-
-  <!-- Add AnchorJS to let headers be linked -->
-  <script src="/assets/js/anchor.min.js"  type="text/javascript"></script>
-  <script>
-
-initFunction(function () {
-    anchors.add("main h1, main h2, main h3, main h4")
-});
-
-</script>
-
-  <!-- Include Turbolinks to make page loads fast -->
-  <!-- https://github.com/turbolinks/turbolinks -->
-  <script src="/assets/js/turbolinks.js" async></script>
-  <meta name="turbolinks-cache-control" content="no-cache">
-
-  <!-- Load nbinteract for widgets -->
-  
-
-  <!-- Load Thebelab for interactive widgets -->
-  <!-- Include Thebelab for interactive code if it's enabled -->
-
-
-
-  <!-- Load the auto-generating TOC -->
-  <script src="/assets/js/tocbot.min.js"  type="text/javascript"></script>
-  <script>
-var initToc = function () {
-  tocbot.init({
-    tocSelector: 'nav.onthispage',
-    contentSelector: '.c-textbook__content',
-    headingSelector: 'h2, h3',
-    orderedList: false,
-    collapseDepth: 6,
-    listClass: 'toc__menu',
-    activeListItemClass: "",  // Not using
-    activeLinkClass: "", // Not using
-  });
-  tocbot.refresh();
-}
-initFunction(initToc);
-</script>
-
-  <!-- Google analytics -->
-  <script src="/assets/js/ga.js" async></script>
-
-  <!-- Clipboard copy button -->
-  <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" async></script>
-
-  <!-- Load JS that depends on site variables -->
-  <script>
-/**
- * Set up copy/paste for code blocks
- */
-const codeCellId = index => `codecell${index}`
-
-const clipboardButton = id =>
-  `<a id="copy-button-${id}" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#${id}">
-    <img src="/assets/images/copy-button.svg" alt="Copy to clipboard">
-  </a>`
-
-// Clears selected text since ClipboardJS will select the text when copying
-const clearSelection = () => {
-  if (window.getSelection) {
-    window.getSelection().removeAllRanges()
-  } else if (document.selection) {
-    document.selection.empty()
-  }
-}
-
-// Changes tooltip text for two seconds, then changes it back
-const temporarilyChangeTooltip = (el, newText) => {
-  const oldText = el.getAttribute('data-tooltip')
-  el.setAttribute('data-tooltip', newText)
-  setTimeout(() => el.setAttribute('data-tooltip', oldText), 2000)
-}
-
-const addCopyButtonToCodeCells = () => {
-  // If ClipboardJS hasn't loaded, wait a bit and try again. This
-  // happens because we load ClipboardJS asynchronously.
-  if (window.ClipboardJS === undefined) {
-    setTimeout(addCopyButtonToCodeCells, 250)
-    return
-  }
-
-  const codeCells = document.querySelectorAll('div.c-textbook__content > div.highlighter-rouge > div.highlight > pre, div.input_area pre')
-  codeCells.forEach((codeCell, index) => {
-    const id = codeCellId(index)
-    codeCell.setAttribute('id', id)
-    if (document.getElementById("copy-button" + id) == null) {
-      codeCell.insertAdjacentHTML('afterend', clipboardButton(id));
-    }
-  })
-
-  const clipboard = new ClipboardJS('.copybtn')
-  clipboard.on('success', event => {
-    clearSelection()
-    temporarilyChangeTooltip(event.trigger, 'Copied!')
-  })
-
-  clipboard.on('error', event => {
-    temporarilyChangeTooltip(event.trigger, 'Failed to copy')
-  })
-
-  // Get rid of clipboard before the next page visit to avoid memory leak
-  document.addEventListener('turbolinks:before-visit', () =>
-    clipboard.destroy()
-  )
-}
-
-initFunction(addCopyButtonToCodeCells);
-</script>
-
-
-  <!-- Hide cell code -->
-  <script>
-    /**
-    Add buttons to hide code cells
-    */
-
-
-    var setCodeCellVisibility = function (inputField, kind) {
-        // Update the image and class for hidden
-        var id = inputField.getAttribute('data-id');
-        var codeCell = document.querySelector(`#${id} div.highlight`);
-
-        if (kind === "visible") {
-            codeCell.classList.remove('hidden');
-            inputField.checked = true;
-        } else {
-            codeCell.classList.add('hidden');
-            inputField.checked = false;
-        }
-    }
-
-    var toggleCodeCellVisibility = function (event) {
-        // The label is clicked, and now we decide what to do based on the input field's clicked status
-        if (event.target.tagName === "LABEL") {
-            var inputField = event.target.previousElementSibling;
-        } else {
-            // It is the span inside the target
-            var inputField = event.target.parentElement.previousElementSibling;
-        }
-
-        if (inputField.checked === true) {
-            setCodeCellVisibility(inputField, "visible");
-        } else {
-            setCodeCellVisibility(inputField, "hidden");
-        }
-    }
-
-
-    // Button constructor
-    const hideCodeButton = id => `<input class="hidebtn" type="checkbox" id="hidebtn${id}" data-id="${id}"><label title="Toggle cell" for="hidebtn${id}" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label>`
-
-    var addHideButton = function () {
-        // If a hide button is already added, don't add another
-        if (document.querySelector('div.hidecode input') !== null) {
-            return;
-        }
-
-        // Find the input cells and add a hide button
-        document.querySelectorAll('div.input_area').forEach(function (item, index) {
-            if (!item.classList.contains("hidecode")) {
-                // Skip the cell if it doesn't have a hidecode class
-                return;
-            }
-
-            const id = codeCellId(index)
-            item.setAttribute('id', id);
-            // Insert the button just inside the end of the next div
-            item.querySelector('div').insertAdjacentHTML('beforeend', hideCodeButton(id))
-
-            // Set up the visibility toggle
-            hideLink = document.querySelector(`#${id} div.highlight + input + label`);
-            hideLink.addEventListener('click', toggleCodeCellVisibility)
-        });
-    }
-
-
-    // Initialize the hide buttos
-    var initHiddenCells = function () {
-        // Add hide buttons to the cells
-        addHideButton();
-
-        // Toggle the code cells that should be hidden
-        document.querySelectorAll('div.hidecode input').forEach(function (item) {
-            setCodeCellVisibility(item, 'hidden');
-            item.checked = true;
-        })
-    }
-
-    initFunction(initHiddenCells);
-
-</script>
-
-  <!-- Load custom website scripts -->
-  <script src="/assets/js/scripts.js" async></script>
-
-  <!-- Load custom user CSS and JS  -->
-  <script src="/assets/custom/custom.js" async></script>
-  <link rel="stylesheet" href="/assets/custom/custom.css">
-
-  <!-- Update interact links w/ REST param, is defined in includes so we can use templates -->
-  
-<script>
-/**
-  * To auto-embed hub URLs in interact links if given in a RESTful fashion
- */
-
-function getJsonFromUrl(url) {
-  var query = url.split('?');
-  if (query.length < 2) {
-    // No queries so just return false
-    return false;
-  }
-  query = query[1];
-  // Collect REST params into a dictionary
-  var result = {};
-  query.split("&").forEach(function(part) {
-    var item = part.split("=");
-    result[item[0]] = decodeURIComponent(item[1]);
-  });
-  return result;
-}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Maps in Scientific Python &#8212; Earth and Environmental Data Science</title>
     
-function dict2param(dict) {
-    params = Object.keys(dict).map(function(k) {
-        return encodeURIComponent(k) + '=' + encodeURIComponent(dict[k])
-    });
-    return params.join('&')
-}
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
 
-// Parse a Binder URL, converting it to the string needed for JupyterHub
-function binder2Jupyterhub(url) {
-  newUrl = {};
-  parts = url.split('v2/gh/')[1];
-  // Grab the base repo information
-  repoinfo = parts.split('?')[0];
-  var [org, repo, ref] = repoinfo.split('/');
-  newUrl['repo'] = ['https://github.com', org, repo].join('/');
-  newUrl['branch'] = ref
-  // Grab extra parameters passed
-  params = getJsonFromUrl(url);
-  if (params['filepath'] !== undefined) {
-    newUrl['subPath'] = params['filepath']
-  }
-  return dict2param(newUrl);
-}
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-// Filter out potentially unsafe characters to prevent xss
-function safeUrl(url)
-{
-   return String(encodeURIComponent(url))
-            .replace(/&/g, '&amp;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#39;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;');
-}
-
-function addParamToInternalLinks(hub) {
-  var links = document.querySelectorAll("a").forEach(function(link) {
-    var href = link.href;
-    // If the link is an internal link...
-    if (href.search("http://earth-env-data-science.github.io") !== -1 || href.startsWith('/') || href.search("127.0.0.1:") !== -1) {
-      // Assume we're an internal link, add the hub param to it
-      var params = getJsonFromUrl(href);
-      if (params !== false) {
-        // We have REST params, so append a new one
-        params['jupyterhub'] = hub;
-      } else {
-        // Create the REST params
-        params = {'jupyterhub': hub};
-      }
-      // Update the link
-      var newHref = href.split('?')[0] + '?' + dict2param(params);
-      link.setAttribute('href', decodeURIComponent(newHref));
-    }
-  });
-  return false;
-}
-
-
-// Update interact links
-function updateInteractLink() {
-    // hack to make this work since it expects a ? in the URL
-    rest = getJsonFromUrl("?" + location.search.substr(1));
-    jupyterHubUrl = rest['jupyterhub'];
-    var hubType = null;
-    var hubUrl = null;
-    if (jupyterHubUrl !== undefined) {
-      hubType = 'jupyterhub';
-      hubUrl = jupyterHubUrl;
-    }
-
-    if (hubType !== null) {
-      // Sanitize the hubUrl
-      hubUrl = safeUrl(hubUrl);
-
-      // Add HTTP text if omitted
-      if (hubUrl.indexOf('http') < 0) {hubUrl = 'http://' + hubUrl;}
-      var interactButtons = document.querySelectorAll("button.interact-button")
-      var lastButton = interactButtons[interactButtons.length-1];
-      var link = lastButton.parentElement;
-
-      // If we've already run this, skip the link updating
-      if (link.nextElementSibling !== null) {
-        return;
-      }
-
-      // Update the link and add context div
-      var href = link.getAttribute('href');
-      if (lastButton.id === 'interact-button-binder') {
-        // If binder links exist, we need to re-work them for jupyterhub
-        if (hubUrl.indexOf('http%3A%2F%2Flocalhost') > -1) {
-          // If localhost, assume we're working from a local Jupyter server and remove `/hub`
-          first = [hubUrl, 'git-sync'].join('/')
-        } else {
-          first = [hubUrl, 'hub', 'user-redirect', 'git-sync'].join('/')
-        }
-        href = first + '?' + binder2Jupyterhub(href);
-      } else {
-        // If interact button isn't binderhub, assume it's jupyterhub
-        // If JupyterHub links, we only need to replace the hub url
-        href = href.replace("https://us-central1-b.gcp.pangeo.io/", hubUrl);
-        if (hubUrl.indexOf('http%3A%2F%2Flocalhost') > -1) {
-          // Assume we're working from a local Jupyter server and remove `/hub`
-          href = href.replace("/hub/user-redirect", "");
-        }
-      }
-      link.setAttribute('href', decodeURIComponent(href));
-
-      // Add text after interact link saying where we're launching
-      hubUrlNoHttp = decodeURIComponent(hubUrl).replace('http://', '').replace('https://', '');
-      link.insertAdjacentHTML('afterend', '<div class="interact-context">on ' + hubUrlNoHttp + '</div>');
-
-      // Update internal links so we retain the hub url
-      addParamToInternalLinks(hubUrl);
-    }
-}
-
-runWhenDOMLoaded(updateInteractLink)
-document.addEventListener('turbolinks:load', updateInteractLink)
-</script>
-
-
-  <!-- Lunr search code - will only be executed on the /search page -->
-  <script src="/assets/js/lunr/lunr.min.js" type="text/javascript"></script>
-  <script>var initQuery = function() {
-  // See if we have a search box
-  var searchInput = document.querySelector('input#lunr_search');
-  if (searchInput === null) {
-    return;
-  }
-
-  // Function to parse our lunr cache
-  var idx = lunr(function () {
-    this.field('title')
-    this.field('excerpt')
-    this.field('categories')
-    this.field('tags')
-    this.ref('id')
-
-    this.pipeline.remove(lunr.trimmer)
-
-    for (var item in store) {
-      this.add({
-        title: store[item].title,
-        excerpt: store[item].excerpt,
-        categories: store[item].categories,
-        tags: store[item].tags,
-        id: item
-      })
-    }
-  });
-
-  // Run search upon keyup
-  searchInput.addEventListener('keyup', function () {
-    var resultdiv = document.querySelector('#results');
-    var query = document.querySelector("input#lunr_search").value.toLowerCase();
-    var result =
-      idx.query(function (q) {
-        query.split(lunr.tokenizer.separator).forEach(function (term) {
-          q.term(term, { boost: 100 })
-          if(query.lastIndexOf(" ") != query.length-1){
-            q.term(term, {  usePipeline: false, wildcard: lunr.Query.wildcard.TRAILING, boost: 10 })
-          }
-          if (term != ""){
-            q.term(term, {  usePipeline: false, editDistance: 1, boost: 1 })
-          }
-        })
-      });
-
-      // Empty the results div
-      while (resultdiv.firstChild) {
-        resultdiv.removeChild(resultdiv.firstChild);
-      }
-
-    resultdiv.insertAdjacentHTML('afterbegin', '<p class="results__found">'+result.length+' Result(s) found</p>');
-    for (var item in result) {
-      var ref = result[item].ref;
-      if(store[ref].teaser){
-        var searchitem =
-          '<div class="list__item">'+
-            '<article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">'+
-              '<h2 class="archive__item-title" itemprop="headline">'+
-                '<a href="'+store[ref].url+'" rel="permalink">'+store[ref].title+'</a>'+
-              '</h2>'+
-              '<div class="archive__item-teaser">'+
-                '<img src="'+store[ref].teaser+'" alt="">'+
-              '</div>'+
-              '<p class="archive__item-excerpt" itemprop="description">'+store[ref].excerpt.split(" ").splice(0,20).join(" ")+'...</p>'+
-            '</article>'+
-          '</div>';
-      }
-      else{
-    	  var searchitem =
-          '<div class="list__item">'+
-            '<article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">'+
-              '<h2 class="archive__item-title" itemprop="headline">'+
-                '<a href="'+store[ref].url+'" rel="permalink">'+store[ref].title+'</a>'+
-              '</h2>'+
-              '<p class="archive__item-excerpt" itemprop="description">'+store[ref].excerpt.split(" ").splice(0,20).join(" ")+'...</p>'+
-            '</article>'+
-          '</div>';
-      }
-      resultdiv.insertAdjacentHTML('beforeend', searchitem);
-    }
-  });
-};
-
-initFunction(initQuery);
-</script>
-</head>
-
-  <body>
-    <!-- .js-show-sidebar shows sidebar by default -->
-    <div id="js-textbook" class="c-textbook js-show-sidebar">
-      
-
-
-
-<nav id="js-sidebar" class="c-textbook__sidebar">
-  <a href="http://earth-env-data-science.github.io"><img src="/images/logo/eeds-logo.png" class="textbook_logo" id="sidebar-logo" data-turbolinks-permanent/></a>
-  <h2 class="c-sidebar__title">Earth and Environmental Data Science</h2>
-  <ul class="c-sidebar__chapters">
     
       
-      
 
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/intro.html"
-        >
-          
-          Intro
-        </a>
-
-        
-      </li>
-
-      
     
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/projects.html"
-        >
-          
-            1.
-          
-          Final Projects
-        </a>
-
-        
-      </li>
-
-      
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.e8f53015daec13862f6db5e763c41738.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
-      
-      
+  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
 
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/LICENSE.html"
-        >
-          
-          License
-        </a>
-
-        
-      </li>
-
-      
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Assignment: Making Maps with Cartopy" href="../assignments/cartopy.html" />
+    <link rel="prev" title="Xarray Tips and Tricks" href="xarray/xarray_tips_and_tricks.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
     
-      
-      
-        <li class="c-sidebar__divider"></li>
-        
-      
-      
-        <li><h2 class="c-sidebar__title">The Interactive Computing Environment</li>
-        
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/environment/intro_to_jupyterlab.html"
-        >
-          
-            2.
-          
-          Intro to JupyterLab
-        </a>
-
-        
-      </li>
-
-      
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
-      
-      
+    <div class="container-fluid" id="banner"></div>
 
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/environment/intro_to_unix.html"
-        >
-          
-            3.
-          
-          Intro to Unix
-        </a>
-
-        
-      </li>
-
-      
     
-      
-      
 
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/environment/intro_to_git.html"
-        >
+    <div class="container-xl">
+      <div class="row">
           
-            4.
-          
-          Intro to Git
-        </a>
-
-        
-
-          
-          
-          
-          
-
-          
-
-          <ul class="c-sidebar__sections ">
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/assignments/files_markdown_git.html"
-                >
-                  
-                    4.1
-                  
-                  Assignment: Files, Git, and Github
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-          </ul>
-        
-      </li>
-
-      
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
     
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/environment/python_environments.html"
-        >
-          
-            5.
-          
-          Managing Environments
-        </a>
-
-        
-      </li>
-
-      
-    
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/environment/binder.html"
-        >
-          
-            6.
-          
-          Sharing Reproducible Science with Binder
-        </a>
-
-        
-      </li>
-
-      
-    
-      
-      
-        <li><h2 class="c-sidebar__title">The Core Python Language</li>
-        
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/core_python/python_fundamentals.html"
-        >
-          
-            7.
-          
-          Python Fundamentals
-        </a>
-
-        
-      </li>
-
-      
-    
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/core_python/functions_classes.html"
-        >
-          
-            8.
-          
-          Functions and Classes
-        </a>
-
-        
-
-          
-          
-          
-          
-
-          
-
-          <ul class="c-sidebar__sections ">
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/assignments/python_basics_and_functions.html"
-                >
-                  
-                    8.1
-                  
-                  Assignment: Python Basics and Functions
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-          </ul>
-        
-      </li>
-
-      
-    
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/core_python/organization_and_packaging.html"
-        >
-          
-            9.
-          
-          Organization and Packaging of Python Projects
-        </a>
-
-        
-      </li>
-
-      
-    
-      
-      
-        <li><h2 class="c-sidebar__title">Scientific Python Fundamentals</li>
-        
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/basic_scipy/numpy_and_matplotlib.html"
-        >
-          
-            10.
-          
-          Numpy and Matplotlib
-        </a>
-
-        
-
-          
-          
-          
-          
-
-          
-
-          <ul class="c-sidebar__sections ">
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/assignments/numpy_matplotlib.html"
-                >
-                  
-                    10.1
-                  
-                  Assignment: Basic Numpy and Matplotlib
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-          </ul>
-        
-      </li>
-
-      
-    
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/basic_scipy/more_matplotlib.html"
-        >
-          
-            11.
-          
-          Advanced Matplotlib
-        </a>
-
-        
-
-          
-          
-          
-          
-
-          
-
-          <ul class="c-sidebar__sections ">
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/assignments/more_matplotlib.html"
-                >
-                  
-                    11.1
-                  
-                  Assignment: More Matplotlib
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-          </ul>
-        
-      </li>
-
-      
-    
-      
-      
-        <li><h2 class="c-sidebar__title">High Level Data Analysis Frameworks</li>
-        
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/pandas/pandas_intro.html"
-        >
-          
-            12.
-          
-          Pandas for Tabular Data
-        </a>
-
-        
-
-          
-          
-          
-          
-
-          
-
-          <ul class="c-sidebar__sections ">
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/lectures/pandas/basic_pandas.html"
-                >
-                  
-                    12.1
-                  
-                  Pandas Fundamentals
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/assignments/basic_pandas.html"
-                >
-                  
-                    12.2
-                  
-                  Assignment: Pandas Fundamentals with Earthquake Data
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/lectures/pandas/pandas_groupby.html"
-                >
-                  
-                    12.3
-                  
-                  The Split-Apply-Combine Workflow
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/assignments/pandas_groupby.html"
-                >
-                  
-                    12.4
-                  
-                  Assignment: Pandas Groupby with Hurrican Data
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-          </ul>
-        
-      </li>
-
-      
-    
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/xarray/xarray_intro.html"
-        >
-          
-            13.
-          
-          Xarray for Multidimensional Data
-        </a>
-
-        
-
-          
-          
-          
-          
-
-          
-
-          <ul class="c-sidebar__sections ">
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/lectures/xarray/xarray.html"
-                >
-                  
-                    13.1
-                  
-                  Xarray Fundamentals
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/assignments/basic_xarray.html"
-                >
-                  
-                    13.2
-                  
-                  Assignment: Xarray Fundamentals with Earth Radiation Data
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/lectures/xarray/xarray-part2.html"
-                >
-                  
-                    13.3
-                  
-                  Intermediate Xarray
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/assignments/more_xarray.html"
-                >
-                  
-                    13.4
-                  
-                  Assignment: Xarray Groupby and SST Data
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/lectures/xarray/xarray_tips_and_tricks.html"
-                >
-                  
-                    13.5
-                  
-                  Xarray Tips And Tricks
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-          </ul>
-        
-      </li>
-
-      
-    
-      
-      
-        <li><h2 class="c-sidebar__title">Geoscience Packages</li>
-        
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry c-sidebar__entry--active"
-          href="/lectures/mapping_cartopy.html"
-        >
-          
-            14.
-          
-          Making Maps with Cartopy
-        </a>
-
-        
-
-          
-          
-          
-          
-
-          
-
-          <ul class="c-sidebar__sections ">
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/assignments/cartopy.html"
-                >
-                  
-                    14.1
-                  
-                  Assignment: Maps with Cartopy
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-          </ul>
-        
-      </li>
-
-      
-    
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/working_with_gcm_data.html"
-        >
-          
-            15.
-          
-          Working with output from general circulation models using xesmf and xgcm
-        </a>
-
-        
-      </li>
-
-      
-    
-      
-      
-        <li><h2 class="c-sidebar__title">Big Data</li>
-        
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/dask/intro.html"
-        >
-          
-            16.
-          
-          Dask
-        </a>
-
-        
-
-          
-          
-          
-          
-
-          
-
-          <ul class="c-sidebar__sections ">
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/lectures/dask/dask_arrays.html"
-                >
-                  
-                    16.1
-                  
-                  Dask Arrays and Xarray Integration
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-          </ul>
-        
-      </li>
-
-      
-    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+      
+      <h1 class="site-logo" id="site-title">Earth and Environmental Data Science</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro.html">
+   An Introduction to Earth and Environmental Data Science
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  About this Book
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../LICENSE.html">
+   License for this book
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../projects.html">
+   Final Projects
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  The Interactive Computing Environment
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="environment/intro_to_jupyterlab.html">
+   Intro to JupyterLab
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="environment/intro_to_unix.html">
+   Intro to Unix
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="environment/intro_to_git.html">
+   Intro to Git for Version Control
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="environment/python_environments.html">
+   Managing Python Environments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="environment/binder.html">
+   Binder for Reproducible Research
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  The Core Python Language
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="core_python/python_fundamentals.html">
+   Python Fundamentals
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="core_python/functions_classes.html">
+   Python Functions and Classes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../assignments/python_basics_and_functions.html">
+   Assignment: Basic Python
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Scientific Python Fundamentals
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="basic_scipy/numpy_and_matplotlib.html">
+   Numpy and Matplotlib
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../assignments/numpy_matplotlib.html">
+   Assignment 3 - Numpy and Matplotlib
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="basic_scipy/more_matplotlib.html">
+   More Matplotlib
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../assignments/more_matplotlib.html">
+   Assignment 4: More Matplotlib
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  High Level Data Analysis Frameworks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="pandas/pandas_intro.html">
+   Pandas
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas/basic_pandas.html">
+     Pandas Fundamentals
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../assignments/basic_pandas.html">
+     Assignment 5: Pandas Fundamentals with Earthquake Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas/pandas_groupby.html">
+     Pandas: Groupby
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../assignments/pandas_groupby.html">
+     Assignment 6: Pandas Groupby with Hurricane Data
+    </a>
+   </li>
   </ul>
-  <p class="sidebar_footer">Powered by <a href="https://github.com/jupyter/jupyter-book">Jupyter Book</a></p>
-</nav>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="xarray/xarray_intro.html">
+   Xarray for multidimensional gridded data
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="xarray/xarray.html">
+     Lesson 1: Xarray Fundamentals
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../assignments/basic_xarray.html">
+     Assignment 7: Xarray Fundamentals with Atmospheric Radiation Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="xarray/xarray-part2.html">
+     Lesson 2: Advanced Xarray
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../assignments/more_xarray.html">
+     Assignment: More Xarray with El Niño-Southern Oscillation (ENSO) Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="xarray/xarray_tips_and_tricks.html">
+     Xarray Tips and Tricks
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Geoscience Package
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Maps in Scientific Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../assignments/cartopy.html">
+   Assignment: Making Maps with Cartopy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="working_with_gcm_data.html">
+   Working with output from general circulation models using xesmf and xgcm
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Big Data
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="dask/intro.html">
+   Dask for Parallel Computing in Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="dask/dask_arrays.html">
+   Dask Arrays
+  </a>
+ </li>
+</ul>
 
-      
-      <!-- Empty sidebar placeholder that we'll auto-fill with javascript -->
-      <aside class="sidebar__right">
-          <header><h4 class="nav__title"><i class="fa fa-list"></i>   On this page</h4></header>
-          <nav class="onthispage">
-          </nav>
-      </aside>
-      
-      <main class="c-textbook__page" tabindex="-1">
-          <div class="o-wrapper">
-            <div class="c-sidebar-toggle">
-  <!-- We show the sidebar by default so we use .is-active -->
-  <button
-    id="js-sidebar-toggle"
-    class="hamburger hamburger--arrowalt is-active"
-  >
-    <span class="hamburger-box">
-      <span class="hamburger-inner"></span>
-    </span>
-    <span class="c-sidebar-toggle__label">Toggle Sidebar</span>
-  </button>
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
 </div>
 
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
             
-<div class="buttons">
-<a href="/content/lectures/mapping_cartopy.ipynb" download>
-<button id="interact-button-download" class="interact-button">Download</button>
-</a>
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
 
-
-
-
-
-
-
-
-
-
-<a href="https://binder.pangeo.io/v2/gh/earth-env-data-science/earth-env-data-science-book/master?urlpath=lab/tree/content%2Flectures%2Fmapping_cartopy.ipynb"><button class="interact-button" id="interact-button-binder"><img class="interact-button-logo" src="/assets/images/logo_binder.svg" alt="Interact" />Interact</button></a>
-
-
-
-
-
-
-<a href="https://us-central1-b.gcp.pangeo.io//hub/user-redirect/git-pull?repo=https://github.com//earth-env-data-science/earth-env-data-science-book&amp;branch=master&amp;subPath=content%2Flectures%2Fmapping_cartopy.ipynb&amp;app=lab"><button class="interact-button" id="interact-button-jupyterhub"><img class="interact-button-logo" src="/assets/images/logo_jupyterhub.svg" alt="Interact" />us-central1-b.gcp.pangeo.io</button></a>
-
-
-
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/lectures/mapping_cartopy.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
 </div>
 
+            <!-- Source interaction buttons -->
 
-            <div class="c-textbook__content">
-              <h1 id="maps-in-scientific-python">Maps in Scientific Python</h1>
+            <!-- Full screen (wrap in <a> to have style consistency -->
 
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/lectures/mapping_cartopy.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#credit-phil-elson">
+   Credit: Phil Elson
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#background-projections">
+   Background: Projections
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#most-of-our-media-for-visualization-are-flat">
+     Most of our media for visualization
+     <em>
+      are
+     </em>
+     flat
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#map-projections-taking-us-from-spherical-to-flat">
+     [Map] Projections: Taking us from spherical to flat
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-major-problem-with-map-projections">
+     The major problem with map projections
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#introducing-cartopy">
+   Introducing Cartopy
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#cartopy-projections-and-other-reference-systems">
+     Cartopy Projections and other reference systems
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#drawing-a-map">
+     Drawing a map
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#useful-methods-of-a-geoaxes">
+     Useful methods of a GeoAxes
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#some-more-examples-of-different-global-projections">
+     Some More Examples of Different Global Projections
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#regional-maps">
+     Regional Maps
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#adding-features-to-the-map">
+   Adding Features to the Map
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#adding-data-to-the-map">
+   Adding Data to the Map
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#plotting-2d-raster-data">
+     Plotting 2D (Raster) Data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#showing-images">
+     Showing Images
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#xarray-integration">
+   Xarray Integration
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#doing-more">
+   Doing More
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="maps-in-scientific-python">
+<h1>Maps in Scientific Python<a class="headerlink" href="#maps-in-scientific-python" title="Permalink to this headline">¶</a></h1>
 <p>Making maps is a fundamental part of geoscience research.
 Maps differ from regular figures in the following principle ways:</p>
-
-<ul>
-  <li>Maps require a <em>projection</em> of geographic coordinates on the 3D Earth to the 2D space of your figure.</li>
-  <li>Maps often include extra decorations besides just our data (e.g. continents, country borders, etc.)</li>
+<ul class="simple">
+<li><p>Maps require a <em>projection</em> of geographic coordinates on the 3D Earth to the 2D space of your figure.</p></li>
+<li><p>Maps often include extra decorations besides just our data (e.g. continents, country borders, etc.)</p></li>
 </ul>
-
 <p>Mapping is a notoriously hard and complicated problem, mostly due to the complexities of projection.</p>
-
-<p>In this lecture, we will learn about <a href="https://scitools.org.uk/cartopy/docs/latest/">Cartopy</a>, one of the most common packages for making maps within python. Another popular and powerful library is <a href="https://matplotlib.org/basemap/">Basemap</a>; however, Basemap is <a href="https://matplotlib.org/basemap/users/intro.html#cartopy-new-management-and-eol-announcement">going away</a> and being replaced with Cartopy in the near future. For this reason, new python learners are recommended to learn Cartopy.</p>
-
-<h3 id="credit-phil-elson">Credit: Phil Elson</h3>
-
-<p>Lots of the material in this lesson was adopted from <a href="https://pelson.github.io/">Phil Elson</a>’s excellent <a href="https://github.com/SciTools/cartopy-tutorial">Cartopy Tutorial</a>. Phil is the creator of Cartopy and published his tutorial under an <a href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/">open license</a>, meaning that we can copy, adapt, and redistribute it as long as we give proper attribution. <strong>THANKS PHIL!</strong> 👏👏👏</p>
-
-<h2 id="background-projections">Background: Projections</h2>
-
-<h3 id="most-of-our-media-for-visualization-are-flat">Most of our media for visualization <em>are</em> flat</h3>
-
+<p>In this lecture, we will learn about <a class="reference external" href="https://scitools.org.uk/cartopy/docs/latest/">Cartopy</a>, one of the most common packages for making maps within python. Another popular and powerful library is <a class="reference external" href="https://matplotlib.org/basemap/">Basemap</a>; however, Basemap is <a class="reference external" href="https://matplotlib.org/basemap/users/intro.html#cartopy-new-management-and-eol-announcement">going away</a> and being replaced with Cartopy in the near future. For this reason, new python learners are recommended to learn Cartopy.</p>
+<div class="section" id="credit-phil-elson">
+<h2>Credit: Phil Elson<a class="headerlink" href="#credit-phil-elson" title="Permalink to this headline">¶</a></h2>
+<p>Lots of the material in this lesson was adopted from <a class="reference external" href="https://pelson.github.io/">Phil Elson</a>’s excellent <a class="reference external" href="https://github.com/SciTools/cartopy-tutorial">Cartopy Tutorial</a>. Phil is the creator of Cartopy and published his tutorial under an <a class="reference external" href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/">open license</a>, meaning that we can copy, adapt, and redistribute it as long as we give proper attribution. <strong>THANKS PHIL!</strong> 👏👏👏</p>
+</div>
+<div class="section" id="background-projections">
+<h2>Background: Projections<a class="headerlink" href="#background-projections" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="most-of-our-media-for-visualization-are-flat">
+<h3>Most of our media for visualization <em>are</em> flat<a class="headerlink" href="#most-of-our-media-for-visualization-are-flat" title="Permalink to this headline">¶</a></h3>
 <p>Our two most common media are flat:</p>
-
-<ul>
-  <li>Paper</li>
-  <li>Screen</li>
+<ul class="simple">
+<li><p>Paper</p></li>
+<li><p>Screen</p></li>
 </ul>
-
-<p><img src="https://raw.githubusercontent.com/SciTools/cartopy-tutorial/master/static/flat_medium.jpg" alt="" /></p>
-
-<h3 id="map-projections-taking-us-from-spherical-to-flat">[Map] Projections: Taking us from spherical to flat</h3>
-
+<p><img alt="" src="https://raw.githubusercontent.com/SciTools/cartopy-tutorial/master/static/flat_medium.jpg" /></p>
+</div>
+<div class="section" id="map-projections-taking-us-from-spherical-to-flat">
+<h3>[Map] Projections: Taking us from spherical to flat<a class="headerlink" href="#map-projections-taking-us-from-spherical-to-flat" title="Permalink to this headline">¶</a></h3>
 <p>A map projection (or more commonly refered to as just “projection”) is:</p>
-
 <blockquote>
-  <p>a systematic transformation of the latitudes and longitudes of locations from the surface of a sphere or an ellipsoid into locations on a plane. [<a href="https://en.wikipedia.org/wiki/Map_projection">Wikipedia: Map projection</a>].</p>
-</blockquote>
-
-<h3 id="the-major-problem-with-map-projections">The major problem with map projections</h3>
-
-<p><img src="https://raw.githubusercontent.com/SciTools/cartopy-tutorial/master/static/orange_peel.jpg" alt="orange peel" /></p>
-
-<ul>
-  <li>The surface of a sphere is topologically different to a 2D surface, therefore we <em>have</em> to cut the sphere <em>somewhere</em></li>
-  <li>A sphere’s surface cannot be represented on a plane without distortion.</li>
+<div><p>a systematic transformation of the latitudes and longitudes of locations from the surface of a sphere or an ellipsoid into locations on a plane. [<a class="reference external" href="https://en.wikipedia.org/wiki/Map_projection">Wikipedia: Map projection</a>].</p>
+</div></blockquote>
+</div>
+<div class="section" id="the-major-problem-with-map-projections">
+<h3>The major problem with map projections<a class="headerlink" href="#the-major-problem-with-map-projections" title="Permalink to this headline">¶</a></h3>
+<p><img alt="orange peel" src="https://raw.githubusercontent.com/SciTools/cartopy-tutorial/master/static/orange_peel.jpg" /></p>
+<ul class="simple">
+<li><p>The surface of a sphere is topologically different to a 2D surface, therefore we <em>have</em> to cut the sphere <em>somewhere</em></p></li>
+<li><p>A sphere’s surface cannot be represented on a plane without distortion.</p></li>
 </ul>
-
-<p>There are many different ways to make a projection, and we will not attempt to explain all of the choices and tradeoffs here. Instead, you can read Phil’s <a href="https://github.com/SciTools/cartopy-tutorial/blob/master/tutorial/projections_crs_and_terms.ipynb">original tutorial</a> for a great overview of this topic.
+<p>There are many different ways to make a projection, and we will not attempt to explain all of the choices and tradeoffs here. Instead, you can read Phil’s <a class="reference external" href="https://github.com/SciTools/cartopy-tutorial/blob/master/tutorial/projections_crs_and_terms.ipynb">original tutorial</a> for a great overview of this topic.
 Instead, we will dive into the more practical sides of Caropy usage.</p>
-
-<h2 id="introducing-cartopy">Introducing Cartopy</h2>
-
-<p>https://scitools.org.uk/cartopy/docs/latest/</p>
-
-<p>Cartopy makes use of the powerful <a href="https://proj4.org/">PROJ.4</a>, numpy and shapely libraries and includes a programatic interface built on top of Matplotlib for the creation of publication quality maps.</p>
-
+</div>
+</div>
+<div class="section" id="introducing-cartopy">
+<h2>Introducing Cartopy<a class="headerlink" href="#introducing-cartopy" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://scitools.org.uk/cartopy/docs/latest/">https://scitools.org.uk/cartopy/docs/latest/</a></p>
+<p>Cartopy makes use of the powerful <a class="reference external" href="https://proj4.org/">PROJ.4</a>, numpy and shapely libraries and includes a programatic interface built on top of Matplotlib for the creation of publication quality maps.</p>
 <p>Key features of cartopy are its object oriented projection definitions, and its ability to transform points, lines, vectors, polygons and images between those projections.</p>
-
-<h3 id="cartopy-projections-and-other-reference-systems">Cartopy Projections and other reference systems</h3>
-
+<div class="section" id="cartopy-projections-and-other-reference-systems">
+<h3>Cartopy Projections and other reference systems<a class="headerlink" href="#cartopy-projections-and-other-reference-systems" title="Permalink to this headline">¶</a></h3>
 <p>In Cartopy, each projection is a class.
 Most classes of projection can be configured in projection-specific ways, although Cartopy takes an opinionated stance on sensible defaults.</p>
-
 <p>Let’s create a Plate Carree projection instance.</p>
-
-<p>To do so, we need cartopy’s crs module. This is typically imported as <code class="highlighter-rouge">ccrs</code> (Cartopy Coordinate Reference Systems).</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="n">ccrs</span>
+<p>To do so, we need cartopy’s crs module. This is typically imported as <code class="docutils literal notranslate"><span class="pre">ccrs</span></code> (Cartopy Coordinate Reference Systems).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
 <span class="kn">import</span> <span class="nn">cartopy</span>
-
-</code></pre></div>    </div>
-  </div>
-
+</pre></div>
 </div>
-
-<p>Cartopy’s projection list tells us that the Plate Carree projection is available with the <code class="highlighter-rouge">ccrs.PlateCarree</code> class:</p>
-
-<p>https://scitools.org.uk/cartopy/docs/latest/crs/projections.html</p>
-
+</div>
+</div>
+<p>Cartopy’s projection list tells us that the Plate Carree projection is available with the <code class="docutils literal notranslate"><span class="pre">ccrs.PlateCarree</span></code> class:</p>
+<p><a class="reference external" href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html">https://scitools.org.uk/cartopy/docs/latest/crs/projections.html</a></p>
 <p><strong>Note:</strong> we need to <em>instantiate</em> the class in order to do anything projection-y with it!</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output output_html">
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-&lt;!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
-  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"&gt;
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Created with matplotlib (https://matplotlib.org/) -->
 <svg height="153.9pt" version="1.1" viewBox="0 0 293.4 153.9" width="293.4pt" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
  <defs>
@@ -1558,7 +582,7 @@ L 293.4 153.9
 L 293.4 0 
 L 0 0 
 z
-" style="fill:#ffffff;" />
+" style="fill:#ffffff;"/>
   </g>
   <g id="axes_1">
    <g id="patch_2">
@@ -1567,7 +591,7 @@ L 7.2 7.2
 L 286.2 7.2 
 L 286.2 146.7 
 L 7.2 146.7 
-" style="fill:#ffffff;" />
+" style="fill:#ffffff;"/>
    </g>
    <g id="PathCollection_1">
     <path clip-path="url(#pa327e653e8)" d="M 19.822506 137.861642 
@@ -1581,7 +605,7 @@ L 20.809119 138.393136
 L 20.353759 138.1198 
 L 20.323382 138.074224 
 L 19.822506 137.861642 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 141.896639 35.202637 
 L 142.024436 35.756278 
 L 141.438636 36.448409 
@@ -1594,7 +618,7 @@ L 140.83157 34.222993
 L 141.481269 34.191033 
 L 142.31199 34.670183 
 L 141.896639 35.202637 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 255.975163 78.965117 
 L 257.319816 79.499094 
 L 258.752578 79.942599 
@@ -1662,7 +686,7 @@ L 253.905539 78.269542
 L 254.568314 78.539754 
 L 255.14318 78.816975 
 L 255.975163 78.965117 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 235.208113 73.442448 
 L 235.51497 73.152491 
 L 236.174301 72.728009 
@@ -1709,7 +733,7 @@ L 233.342619 74.71343
 L 234.271602 74.545644 
 L 234.827525 73.93253 
 L 235.208113 73.442448 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 74.150114 18.840502 
 L 73.728396 19.140931 
 L 72.603273 19.08318 
@@ -1718,7 +742,7 @@ L 72.076345 18.532183
 L 73.190615 18.323406 
 L 73.867246 18.595221 
 L 74.150114 18.840502 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 73.973998 16.872002 
 L 73.620904 16.894209 
 L 72.168518 16.844789 
@@ -1726,7 +750,7 @@ L 71.961864 16.628162
 L 73.522503 16.639496 
 L 74.066491 16.783393 
 L 73.973998 16.872002 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 71.715341 15.906495 
 L 72.64156 16.175806 
 L 72.431521 16.455871 
@@ -1736,7 +760,7 @@ L 70.321527 16.144968
 L 70.260212 15.824254 
 L 71.263646 15.855212 
 L 71.715341 15.906495 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 78.383479 19.295962 
 L 77.13234 19.200445 
 L 75.072608 18.950738 
@@ -1765,7 +789,7 @@ L 83.189647 19.257094
 L 82.197607 19.162878 
 L 79.974474 19.282225 
 L 78.383479 19.295962 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 60.470056 16.381439 
 L 61.5628 16.502848 
 L 61.305123 16.734813 
@@ -1773,7 +797,7 @@ L 59.860327 16.957848
 L 58.710934 16.70754 
 L 59.338445 16.460436 
 L 60.470056 16.381439 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 60.703163 15.876558 
 L 61.711062 16.033471 
 L 60.766981 16.184617 
@@ -1781,7 +805,7 @@ L 59.479879 16.183876
 L 59.492435 16.07332 
 L 60.287492 15.841255 
 L 60.703163 15.876558 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 95.331113 62.60106 
 L 95.72724 62.669324 
 L 95.866972 62.823273 
@@ -1791,7 +815,7 @@ L 94.632274 63.041421
 L 94.587119 62.709773 
 L 94.696974 62.596534 
 L 95.331113 62.60106 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 86.583559 62.619843 
 L 87.105121 62.689328 
 L 87.516847 62.875457 
@@ -1803,7 +827,7 @@ L 85.988268 62.824875
 L 86.081262 62.647737 
 L 86.407042 62.593731 
 L 86.583559 62.619843 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 82.942183 58.978827 
 L 83.611546 59.034115 
 L 84.220454 59.042845 
@@ -1846,7 +870,7 @@ L 81.771864 59.289208
 L 82.167651 59.138143 
 L 82.754412 59.063971 
 L 82.942183 58.978827 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 103.609831 37.179267 
 L 103.196122 37.667567 
 L 102.683192 38.345461 
@@ -1880,7 +904,7 @@ L 102.727546 37.202235
 L 103.399993 36.935127 
 L 103.759595 36.969089 
 L 103.609831 37.179267 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 81.690965 26.490046 
 L 82.539628 26.755813 
 L 83.427439 26.99727 
@@ -1901,7 +925,7 @@ L 80.699986 26.065604
 L 80.843783 26.406423 
 L 81.240391 26.286876 
 L 81.690965 26.490046 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 85.652755 20.877046 
 L 86.385916 20.569047 
 L 88.10547 20.961149 
@@ -1975,7 +999,7 @@ L 82.905418 19.793013
 L 84.234932 20.594679 
 L 84.11957 21.102022 
 L 85.652755 20.877046 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 73.459665 19.495447 
 L 75.074491 19.522481 
 L 76.554911 19.711032 
@@ -1987,7 +1011,7 @@ L 72.273848 20.421285
 L 72.285842 20.035992 
 L 72.69076 19.706627 
 L 73.459665 19.495447 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 68.860271 20.602929 
 L 68.0065 20.096 
 L 68.923769 19.721005 
@@ -2003,7 +1027,7 @@ L 69.188515 21.352851
 L 67.278 20.775736 
 L 67.278 20.50675 
 L 68.860271 20.602929 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 63.139939 18.169717 
 L 63.830087 18.040058 
 L 64.642226 18.073719 
@@ -2026,7 +1050,7 @@ L 61.77464 17.434514
 L 62.574843 17.524302 
 L 62.836157 17.893698 
 L 63.139939 18.169717 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 51.487434 17.959679 
 L 52.802911 17.379987 
 L 54.394447 16.87803 
@@ -2038,7 +1062,7 @@ L 55.218681 17.677092
 L 53.778029 18.00874 
 L 52.537504 18.127486 
 L 51.487434 17.959679 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 52.508148 19.252068 
 L 53.614929 19.412946 
 L 55.594382 19.456039 
@@ -2056,7 +1080,7 @@ L 49.97435 20.357516
 L 50.6465 19.848 
 L 49.888748 19.373137 
 L 52.508148 19.252068 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 17.687461 30.152268 
 L 18.302317 30.222455 
 L 18.376148 30.51976 
@@ -2064,7 +1088,7 @@ L 17.900603 30.640308
 L 17.392539 30.49541 
 L 16.92216 30.284871 
 L 17.687461 30.152268 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 27.947735 32.024009 
 L 28.462287 32.076394 
 L 28.790611 32.31693 
@@ -2074,7 +1098,7 @@ L 26.949788 32.78062
 L 26.829981 32.417573 
 L 27.533846 32.142155 
 L 27.947735 32.024009 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 43.849744 35.068993 
 L 44.593759 35.006997 
 L 44.361653 35.886918 
@@ -2086,7 +1110,7 @@ L 43.582676 35.556112
 L 43.439259 35.215413 
 L 43.485496 34.968269 
 L 43.849744 35.068993 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 49.503374 38.23875 
 L 49.886405 38.606662 
 L 50.660056 38.926575 
@@ -2103,7 +1127,7 @@ L 48.03585 37.771755
 L 48.511375 37.8893 
 L 49.23987 37.971361 
 L 49.503374 38.23875 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 13.607966 27.518551 
 L 14.086314 27.666052 
 L 14.569388 27.586394 
@@ -2116,7 +1140,7 @@ L 14.429676 27.833738
 L 13.746376 27.878713 
 L 13.561889 27.810469 
 L 13.607966 27.518551 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 64.943476 15.491265 
 L 66.464806 15.596855 
 L 68.560503 15.879642 
@@ -2128,7 +1152,7 @@ L 65.188497 16.205242
 L 65.936917 15.974999 
 L 64.999825 15.78829 
 L 64.943476 15.491265 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 172.233895 49.525305 
 L 172.792101 49.535758 
 L 173.496767 49.304513 
@@ -2139,7 +1163,7 @@ L 171.87998 50.056218
 L 171.698917 49.744995 
 L 172.121917 49.712235 
 L 172.233895 49.525305 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 167.074752 49.592507 
 L 166.977873 49.821129 
 L 165.861861 49.88701 
@@ -2151,7 +1175,7 @@ L 166.094387 49.495628
 L 166.671136 49.550636 
 L 166.652393 49.685502 
 L 167.074752 49.592507 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 185.096227 86.61412 
 L 185.30196 86.943846 
 L 185.493796 87.455715 
@@ -2201,13 +1225,13 @@ L 184.554922 87.094111
 L 184.569219 86.628098 
 L 184.825855 86.281391 
 L 185.096227 86.61412 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 276.293021 89.266181 
 L 276.779779 89.711408 
 L 276.524265 89.813333 
 L 276.264506 89.473996 
 L 276.293021 89.266181 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 275.964697 89.093328 
 L 275.853641 88.879345 
 L 275.837581 88.285535 
@@ -2215,7 +1239,7 @@ L 276.208477 88.523788
 L 276.334272 89.148516 
 L 276.125936 89.051317 
 L 275.964697 89.093328 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 250.712854 82.293809 
 L 250.637401 81.710412 
 L 250.77501 81.43187 
@@ -2223,7 +1247,7 @@ L 250.93721 81.169908
 L 251.113426 81.396626 
 L 251.111584 81.766161 
 L 250.712854 82.293809 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 108.988023 137.43644 
 L 109.382668 137.43648 
 L 110.536286 137.269394 
@@ -2245,7 +1269,7 @@ L 107.667439 138.317202
 L 108.016548 138.028688 
 L 108.487107 137.755392 
 L 108.988023 137.43644 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 95.325226 139.148224 
 L 97.070792 139.178541 
 L 98.740485 139.254475 
@@ -2259,7 +1283,7 @@ L 96.721703 139.664499
 L 95.750209 139.406341 
 L 95.750209 139.375984 
 L 95.325226 139.148224 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 89.415241 132.183742 
 L 89.946494 132.09263 
 L 90.842095 132.122987 
@@ -2285,7 +1309,7 @@ L 89.202719 133.034188
 L 88.610732 132.806388 
 L 88.565216 132.487475 
 L 89.415241 132.183742 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 67.393688 132.667977 
 L 67.879425 132.531289 
 L 68.866038 132.63762 
@@ -2299,7 +1323,7 @@ L 69.64019 133.09322
 L 68.592822 133.138756 
 L 67.803552 132.986889 
 L 67.393688 132.667977 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 51.668156 134.034778 
 L 51.835161 133.77658 
 L 52.761079 133.913268 
@@ -2309,7 +1333,7 @@ L 54.248608 134.171426
 L 53.520032 134.368828 
 L 52.442307 134.308114 
 L 51.668156 134.034778 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 48.055575 133.882871 
 L 48.617185 133.715826 
 L 49.391337 133.89805 
@@ -2317,7 +1341,7 @@ L 50.575292 134.201783
 L 50.119912 134.171426 
 L 49.118061 134.095492 
 L 48.055575 133.882871 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 275.179492 93.287004 
 L 275.814993 93.767515 
 L 276.218009 94.123993 
@@ -2331,7 +1355,7 @@ L 274.156474 92.543009
 L 274.590528 92.806493 
 L 274.931507 93.070017 
 L 275.179492 93.287004 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 264.996013 79.786487 
 L 265.290495 80.034512 
 L 265.383529 80.437487 
@@ -2346,7 +1370,7 @@ L 264.096988 79.104488
 L 264.360512 79.274978 
 L 264.685992 79.461007 
 L 264.996013 79.786487 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 263.958578 81.476565 
 L 263.534696 81.664876 
 L 263.136927 81.846259 
@@ -2369,14 +1393,14 @@ L 264.746987 80.722437
 L 264.486667 81.195499 
 L 264.080808 81.259217 
 L 263.958578 81.476565 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 272.342244 85.074107 
 L 272.558951 85.340435 
 L 272.017525 85.335509 
 L 271.722843 84.858682 
 L 272.185972 85.046153 
 L 272.342244 85.074107 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 272.001986 84.389986 
 L 271.885282 84.532842 
 L 271.310896 83.861096 
@@ -2384,7 +1408,7 @@ L 271.149498 83.398007
 L 271.413022 83.398007 
 L 271.692005 84.018009 
 L 272.001986 84.389986 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 271.360477 84.601526 
 L 271.058506 84.618787 
 L 270.583322 84.540371 
@@ -2393,7 +1417,7 @@ L 270.469782 84.113286
 L 270.981291 84.235236 
 L 271.233601 84.397876 
 L 271.360477 84.601526 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 270.421002 83.165521 
 L 270.603146 83.411423 
 L 270.635987 83.567175 
@@ -2403,7 +1427,7 @@ L 269.313641 82.701951
 L 269.428983 82.623014 
 L 269.785501 82.809003 
 L 270.421002 83.165521 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 268.4835 82.39177 
 L 268.79228 82.64456 
 L 268.63805 82.688695 
@@ -2411,7 +1435,7 @@ L 268.299074 82.512078
 L 267.980802 82.193606 
 L 268.020691 82.064487 
 L 268.4835 82.39177 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 266.638993 81.088487 
 L 266.873761 81.264264 
 L 267.249503 81.755507 
@@ -2423,7 +1447,7 @@ L 266.615123 81.523102
 L 266.448439 80.932816 
 L 266.55569 80.857844 
 L 266.638993 81.088487 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 283.786513 108.001133 
 L 283.493713 108.418686 
 L 283.109641 108.949459 
@@ -2460,7 +1484,7 @@ L 284.035419 107.287976
 L 283.828485 107.523546 
 L 283.900533 107.856956 
 L 283.786513 108.001133 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 278.192556 110.705377 
 L 278.856813 110.299558 
 L 279.321945 109.897384 
@@ -2491,7 +1515,7 @@ L 276.160939 111.910979
 L 277.135417 111.146079 
 L 277.635792 111.00026 
 L 278.192556 110.705377 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 261.159176 108.5764 
 L 261.624028 108.628464 
 L 261.678895 109.548355 
@@ -2509,7 +1533,7 @@ L 259.383433 108.564225
 L 260.132194 108.831674 
 L 260.554152 108.725423 
 L 261.159176 108.5764 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 244.465253 101.917374 
 L 243.643683 102.314782 
 L 242.971777 102.493602 
@@ -2689,7 +1713,7 @@ L 247.09024 101.432578
 L 245.204722 101.968757 
 L 244.465253 101.917374 
 L 244.465253 101.917374 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 210.085668 71.119632 
 L 209.968925 71.926624 
 L 209.643965 72.147215 
@@ -2700,7 +1724,7 @@ L 208.814546 69.33634
 L 209.350084 69.766969 
 L 209.710847 70.31274 
 L 210.085668 71.119632 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 246.962523 79.12167 
 L 247.815292 79.347667 
 L 248.096998 79.940316 
@@ -2710,14 +1734,14 @@ L 246.35778 79.607226
 L 245.821641 79.579913 
 L 246.005306 79.153829 
 L 246.962523 79.12167 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 245.028065 79.887972 
 L 244.492447 79.745717 
 L 244.341501 79.412347 
 L 245.125505 79.375221 
 L 245.318142 79.630775 
 L 245.028065 79.887972 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 245.847593 75.264688 
 L 245.903221 75.687888 
 L 246.360784 75.755872 
@@ -2731,7 +1755,7 @@ L 245.664768 77.156614
 L 245.434605 76.165916 
 L 245.590396 75.546715 
 L 245.847593 75.264688 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 241.968864 76.271726 
 L 242.86008 76.239246 
 L 243.626142 75.676474 
@@ -2777,7 +1801,7 @@ L 239.727669 76.51098
 L 240.386479 75.935352 
 L 240.991783 76.164194 
 L 241.968864 76.271726 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 239.928636 84.900454 
 L 238.900052 84.357426 
 L 239.62274 84.205039 
@@ -2785,7 +1809,7 @@ L 240.029961 84.441089
 L 240.301014 84.676498 
 L 240.254597 84.885676 
 L 239.928636 84.900454 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 240.739793 83.565973 
 L 241.255708 83.506981 
 L 241.950241 83.223032 
@@ -2795,7 +1819,7 @@ L 239.641403 83.778074
 L 239.63872 83.494766 
 L 240.254196 83.333648 
 L 240.739793 83.565973 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 238.351978 83.430847 
 L 238.830806 83.367529 
 L 239.023043 83.697014 
@@ -2806,7 +1830,7 @@ L 237.439897 83.504297
 L 237.864819 83.49821 
 L 238.072514 83.224153 
 L 238.351978 83.430847 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 230.777306 81.927038 
 L 230.883196 82.202697 
 L 232.367901 82.279952 
@@ -2830,7 +1854,7 @@ L 228.890026 81.519337
 L 229.830382 81.565113 
 L 230.455871 81.867966 
 L 230.777306 81.927038 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 227.586743 77.790753 
 L 227.718105 78.331338 
 L 227.988117 78.76383 
@@ -2866,14 +1890,14 @@ L 227.174757 76.86898
 L 226.864175 77.501758 
 L 227.308361 77.770889 
 L 227.586743 77.790753 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 240.346269 67.104015 
 L 239.950663 66.51353 
 L 240.614599 66.541985 
 L 240.88373 66.821068 
 L 240.678198 67.490691 
 L 240.346269 67.104015 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 241.704219 69.21469 
 L 241.898738 68.997583 
 L 241.984243 68.516552 
@@ -2886,7 +1910,7 @@ L 242.265189 69.728342
 L 242.021769 69.957804 
 L 241.544543 69.422145 
 L 241.704219 69.21469 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 244.642031 70.428603 
 L 244.720847 70.943476 
 L 244.766504 71.37821 
@@ -2914,7 +1938,7 @@ L 243.894391 69.385741
 L 244.522604 69.753292 
 L 244.587644 70.143572 
 L 244.642031 70.428603 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 231.543287 62.846782 
 L 230.907786 62.606546 
 L 230.885319 61.939887 
@@ -2925,7 +1949,7 @@ L 232.73279 61.685654
 L 232.392251 62.026694 
 L 232.212871 62.474244 
 L 231.543287 62.846782 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 241.077809 58.044438 
 L 240.611115 59.287086 
 L 240.278987 59.922807 
@@ -2935,7 +1959,7 @@ L 240.238377 57.932701
 L 240.858659 57.346019 
 L 241.212214 57.576863 
 L 241.077809 58.044438 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 256.660566 46.58483 
 L 255.943604 47.365149 
 L 255.95666 48.164892 
@@ -2973,7 +1997,7 @@ L 255.436981 45.023871
 L 256.260954 44.881616 
 L 256.683554 45.956498 
 L 256.660566 46.58483 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 258.775406 42.880296 
 L 259.32364 42.551832 
 L 259.495931 43.421862 
@@ -2990,7 +2014,7 @@ L 256.724925 41.6476
 L 257.635724 42.454472 
 L 258.230376 42.715073 
 L 258.775406 42.880296 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 153.450243 45.252512 
 L 153.837759 45.012257 
 L 154.302731 45.562493 
@@ -3001,7 +2025,7 @@ L 153.231934 46.591819
 L 153.200896 45.656809 
 L 153.023999 45.213744 
 L 153.450243 45.252512 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 153.478157 43.913206 
 L 153.977251 43.617262 
 L 154.109013 44.281799 
@@ -3009,14 +2033,14 @@ L 153.853058 44.880495
 L 153.501185 44.722701 
 L 153.321765 44.20118 
 L 153.478157 43.913206 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 156.287451 33.463659 
 L 156.534755 33.852257 
 L 156.069743 34.479989 
 L 155.258746 34.042231 
 L 155.150533 33.720535 
 L 156.287451 33.463659 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 143.436092 31.573095 
 L 144.371121 31.507875 
 L 143.542783 32.346406 
@@ -3061,7 +2085,7 @@ L 141.933765 32.941618
 L 142.215211 32.140393 
 L 142.817251 31.51174 
 L 143.436092 31.573095 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 135.455761 25.446684 
 L 135.276781 25.94822 
 L 136.152458 26.47683 
@@ -3082,7 +2106,7 @@ L 131.930948 25.585614
 L 132.906067 25.804764 
 L 134.16994 25.391716 
 L 135.455761 25.446684 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 257.458827 35.328952 
 L 257.727157 36.075911 
 L 257.707333 36.838588 
@@ -3105,7 +2129,7 @@ L 257.220374 35.284338
 L 256.912555 34.925256 
 L 257.257459 34.816442 
 L 257.458827 35.328952 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 238.54105 69.729804 
 L 237.510063 70.465188 
 L 237.88997 69.923161 
@@ -3115,7 +2139,7 @@ L 239.32141 68.138507
 L 239.459499 68.770424 
 L 238.94783 69.197169 
 L 238.54105 69.729804 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 241.511142 62.825716 
 L 241.385067 63.147031 
 L 241.649632 63.702534 
@@ -3149,7 +2173,7 @@ L 240.724014 62.60935
 L 241.201641 62.830622 
 L 241.440655 62.628794 
 L 241.511142 62.825716 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 241.279737 68.102723 
 L 241.15975 67.73389 
 L 241.624961 67.973785 
@@ -3159,7 +2183,7 @@ L 241.744228 68.625486
 L 241.252023 68.858212 
 L 241.224709 68.498089 
 L 241.279737 68.102723 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 243.964478 67.523912 
 L 244.182145 68.389235 
 L 243.58421 68.183623 
@@ -3174,7 +2198,7 @@ L 243.480443 67.809503
 L 243.00674 67.217735 
 L 243.751015 67.234816 
 L 243.964478 67.523912 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 86.751145 70.230359 
 L 87.151578 70.254969 
 L 87.733053 69.713964 
@@ -3329,7 +2353,7 @@ L 90.467594 118.436842
 L 89.580364 117.897179 
 L 88.616258 117.453633 
 L 88.616258 117.453633 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 86.341782 71.351577 
 L 86.655588 71.764385 
 L 86.777918 72.419851 
@@ -3406,7 +2430,7 @@ L 88.20319 115.993238
 L 88.59311 116.508632 
 L 88.37348 116.96275 
 L 88.616258 117.453633 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 88.836529 117.899061 
 L 89.475475 118.061741 
 L 90.563512 118.579417 
@@ -3431,7 +2455,7 @@ L 91.670593 119.616733
 L 90.695474 119.18372 
 L 89.903961 118.767088 
 L 88.836529 117.899061 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 181.456392 14.492897 
 L 182.969332 14.351764 
 L 184.14682 14.342392 
@@ -3447,7 +2471,7 @@ L 183.579242 14.94211
 L 182.73969 14.758384 
 L 183.181153 14.516446 
 L 181.456392 14.492897 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 188.168925 19.793894 
 L 190.024406 19.113698 
 L 189.814748 18.761905 
@@ -3474,7 +2498,7 @@ L 187.370663 20.972183
 L 187.344231 20.549583 
 L 188.881401 19.888651 
 L 188.168925 19.793894 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 167.940817 14.906286 
 L 166.791604 15.323679 
 L 164.543961 15.414971 
@@ -3487,7 +2511,7 @@ L 163.678657 14.672799
 L 164.462421 14.440713 
 L 166.42191 14.634311 
 L 167.940817 14.906286 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 165.86118 16.613264 
 L 164.130012 16.930174 
 L 162.762651 16.750292 
@@ -3496,7 +2520,7 @@ L 162.829213 16.302662
 L 164.435307 16.147411 
 L 164.743046 16.438369 
 L 165.86118 16.613264 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 158.435692 15.20241 
 L 158.729973 14.937524 
 L 159.867892 14.910571 
@@ -3515,7 +2539,7 @@ L 154.794535 15.21939
 L 156.907333 14.941889 
 L 157.331855 15.213183 
 L 158.435692 15.20241 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 86.341782 71.351577 
 L 86.083425 71.128002 
 L 85.9174 70.709668 
@@ -4059,7 +3083,7 @@ L 81.866901 68.472458
 L 82.063202 68.893535 
 L 82.726698 69.536226 
 L 82.726698 69.536226 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 82.726698 69.536226 
 L 83.00498 69.814227 
 L 82.989121 69.978429 
@@ -4076,7 +3100,7 @@ L 85.861812 69.649144
 L 86.206656 69.783009 
 L 86.459627 70.016196 
 L 86.751145 70.230359 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 91.12292 61.671297 
 L 91.219839 61.539194 
 L 91.380497 61.523635 
@@ -4114,7 +3138,7 @@ L 89.803358 61.729348
 L 89.977912 61.515345 
 L 90.450754 61.549587 
 L 91.12292 61.671297 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 158.139968 47.388498 
 L 158.728251 47.320835 
 L 158.449188 47.930865 
@@ -4126,11 +3150,11 @@ L 156.334028 47.799964
 L 156.442481 47.402055 
 L 157.349396 47.472902 
 L 158.139968 47.388498 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 175.79283 42.340652 
 L 176.676997 42.633012 
 L 177.665132 43.287877 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 249.287662 51.015677 
 L 249.716389 50.553269 
 L 250.15705 50.642919 
@@ -4143,7 +3167,7 @@ L 249.992208 51.150583
 L 249.786515 51.60396 
 L 249.281414 51.383229 
 L 249.287662 51.015677 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 134.100915 62.150045 
 L 134.00732 61.764792 
 L 134.084675 61.378296 
@@ -4688,7 +3712,7 @@ L 282.886123 22.795131
 L 285.114986 23.164998 
 L 286.199999 23.503174 
 L 286.199999 23.503174 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 286.2 26.590726 
 L 285.19808 26.935429 
 L 284.193742 26.878637 
@@ -5239,15 +4263,15 @@ L 134.090322 63.645604
 L 134.186581 62.915927 
 L 134.100915 62.150045 
 L 134.100915 62.150045 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 9.098742 24.095002 
 L 7.200008 23.503174 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 7.200008 89.402028 
 L 7.360185 89.366184 
 L 7.264047 89.738882 
 L 7.200008 89.780293 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 244.308981 83.484873 
 L 244.849646 83.458641 
 L 245.091864 83.361842 
@@ -5263,7 +4287,7 @@ L 242.784507 84.149771
 L 243.550729 83.841912 
 L 243.641841 83.659088 
 L 244.308981 83.484873 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 7.2 142.602869 
 L 7.244563 142.609119 
 L 7.929525 142.158044 
@@ -5630,7 +4654,7 @@ L 280.948665 142.370625
 L 283.088896 142.173223 
 L 286.2 142.602869 
 L 286.2 142.602869 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 7.2 23.503182 
 L 9.098742 24.095002 
 L 11.130606 24.865435 
@@ -5654,7 +4678,7 @@ L 8.218265 25.713115
 L 7.290078 25.897216 
 L 7.639673 26.261815 
 L 7.2 26.590726 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 7.2 21.525321 
 L 7.299297 21.492845 
 L 7.956144 21.494464 
@@ -5662,12 +4686,12 @@ L 9.077093 21.716153
 L 9.010729 21.822103 
 L 8.21232 22.00791 
 L 7.2 22.055046 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 286.2 22.055046 
 L 285.350154 22.094617 
 L 285.212108 21.84843 
 L 286.2 21.525321 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 286.2 89.780293 
 L 285.707211 89.971049 
 L 285.211921 90.134332 
@@ -5675,7 +4699,7 @@ L 285.11255 89.845341
 L 285.499872 89.686338 
 L 285.74547 89.643767 
 L 286.2 89.402028 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 99.27 117.13375 
 L 100.2 116.66875 
 L 100.85875 116.8625 
@@ -5686,7 +4710,7 @@ L 100.665 117.405
 L 100.31625 117.13375 
 L 99.6575 117.4825 
 L 99.27 117.13375 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 200.124625 114.634375 
 L 200.6245 114.8785 
 L 201.356875 114.975375 
@@ -5696,7 +4720,7 @@ L 199.977375 115.525625
 L 199.958 115.112938 
 L 200.072313 114.79325 
 L 200.124625 114.634375 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 284.747317 90.516228 
 L 284.93954 90.388438 
 L 285.206496 90.612057 
@@ -5706,7 +4730,7 @@ L 284.170632 91.027348
 L 284.095906 90.686604 
 L 284.394924 90.420384 
 L 284.747317 90.516228 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 98.898 68.611 
 L 99.343625 68.51025 
 L 99.506375 68.537375 
@@ -5715,7 +4739,7 @@ L 98.82825 69.2
 L 98.68875 69.13025 
 L 98.9135 68.917125 
 L 98.898 68.611 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 26.263342 61.388194 
 L 26.400997 61.455409 
 L 26.526748 61.559198 
@@ -5733,7 +4757,7 @@ L 25.862721 61.315189
 L 25.907663 61.242912 
 L 25.966586 61.257257 
 L 26.263342 61.388194 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 25.803363 60.857869 
 L 25.738574 60.950923 
 L 25.478801 61.006382 
@@ -5743,13 +4767,13 @@ L 25.249324 60.731761
 L 25.32525 60.66532 
 L 25.60074 60.738976 
 L 25.803363 60.857869 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 25.212364 60.537949 
 L 25.188269 60.621734 
 L 24.772962 60.599228 
 L 24.831041 60.504826 
 L 25.212364 60.537949 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 24.23047 60.119356 
 L 24.295252 60.169142 
 L 24.519057 60.425318 
@@ -5759,7 +4783,7 @@ L 24.151831 60.432859
 L 24.053305 60.257128 
 L 24.023196 60.226182 
 L 24.23047 60.119356 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 23.19159 59.733422 
 L 23.207532 59.91395 
 L 23.115617 59.990683 
@@ -5767,7 +4791,7 @@ L 22.854605 59.849369
 L 22.894703 59.792895 
 L 23.012945 59.716961 
 L 23.19159 59.733422 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 86.102076 57.412018 
 L 86.33525 57.44325 
 L 86.6065 58.0865 
@@ -5776,14 +4800,14 @@ L 86.4205 58.57475
 L 86.223611 58.128234 
 L 85.933428 57.903879 
 L 86.102076 57.412018 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 85.4905 56.18775 
 L 85.85475 56.12575 
 L 86.36625 56.149 
 L 86.3895 56.3505 
 L 85.54475 56.4745 
 L 85.4905 56.18775 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 86.41275 55.994 
 L 87.025 56.34275 
 L 86.891274 56.893636 
@@ -5791,7 +4815,7 @@ L 86.748782 56.794304
 L 86.7615 56.38925 
 L 86.414284 56.083001 
 L 86.41275 55.994 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 97.088484 40.497092 
 L 97.360012 40.873742 
 L 97.922042 40.977701 
@@ -5801,7 +4825,7 @@ L 97.972394 41.324661
 L 96.98933 40.995696 
 L 96.795727 40.736211 
 L 97.088484 40.497092 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 182.878558 42.37787 
 L 183.64883 41.577845 
 L 184.400193 41.450125 
@@ -5854,7 +4878,7 @@ L 184.352887 44.548118
 L 183.506703 43.635401 
 L 183.582979 43.113376 
 L 182.878558 42.37787 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 96.697682 38.298394 
 L 96.965755 38.233186 
 L 97.984825 38.427532 
@@ -5863,7 +4887,7 @@ L 98.800114 38.893579
 L 98.422786 38.907443 
 L 97.418324 38.664465 
 L 96.697682 38.298394 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 84.455569 28.833687 
 L 84.754723 28.60116 
 L 85.071985 28.618125 
@@ -5872,7 +4896,7 @@ L 84.965422 29.184363
 L 84.622841 29.118473 
 L 84.419334 28.88722 
 L 84.455569 28.833687 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 81.604906 28.54908 
 L 82.180878 28.19158 
 L 83.245333 28.198951 
@@ -5880,7 +4904,7 @@ L 83.228856 28.34913
 L 82.321858 28.776605 
 L 81.774669 28.75871 
 L 81.604906 28.54908 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 88.407623 24.680706 
 L 87.903943 24.909634 
 L 87.035176 24.948484 
@@ -5890,7 +4914,7 @@ L 87.881212 24.027412
 L 88.486262 24.241971 
 L 88.494919 24.573935 
 L 88.407623 24.680706 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 71.868014 22.947976 
 L 72.573041 23.391536 
 L 72.091129 23.663291 
@@ -5901,7 +4925,7 @@ L 70.039006 22.924723
 L 70.580852 22.58877 
 L 71.403014 22.808476 
 L 71.868014 22.947976 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 64.144994 20.316096 
 L 65.013101 20.628741 
 L 65.499499 21.383729 
@@ -5947,7 +4971,7 @@ L 63.243366 21.099259
 L 62.692789 20.305603 
 L 63.374747 20.192104 
 L 64.144994 20.316096 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 84.873729 20.527751 
 L 84.021024 20.116783 
 L 84.053739 19.837782 
@@ -5959,7 +4983,7 @@ L 86.781311 20.486953
 L 85.946456 20.470592 
 L 85.098155 20.574793 
 L 84.873729 20.527751 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 255.093918 20.088382 
 L 255.829075 19.782079 
 L 256.798104 19.710375 
@@ -5968,7 +4992,7 @@ L 257.992984 20.210359
 L 256.817913 20.215784 
 L 255.22957 20.129387 
 L 255.093918 20.088382 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 261.572228 18.55697 
 L 263.517044 18.759854 
 L 262.621342 19.066087 
@@ -5976,7 +5000,7 @@ L 261.382535 18.996775
 L 259.942372 18.69094 
 L 260.127826 18.439965 
 L 261.572228 18.55697 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 254.294083 17.944011 
 L 256.340502 17.97801 
 L 259.141871 18.388966 
@@ -5986,7 +5010,7 @@ L 254.390466 19.126103
 L 252.855152 18.622206 
 L 253.271614 18.089393 
 L 254.294083 17.944011 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 70.302824 17.59383 
 L 70.3625 17.492 
 L 70.954922 17.851166 
@@ -6000,7 +5024,7 @@ L 67.211724 17.78915
 L 68.045449 17.813339 
 L 69.212804 17.549095 
 L 70.302824 17.59383 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 226.399307 15.507 
 L 228.363633 15.947162 
 L 228.133489 16.26216 
@@ -6008,7 +5032,7 @@ L 223.764559 16.561225
 L 225.180298 15.543658 
 L 225.816921 15.456532 
 L 226.399307 15.507 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 219.377686 14.155935 
 L 221.054194 13.98094 
 L 222.559984 14.371094 
@@ -6020,7 +5044,7 @@ L 219.017482 15.394463
 L 218.422685 14.838563 
 L 217.365329 14.685369 
 L 219.377686 14.155935 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 72.287264 14.483205 
 L 72.824324 14.246855 
 L 73.618721 14.192608 
@@ -6041,7 +5065,7 @@ L 73.095157 15.436337
 L 72.240987 15.17862 
 L 71.749964 14.827729 
 L 72.287264 14.483205 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 75.720059 13.481925 
 L 76.8725 13.334125 
 L 77.777491 13.30893 
@@ -6107,7 +5131,7 @@ L 77.440862 14.28684
 L 76.795 13.9735 
 L 75.889909 13.746348 
 L 75.720059 13.481925 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 110.458063 12.913331 
 L 113.060009 12.450501 
 L 115.779414 12.485361 
@@ -6224,14 +5248,14 @@ L 112.194675 13.662958
 L 110.351957 13.245163 
 L 110.458063 12.913331 
 L 110.458063 12.913331 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
     <path clip-path="url(#pa327e653e8)" d="M 64.085 19.91 
 L 65.1235 19.879 
 L 65.7125 20.0495 
 L 65.0305 20.561 
 L 63.8215 20.0185 
 L 64.085 19.91 
-" style="fill:none;stroke:#000000;" />
+" style="fill:none;stroke:#000000;"/>
    </g>
    <g id="LineCollection_1">
     <path clip-path="url(#pa327e653e8)" d="M 7.2 146.699996 
@@ -6262,7 +5286,7 @@ L 7.2 20.82931
 L 7.2 15.484483 
 L 7.2 10.139655 
 L 7.2 7.200004 
-" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;" />
+" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;"/>
     <path clip-path="url(#pa327e653e8)" d="M 53.7 146.699996 
 L 53.7 143.760345 
 L 53.7 138.415517 
@@ -6291,7 +5315,7 @@ L 53.7 20.82931
 L 53.7 15.484483 
 L 53.7 10.139655 
 L 53.7 7.200004 
-" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;" />
+" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;"/>
     <path clip-path="url(#pa327e653e8)" d="M 100.2 146.699996 
 L 100.2 143.760345 
 L 100.2 138.415517 
@@ -6320,7 +5344,7 @@ L 100.2 20.82931
 L 100.2 15.484483 
 L 100.2 10.139655 
 L 100.2 7.200004 
-" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;" />
+" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;"/>
     <path clip-path="url(#pa327e653e8)" d="M 146.7 146.699996 
 L 146.7 143.760345 
 L 146.7 138.415517 
@@ -6349,7 +5373,7 @@ L 146.7 20.82931
 L 146.7 15.484483 
 L 146.7 10.139655 
 L 146.7 7.200004 
-" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;" />
+" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;"/>
     <path clip-path="url(#pa327e653e8)" d="M 193.2 146.699996 
 L 193.2 143.760345 
 L 193.2 138.415517 
@@ -6378,7 +5402,7 @@ L 193.2 20.82931
 L 193.2 15.484483 
 L 193.2 10.139655 
 L 193.2 7.200004 
-" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;" />
+" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;"/>
     <path clip-path="url(#pa327e653e8)" d="M 239.7 146.699996 
 L 239.7 143.760345 
 L 239.7 138.415517 
@@ -6407,10 +5431,10 @@ L 239.7 20.82931
 L 239.7 15.484483 
 L 239.7 10.139655 
 L 239.7 7.200004 
-" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;" />
+" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;"/>
    </g>
    <g id="LineCollection_2">
-    <path clip-path="url(#pa327e653e8)" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;" />
+    <path clip-path="url(#pa327e653e8)" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;"/>
     <path clip-path="url(#pa327e653e8)" d="M 7.2 138.95 
 L 16.82069 138.95 
 L 26.441379 138.95 
@@ -6441,7 +5465,7 @@ L 257.337931 138.95
 L 266.958621 138.95 
 L 276.57931 138.95 
 L 286.2 138.95 
-" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;" />
+" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;"/>
     <path clip-path="url(#pa327e653e8)" d="M 7.2 123.45 
 L 16.82069 123.45 
 L 26.441379 123.45 
@@ -6472,7 +5496,7 @@ L 257.337931 123.45
 L 266.958621 123.45 
 L 276.57931 123.45 
 L 286.2 123.45 
-" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;" />
+" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;"/>
     <path clip-path="url(#pa327e653e8)" d="M 7.2 107.95 
 L 16.82069 107.95 
 L 26.441379 107.95 
@@ -6503,7 +5527,7 @@ L 257.337931 107.95
 L 266.958621 107.95 
 L 276.57931 107.95 
 L 286.2 107.95 
-" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;" />
+" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;"/>
     <path clip-path="url(#pa327e653e8)" d="M 7.2 92.45 
 L 16.82069 92.45 
 L 26.441379 92.45 
@@ -6534,7 +5558,7 @@ L 257.337931 92.45
 L 266.958621 92.45 
 L 276.57931 92.45 
 L 286.2 92.45 
-" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;" />
+" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;"/>
     <path clip-path="url(#pa327e653e8)" d="M 7.2 76.95 
 L 16.82069 76.95 
 L 26.441379 76.95 
@@ -6565,7 +5589,7 @@ L 257.337931 76.95
 L 266.958621 76.95 
 L 276.57931 76.95 
 L 286.2 76.95 
-" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;" />
+" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;"/>
     <path clip-path="url(#pa327e653e8)" d="M 7.2 61.45 
 L 16.82069 61.45 
 L 26.441379 61.45 
@@ -6596,7 +5620,7 @@ L 257.337931 61.45
 L 266.958621 61.45 
 L 276.57931 61.45 
 L 286.2 61.45 
-" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;" />
+" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;"/>
     <path clip-path="url(#pa327e653e8)" d="M 7.2 45.95 
 L 16.82069 45.95 
 L 26.441379 45.95 
@@ -6627,7 +5651,7 @@ L 257.337931 45.95
 L 266.958621 45.95 
 L 276.57931 45.95 
 L 286.2 45.95 
-" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;" />
+" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;"/>
     <path clip-path="url(#pa327e653e8)" d="M 7.2 30.45 
 L 16.82069 30.45 
 L 26.441379 30.45 
@@ -6658,7 +5682,7 @@ L 257.337931 30.45
 L 266.958621 30.45 
 L 276.57931 30.45 
 L 286.2 30.45 
-" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;" />
+" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;"/>
     <path clip-path="url(#pa327e653e8)" d="M 7.2 14.95 
 L 16.82069 14.95 
 L 26.441379 14.95 
@@ -6689,8 +5713,8 @@ L 257.337931 14.95
 L 266.958621 14.95 
 L 276.57931 14.95 
 L 286.2 14.95 
-" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;" />
-    <path clip-path="url(#pa327e653e8)" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;" />
+" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;"/>
+    <path clip-path="url(#pa327e653e8)" style="fill:none;stroke:#b0b0b0;stroke-width:0.8;"/>
    </g>
    <g id="patch_3">
     <path d="M 7.2 146.7 
@@ -6698,131 +5722,85 @@ L 7.2 7.2
 L 286.2 7.2 
 L 286.2 146.7 
 L 7.2 146.7 
-" style="fill:none;stroke:#000000;stroke-linejoin:miter;" />
+" style="fill:none;stroke:#000000;stroke-linejoin:miter;"/>
    </g>
   </g>
  </g>
  <defs>
   <clipPath id="pa327e653e8">
-   <rect height="139.5" width="279" x="7.2" y="7.2" />
+   <rect height="139.5" width="279" x="7.2" y="7.2"/>
   </clipPath>
  </defs>
 </svg>
-<pre>&lt;cartopy.crs.PlateCarree object at 0x11c43cf10&gt;</pre>
+<pre>&lt;cartopy.crs.PlateCarree object at 0x11c43cf10&gt;</pre></div></div>
 </div>
-
-    </div>
-  </div>
 </div>
-
-<h3 id="drawing-a-map">Drawing a map</h3>
-
+<div class="section" id="drawing-a-map">
+<h3>Drawing a map<a class="headerlink" href="#drawing-a-map" title="Permalink to this headline">¶</a></h3>
 <p>Cartopy optionally depends upon matplotlib, and each projection knows how to create a matplotlib Axes (or AxesSubplot) that can represent itself.</p>
-
-<p>The Axes that the projection creates is a <a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxes">cartopy.mpl.geoaxes.GeoAxes</a>. This Axes subclass overrides some of matplotlib’s existing methods, and adds a number of extremely useful ones for drawing maps.</p>
-
+<p>The Axes that the projection creates is a <a class="reference external" href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxes">cartopy.mpl.geoaxes.GeoAxes</a>. This Axes subclass overrides some of matplotlib’s existing methods, and adds a number of extremely useful ones for drawing maps.</p>
 <p>We’ll go back and look at those methods shortly, but first, let’s actually see the cartopy+matplotlib dance in action:</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;cartopy.mpl.geoaxes.GeoAxesSubplot at 0x120639898&gt;
-</code></pre></div>      </div>
-
-    </div>
-  </div>
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <p class="output_png"><img src="../images/lectures/mapping_cartopy_8_1.png" alt="png" /></p>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;cartopy.mpl.geoaxes.GeoAxesSubplot at 0x120639898&gt;
+</pre></div>
+</div>
+<img alt="../_images/mapping_cartopy_8_1.png" src="../_images/mapping_cartopy_8_1.png" />
+</div>
+</div>
 <p>That was a little underwhelming, but we can see that the Axes created is indeed one of those GeoAxes[Subplot] instances.</p>
-
-<p>One of the most useful methods that this class adds on top of the standard matplotlib Axes class is the <code class="highlighter-rouge">coastlines</code> method. With no arguments, it will add the Natural Earth <code class="highlighter-rouge">1:110,000,000</code> scale coastline data to the map.</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<p>One of the most useful methods that this class adds on top of the standard matplotlib Axes class is the <code class="docutils literal notranslate"><span class="pre">coastlines</span></code> method. With no arguments, it will add the Natural Earth <code class="docutils literal notranslate"><span class="pre">1:110,000,000</span></code> scale coastline data to the map.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;cartopy.mpl.feature_artist.FeatureArtist at 0x1206c70b8&gt;
-</code></pre></div>      </div>
-
-    </div>
-  </div>
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <p class="output_png"><img src="../images/lectures/mapping_cartopy_10_1.png" alt="png" /></p>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<p>We could just as equally created a matplotlib subplot with one of the many approaches that exist. For example, the <code class="highlighter-rouge">plt.subplots</code> function could be used:</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span><span class="s">'projection'</span><span class="p">:</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()})</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;cartopy.mpl.feature_artist.FeatureArtist at 0x1206c70b8&gt;
+</pre></div>
+</div>
+<img alt="../_images/mapping_cartopy_10_1.png" src="../_images/mapping_cartopy_10_1.png" />
+</div>
+</div>
+<p>We could just as equally created a matplotlib subplot with one of the many approaches that exist. For example, the <code class="docutils literal notranslate"><span class="pre">plt.subplots</span></code> function could be used:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;projection&#39;</span><span class="p">:</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()})</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;cartopy.mpl.feature_artist.FeatureArtist at 0x120799518&gt;
-</code></pre></div>      </div>
-
-    </div>
-  </div>
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <p class="output_png"><img src="../images/lectures/mapping_cartopy_12_1.png" alt="png" /></p>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;cartopy.mpl.feature_artist.FeatureArtist at 0x120799518&gt;
+</pre></div>
+</div>
+<img alt="../_images/mapping_cartopy_12_1.png" src="../_images/mapping_cartopy_12_1.png" />
+</div>
+</div>
 <p>Projection classes have options we can use to customize the map</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="err">?</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[0;31mInit signature:[0m [0mccrs[0m[0;34m.[0m[0mPlateCarree[0m[0;34m([0m[0mcentral_longitude[0m[0;34m=[0m[0;36m0.0[0m[0;34m,[0m [0mglobe[0m[0;34m=[0m[0;32mNone[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0;31mDocstring:[0m     
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ccrs.PlateCarree<span class="o">?</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Red">Init signature:</span> ccrs<span class=" -Color -Color-Blue">.</span>PlateCarree<span class=" -Color -Color-Blue">(</span>central_longitude<span class=" -Color -Color-Blue">=</span><span class=" -Color -Color-Cyan">0.0</span><span class=" -Color -Color-Blue">,</span> globe<span class=" -Color -Color-Blue">=</span><span class=" -Color -Color-Green">None</span><span class=" -Color -Color-Blue">)</span>
+<span class=" -Color -Color-Red">Docstring:</span>     
 The abstract class which denotes cylindrical projections where we
 want to allow x values to wrap around.
-[0;31mInit docstring:[0m
+<span class=" -Color -Color-Red">Init docstring:</span>
 Parameters
 ----------
 proj4_params: iterable of key-value pairs
@@ -6835,66 +5813,47 @@ proj4_params: iterable of key-value pairs
 globe: :class:`~cartopy.crs.Globe` instance, optional
     If omitted, the default Globe instance will be created.
     See :class:`~cartopy.crs.Globe` for details.
-[0;31mFile:[0m           ~/miniconda3/envs/pangeo/lib/python3.6/site-packages/cartopy/crs.py
-[0;31mType:[0m           ABCMeta
-[0;31mSubclasses:[0m     
-
-</code></pre></div>      </div>
-
-    </div>
-  </div>
+<span class=" -Color -Color-Red">File:</span>           ~/miniconda3/envs/pangeo/lib/python3.6/site-packages/cartopy/crs.py
+<span class=" -Color -Color-Red">Type:</span>           ABCMeta
+<span class=" -Color -Color-Red">Subclasses:</span>     
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(</span><span class="n">central_longitude</span><span class="o">=</span><span class="mi">180</span><span class="p">))</span>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(</span><span class="n">central_longitude</span><span class="o">=</span><span class="mi">180</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;cartopy.mpl.feature_artist.FeatureArtist at 0x120833f28&gt;
-</code></pre></div>      </div>
-
-    </div>
-  </div>
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <p class="output_png"><img src="../images/lectures/mapping_cartopy_15_1.png" alt="png" /></p>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<h3 id="useful-methods-of-a-geoaxes">Useful methods of a GeoAxes</h3>
-
-<p>The <a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxes">cartopy.mpl.geoaxes.GeoAxes</a> class adds a number of useful methods.</p>
-
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;cartopy.mpl.feature_artist.FeatureArtist at 0x120833f28&gt;
+</pre></div>
+</div>
+<img alt="../_images/mapping_cartopy_15_1.png" src="../_images/mapping_cartopy_15_1.png" />
+</div>
+</div>
+</div>
+<div class="section" id="useful-methods-of-a-geoaxes">
+<h3>Useful methods of a GeoAxes<a class="headerlink" href="#useful-methods-of-a-geoaxes" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference external" href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxes">cartopy.mpl.geoaxes.GeoAxes</a> class adds a number of useful methods.</p>
 <p>Let’s take a look at:</p>
-
-<ul>
-  <li><a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxes.set_global">set_global</a> - zoom the map out as much as possible</li>
-  <li>
-    <p><a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxes.set_extent">set_extent</a> - zoom the map to the given bounding box</p>
-  </li>
-  <li><a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxes.graticule">gridlines</a> - add a graticule (and optionally labels) to the axes</li>
-  <li><a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxes.coastlines">coastlines</a> - add Natural Earth coastlines to the axes</li>
-  <li>
-    <p><a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxes.stock_img">stock_img</a> - add a low-resolution Natural Earth background image to the axes</p>
-  </li>
-  <li><a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.imshow.html#matplotlib.axes.Axes.imshow">imshow</a> - add an image (numpy array) to the axes</li>
-  <li><a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxes.add_geometries">add_geometries</a> - add a collection of geometries (Shapely) to the axes</li>
+<ul class="simple">
+<li><p><a class="reference external" href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxes.set_global">set_global</a> - zoom the map out as much as possible</p></li>
+<li><p><a class="reference external" href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxes.set_extent">set_extent</a> - zoom the map to the given bounding box</p></li>
+<li><p><a class="reference external" href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxes.graticule">gridlines</a> - add a graticule (and optionally labels) to the axes</p></li>
+<li><p><a class="reference external" href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxes.coastlines">coastlines</a> - add Natural Earth coastlines to the axes</p></li>
+<li><p><a class="reference external" href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxes.stock_img">stock_img</a> - add a low-resolution Natural Earth background image to the axes</p></li>
+<li><p><a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.imshow.html#matplotlib.axes.Axes.imshow">imshow</a> - add an image (numpy array) to the axes</p></li>
+<li><p><a class="reference external" href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxes.add_geometries">add_geometries</a> - add a collection of geometries (Shapely) to the axes</p></li>
 </ul>
-
-<h3 id="some-more-examples-of-different-global-projections">Some More Examples of Different Global Projections</h3>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">projections</span> <span class="o">=</span> <span class="p">[</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+</div>
+<div class="section" id="some-more-examples-of-different-global-projections">
+<h3>Some More Examples of Different Global Projections<a class="headerlink" href="#some-more-examples-of-different-global-projections" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">projections</span> <span class="o">=</span> <span class="p">[</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
                <span class="n">ccrs</span><span class="o">.</span><span class="n">Robinson</span><span class="p">(),</span>
                <span class="n">ccrs</span><span class="o">.</span><span class="n">Mercator</span><span class="p">(),</span>
                <span class="n">ccrs</span><span class="o">.</span><span class="n">Orthographic</span><span class="p">(),</span>
@@ -6907,162 +5866,110 @@ globe: :class:`~cartopy.crs.Globe` instance, optional
     <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">proj</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">stock_img</span><span class="p">()</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">f</span><span class="s">'{type(proj)}'</span><span class="p">)</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <p class="output_png"><img src="../images/lectures/mapping_cartopy_17_0.png" alt="png" /></p>
-
-    </div>
-  </div>
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <p class="output_png"><img src="../images/lectures/mapping_cartopy_17_1.png" alt="png" /></p>
-
-    </div>
-  </div>
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <p class="output_png"><img src="../images/lectures/mapping_cartopy_17_2.png" alt="png" /></p>
-
-    </div>
-  </div>
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <p class="output_png"><img src="../images/lectures/mapping_cartopy_17_3.png" alt="png" /></p>
-
-    </div>
-  </div>
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <p class="output_png"><img src="../images/lectures/mapping_cartopy_17_4.png" alt="png" /></p>
-
-    </div>
-  </div>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">proj</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
 </div>
-
-<h3 id="regional-maps">Regional Maps</h3>
-
-<p>To create a regional map, we use the <code class="highlighter-rouge">set_extent</code> method of GeoAxis to limit the size of the region.</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="err">?</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[0;31mSignature:[0m [0max[0m[0;34m.[0m[0mset_extent[0m[0;34m([0m[0mextents[0m[0;34m,[0m [0mcrs[0m[0;34m=[0m[0;32mNone[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0;31mDocstring:[0m
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/mapping_cartopy_17_0.png" src="../_images/mapping_cartopy_17_0.png" />
+<img alt="../_images/mapping_cartopy_17_1.png" src="../_images/mapping_cartopy_17_1.png" />
+<img alt="../_images/mapping_cartopy_17_2.png" src="../_images/mapping_cartopy_17_2.png" />
+<img alt="../_images/mapping_cartopy_17_3.png" src="../_images/mapping_cartopy_17_3.png" />
+<img alt="../_images/mapping_cartopy_17_4.png" src="../_images/mapping_cartopy_17_4.png" />
+</div>
+</div>
+</div>
+<div class="section" id="regional-maps">
+<h3>Regional Maps<a class="headerlink" href="#regional-maps" title="Permalink to this headline">¶</a></h3>
+<p>To create a regional map, we use the <code class="docutils literal notranslate"><span class="pre">set_extent</span></code> method of GeoAxis to limit the size of the region.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ax.set_extent<span class="o">?</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Red">Signature:</span> ax<span class=" -Color -Color-Blue">.</span>set_extent<span class=" -Color -Color-Blue">(</span>extents<span class=" -Color -Color-Blue">,</span> crs<span class=" -Color -Color-Blue">=</span><span class=" -Color -Color-Green">None</span><span class=" -Color -Color-Blue">)</span>
+<span class=" -Color -Color-Red">Docstring:</span>
 Set the extent (x0, x1, y0, y1) of the map in the given
 coordinate system.
 
-If no crs is given, the extents' coordinate system will be assumed
-to be the Geodetic version of this axes' projection.
+If no crs is given, the extents&#39; coordinate system will be assumed
+to be the Geodetic version of this axes&#39; projection.
 
 Parameters
 ----------
 extent
     Tuple of floats representing the required extent (x0, x1, y0, y1).
-[0;31mFile:[0m      ~/miniconda3/envs/pangeo/lib/python3.6/site-packages/cartopy/mpl/geoaxes.py
-[0;31mType:[0m      method
-
-</code></pre></div>      </div>
-
-    </div>
-  </div>
+<span class=" -Color -Color-Red">File:</span>      ~/miniconda3/envs/pangeo/lib/python3.6/site-packages/cartopy/mpl/geoaxes.py
+<span class=" -Color -Color-Red">Type:</span>      method
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">central_lon</span><span class="p">,</span> <span class="n">central_lat</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">45</span>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">central_lon</span><span class="p">,</span> <span class="n">central_lat</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">45</span>
 <span class="n">extent</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">60</span><span class="p">]</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">Orthographic</span><span class="p">(</span><span class="n">central_lon</span><span class="p">,</span> <span class="n">central_lat</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="n">extent</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">gridlines</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">(</span><span class="n">resolution</span><span class="o">=</span><span class="s">'50m'</span><span class="p">)</span>
-
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;cartopy.mpl.feature_artist.FeatureArtist at 0x1211da128&gt;
-</code></pre></div>      </div>
-
-    </div>
-  </div>
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <p class="output_png"><img src="../images/lectures/mapping_cartopy_20_1.png" alt="png" /></p>
-
-    </div>
-  </div>
+<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">(</span><span class="n">resolution</span><span class="o">=</span><span class="s1">&#39;50m&#39;</span><span class="p">)</span>
+</pre></div>
 </div>
-
-<h2 id="adding-features-to-the-map">Adding Features to the Map</h2>
-
-<p>To give our map more styles and details, we add <code class="highlighter-rouge">cartopy.feature</code> objects.
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;cartopy.mpl.feature_artist.FeatureArtist at 0x1211da128&gt;
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/rpa/miniconda3/envs/pangeo/lib/python3.6/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: http://naciscdn.org/naturalearth/50m/physical/ne_50m_coastline.zip
+  warnings.warn(&#39;Downloading: {}&#39;.format(url), DownloadWarning)
+</pre></div>
+</div>
+<img alt="../_images/mapping_cartopy_20_2.png" src="../_images/mapping_cartopy_20_2.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="adding-features-to-the-map">
+<h2>Adding Features to the Map<a class="headerlink" href="#adding-features-to-the-map" title="Permalink to this headline">¶</a></h2>
+<p>To give our map more styles and details, we add <code class="docutils literal notranslate"><span class="pre">cartopy.feature</span></code> objects.
 Many useful features are built in. These “default features” are at coarse (110m) resolution.</p>
-
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code class="highlighter-rouge">cartopy.feature.BORDERS</code></td>
-      <td>Country boundaries</td>
-    </tr>
-    <tr>
-      <td><code class="highlighter-rouge">cartopy.feature.COASTLINE</code></td>
-      <td>Coastline, including major islands</td>
-    </tr>
-    <tr>
-      <td><code class="highlighter-rouge">cartopy.feature.LAKES</code></td>
-      <td>Natural and artificial lakes</td>
-    </tr>
-    <tr>
-      <td><code class="highlighter-rouge">cartopy.feature.LAND</code></td>
-      <td>Land polygons, including major islands</td>
-    </tr>
-    <tr>
-      <td><code class="highlighter-rouge">cartopy.feature.OCEAN</code></td>
-      <td>Ocean polygons</td>
-    </tr>
-    <tr>
-      <td><code class="highlighter-rouge">cartopy.feature.RIVERS</code></td>
-      <td>Single-line drainages, including lake centerlines</td>
-    </tr>
-    <tr>
-      <td><code class="highlighter-rouge">cartopy.feature.STATES</code></td>
-      <td>(limited to the United States at this scale)</td>
-    </tr>
-  </tbody>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cartopy.feature.BORDERS</span></code></p></td>
+<td><p>Country boundaries</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cartopy.feature.COASTLINE</span></code></p></td>
+<td><p>Coastline, including major islands</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cartopy.feature.LAKES</span></code></p></td>
+<td><p>Natural and artificial lakes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cartopy.feature.LAND</span></code></p></td>
+<td><p>Land polygons, including major islands</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cartopy.feature.OCEAN</span></code></p></td>
+<td><p>Ocean polygons</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cartopy.feature.RIVERS</span></code></p></td>
+<td><p>Single-line drainages, including lake centerlines</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cartopy.feature.STATES</span></code></p></td>
+<td><p>(limited to the United States at this scale)</p></td>
+</tr>
+</tbody>
 </table>
-
 <p>Below we illustrate these features in a customized map of North America.</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="n">cfeature</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="n">central_lat</span> <span class="o">=</span> <span class="mf">37.5</span>
 <span class="n">central_lon</span> <span class="o">=</span> <span class="o">-</span><span class="mi">96</span>
@@ -7075,254 +5982,183 @@ Many useful features are built in. These “default features” are at coarse (1
 <span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="n">extent</span><span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cartopy</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">OCEAN</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cartopy</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">LAND</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s">'black'</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cartopy</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">LAKES</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s">'black'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cartopy</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">LAND</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cartopy</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">LAKES</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cartopy</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">RIVERS</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">gridlines</span><span class="p">()</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;cartopy.mpl.gridliner.Gridliner at 0x1220c0d30&gt;
-</code></pre></div>      </div>
-
-    </div>
-  </div>
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <p class="output_png"><img src="../images/lectures/mapping_cartopy_22_1.png" alt="png" /></p>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<p>If we want higher-resolution features, Cartopy can automatically download and create them from the <a href="http://www.naturalearthdata.com/">Natural Earth Data</a> database or the <a href="https://www.ngdc.noaa.gov/mgg/shorelines/gshhs.html">GSHHS dataset</a> database.</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rivers_50m</span> <span class="o">=</span> <span class="n">cfeature</span><span class="o">.</span><span class="n">NaturalEarthFeature</span><span class="p">(</span><span class="s">'physical'</span><span class="p">,</span> <span class="s">'rivers_lake_centerlines'</span><span class="p">,</span> <span class="s">'50m'</span><span class="p">)</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;cartopy.mpl.gridliner.Gridliner at 0x1220c0d30&gt;
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/rpa/miniconda3/envs/pangeo/lib/python3.6/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: http://naciscdn.org/naturalearth/110m/physical/ne_110m_ocean.zip
+  warnings.warn(&#39;Downloading: {}&#39;.format(url), DownloadWarning)
+/Users/rpa/miniconda3/envs/pangeo/lib/python3.6/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: http://naciscdn.org/naturalearth/110m/physical/ne_110m_land.zip
+  warnings.warn(&#39;Downloading: {}&#39;.format(url), DownloadWarning)
+/Users/rpa/miniconda3/envs/pangeo/lib/python3.6/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: http://naciscdn.org/naturalearth/110m/physical/ne_110m_lakes.zip
+  warnings.warn(&#39;Downloading: {}&#39;.format(url), DownloadWarning)
+/Users/rpa/miniconda3/envs/pangeo/lib/python3.6/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: http://naciscdn.org/naturalearth/110m/physical/ne_110m_rivers_lake_centerlines.zip
+  warnings.warn(&#39;Downloading: {}&#39;.format(url), DownloadWarning)
+</pre></div>
+</div>
+<img alt="../_images/mapping_cartopy_22_2.png" src="../_images/mapping_cartopy_22_2.png" />
+</div>
+</div>
+<p>If we want higher-resolution features, Cartopy can automatically download and create them from the <a class="reference external" href="http://www.naturalearthdata.com/">Natural Earth Data</a> database or the <a class="reference external" href="https://www.ngdc.noaa.gov/mgg/shorelines/gshhs.html">GSHHS dataset</a> database.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rivers_50m</span> <span class="o">=</span> <span class="n">cfeature</span><span class="o">.</span><span class="n">NaturalEarthFeature</span><span class="p">(</span><span class="s1">&#39;physical&#39;</span><span class="p">,</span> <span class="s1">&#39;rivers_lake_centerlines&#39;</span><span class="p">,</span> <span class="s1">&#39;50m&#39;</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">AlbersEqualArea</span><span class="p">(</span><span class="n">central_lon</span><span class="p">,</span> <span class="n">central_lat</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="n">extent</span><span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cartopy</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">OCEAN</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cartopy</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">LAND</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s">'black'</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">rivers_50m</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">'None'</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s">'b'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cartopy</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">LAND</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">rivers_50m</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">gridlines</span><span class="p">()</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;cartopy.mpl.gridliner.Gridliner at 0x122216c50&gt;
-</code></pre></div>      </div>
-
-    </div>
-  </div>
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <p class="output_png"><img src="../images/lectures/mapping_cartopy_24_1.png" alt="png" /></p>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<h2 id="adding-data-to-the-map">Adding Data to the Map</h2>
-
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;cartopy.mpl.gridliner.Gridliner at 0x122216c50&gt;
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/rpa/miniconda3/envs/pangeo/lib/python3.6/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: http://naciscdn.org/naturalearth/50m/physical/ne_50m_rivers_lake_centerlines.zip
+  warnings.warn(&#39;Downloading: {}&#39;.format(url), DownloadWarning)
+</pre></div>
+</div>
+<img alt="../_images/mapping_cartopy_24_2.png" src="../_images/mapping_cartopy_24_2.png" />
+</div>
+</div>
+</div>
+<div class="section" id="adding-data-to-the-map">
+<h2>Adding Data to the Map<a class="headerlink" href="#adding-data-to-the-map" title="Permalink to this headline">¶</a></h2>
 <p>Now that we know how to create a map, let’s add our data to it! That’s the whole point.</p>
-
 <p>Because our map is a matplotlib axis, we can use all the familiar maptplotlib commands to make plots.
-By default, the map extent will be adjusted to match the data. We can override this with the <code class="highlighter-rouge">.set_global</code> or <code class="highlighter-rouge">.set_extent</code> commands.</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># create some test data</span>
+By default, the map extent will be adjusted to match the data. We can override this with the <code class="docutils literal notranslate"><span class="pre">.set_global</span></code> or <code class="docutils literal notranslate"><span class="pre">.set_extent</span></code> commands.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create some test data</span>
 <span class="n">new_york</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">lon</span><span class="o">=-</span><span class="mf">74.0060</span><span class="p">,</span> <span class="n">lat</span><span class="o">=</span><span class="mf">40.7128</span><span class="p">)</span>
 <span class="n">honolulu</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">lon</span><span class="o">=-</span><span class="mf">157.8583</span><span class="p">,</span> <span class="n">lat</span><span class="o">=</span><span class="mf">21.3069</span><span class="p">)</span>
-<span class="n">lons</span> <span class="o">=</span> <span class="p">[</span><span class="n">new_york</span><span class="p">[</span><span class="s">'lon'</span><span class="p">],</span> <span class="n">honolulu</span><span class="p">[</span><span class="s">'lon'</span><span class="p">]]</span>
-<span class="n">lats</span> <span class="o">=</span> <span class="p">[</span><span class="n">new_york</span><span class="p">[</span><span class="s">'lat'</span><span class="p">],</span> <span class="n">honolulu</span><span class="p">[</span><span class="s">'lat'</span><span class="p">]]</span>
-
-</code></pre></div>    </div>
-  </div>
-
+<span class="n">lons</span> <span class="o">=</span> <span class="p">[</span><span class="n">new_york</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">],</span> <span class="n">honolulu</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">]]</span>
+<span class="n">lats</span> <span class="o">=</span> <span class="p">[</span><span class="n">new_york</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">],</span> <span class="n">honolulu</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">]]</span>
+</pre></div>
 </div>
-
+</div>
+</div>
 <p>Key point: <strong>the data also have to be transformed to the projection space</strong>.
-This is done via the <code class="highlighter-rouge">transform=</code> keyword in the plotting method. The argument is another <code class="highlighter-rouge">cartopy.crs</code> object.
+This is done via the <code class="docutils literal notranslate"><span class="pre">transform=</span></code> keyword in the plotting method. The argument is another <code class="docutils literal notranslate"><span class="pre">cartopy.crs</span></code> object.
 If you don’t specify a transform, Cartopy assume that the data is using the same projection as the underlying GeoAxis.</p>
-
-<p>From the <a href="https://scitools.org.uk/cartopy/docs/latest/tutorials/understanding_transform.html">Cartopy Documentation</a></p>
-
+<p>From the <a class="reference external" href="https://scitools.org.uk/cartopy/docs/latest/tutorials/understanding_transform.html">Cartopy Documentation</a></p>
 <blockquote>
-  <p>The core concept is that the projection of your axes is independent of the coordinate system your data is defined in. The <code class="highlighter-rouge">projection</code> argument is used when creating plots and determines the projection of the resulting plot (i.e. what the plot looks like). The <code class="highlighter-rouge">transform</code> argument to plotting functions tells Cartopy what coordinate system your data are defined in.</p>
-</blockquote>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'Equirectangular straight line'</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'Great Circle'</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">Geodetic</span><span class="p">())</span>
+<div><p>The core concept is that the projection of your axes is independent of the coordinate system your data is defined in. The <code class="docutils literal notranslate"><span class="pre">projection</span></code> argument is used when creating plots and determines the projection of the resulting plot (i.e. what the plot looks like). The <code class="docutils literal notranslate"><span class="pre">transform</span></code> argument to plotting functions tells Cartopy what coordinate system your data are defined in.</p>
+</div></blockquote>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Equirectangular straight line&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Great Circle&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">Geodetic</span><span class="p">())</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_global</span><span class="p">()</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <p class="output_png"><img src="../images/lectures/mapping_cartopy_28_0.png" alt="png" /></p>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<h3 id="plotting-2d-raster-data">Plotting 2D (Raster) Data</h3>
-
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/mapping_cartopy_28_0.png" src="../_images/mapping_cartopy_28_0.png" />
+</div>
+</div>
+<div class="section" id="plotting-2d-raster-data">
+<h3>Plotting 2D (Raster) Data<a class="headerlink" href="#plotting-2d-raster-data" title="Permalink to this headline">¶</a></h3>
 <p>The same principles apply to 2D data. Below we create some example data defined in regular lat / lon coordinates.</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="n">lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">80</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
 <span class="n">lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
 <span class="n">lon2d</span><span class="p">,</span> <span class="n">lat2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">lat2d</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">lon2d</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">lon2d</span><span class="p">,</span> <span class="n">lat2d</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.contour.QuadContourSet at 0x10ec16fd0&gt;
-</code></pre></div>      </div>
-
-    </div>
-  </div>
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <p class="output_png"><img src="../images/lectures/mapping_cartopy_30_1.png" alt="png" /></p>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<p>Now we create a <code class="highlighter-rouge">PlateCarree</code> projection and plot the data on it without any <code class="highlighter-rouge">transform</code> keyword.
-This happens to work because <code class="highlighter-rouge">PlateCarree</code> is the simplest projection of lat / lon data.</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.contour.QuadContourSet at 0x10ec16fd0&gt;
+</pre></div>
+</div>
+<img alt="../_images/mapping_cartopy_30_1.png" src="../_images/mapping_cartopy_30_1.png" />
+</div>
+</div>
+<p>Now we create a <code class="docutils literal notranslate"><span class="pre">PlateCarree</span></code> projection and plot the data on it without any <code class="docutils literal notranslate"><span class="pre">transform</span></code> keyword.
+This happens to work because <code class="docutils literal notranslate"><span class="pre">PlateCarree</span></code> is the simplest projection of lat / lon data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_global</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.contour.QuadContourSet at 0x11cd547f0&gt;
-</code></pre></div>      </div>
-
-    </div>
-  </div>
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <p class="output_png"><img src="../images/lectures/mapping_cartopy_32_1.png" alt="png" /></p>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.contour.QuadContourSet at 0x11cd547f0&gt;
+</pre></div>
+</div>
+<img alt="../_images/mapping_cartopy_32_1.png" src="../_images/mapping_cartopy_32_1.png" />
+</div>
+</div>
 <p>However, if we try the same thing with a different projection, we get the wrong result.</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">projection</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">RotatedPole</span><span class="p">(</span><span class="n">pole_longitude</span><span class="o">=-</span><span class="mf">177.5</span><span class="p">,</span> <span class="n">pole_latitude</span><span class="o">=</span><span class="mf">37.5</span><span class="p">)</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">projection</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">RotatedPole</span><span class="p">(</span><span class="n">pole_longitude</span><span class="o">=-</span><span class="mf">177.5</span><span class="p">,</span> <span class="n">pole_latitude</span><span class="o">=</span><span class="mf">37.5</span><span class="p">)</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_global</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.contour.QuadContourSet at 0x122251cf8&gt;
-</code></pre></div>      </div>
-
-    </div>
-  </div>
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <p class="output_png"><img src="../images/lectures/mapping_cartopy_34_1.png" alt="png" /></p>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<p>To fix this, we need to pass the correct transform argument to <code class="highlighter-rouge">contourf</code>:</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">projection</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">RotatedPole</span><span class="p">(</span><span class="n">pole_longitude</span><span class="o">=-</span><span class="mf">177.5</span><span class="p">,</span> <span class="n">pole_latitude</span><span class="o">=</span><span class="mf">37.5</span><span class="p">)</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.contour.QuadContourSet at 0x122251cf8&gt;
+</pre></div>
+</div>
+<img alt="../_images/mapping_cartopy_34_1.png" src="../_images/mapping_cartopy_34_1.png" />
+</div>
+</div>
+<p>To fix this, we need to pass the correct transform argument to <code class="docutils literal notranslate"><span class="pre">contourf</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">projection</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">RotatedPole</span><span class="p">(</span><span class="n">pole_longitude</span><span class="o">=-</span><span class="mf">177.5</span><span class="p">,</span> <span class="n">pole_latitude</span><span class="o">=</span><span class="mf">37.5</span><span class="p">)</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_global</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.contour.QuadContourSet at 0x12233b240&gt;
-</code></pre></div>      </div>
-
-    </div>
-  </div>
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <p class="output_png"><img src="../images/lectures/mapping_cartopy_36_1.png" alt="png" /></p>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<h3 id="showing-images">Showing Images</h3>
-
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.contour.QuadContourSet at 0x12233b240&gt;
+</pre></div>
+</div>
+<img alt="../_images/mapping_cartopy_36_1.png" src="../_images/mapping_cartopy_36_1.png" />
+</div>
+</div>
+</div>
+<div class="section" id="showing-images">
+<h3>Showing Images<a class="headerlink" href="#showing-images" title="Permalink to this headline">¶</a></h3>
 <p>We can plot a satellite image easily on a map if we know its extent</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">!</span> <span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">lance</span><span class="o">-</span><span class="n">modis</span><span class="o">.</span><span class="n">eosdis</span><span class="o">.</span><span class="n">nasa</span><span class="o">.</span><span class="n">gov</span><span class="o">/</span><span class="n">imagery</span><span class="o">/</span><span class="n">gallery</span><span class="o">/</span><span class="mi">2012270</span><span class="o">-</span><span class="mi">0926</span><span class="o">/</span><span class="n">Miriam</span><span class="o">.</span><span class="n">A2012270</span><span class="o">.</span><span class="mf">2050.2</span><span class="n">km</span><span class="o">.</span><span class="n">jpg</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-      <div class="output_stream highlighter-rouge"><div class="highlight"><pre class="highlight"><code>--2019-10-29 09:47:20--  https://lance-modis.eosdis.nasa.gov/imagery/gallery/2012270-0926/Miriam.A2012270.2050.2km.jpg
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span> wget https://lance-modis.eosdis.nasa.gov/imagery/gallery/2012270-0926/Miriam.A2012270.2050.2km.jpg
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--2019-10-29 09:47:20--  https://lance-modis.eosdis.nasa.gov/imagery/gallery/2012270-0926/Miriam.A2012270.2050.2km.jpg
 Resolving lance-modis.eosdis.nasa.gov... 198.118.194.28
 Connecting to lance-modis.eosdis.nasa.gov|198.118.194.28|:443... connected.
 HTTP request sent, awaiting response... 200 OK
@@ -7332,76 +6168,59 @@ Saving to: ‘Miriam.A2012270.2050.2km.jpg’
 Miriam.A2012270.205 100%[===================&gt;] 250.21K  --.-KB/s    in 0.03s   
 
 2019-10-29 09:47:21 (7.21 MB/s) - ‘Miriam.A2012270.2050.2km.jpg’ saved [256220/256220]
-
-</code></pre></div>      </div>
-    </div>
-  </div>
+</pre></div>
 </div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
 
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
-
-<span class="c"># this is from the cartopy docs</span>
-<span class="n">fname</span> <span class="o">=</span> <span class="s">'Miriam.A2012270.2050.2km.jpg'</span>
+<span class="c1"># this is from the cartopy docs</span>
+<span class="n">fname</span> <span class="o">=</span> <span class="s1">&#39;Miriam.A2012270.2050.2km.jpg&#39;</span>
 <span class="n">img_extent</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">120.67660000000001</span><span class="p">,</span> <span class="o">-</span><span class="mf">106.32104523100001</span><span class="p">,</span> <span class="mf">13.2301484511245</span><span class="p">,</span> <span class="mf">30.766899999999502</span><span class="p">)</span>
 <span class="n">img</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
 
 <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
 
-<span class="c"># set a margin around the data</span>
+<span class="c1"># set a margin around the data</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xmargin</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ymargin</span><span class="p">(</span><span class="mf">0.10</span><span class="p">)</span>
 
-<span class="c"># add the image. Because this image was a tif, the "origin" of the image is in the</span>
-<span class="c"># upper left corner</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s">'upper'</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">img_extent</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">(</span><span class="n">resolution</span><span class="o">=</span><span class="s">'50m'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'black'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># add the image. Because this image was a tif, the &quot;origin&quot; of the image is in the</span>
+<span class="c1"># upper left corner</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;upper&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">img_extent</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">(</span><span class="n">resolution</span><span class="o">=</span><span class="s1">&#39;50m&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-<span class="c"># mark a known place to help us geo-locate ourselves</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">-</span><span class="mf">117.1625</span><span class="p">,</span> <span class="mf">32.715</span><span class="p">,</span> <span class="s">'bo'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">Geodetic</span><span class="p">())</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="o">-</span><span class="mi">117</span><span class="p">,</span> <span class="mi">33</span><span class="p">,</span> <span class="s">'San Diego'</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">Geodetic</span><span class="p">())</span>
-
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Text(-117, 33, 'San Diego')
-</code></pre></div>      </div>
-
-    </div>
-  </div>
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <p class="output_png"><img src="../images/lectures/mapping_cartopy_39_1.png" alt="png" /></p>
-
-    </div>
-  </div>
+<span class="c1"># mark a known place to help us geo-locate ourselves</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">-</span><span class="mf">117.1625</span><span class="p">,</span> <span class="mf">32.715</span><span class="p">,</span> <span class="s1">&#39;bo&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">Geodetic</span><span class="p">())</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="o">-</span><span class="mi">117</span><span class="p">,</span> <span class="mi">33</span><span class="p">,</span> <span class="s1">&#39;San Diego&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">Geodetic</span><span class="p">())</span>
+</pre></div>
 </div>
-
-<h2 id="xarray-integration">Xarray Integration</h2>
-
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(-117, 33, &#39;San Diego&#39;)
+</pre></div>
+</div>
+<img alt="../_images/mapping_cartopy_39_1.png" src="../_images/mapping_cartopy_39_1.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="xarray-integration">
+<h2>Xarray Integration<a class="headerlink" href="#xarray-integration" title="Permalink to this headline">¶</a></h2>
 <p>Cartopy transforms can be passed to xarray! This creates a very quick path for creating professional looking maps from netCDF data.</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="n">xr</span>
-<span class="n">url</span> <span class="o">=</span> <span class="s">'http://www.esrl.noaa.gov/psd/thredds/dodsC/Datasets/noaa.ersst.v5/sst.mnmean.nc'</span>
-<span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">drop_variables</span><span class="o">=</span><span class="p">[</span><span class="s">'time_bnds'</span><span class="p">])</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;http://www.esrl.noaa.gov/psd/thredds/dodsC/Datasets/noaa.ersst.v5/sst.mnmean.nc&#39;</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">drop_variables</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;time_bnds&#39;</span><span class="p">])</span>
 <span class="n">ds</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output output_html">
-<pre>&lt;xarray.Dataset&gt;
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><pre>&lt;xarray.Dataset&gt;
 Dimensions:  (lat: 89, lon: 180, time: 1989)
 Coordinates:
   * lat      (lat) float32 88.0 86.0 84.0 82.0 80.0 ... -82.0 -84.0 -86.0 -88.0
@@ -7447,69 +6266,104 @@ Attributes:
     summary:                         ERSST.v5 is developed based on v4 after ...
     dataset_title:                   NOAA Extended Reconstructed SST V5
     data_modified:                   2019-10-03
-    DODS_EXTRA.Unlimited_Dimension:  time</pre>
+    DODS_EXTRA.Unlimited_Dimension:  time</pre></div></div>
 </div>
-
-    </div>
-  </div>
-</div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sst</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sst</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s">'2000-01-01'</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s">'nearest'</span><span class="p">)</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sst</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sst</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;2000-01-01&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">)</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">Robinson</span><span class="p">())</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">gridlines</span><span class="p">()</span>
 <span class="n">sst</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
-         <span class="n">vmin</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">cbar_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s">'shrink'</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">})</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.collections.QuadMesh at 0x127129b00&gt;
-</code></pre></div>      </div>
-
-    </div>
-  </div>
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <p class="output_png"><img src="../images/lectures/mapping_cartopy_42_1.png" alt="png" /></p>
-
-    </div>
-  </div>
+         <span class="n">vmin</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">cbar_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;shrink&#39;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.QuadMesh at 0x127129b00&gt;
+</pre></div>
+</div>
+<img alt="../_images/mapping_cartopy_42_1.png" src="../_images/mapping_cartopy_42_1.png" />
+</div>
+</div>
+</div>
+<div class="section" id="doing-more">
+<h2>Doing More<a class="headerlink" href="#doing-more" title="Permalink to this headline">¶</a></h2>
+<p>Browse the <a class="reference external" href="https://scitools.org.uk/cartopy/docs/latest/gallery/index.html">Cartopy Gallery</a> to learn about all the different types of data and plotting methods available!</p>
+</div>
 </div>
 
-<h2 id="doing-more">Doing More</h2>
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./lectures"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
 
-<p>Browse the <a href="https://scitools.org.uk/cartopy/docs/latest/gallery/index.html">Cartopy Gallery</a> to learn about all the different types of data and plotting methods available!</p>
+              </div>
+              
+        
+            
 
 
-              <nav class="c-page__nav">
-  
+
+<div class='prev-next-bottom'>
     
-    <a id="js-page__nav__prev" class="c-page__nav__prev" href="/lectures/xarray/xarray_tips_and_tricks.html">
-      〈 <span class="u-margin-right-tiny"></span> Xarray Tips And Tricks
-    </a>
-  
-
-  
-    
-    <a id="js-page__nav__next" class="c-page__nav__next" href="/assignments/cartopy.html">
-      Assignment: Maps with Cartopy <span class="u-margin-right-tiny"></span> 〉
-    </a>
-  
-</nav>
-
+    <div id="prev">
+        <a class="left-prev" href="xarray/xarray_tips_and_tricks.html" title="previous page">
+            <i class="prevnext-label fas fa-angle-left"></i>
+            <div class="prevnext-info">
+                <p class="prevnext-label">previous</p>
+                <p class="prevnext-title">Xarray Tips and Tricks</p>
             </div>
-          </div>
-        </div>
-      </main>
+        </a>
     </div>
+     <div id="next">
+        <a class="right-next" href="../assignments/cartopy.html" title="next page">
+            <div class="prevnext-info">
+                <p class="prevnext-label">next</p>
+                <p class="prevnext-title">Assignment: Making Maps with Cartopy</p>
+            </div>
+            <i class="prevnext-label fas fa-angle-right"></i>
+        </a>
+     </div>
 
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Ryan Abernathey<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
   </body>
 </html>

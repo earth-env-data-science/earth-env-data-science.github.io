@@ -1,1522 +1,499 @@
+
 <!DOCTYPE html>
-<html lang="en">
-  
 
+<html>
   <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width,minimum-scale=1">
-
-  <title>Dask Arrays and Xarray Integration</title>
-  <meta name="description" content="Dask Arrays">
-
-  <link rel="canonical" href="http://earth-env-data-science.github.io//lectures/dask/dask_arrays.html">
-  <link rel="alternate" type="application/rss+xml" title="Earth and Environmental Data Science" href="http://earth-env-data-science.github.io//feed.xml">
-
-  <meta property="og:url"         content="http://earth-env-data-science.github.io//lectures/dask/dask_arrays.html" />
-<meta property="og:type"        content="article" />
-<meta property="og:title"       content="Dask Arrays and Xarray Integration" />
-<meta property="og:description" content="Dask Arrays" />
-<meta property="og:image"       content="" />
-
-
-  <script type="application/ld+json">
-  {
-  "@context": "http://schema.org",
-  "@type": "NewsArticle",
-  "mainEntityOfPage":
-    "http://earth-env-data-science.github.io//lectures/dask/dask_arrays.html",
-  "headline":
-    "Dask Arrays and Xarray Integration",
-  "datePublished":
-    "2020-12-07T17:38:21+00:00",
-  "dateModified":
-    "2020-12-07T17:38:21+00:00",
-  "description":
-    "Dask Arrays",
-  "author": {
-    "@type": "Person",
-    "name": "Ryan Abernathey"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Data 100 at UC Berkeley",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "http://earth-env-data-science.github.io/",
-      "width": 60,
-      "height": 60
-    }
-  },
-  "image": {
-    "@type": "ImageObject",
-    "url": "http://earth-env-data-science.github.io/",
-    "height": 60,
-    "width": 60
-  }
-}
-
-  </script>
-  <link rel="stylesheet" href="/assets/css/styles.css">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css ">
-  <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
-  <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
-  <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
-  <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
-
-  <!-- <link rel="manifest" href="/manifest.json"> -->
-  <!-- <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#efae0a"> -->
-  <meta name="msapplication-TileColor" content="#da532c">
-  <meta name="msapplication-TileImage" content="/mstile-144x144.png">
-  <meta name="theme-color" content="#233947">
-
-  <!-- Favicon -->
-  <link rel="shortcut icon" type="image/x-icon" href="/images/logo/favicon.ico">
-
-  <!-- MathJax Config -->
-  <!-- Allow inline math using $ and automatically break long math lines -->
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-    tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-        processEscapes: true,
-        processEnvironments: true
-    },
-    CommonHTML: {
-        linebreaks: {
-            automatic: true,
-        },
-    },
-});
-</script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_CHTML' async></script>
-
-  <!-- DOM updating function -->
-  <script>
-const runWhenDOMLoaded = cb => {
-  if (document.readyState != 'loading') {
-    cb()
-  } else if (document.addEventListener) {
-    document.addEventListener('DOMContentLoaded', cb)
-  } else {
-    document.attachEvent('onreadystatechange', function() {
-      if (document.readyState == 'complete') cb()
-    })
-  }
-}
-
-// Helper function to init things quickly
-initFunction = function(myfunc) {
-  runWhenDOMLoaded(myfunc);
-  document.addEventListener('turbolinks:load', myfunc);
-};
-</script>
-
-  <!-- Define some javascript variables that will be useful in other javascript -->
-  <script>
-    const site_basename = '/';
-  </script>
-
-  <!-- Add AnchorJS to let headers be linked -->
-  <script src="/assets/js/anchor.min.js"  type="text/javascript"></script>
-  <script>
-
-initFunction(function () {
-    anchors.add("main h1, main h2, main h3, main h4")
-});
-
-</script>
-
-  <!-- Include Turbolinks to make page loads fast -->
-  <!-- https://github.com/turbolinks/turbolinks -->
-  <script src="/assets/js/turbolinks.js" async></script>
-  <meta name="turbolinks-cache-control" content="no-cache">
-
-  <!-- Load nbinteract for widgets -->
-  
-
-  <!-- Load Thebelab for interactive widgets -->
-  <!-- Include Thebelab for interactive code if it's enabled -->
-
-
-
-  <!-- Load the auto-generating TOC -->
-  <script src="/assets/js/tocbot.min.js"  type="text/javascript"></script>
-  <script>
-var initToc = function () {
-  tocbot.init({
-    tocSelector: 'nav.onthispage',
-    contentSelector: '.c-textbook__content',
-    headingSelector: 'h2, h3',
-    orderedList: false,
-    collapseDepth: 6,
-    listClass: 'toc__menu',
-    activeListItemClass: "",  // Not using
-    activeLinkClass: "", // Not using
-  });
-  tocbot.refresh();
-}
-initFunction(initToc);
-</script>
-
-  <!-- Google analytics -->
-  <script src="/assets/js/ga.js" async></script>
-
-  <!-- Clipboard copy button -->
-  <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" async></script>
-
-  <!-- Load JS that depends on site variables -->
-  <script>
-/**
- * Set up copy/paste for code blocks
- */
-const codeCellId = index => `codecell${index}`
-
-const clipboardButton = id =>
-  `<a id="copy-button-${id}" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#${id}">
-    <img src="/assets/images/copy-button.svg" alt="Copy to clipboard">
-  </a>`
-
-// Clears selected text since ClipboardJS will select the text when copying
-const clearSelection = () => {
-  if (window.getSelection) {
-    window.getSelection().removeAllRanges()
-  } else if (document.selection) {
-    document.selection.empty()
-  }
-}
-
-// Changes tooltip text for two seconds, then changes it back
-const temporarilyChangeTooltip = (el, newText) => {
-  const oldText = el.getAttribute('data-tooltip')
-  el.setAttribute('data-tooltip', newText)
-  setTimeout(() => el.setAttribute('data-tooltip', oldText), 2000)
-}
-
-const addCopyButtonToCodeCells = () => {
-  // If ClipboardJS hasn't loaded, wait a bit and try again. This
-  // happens because we load ClipboardJS asynchronously.
-  if (window.ClipboardJS === undefined) {
-    setTimeout(addCopyButtonToCodeCells, 250)
-    return
-  }
-
-  const codeCells = document.querySelectorAll('div.c-textbook__content > div.highlighter-rouge > div.highlight > pre, div.input_area pre')
-  codeCells.forEach((codeCell, index) => {
-    const id = codeCellId(index)
-    codeCell.setAttribute('id', id)
-    if (document.getElementById("copy-button" + id) == null) {
-      codeCell.insertAdjacentHTML('afterend', clipboardButton(id));
-    }
-  })
-
-  const clipboard = new ClipboardJS('.copybtn')
-  clipboard.on('success', event => {
-    clearSelection()
-    temporarilyChangeTooltip(event.trigger, 'Copied!')
-  })
-
-  clipboard.on('error', event => {
-    temporarilyChangeTooltip(event.trigger, 'Failed to copy')
-  })
-
-  // Get rid of clipboard before the next page visit to avoid memory leak
-  document.addEventListener('turbolinks:before-visit', () =>
-    clipboard.destroy()
-  )
-}
-
-initFunction(addCopyButtonToCodeCells);
-</script>
-
-
-  <!-- Hide cell code -->
-  <script>
-    /**
-    Add buttons to hide code cells
-    */
-
-
-    var setCodeCellVisibility = function (inputField, kind) {
-        // Update the image and class for hidden
-        var id = inputField.getAttribute('data-id');
-        var codeCell = document.querySelector(`#${id} div.highlight`);
-
-        if (kind === "visible") {
-            codeCell.classList.remove('hidden');
-            inputField.checked = true;
-        } else {
-            codeCell.classList.add('hidden');
-            inputField.checked = false;
-        }
-    }
-
-    var toggleCodeCellVisibility = function (event) {
-        // The label is clicked, and now we decide what to do based on the input field's clicked status
-        if (event.target.tagName === "LABEL") {
-            var inputField = event.target.previousElementSibling;
-        } else {
-            // It is the span inside the target
-            var inputField = event.target.parentElement.previousElementSibling;
-        }
-
-        if (inputField.checked === true) {
-            setCodeCellVisibility(inputField, "visible");
-        } else {
-            setCodeCellVisibility(inputField, "hidden");
-        }
-    }
-
-
-    // Button constructor
-    const hideCodeButton = id => `<input class="hidebtn" type="checkbox" id="hidebtn${id}" data-id="${id}"><label title="Toggle cell" for="hidebtn${id}" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label>`
-
-    var addHideButton = function () {
-        // If a hide button is already added, don't add another
-        if (document.querySelector('div.hidecode input') !== null) {
-            return;
-        }
-
-        // Find the input cells and add a hide button
-        document.querySelectorAll('div.input_area').forEach(function (item, index) {
-            if (!item.classList.contains("hidecode")) {
-                // Skip the cell if it doesn't have a hidecode class
-                return;
-            }
-
-            const id = codeCellId(index)
-            item.setAttribute('id', id);
-            // Insert the button just inside the end of the next div
-            item.querySelector('div').insertAdjacentHTML('beforeend', hideCodeButton(id))
-
-            // Set up the visibility toggle
-            hideLink = document.querySelector(`#${id} div.highlight + input + label`);
-            hideLink.addEventListener('click', toggleCodeCellVisibility)
-        });
-    }
-
-
-    // Initialize the hide buttos
-    var initHiddenCells = function () {
-        // Add hide buttons to the cells
-        addHideButton();
-
-        // Toggle the code cells that should be hidden
-        document.querySelectorAll('div.hidecode input').forEach(function (item) {
-            setCodeCellVisibility(item, 'hidden');
-            item.checked = true;
-        })
-    }
-
-    initFunction(initHiddenCells);
-
-</script>
-
-  <!-- Load custom website scripts -->
-  <script src="/assets/js/scripts.js" async></script>
-
-  <!-- Load custom user CSS and JS  -->
-  <script src="/assets/custom/custom.js" async></script>
-  <link rel="stylesheet" href="/assets/custom/custom.css">
-
-  <!-- Update interact links w/ REST param, is defined in includes so we can use templates -->
-  
-<script>
-/**
-  * To auto-embed hub URLs in interact links if given in a RESTful fashion
- */
-
-function getJsonFromUrl(url) {
-  var query = url.split('?');
-  if (query.length < 2) {
-    // No queries so just return false
-    return false;
-  }
-  query = query[1];
-  // Collect REST params into a dictionary
-  var result = {};
-  query.split("&").forEach(function(part) {
-    var item = part.split("=");
-    result[item[0]] = decodeURIComponent(item[1]);
-  });
-  return result;
-}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dask Arrays &#8212; Earth and Environmental Data Science</title>
     
-function dict2param(dict) {
-    params = Object.keys(dict).map(function(k) {
-        return encodeURIComponent(k) + '=' + encodeURIComponent(dict[k])
-    });
-    return params.join('&')
-}
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
 
-// Parse a Binder URL, converting it to the string needed for JupyterHub
-function binder2Jupyterhub(url) {
-  newUrl = {};
-  parts = url.split('v2/gh/')[1];
-  // Grab the base repo information
-  repoinfo = parts.split('?')[0];
-  var [org, repo, ref] = repoinfo.split('/');
-  newUrl['repo'] = ['https://github.com', org, repo].join('/');
-  newUrl['branch'] = ref
-  // Grab extra parameters passed
-  params = getJsonFromUrl(url);
-  if (params['filepath'] !== undefined) {
-    newUrl['subPath'] = params['filepath']
-  }
-  return dict2param(newUrl);
-}
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-// Filter out potentially unsafe characters to prevent xss
-function safeUrl(url)
-{
-   return String(encodeURIComponent(url))
-            .replace(/&/g, '&amp;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#39;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;');
-}
-
-function addParamToInternalLinks(hub) {
-  var links = document.querySelectorAll("a").forEach(function(link) {
-    var href = link.href;
-    // If the link is an internal link...
-    if (href.search("http://earth-env-data-science.github.io") !== -1 || href.startsWith('/') || href.search("127.0.0.1:") !== -1) {
-      // Assume we're an internal link, add the hub param to it
-      var params = getJsonFromUrl(href);
-      if (params !== false) {
-        // We have REST params, so append a new one
-        params['jupyterhub'] = hub;
-      } else {
-        // Create the REST params
-        params = {'jupyterhub': hub};
-      }
-      // Update the link
-      var newHref = href.split('?')[0] + '?' + dict2param(params);
-      link.setAttribute('href', decodeURIComponent(newHref));
-    }
-  });
-  return false;
-}
-
-
-// Update interact links
-function updateInteractLink() {
-    // hack to make this work since it expects a ? in the URL
-    rest = getJsonFromUrl("?" + location.search.substr(1));
-    jupyterHubUrl = rest['jupyterhub'];
-    var hubType = null;
-    var hubUrl = null;
-    if (jupyterHubUrl !== undefined) {
-      hubType = 'jupyterhub';
-      hubUrl = jupyterHubUrl;
-    }
-
-    if (hubType !== null) {
-      // Sanitize the hubUrl
-      hubUrl = safeUrl(hubUrl);
-
-      // Add HTTP text if omitted
-      if (hubUrl.indexOf('http') < 0) {hubUrl = 'http://' + hubUrl;}
-      var interactButtons = document.querySelectorAll("button.interact-button")
-      var lastButton = interactButtons[interactButtons.length-1];
-      var link = lastButton.parentElement;
-
-      // If we've already run this, skip the link updating
-      if (link.nextElementSibling !== null) {
-        return;
-      }
-
-      // Update the link and add context div
-      var href = link.getAttribute('href');
-      if (lastButton.id === 'interact-button-binder') {
-        // If binder links exist, we need to re-work them for jupyterhub
-        if (hubUrl.indexOf('http%3A%2F%2Flocalhost') > -1) {
-          // If localhost, assume we're working from a local Jupyter server and remove `/hub`
-          first = [hubUrl, 'git-sync'].join('/')
-        } else {
-          first = [hubUrl, 'hub', 'user-redirect', 'git-sync'].join('/')
-        }
-        href = first + '?' + binder2Jupyterhub(href);
-      } else {
-        // If interact button isn't binderhub, assume it's jupyterhub
-        // If JupyterHub links, we only need to replace the hub url
-        href = href.replace("https://us-central1-b.gcp.pangeo.io/", hubUrl);
-        if (hubUrl.indexOf('http%3A%2F%2Flocalhost') > -1) {
-          // Assume we're working from a local Jupyter server and remove `/hub`
-          href = href.replace("/hub/user-redirect", "");
-        }
-      }
-      link.setAttribute('href', decodeURIComponent(href));
-
-      // Add text after interact link saying where we're launching
-      hubUrlNoHttp = decodeURIComponent(hubUrl).replace('http://', '').replace('https://', '');
-      link.insertAdjacentHTML('afterend', '<div class="interact-context">on ' + hubUrlNoHttp + '</div>');
-
-      // Update internal links so we retain the hub url
-      addParamToInternalLinks(hubUrl);
-    }
-}
-
-runWhenDOMLoaded(updateInteractLink)
-document.addEventListener('turbolinks:load', updateInteractLink)
-</script>
-
-
-  <!-- Lunr search code - will only be executed on the /search page -->
-  <script src="/assets/js/lunr/lunr.min.js" type="text/javascript"></script>
-  <script>var initQuery = function() {
-  // See if we have a search box
-  var searchInput = document.querySelector('input#lunr_search');
-  if (searchInput === null) {
-    return;
-  }
-
-  // Function to parse our lunr cache
-  var idx = lunr(function () {
-    this.field('title')
-    this.field('excerpt')
-    this.field('categories')
-    this.field('tags')
-    this.ref('id')
-
-    this.pipeline.remove(lunr.trimmer)
-
-    for (var item in store) {
-      this.add({
-        title: store[item].title,
-        excerpt: store[item].excerpt,
-        categories: store[item].categories,
-        tags: store[item].tags,
-        id: item
-      })
-    }
-  });
-
-  // Run search upon keyup
-  searchInput.addEventListener('keyup', function () {
-    var resultdiv = document.querySelector('#results');
-    var query = document.querySelector("input#lunr_search").value.toLowerCase();
-    var result =
-      idx.query(function (q) {
-        query.split(lunr.tokenizer.separator).forEach(function (term) {
-          q.term(term, { boost: 100 })
-          if(query.lastIndexOf(" ") != query.length-1){
-            q.term(term, {  usePipeline: false, wildcard: lunr.Query.wildcard.TRAILING, boost: 10 })
-          }
-          if (term != ""){
-            q.term(term, {  usePipeline: false, editDistance: 1, boost: 1 })
-          }
-        })
-      });
-
-      // Empty the results div
-      while (resultdiv.firstChild) {
-        resultdiv.removeChild(resultdiv.firstChild);
-      }
-
-    resultdiv.insertAdjacentHTML('afterbegin', '<p class="results__found">'+result.length+' Result(s) found</p>');
-    for (var item in result) {
-      var ref = result[item].ref;
-      if(store[ref].teaser){
-        var searchitem =
-          '<div class="list__item">'+
-            '<article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">'+
-              '<h2 class="archive__item-title" itemprop="headline">'+
-                '<a href="'+store[ref].url+'" rel="permalink">'+store[ref].title+'</a>'+
-              '</h2>'+
-              '<div class="archive__item-teaser">'+
-                '<img src="'+store[ref].teaser+'" alt="">'+
-              '</div>'+
-              '<p class="archive__item-excerpt" itemprop="description">'+store[ref].excerpt.split(" ").splice(0,20).join(" ")+'...</p>'+
-            '</article>'+
-          '</div>';
-      }
-      else{
-    	  var searchitem =
-          '<div class="list__item">'+
-            '<article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">'+
-              '<h2 class="archive__item-title" itemprop="headline">'+
-                '<a href="'+store[ref].url+'" rel="permalink">'+store[ref].title+'</a>'+
-              '</h2>'+
-              '<p class="archive__item-excerpt" itemprop="description">'+store[ref].excerpt.split(" ").splice(0,20).join(" ")+'...</p>'+
-            '</article>'+
-          '</div>';
-      }
-      resultdiv.insertAdjacentHTML('beforeend', searchitem);
-    }
-  });
-};
-
-initFunction(initQuery);
-</script>
-</head>
-
-  <body>
-    <!-- .js-show-sidebar shows sidebar by default -->
-    <div id="js-textbook" class="c-textbook js-show-sidebar">
-      
-
-
-
-<nav id="js-sidebar" class="c-textbook__sidebar">
-  <a href="http://earth-env-data-science.github.io"><img src="/images/logo/eeds-logo.png" class="textbook_logo" id="sidebar-logo" data-turbolinks-permanent/></a>
-  <h2 class="c-sidebar__title">Earth and Environmental Data Science</h2>
-  <ul class="c-sidebar__chapters">
     
       
-      
 
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/intro.html"
-        >
-          
-          Intro
-        </a>
-
-        
-      </li>
-
-      
     
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/projects.html"
-        >
-          
-            1.
-          
-          Final Projects
-        </a>
-
-        
-      </li>
-
-      
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.e8f53015daec13862f6db5e763c41738.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
-      
-      
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
 
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/LICENSE.html"
-        >
-          
-          License
-        </a>
-
-        
-      </li>
-
-      
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="Dask for Parallel Computing in Python" href="intro.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
     
-      
-      
-        <li class="c-sidebar__divider"></li>
-        
-      
-      
-        <li><h2 class="c-sidebar__title">The Interactive Computing Environment</li>
-        
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/environment/intro_to_jupyterlab.html"
-        >
-          
-            2.
-          
-          Intro to JupyterLab
-        </a>
-
-        
-      </li>
-
-      
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
-      
-      
+    <div class="container-fluid" id="banner"></div>
 
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/environment/intro_to_unix.html"
-        >
-          
-            3.
-          
-          Intro to Unix
-        </a>
-
-        
-      </li>
-
-      
     
-      
-      
 
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/environment/intro_to_git.html"
-        >
+    <div class="container-xl">
+      <div class="row">
           
-            4.
-          
-          Intro to Git
-        </a>
-
-        
-
-          
-          
-          
-          
-
-          
-
-          <ul class="c-sidebar__sections ">
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/assignments/files_markdown_git.html"
-                >
-                  
-                    4.1
-                  
-                  Assignment: Files, Git, and Github
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-          </ul>
-        
-      </li>
-
-      
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
     
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/environment/python_environments.html"
-        >
-          
-            5.
-          
-          Managing Environments
-        </a>
-
-        
-      </li>
-
-      
-    
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/environment/binder.html"
-        >
-          
-            6.
-          
-          Sharing Reproducible Science with Binder
-        </a>
-
-        
-      </li>
-
-      
-    
-      
-      
-        <li><h2 class="c-sidebar__title">The Core Python Language</li>
-        
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/core_python/python_fundamentals.html"
-        >
-          
-            7.
-          
-          Python Fundamentals
-        </a>
-
-        
-      </li>
-
-      
-    
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/core_python/functions_classes.html"
-        >
-          
-            8.
-          
-          Functions and Classes
-        </a>
-
-        
-
-          
-          
-          
-          
-
-          
-
-          <ul class="c-sidebar__sections ">
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/assignments/python_basics_and_functions.html"
-                >
-                  
-                    8.1
-                  
-                  Assignment: Python Basics and Functions
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-          </ul>
-        
-      </li>
-
-      
-    
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/core_python/organization_and_packaging.html"
-        >
-          
-            9.
-          
-          Organization and Packaging of Python Projects
-        </a>
-
-        
-      </li>
-
-      
-    
-      
-      
-        <li><h2 class="c-sidebar__title">Scientific Python Fundamentals</li>
-        
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/basic_scipy/numpy_and_matplotlib.html"
-        >
-          
-            10.
-          
-          Numpy and Matplotlib
-        </a>
-
-        
-
-          
-          
-          
-          
-
-          
-
-          <ul class="c-sidebar__sections ">
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/assignments/numpy_matplotlib.html"
-                >
-                  
-                    10.1
-                  
-                  Assignment: Basic Numpy and Matplotlib
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-          </ul>
-        
-      </li>
-
-      
-    
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/basic_scipy/more_matplotlib.html"
-        >
-          
-            11.
-          
-          Advanced Matplotlib
-        </a>
-
-        
-
-          
-          
-          
-          
-
-          
-
-          <ul class="c-sidebar__sections ">
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/assignments/more_matplotlib.html"
-                >
-                  
-                    11.1
-                  
-                  Assignment: More Matplotlib
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-          </ul>
-        
-      </li>
-
-      
-    
-      
-      
-        <li><h2 class="c-sidebar__title">High Level Data Analysis Frameworks</li>
-        
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/pandas/pandas_intro.html"
-        >
-          
-            12.
-          
-          Pandas for Tabular Data
-        </a>
-
-        
-
-          
-          
-          
-          
-
-          
-
-          <ul class="c-sidebar__sections ">
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/lectures/pandas/basic_pandas.html"
-                >
-                  
-                    12.1
-                  
-                  Pandas Fundamentals
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/assignments/basic_pandas.html"
-                >
-                  
-                    12.2
-                  
-                  Assignment: Pandas Fundamentals with Earthquake Data
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/lectures/pandas/pandas_groupby.html"
-                >
-                  
-                    12.3
-                  
-                  The Split-Apply-Combine Workflow
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/assignments/pandas_groupby.html"
-                >
-                  
-                    12.4
-                  
-                  Assignment: Pandas Groupby with Hurrican Data
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-          </ul>
-        
-      </li>
-
-      
-    
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/xarray/xarray_intro.html"
-        >
-          
-            13.
-          
-          Xarray for Multidimensional Data
-        </a>
-
-        
-
-          
-          
-          
-          
-
-          
-
-          <ul class="c-sidebar__sections ">
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/lectures/xarray/xarray.html"
-                >
-                  
-                    13.1
-                  
-                  Xarray Fundamentals
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/assignments/basic_xarray.html"
-                >
-                  
-                    13.2
-                  
-                  Assignment: Xarray Fundamentals with Earth Radiation Data
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/lectures/xarray/xarray-part2.html"
-                >
-                  
-                    13.3
-                  
-                  Intermediate Xarray
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/assignments/more_xarray.html"
-                >
-                  
-                    13.4
-                  
-                  Assignment: Xarray Groupby and SST Data
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/lectures/xarray/xarray_tips_and_tricks.html"
-                >
-                  
-                    13.5
-                  
-                  Xarray Tips And Tricks
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-          </ul>
-        
-      </li>
-
-      
-    
-      
-      
-        <li><h2 class="c-sidebar__title">Geoscience Packages</li>
-        
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/mapping_cartopy.html"
-        >
-          
-            14.
-          
-          Making Maps with Cartopy
-        </a>
-
-        
-
-          
-          
-          
-          
-
-          
-
-          <ul class="c-sidebar__sections ">
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/assignments/cartopy.html"
-                >
-                  
-                    14.1
-                  
-                  Assignment: Maps with Cartopy
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-          </ul>
-        
-      </li>
-
-      
-    
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/working_with_gcm_data.html"
-        >
-          
-            15.
-          
-          Working with output from general circulation models using xesmf and xgcm
-        </a>
-
-        
-      </li>
-
-      
-    
-      
-      
-        <li><h2 class="c-sidebar__title">Big Data</li>
-        
-      
-      
-
-      
-      
-
-      
-      
-      <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry "
-          href="/lectures/dask/intro.html"
-        >
-          
-            16.
-          
-          Dask
-        </a>
-
-        
-
-          
-          
-          
-          
-
-          
-
-          <ul class="c-sidebar__sections ">
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry c-sidebar__entry--active"
-                  href="/lectures/dask/dask_arrays.html"
-                >
-                  
-                    16.1
-                  
-                  Dask Arrays and Xarray Integration
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-          </ul>
-        
-      </li>
-
-      
-    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      <h1 class="site-logo" id="site-title">Earth and Environmental Data Science</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../intro.html">
+   An Introduction to Earth and Environmental Data Science
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  About this Book
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../LICENSE.html">
+   License for this book
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../projects.html">
+   Final Projects
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  The Interactive Computing Environment
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../environment/intro_to_jupyterlab.html">
+   Intro to JupyterLab
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../environment/intro_to_unix.html">
+   Intro to Unix
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../environment/intro_to_git.html">
+   Intro to Git for Version Control
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../environment/python_environments.html">
+   Managing Python Environments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../environment/binder.html">
+   Binder for Reproducible Research
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  The Core Python Language
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../core_python/python_fundamentals.html">
+   Python Fundamentals
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../core_python/functions_classes.html">
+   Python Functions and Classes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../assignments/python_basics_and_functions.html">
+   Assignment: Basic Python
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Scientific Python Fundamentals
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../basic_scipy/numpy_and_matplotlib.html">
+   Numpy and Matplotlib
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../assignments/numpy_matplotlib.html">
+   Assignment 3 - Numpy and Matplotlib
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../basic_scipy/more_matplotlib.html">
+   More Matplotlib
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../assignments/more_matplotlib.html">
+   Assignment 4: More Matplotlib
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  High Level Data Analysis Frameworks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../pandas/pandas_intro.html">
+   Pandas
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../pandas/basic_pandas.html">
+     Pandas Fundamentals
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../assignments/basic_pandas.html">
+     Assignment 5: Pandas Fundamentals with Earthquake Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../pandas/pandas_groupby.html">
+     Pandas: Groupby
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../assignments/pandas_groupby.html">
+     Assignment 6: Pandas Groupby with Hurricane Data
+    </a>
+   </li>
   </ul>
-  <p class="sidebar_footer">Powered by <a href="https://github.com/jupyter/jupyter-book">Jupyter Book</a></p>
-</nav>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../xarray/xarray_intro.html">
+   Xarray for multidimensional gridded data
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../xarray/xarray.html">
+     Lesson 1: Xarray Fundamentals
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../assignments/basic_xarray.html">
+     Assignment 7: Xarray Fundamentals with Atmospheric Radiation Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../xarray/xarray-part2.html">
+     Lesson 2: Advanced Xarray
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../assignments/more_xarray.html">
+     Assignment: More Xarray with El Niño-Southern Oscillation (ENSO) Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../xarray/xarray_tips_and_tricks.html">
+     Xarray Tips and Tricks
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Geoscience Package
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mapping_cartopy.html">
+   Maps in Scientific Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../assignments/cartopy.html">
+   Assignment: Making Maps with Cartopy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../working_with_gcm_data.html">
+   Working with output from general circulation models using xesmf and xgcm
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Big Data
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   Dask for Parallel Computing in Python
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Dask Arrays
+  </a>
+ </li>
+</ul>
 
-      
-      <!-- Empty sidebar placeholder that we'll auto-fill with javascript -->
-      <aside class="sidebar__right">
-          <header><h4 class="nav__title"><i class="fa fa-list"></i>   On this page</h4></header>
-          <nav class="onthispage">
-          </nav>
-      </aside>
-      
-      <main class="c-textbook__page" tabindex="-1">
-          <div class="o-wrapper">
-            <div class="c-sidebar-toggle">
-  <!-- We show the sidebar by default so we use .is-active -->
-  <button
-    id="js-sidebar-toggle"
-    class="hamburger hamburger--arrowalt is-active"
-  >
-    <span class="hamburger-box">
-      <span class="hamburger-inner"></span>
-    </span>
-    <span class="c-sidebar-toggle__label">Toggle Sidebar</span>
-  </button>
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
 </div>
 
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
             
-<div class="buttons">
-<a href="/content/lectures/dask/dask_arrays.ipynb" download>
-<button id="interact-button-download" class="interact-button">Download</button>
-</a>
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
 
-
-
-
-
-
-
-
-
-
-<a href="https://binder.pangeo.io/v2/gh/earth-env-data-science/earth-env-data-science-book/master?urlpath=lab/tree/content%2Flectures%2Fdask%2Fdask_arrays.ipynb"><button class="interact-button" id="interact-button-binder"><img class="interact-button-logo" src="/assets/images/logo_binder.svg" alt="Interact" />Interact</button></a>
-
-
-
-
-
-
-<a href="https://us-central1-b.gcp.pangeo.io//hub/user-redirect/git-pull?repo=https://github.com//earth-env-data-science/earth-env-data-science-book&amp;branch=master&amp;subPath=content%2Flectures%2Fdask%2Fdask_arrays.ipynb&amp;app=lab"><button class="interact-button" id="interact-button-jupyterhub"><img class="interact-button-logo" src="/assets/images/logo_jupyterhub.svg" alt="Interact" />us-central1-b.gcp.pangeo.io</button></a>
-
-
-
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/lectures/dask/dask_arrays.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
 </div>
 
+            <!-- Source interaction buttons -->
 
-            <div class="c-textbook__content">
-              <h2 id="dask-arrays">Dask Arrays</h2>
+            <!-- Full screen (wrap in <a> to have style consistency -->
 
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/lectures/dask/dask_arrays.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Dask Arrays
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#specifying-chunks">
+     Specifying Chunks
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a-bigger-calculation">
+     A Bigger Calculation
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#reduction">
+     Reduction
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#distributed-cluster">
+     Distributed Cluster
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#dask-xarray">
+   Dask + XArray
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#open-mfdataset">
+     open_mfdataset
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cloud-storage">
+   Cloud Storage
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="dask-arrays">
+<h1>Dask Arrays<a class="headerlink" href="#dask-arrays" title="Permalink to this headline">¶</a></h1>
 <p>A dask array looks and feels a lot like a numpy array.
 However, a dask array doesn’t directly hold any data.
 Instead, it symbolically represents the computations needed to generate the data.
 Nothing is actually computed until the actual numerical values are needed.
 This mode of operation is called “lazy”; it allows one to build up complex, large calculations symbolically before turning them over the scheduler for execution.</p>
-
 <p>If we want to create a numpy array of all ones, we do it like this:</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">4000</span><span class="p">)</span>
 <span class="n">ones_np</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
 <span class="n">ones_np</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>array([[1., 1., 1., ..., 1., 1., 1.],
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[1., 1., 1., ..., 1., 1., 1.],
        [1., 1., 1., ..., 1., 1., 1.],
        [1., 1., 1., ..., 1., 1., 1.],
        ...,
        [1., 1., 1., ..., 1., 1., 1.],
        [1., 1., 1., ..., 1., 1., 1.],
        [1., 1., 1., ..., 1., 1., 1.]])
-</code></pre></div>      </div>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
+</div>
+</div>
 <p>This array contains exactly 32 MB of data:</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ones_np</span><span class="o">.</span><span class="n">nbytes</span> <span class="o">/</span> <span class="mf">1e6</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>32.0
-</code></pre></div>      </div>
-
-    </div>
-  </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ones_np</span><span class="o">.</span><span class="n">nbytes</span> <span class="o">/</span> <span class="mf">1e6</span>
+</pre></div>
 </div>
-
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>32.0
+</pre></div>
+</div>
+</div>
+</div>
 <p>Now let’s create the same array using dask’s array interface.</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">dask.array</span> <span class="k">as</span> <span class="n">da</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dask.array</span> <span class="k">as</span> <span class="nn">da</span>
 <span class="n">ones</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
 <span class="n">ones</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output output_html">
-<table>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table>
 <tr>
 <td>
 <table>
@@ -1532,7 +509,7 @@ This mode of operation is called “lazy”; it allows one to build up complex, 
 </table>
 </td>
 <td>
-<svg width="170" height="92" style="stroke:rgb(0,0,0);stroke-width:1">
+<svg width="170" height="92" style="stroke:rgb(0,0,0);stroke-width:1" >
 
   <!-- Horizontal lines -->
   <line x1="0" y1="0" x2="120" y2="0" style="stroke-width:2" />
@@ -1543,47 +520,34 @@ This mode of operation is called “lazy”; it allows one to build up complex, 
   <line x1="120" y1="0" x2="120" y2="42" style="stroke-width:2" />
 
   <!-- Colored Rectangle -->
-  <polygon points="0.000000,0.000000 120.000000,0.000000 120.000000,42.898796 0.000000,42.898796" style="fill:#ECB172A0;stroke-width:0" />
+  <polygon points="0.000000,0.000000 120.000000,0.000000 120.000000,42.898796 0.000000,42.898796" style="fill:#ECB172A0;stroke-width:0"/>
 
   <!-- Text -->
-  <text x="60.000000" y="62.898796" font-size="1.0rem" font-weight="100" text-anchor="middle">4000</text>
+  <text x="60.000000" y="62.898796" font-size="1.0rem" font-weight="100" text-anchor="middle" >4000</text>
   <text x="140.000000" y="21.449398" font-size="1.0rem" font-weight="100" text-anchor="middle" transform="rotate(-90,140.000000,21.449398)">1000</text>
 </svg>
 </td>
 </tr>
-</table>
+</table></div></div>
 </div>
-
-    </div>
-  </div>
-</div>
-
 <p>The dask array representation reveals the concept of “chunks”. “Chunks” describes how the array is split into sub-arrays. We did not specify any chunks, so Dask just used one single chunk for the array. This is not much different from a numpy array at this point.</p>
-
-<h3 id="specifying-chunks">Specifying Chunks</h3>
-
+<div class="section" id="specifying-chunks">
+<h2>Specifying Chunks<a class="headerlink" href="#specifying-chunks" title="Permalink to this headline">¶</a></h2>
 <p>However, we could have split up the array into many chunks.</p>
-
-<p><img src="http://dask.pydata.org/en/latest/_images/dask-array-black-text.svg" alt="Dask Arrays" />
-<em>source: <a href="http://dask.pydata.org/en/latest/array-overview.html">Dask Array Documentation</a></em></p>
-
-<p>There are <a href="http://dask.pydata.org/en/latest/array-creation.html#chunks">several ways to specify chunks</a>.
+<p><img alt="Dask Arrays" src="http://dask.pydata.org/en/latest/_images/dask-array-black-text.svg" />
+<em>source: <a class="reference external" href="http://dask.pydata.org/en/latest/array-overview.html">Dask Array Documentation</a></em></p>
+<p>There are <a class="reference external" href="http://dask.pydata.org/en/latest/array-creation.html#chunks">several ways to specify chunks</a>.
 In this lecture, we will use a block shape.</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">chunk_shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">chunk_shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
 <span class="n">ones</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="n">chunk_shape</span><span class="p">)</span>
 <span class="n">ones</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output output_html">
-<table>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table>
 <tr>
 <td>
 <table>
@@ -1599,7 +563,7 @@ In this lecture, we will use a block shape.</p>
 </table>
 </td>
 <td>
-<svg width="170" height="92" style="stroke:rgb(0,0,0);stroke-width:1">
+<svg width="170" height="92" style="stroke:rgb(0,0,0);stroke-width:1" >
 
   <!-- Horizontal lines -->
   <line x1="0" y1="0" x2="120" y2="0" style="stroke-width:2" />
@@ -1613,128 +577,89 @@ In this lecture, we will use a block shape.</p>
   <line x1="120" y1="0" x2="120" y2="42" style="stroke-width:2" />
 
   <!-- Colored Rectangle -->
-  <polygon points="0.000000,0.000000 120.000000,0.000000 120.000000,42.898796 0.000000,42.898796" style="fill:#ECB172A0;stroke-width:0" />
+  <polygon points="0.000000,0.000000 120.000000,0.000000 120.000000,42.898796 0.000000,42.898796" style="fill:#ECB172A0;stroke-width:0"/>
 
   <!-- Text -->
-  <text x="60.000000" y="62.898796" font-size="1.0rem" font-weight="100" text-anchor="middle">4000</text>
+  <text x="60.000000" y="62.898796" font-size="1.0rem" font-weight="100" text-anchor="middle" >4000</text>
   <text x="140.000000" y="21.449398" font-size="1.0rem" font-weight="100" text-anchor="middle" transform="rotate(-90,140.000000,21.449398)">1000</text>
 </svg>
 </td>
 </tr>
-</table>
+</table></div></div>
 </div>
-
-    </div>
-  </div>
-</div>
-
 <p>Notice that we just see a symbolic represetnation of the array, including its shape, dtype, and chunksize.
 No data has been generated yet.
-When we call <code class="highlighter-rouge">.compute()</code> on a dask array, the computation is trigger and the dask array becomes a numpy array.</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ones</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>array([[1., 1., 1., ..., 1., 1., 1.],
+When we call <code class="docutils literal notranslate"><span class="pre">.compute()</span></code> on a dask array, the computation is trigger and the dask array becomes a numpy array.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ones</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[1., 1., 1., ..., 1., 1., 1.],
        [1., 1., 1., ..., 1., 1., 1.],
        [1., 1., 1., ..., 1., 1., 1.],
        ...,
        [1., 1., 1., ..., 1., 1., 1.],
        [1., 1., 1., ..., 1., 1., 1.],
        [1., 1., 1., ..., 1., 1., 1.]])
-</code></pre></div>      </div>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<p>In order to understand what happened when we called <code class="highlighter-rouge">.compute()</code>, we can visualize the dask <em>graph</em>, the symbolic operations that make up the array</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ones</span><span class="o">.</span><span class="n">visualize</span><span class="p">()</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <p class="output_png"><img src="../../images/lectures/dask/dask_arrays_11_0.png" alt="png" /></p>
-
-    </div>
-  </div>
 </div>
-
-<p>Our array has four chunks. To generate it, dask calls <code class="highlighter-rouge">np.ones</code> four times and then concatenates this together into one array.</p>
-
+</div>
+<p>In order to understand what happened when we called <code class="docutils literal notranslate"><span class="pre">.compute()</span></code>, we can visualize the dask <em>graph</em>, the symbolic operations that make up the array</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ones</span><span class="o">.</span><span class="n">visualize</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/dask_arrays_11_0.png" src="../../_images/dask_arrays_11_0.png" />
+</div>
+</div>
+<p>Our array has four chunks. To generate it, dask calls <code class="docutils literal notranslate"><span class="pre">np.ones</span></code> four times and then concatenates this together into one array.</p>
 <p>Rather than immediately loading a dask array (which puts all the data into RAM), it is more common to want to reduce the data somehow. For example</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sum_of_ones</span> <span class="o">=</span> <span class="n">ones</span><span class="o">.</span><span class="nb">sum</span><span class="p">()</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sum_of_ones</span> <span class="o">=</span> <span class="n">ones</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 <span class="n">sum_of_ones</span><span class="o">.</span><span class="n">visualize</span><span class="p">()</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <p class="output_png"><img src="../../images/lectures/dask/dask_arrays_13_0.png" alt="png" /></p>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/dask_arrays_13_0.png" src="../../_images/dask_arrays_13_0.png" />
+</div>
+</div>
 <p>Here we see dask’s strategy for finding the sum. This simple example illustrates the beauty of dask: it automatically designs an algorithm appropriate for custom operations with big data.</p>
-
 <p>If we make our operation more complex, the graph gets more complex.</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fancy_calculation</span> <span class="o">=</span> <span class="p">(</span><span class="n">ones</span> <span class="o">*</span> <span class="n">ones</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fancy_calculation</span> <span class="o">=</span> <span class="p">(</span><span class="n">ones</span> <span class="o">*</span> <span class="n">ones</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 <span class="n">fancy_calculation</span><span class="o">.</span><span class="n">visualize</span><span class="p">()</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <p class="output_png"><img src="../../images/lectures/dask/dask_arrays_15_0.png" alt="png" /></p>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<h3 id="a-bigger-calculation">A Bigger Calculation</h3>
-
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/dask_arrays_15_0.png" src="../../_images/dask_arrays_15_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="a-bigger-calculation">
+<h2>A Bigger Calculation<a class="headerlink" href="#a-bigger-calculation" title="Permalink to this headline">¶</a></h2>
 <p>The examples above were toy examples; the data (32 MB) is nowhere nearly big enough to warrant the use of dask.</p>
-
 <p>We can make it a lot bigger!</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">bigshape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">200000</span><span class="p">,</span> <span class="mi">4000</span><span class="p">)</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bigshape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">200000</span><span class="p">,</span> <span class="mi">4000</span><span class="p">)</span>
 <span class="n">big_ones</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">bigshape</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="n">chunk_shape</span><span class="p">)</span>
 <span class="n">big_ones</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output output_html">
-<table>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table>
 <tr>
 <td>
 <table>
@@ -1750,7 +675,7 @@ When we call <code class="highlighter-rouge">.compute()</code> on a dask array, 
 </table>
 </td>
 <td>
-<svg width="79" height="170" style="stroke:rgb(0,0,0);stroke-width:1">
+<svg width="79" height="170" style="stroke:rgb(0,0,0);stroke-width:1" >
 
   <!-- Horizontal lines -->
   <line x1="0" y1="0" x2="29" y2="0" style="stroke-width:2" />
@@ -1963,91 +888,66 @@ When we call <code class="highlighter-rouge">.compute()</code> on a dask array, 
   <line x1="29" y1="0" x2="29" y2="120" style="stroke-width:2" />
 
   <!-- Colored Rectangle -->
-  <polygon points="0.000000,0.000000 29.030629,0.000000 29.030629,120.000000 0.000000,120.000000" style="fill:#ECB172A0;stroke-width:0" />
+  <polygon points="0.000000,0.000000 29.030629,0.000000 29.030629,120.000000 0.000000,120.000000" style="fill:#ECB172A0;stroke-width:0"/>
 
   <!-- Text -->
-  <text x="14.515315" y="140.000000" font-size="1.0rem" font-weight="100" text-anchor="middle">4000</text>
+  <text x="14.515315" y="140.000000" font-size="1.0rem" font-weight="100" text-anchor="middle" >4000</text>
   <text x="49.030629" y="60.000000" font-size="1.0rem" font-weight="100" text-anchor="middle" transform="rotate(-90,49.030629,60.000000)">200000</text>
 </svg>
 </td>
 </tr>
-</table>
+</table></div></div>
 </div>
-
-    </div>
-  </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">big_ones</span><span class="o">.</span><span class="n">nbytes</span> <span class="o">/</span> <span class="mf">1e6</span>
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">big_ones</span><span class="o">.</span><span class="n">nbytes</span> <span class="o">/</span> <span class="mf">1e6</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>6400.0
-</code></pre></div>      </div>
-
-    </div>
-  </div>
 </div>
-
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>6400.0
+</pre></div>
+</div>
+</div>
+</div>
 <p>This dataset is 3.2 GB, rather MB! This is probably close to or greater than the amount of available RAM than you have in your computer. Nevertheless, dask has no problem working on it.</p>
-
-<p><em>Do not try to <code class="highlighter-rouge">.visualize()</code> this array!</em></p>
-
+<p><em>Do not try to <code class="docutils literal notranslate"><span class="pre">.visualize()</span></code> this array!</em></p>
 <p>When doing a big calculation, dask also has some tools to help us understand what is happening under the hood</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">dask.diagnostics</span> <span class="kn">import</span> <span class="n">ProgressBar</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dask.diagnostics</span> <span class="kn">import</span> <span class="n">ProgressBar</span>
 
 <span class="n">big_calc</span> <span class="o">=</span> <span class="p">(</span><span class="n">big_ones</span> <span class="o">*</span> <span class="n">big_ones</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 
 <span class="k">with</span> <span class="n">ProgressBar</span><span class="p">():</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">big_calc</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
 <span class="n">result</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-      <div class="output_stream highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[########################################] | 100% Completed |  5.2s
-</code></pre></div>      </div>
-    </div>
-  </div>
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1.0
-</code></pre></div>      </div>
-
-    </div>
-  </div>
+</pre></div>
 </div>
-
-<h3 id="reduction">Reduction</h3>
-
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[########################################] | 100% Completed |  5.2s
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="reduction">
+<h2>Reduction<a class="headerlink" href="#reduction" title="Permalink to this headline">¶</a></h2>
 <p>All the usual numpy methods work on dask arrays.
 You can also apply numpy function directly to a dask array, and it will stay lazy.</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">big_ones_reduce</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">big_ones</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">big_ones_reduce</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">big_ones</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">big_ones_reduce</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output output_html">
-<table>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table>
 <tr>
 <td>
 <table>
@@ -2063,7 +963,7 @@ You can also apply numpy function directly to a dask array, and it will stay laz
 </table>
 </td>
 <td>
-<svg width="170" height="75" style="stroke:rgb(0,0,0);stroke-width:1">
+<svg width="170" height="75" style="stroke:rgb(0,0,0);stroke-width:1" >
 
   <!-- Horizontal lines -->
   <line x1="0" y1="0" x2="120" y2="0" style="stroke-width:2" />
@@ -2077,85 +977,62 @@ You can also apply numpy function directly to a dask array, and it will stay laz
   <line x1="120" y1="0" x2="120" y2="25" style="stroke-width:2" />
 
   <!-- Colored Rectangle -->
-  <polygon points="0.000000,0.000000 120.000000,0.000000 120.000000,25.412617 0.000000,25.412617" style="fill:#ECB172A0;stroke-width:0" />
+  <polygon points="0.000000,0.000000 120.000000,0.000000 120.000000,25.412617 0.000000,25.412617" style="fill:#ECB172A0;stroke-width:0"/>
 
   <!-- Text -->
-  <text x="60.000000" y="45.412617" font-size="1.0rem" font-weight="100" text-anchor="middle">4000</text>
+  <text x="60.000000" y="45.412617" font-size="1.0rem" font-weight="100" text-anchor="middle" >4000</text>
   <text x="140.000000" y="12.706308" font-size="1.0rem" font-weight="100" text-anchor="middle" transform="rotate(0,140.000000,12.706308)">1</text>
 </svg>
 </td>
 </tr>
-</table>
+</table></div></div>
 </div>
-
-    </div>
-  </div>
-</div>
-
 <p>Plotting also triggers computation, since we need the actual values</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
-<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s">'figure.figsize'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">8</span><span class="p">)</span>
-
-</code></pre></div>    </div>
-  </div>
-
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">8</span><span class="p">)</span>
+</pre></div>
 </div>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">big_ones_reduce</span><span class="p">)</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[&lt;matplotlib.lines.Line2D at 0x119e8e668&gt;]
-</code></pre></div>      </div>
-
-    </div>
-  </div>
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <p class="output_png"><img src="../../images/lectures/dask/dask_arrays_25_1.png" alt="png" /></p>
-
-    </div>
-  </div>
 </div>
-
-<h3 id="distributed-cluster">Distributed Cluster</h3>
-
-<p>For more fancy visualization of what dask is doing, we can use the <a href="https://distributed.readthedocs.io/en/latest/">distributed scheduler</a>.</p>
-
-<div class="cell code_cell">
-  <div class="input_area">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Client</span><span class="p">,</span> <span class="n">LocalCluster</span>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">big_ones_reduce</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x119e8e668&gt;]
+</pre></div>
+</div>
+<img alt="../../_images/dask_arrays_25_1.png" src="../../_images/dask_arrays_25_1.png" />
+</div>
+</div>
+</div>
+<div class="section" id="distributed-cluster">
+<h2>Distributed Cluster<a class="headerlink" href="#distributed-cluster" title="Permalink to this headline">¶</a></h2>
+<p>For more fancy visualization of what dask is doing, we can use the <a class="reference external" href="https://distributed.readthedocs.io/en/latest/">distributed scheduler</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Client</span><span class="p">,</span> <span class="n">LocalCluster</span>
 <span class="n">cluster</span> <span class="o">=</span> <span class="n">LocalCluster</span><span class="p">()</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">cluster</span><span class="p">)</span>
 <span class="n">client</span>
-
-</code></pre></div>    </div>
-  </div>
-
-  <div class="output_wrapper">
-    <div class="output_subarea">
-
-      <div class="output output_html">
-<table style="border: 2px solid white;">
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table style="border: 2px solid white;">
 <tr>
 <td style="vertical-align: top; border: 0px solid white">
 <h3 style="text-align: left;">Client</h3>
 <ul style="text-align: left; list-style: none; margin: 0; padding: 0;">
   <li><b>Scheduler: </b>tcp://127.0.0.1:60261</li>
-  <li><b>Dashboard: </b><a href="http://127.0.0.1:8787/status" target="_blank">http://127.0.0.1:8787/status</a>
-&lt;/ul&gt;
-&lt;/td&gt;
+  <li><b>Dashboard: </b><a href='http://127.0.0.1:8787/status' target='_blank'>http://127.0.0.1:8787/status</a>
+</ul>
+</td>
 <td style="vertical-align: top; border: 0px solid white">
 <h3 style="text-align: left;">Cluster</h3>
 <ul style="text-align: left; list-style:none; margin: 0; padding: 0;">
@@ -2164,60 +1041,37 @@ You can also apply numpy function directly to a dask array, and it will stay laz
   <li><b>Memory: </b>8.59 GB</li>
 </ul>
 </td>
-&lt;/tr&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-
-
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-
-
-<div class="cell code_cell">
-                    <div class="input_area">
-                      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">big_calc</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
-
-</code></pre></div>                      </div>
-                    </div>
-
-                    <div class="output_wrapper">
-                      <div class="output_subarea">
-
-                        <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1.0
-</code></pre></div>                        </div>
-
-                      </div>
-                    </div>
-                  </div>
-
-
-
-<div class="cell code_cell">
-                    <div class="input_area">
-                      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">random_values</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mf">2e8</span><span class="p">,),</span> <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="mf">1e6</span><span class="p">,))</span>
+</tr>
+</table></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">big_calc</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">random_values</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mf">2e8</span><span class="p">,),</span> <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="mf">1e6</span><span class="p">,))</span>
 <span class="n">hist</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">random_values</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span> 
-
-</code></pre></div>                      </div>
-                    </div>
-
-                  </div>
-
-
-
-<div class="cell code_cell">
-                    <div class="input_area">
-                      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">hist</span>
-
-</code></pre></div>                      </div>
-                    </div>
-
-                    <div class="output_wrapper">
-                      <div class="output_subarea">
-
-                        <div class="output output_html">
-<table>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hist</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table>
 <tr>
 <td>
 <table>
@@ -2233,7 +1087,7 @@ You can also apply numpy function directly to a dask array, and it will stay laz
 </table>
 </td>
 <td>
-<svg width="170" height="75" style="stroke:rgb(0,0,0);stroke-width:1">
+<svg width="170" height="75" style="stroke:rgb(0,0,0);stroke-width:1" >
 
   <!-- Horizontal lines -->
   <line x1="0" y1="0" x2="120" y2="0" style="stroke-width:2" />
@@ -2244,75 +1098,52 @@ You can also apply numpy function directly to a dask array, and it will stay laz
   <line x1="120" y1="0" x2="120" y2="25" style="stroke-width:2" />
 
   <!-- Colored Rectangle -->
-  <polygon points="0.000000,0.000000 120.000000,0.000000 120.000000,25.412617 0.000000,25.412617" style="fill:#ECB172A0;stroke-width:0" />
+  <polygon points="0.000000,0.000000 120.000000,0.000000 120.000000,25.412617 0.000000,25.412617" style="fill:#ECB172A0;stroke-width:0"/>
 
   <!-- Text -->
-  <text x="60.000000" y="45.412617" font-size="1.0rem" font-weight="100" text-anchor="middle">100</text>
+  <text x="60.000000" y="45.412617" font-size="1.0rem" font-weight="100" text-anchor="middle" >100</text>
   <text x="140.000000" y="12.706308" font-size="1.0rem" font-weight="100" text-anchor="middle" transform="rotate(0,140.000000,12.706308)">1</text>
 </svg>
 </td>
 </tr>
-</table>
+</table></div></div>
 </div>
-
-                      </div>
-                    </div>
-                  </div>
-
-
-
-<div class="cell code_cell">
-                    <div class="input_area">
-                      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">bins</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">bins</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">bins</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">bins</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 <span class="n">width</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">bins</span><span class="p">)</span>
 <span class="n">hist_c</span> <span class="o">=</span> <span class="n">hist</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">hist_c</span><span class="p">,</span> <span class="n">width</span><span class="p">);</span>
-
-</code></pre></div>                      </div>
-                    </div>
-
-                    <div class="output_wrapper">
-                      <div class="output_subarea">
-
-                        <p class="output_png"><img src="../../images/lectures/dask/dask_arrays_31_0.png" alt="png" /></p>
-
-                      </div>
-                    </div>
-                  </div>
-
-
-
-## Dask + XArray
-
-Xarray can automatically wrap its data in dask arrays.
-This capability turns xarray into an extremely powerful tool for Big Data earth science
-
-To see this in action, we will download a fairly large dataset to analyze. This file contains 1 year of daily data from the [AVISO](http://www.aviso.oceanobs.com/en/data/products/index.html)
-sea-surface height satellite altimetry dataset.
-
-
-
-<div class="cell code_cell">
-                    <div class="input_area">
-                      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#! wget http://www.ldeo.columbia.edu/~rpa/aviso_madt_2015.tar.gz</span>
-
-</code></pre></div>                      </div>
-                    </div>
-
-                  </div>
-
-
-
-<div class="cell code_cell">
-                    <div class="input_area">
-                      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">!</span> <span class="n">tar</span> <span class="o">-</span><span class="n">xvzf</span> <span class="n">aviso_madt_2015</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
-
-</code></pre></div>                      </div>
-                    </div>
-
-                    <div class="output_wrapper">
-                      <div class="output_subarea">
-                        <div class="output_stream highlighter-rouge"><div class="highlight"><pre class="highlight"><code>x 2015/
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/dask_arrays_31_0.png" src="../../_images/dask_arrays_31_0.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="dask-xarray">
+<h1>Dask + XArray<a class="headerlink" href="#dask-xarray" title="Permalink to this headline">¶</a></h1>
+<p>Xarray can automatically wrap its data in dask arrays.
+This capability turns xarray into an extremely powerful tool for Big Data earth science</p>
+<p>To see this in action, we will download a fairly large dataset to analyze. This file contains 1 year of daily data from the <a class="reference external" href="http://www.aviso.oceanobs.com/en/data/products/index.html">AVISO</a>
+sea-surface height satellite altimetry dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="ch">#! wget http://www.ldeo.columbia.edu/~rpa/aviso_madt_2015.tar.gz</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span> tar -xvzf aviso_madt_2015.tar.gz
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>x 2015/
 x 2015/dt_global_allsat_madt_h_20150409_20150914.nc
 x 2015/dt_global_allsat_madt_h_20150406_20150914.nc
 x 2015/dt_global_allsat_madt_h_20150704_20160128.nc
@@ -2679,58 +1510,39 @@ x 2015/dt_global_allsat_madt_h_20150717_20160128.nc
 x 2015/dt_global_allsat_madt_h_20150501_20160128.nc
 x 2015/dt_global_allsat_madt_h_20151025_20160610.nc
 x 2015/dt_global_allsat_madt_h_20150614_20160128.nc
-</code></pre></div>                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-
-
-<div class="cell code_cell">
-                    <div class="input_area">
-                      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">!</span> <span class="n">ls</span> <span class="mi">2015</span> <span class="o">|</span> <span class="n">wc</span> <span class="o">-</span><span class="n">l</span>
-
-</code></pre></div>                      </div>
-                    </div>
-
-                    <div class="output_wrapper">
-                      <div class="output_subarea">
-                        <div class="output_stream highlighter-rouge"><div class="highlight"><pre class="highlight"><code>     365
-</code></pre></div>                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-
-
-Let's load the first file as a regular xarray dataset.
-
-
-
-<div class="cell code_cell">
-                    <div class="input_area">
-                      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="n">xr</span>
-
-</code></pre></div>                      </div>
-                    </div>
-
-                  </div>
-
-
-
-<div class="cell code_cell">
-                    <div class="input_area">
-                      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ds_first</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s">'2015/dt_global_allsat_madt_h_20150101_20150914.nc'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span> ls <span class="m">2015</span> <span class="p">|</span> wc -l
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     365
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s load the first file as a regular xarray dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds_first</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;2015/dt_global_allsat_madt_h_20150101_20150914.nc&#39;</span><span class="p">)</span>
 <span class="n">ds_first</span>
-
-</code></pre></div>                      </div>
-                    </div>
-
-                    <div class="output_wrapper">
-                      <div class="output_subarea">
-
-                        <div class="output output_html">
-<pre>&lt;xarray.Dataset&gt;
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><pre>&lt;xarray.Dataset&gt;
 Dimensions:   (lat: 720, lon: 1440, nv: 2, time: 1)
 Coordinates:
   * time      (time) datetime64[ns] 2015-01-01
@@ -2785,70 +1597,50 @@ Attributes:
     time_coverage_end:               2015-01-01T12:00:00Z
     time_coverage_resolution:        P1D
     time_coverage_start:             2014-12-31T12:00:00Z
-    title:                           DT merged all satellites Global Ocean Gr...</pre>
+    title:                           DT merged all satellites Global Ocean Gr...</pre></div></div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds_first</span><span class="o">.</span><span class="n">nbytes</span> <span class="o">/</span> <span class="mf">1e6</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8.32034
+</pre></div>
+</div>
+</div>
+</div>
+<p>This one file is about 8 MB. So 365 of them will be nearly 3 GB. If we had downloaded all 25 years of data, it would be 73 GB. This is a good example of “medium data.”</p>
+<div class="section" id="open-mfdataset">
+<h2>open_mfdataset<a class="headerlink" href="#open-mfdataset" title="Permalink to this headline">¶</a></h2>
+<p>An incredibly useful function in xarray is <code class="docutils literal notranslate"><span class="pre">open_mfdataset</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">xr</span><span class="o">.</span><span class="n">open_mfdataset</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function open_mfdataset in module xarray.backends.api:
 
-                      </div>
-                    </div>
-                  </div>
-
-
-
-<div class="cell code_cell">
-                    <div class="input_area">
-                      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ds_first</span><span class="o">.</span><span class="n">nbytes</span> <span class="o">/</span> <span class="mf">1e6</span>
-
-</code></pre></div>                      </div>
-                    </div>
-
-                    <div class="output_wrapper">
-                      <div class="output_subarea">
-
-                        <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>8.32034
-</code></pre></div>                        </div>
-
-                      </div>
-                    </div>
-                  </div>
-
-
-
-This one file is about 8 MB. So 365 of them will be nearly 3 GB. If we had downloaded all 25 years of data, it would be 73 GB. This is a good example of "medium data."
-
-### open_mfdataset
-
-An incredibly useful function in xarray is `open_mfdataset`.
-
-
-
-<div class="cell code_cell">
-                    <div class="input_area">
-                      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">help</span><span class="p">(</span><span class="n">xr</span><span class="o">.</span><span class="n">open_mfdataset</span><span class="p">)</span>
-
-</code></pre></div>                      </div>
-                    </div>
-
-                    <div class="output_wrapper">
-                      <div class="output_subarea">
-                        <div class="output_stream highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Help on function open_mfdataset in module xarray.backends.api:
-
-open_mfdataset(paths, chunks=None, concat_dim='_not_supplied', compat='no_conflicts', preprocess=None, engine=None, lock=None, data_vars='all', coords='different', combine='_old_auto', autoclose=None, parallel=False, join='outer', **kwargs)
+open_mfdataset(paths, chunks=None, concat_dim=&#39;_not_supplied&#39;, compat=&#39;no_conflicts&#39;, preprocess=None, engine=None, lock=None, data_vars=&#39;all&#39;, coords=&#39;different&#39;, combine=&#39;_old_auto&#39;, autoclose=None, parallel=False, join=&#39;outer&#39;, **kwargs)
     Open multiple files as a single dataset.
     
-    If combine='by_coords' then the function ``combine_by_coords`` is used to combine
-    the datasets into one before returning the result, and if combine='nested' then
+    If combine=&#39;by_coords&#39; then the function ``combine_by_coords`` is used to combine
+    the datasets into one before returning the result, and if combine=&#39;nested&#39; then
     ``combine_nested`` is used. The filepaths must be structured according to which
     combining function is used, the details of which are given in the documentation for
     ``combine_by_coords`` and ``combine_nested``. By default the old (now deprecated)
-    ``auto_combine`` will be used, please specify either ``combine='by_coords'`` or
-    ``combine='nested'`` in future. Requires dask to be installed. See documentation for
+    ``auto_combine`` will be used, please specify either ``combine=&#39;by_coords&#39;`` or
+    ``combine=&#39;nested&#39;`` in future. Requires dask to be installed. See documentation for
     details on dask [1]. Attributes from the first dataset file are used for the
     combined dataset.
     
     Parameters
     ----------
     paths : str or sequence
-        Either a string glob in the form "path/to/my/files/*.nc" or an explicit list of
+        Either a string glob in the form &quot;path/to/my/files/*.nc&quot; or an explicit list of
         files to open. Paths can be given as strings or as pathlib Paths. If
         concatenation along more than one dimension is desired, then ``paths`` must be a
         nested list-of-lists (see ``manual_combine`` for details). (A string glob will
@@ -2865,76 +1657,76 @@ open_mfdataset(paths, chunks=None, concat_dim='_not_supplied', compat='no_confli
         in the original datasets, e.g., if you want to stack a collection of 2D arrays
         along a third dimension. Set ``concat_dim=[..., None, ...]`` explicitly to
         disable concatenation along a particular dimension.
-    combine : {'by_coords', 'nested'}, optional
+    combine : {&#39;by_coords&#39;, &#39;nested&#39;}, optional
         Whether ``xarray.combine_by_coords`` or ``xarray.combine_nested`` is used to
         combine all the data. If this argument is not provided, `xarray.auto_combine` is
         used, but in the future this behavior will switch to use
         `xarray.combine_by_coords` by default.
-    compat : {'identical', 'equals', 'broadcast_equals',
-              'no_conflicts', 'override'}, optional
+    compat : {&#39;identical&#39;, &#39;equals&#39;, &#39;broadcast_equals&#39;,
+              &#39;no_conflicts&#39;, &#39;override&#39;}, optional
         String indicating how to compare variables of the same name for
         potential conflicts when merging:
-         * 'broadcast_equals': all values must be equal when variables are
+         * &#39;broadcast_equals&#39;: all values must be equal when variables are
            broadcast against each other to ensure common dimensions.
-         * 'equals': all values and dimensions must be the same.
-         * 'identical': all values, dimensions and attributes must be the
+         * &#39;equals&#39;: all values and dimensions must be the same.
+         * &#39;identical&#39;: all values, dimensions and attributes must be the
            same.
-         * 'no_conflicts': only values which are not null in both datasets
+         * &#39;no_conflicts&#39;: only values which are not null in both datasets
            must be equal. The returned dataset then contains the combination
            of all non-null values.
-         * 'override': skip comparing and pick variable from first dataset
+         * &#39;override&#39;: skip comparing and pick variable from first dataset
     preprocess : callable, optional
         If provided, call this function on each dataset prior to concatenation.
         You can find the file-name from which each dataset was loaded in
-        ``ds.encoding['source']``.
-    engine : {'netcdf4', 'scipy', 'pydap', 'h5netcdf', 'pynio', 'cfgrib'},         optional
+        ``ds.encoding[&#39;source&#39;]``.
+    engine : {&#39;netcdf4&#39;, &#39;scipy&#39;, &#39;pydap&#39;, &#39;h5netcdf&#39;, &#39;pynio&#39;, &#39;cfgrib&#39;},         optional
         Engine to use when reading files. If not provided, the default engine
         is chosen based on available dependencies, with a preference for
-        'netcdf4'.
+        &#39;netcdf4&#39;.
     lock : False or duck threading.Lock, optional
         Resource lock to use when reading data from disk. Only relevant when
         using dask or another form of parallelism. By default, appropriate
         locks are chosen to safely read and write files with the currently
         active dask scheduler.
-    data_vars : {'minimal', 'different', 'all' or list of str}, optional
+    data_vars : {&#39;minimal&#39;, &#39;different&#39;, &#39;all&#39; or list of str}, optional
         These data variables will be concatenated together:
-          * 'minimal': Only data variables in which the dimension already
+          * &#39;minimal&#39;: Only data variables in which the dimension already
             appears are included.
-          * 'different': Data variables which are not equal (ignoring
+          * &#39;different&#39;: Data variables which are not equal (ignoring
             attributes) across all datasets are also concatenated (as well as
             all for which dimension already appears). Beware: this option may
             load the data payload of data variables into memory if they are not
             already loaded.
-          * 'all': All data variables will be concatenated.
+          * &#39;all&#39;: All data variables will be concatenated.
           * list of str: The listed data variables will be concatenated, in
-            addition to the 'minimal' data variables.
-    coords : {'minimal', 'different', 'all' or list of str}, optional
+            addition to the &#39;minimal&#39; data variables.
+    coords : {&#39;minimal&#39;, &#39;different&#39;, &#39;all&#39; or list of str}, optional
         These coordinate variables will be concatenated together:
-         * 'minimal': Only coordinates in which the dimension already appears
+         * &#39;minimal&#39;: Only coordinates in which the dimension already appears
            are included.
-         * 'different': Coordinates which are not equal (ignoring attributes)
+         * &#39;different&#39;: Coordinates which are not equal (ignoring attributes)
            across all datasets are also concatenated (as well as all for which
            dimension already appears). Beware: this option may load the data
            payload of coordinate variables into memory if they are not already
            loaded.
-         * 'all': All coordinate variables will be concatenated, except
+         * &#39;all&#39;: All coordinate variables will be concatenated, except
            those corresponding to other dimensions.
          * list of str: The listed coordinate variables will be concatenated,
-           in addition the 'minimal' coordinates.
+           in addition the &#39;minimal&#39; coordinates.
     parallel : bool, optional
         If True, the open and preprocess steps of this function will be
         performed in parallel using ``dask.delayed``. Default is False.
-    join : {'outer', 'inner', 'left', 'right', 'exact, 'override'}, optional
+    join : {&#39;outer&#39;, &#39;inner&#39;, &#39;left&#39;, &#39;right&#39;, &#39;exact, &#39;override&#39;}, optional
         String indicating how to combine differing indexes
         (excluding concat_dim) in objects
     
-        - 'outer': use the union of object indexes
-        - 'inner': use the intersection of object indexes
-        - 'left': use indexes from the first object with each dimension
-        - 'right': use indexes from the last object with each dimension
-        - 'exact': instead of aligning, raise `ValueError` when indexes to be
+        - &#39;outer&#39;: use the union of object indexes
+        - &#39;inner&#39;: use the intersection of object indexes
+        - &#39;left&#39;: use indexes from the first object with each dimension
+        - &#39;right&#39;: use indexes from the last object with each dimension
+        - &#39;exact&#39;: instead of aligning, raise `ValueError` when indexes to be
           aligned are not equal
-        - 'override': if indexes are of same size, rewrite indexes to be
+        - &#39;override&#39;: if indexes are of same size, rewrite indexes to be
           those of the first object with that dimension. Indexes for the same
           dimension must have the same size in all objects.
     **kwargs : optional
@@ -2963,38 +1755,44 @@ open_mfdataset(paths, chunks=None, concat_dim='_not_supplied', compat='no_confli
     
     .. [1] http://xarray.pydata.org/en/stable/dask.html
     .. [2] http://xarray.pydata.org/en/stable/dask.html#chunking-and-performance
+</pre></div>
+</div>
+</div>
+</div>
+<p>Using <code class="docutils literal notranslate"><span class="pre">open_mfdataset</span></code> we can easily open all the netcdf files into one <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> object.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># On I got a &quot;Too many open files&quot; OSError.</span>
+<span class="c1"># It&#39;s only 365 files. That shouldn&#39;t be too many. </span>
+<span class="c1"># However, I discovered my ulimit was extremely low.</span>
+<span class="c1"># One workaround is to call </span>
+<span class="c1">#  $ ulimit -S -n 4000</span>
+<span class="c1"># from the command line before launching the notebook</span>
 
-</code></pre></div>                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-
-
-Using `open_mfdataset` we can easily open all the netcdf files into one `Dataset` object.
-
-
-
-<div class="cell code_cell">
-                    <div class="input_area">
-                      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># On I got a "Too many open files" OSError.</span>
-<span class="c"># It's only 365 files. That shouldn't be too many. </span>
-<span class="c"># However, I discovered my ulimit was extremely low.</span>
-<span class="c"># One workaround is to call </span>
-<span class="c">#  $ ulimit -S -n 4000</span>
-<span class="c"># from the command line before launching the notebook</span>
-
-<span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_mfdataset</span><span class="p">(</span><span class="s">'2015/*.nc'</span><span class="p">)</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_mfdataset</span><span class="p">(</span><span class="s1">&#39;2015/*.nc&#39;</span><span class="p">)</span>
 <span class="n">ds</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/rpa/miniconda3/envs/pangeo/lib/python3.6/site-packages/ipykernel_launcher.py:8: FutureWarning: In xarray version 0.15 the default behaviour of `open_mfdataset`
+will change. To retain the existing behavior, pass
+combine=&#39;nested&#39;. To use future default behavior, pass
+combine=&#39;by_coords&#39;. See
+http://xarray.pydata.org/en/stable/combining.html#combining-multi
 
-</code></pre></div>                      </div>
-                    </div>
-
-                    <div class="output_wrapper">
-                      <div class="output_subarea">
-
-                        <div class="output output_html">
-<pre>&lt;xarray.Dataset&gt;
+  
+/Users/rpa/Code/xarray/xarray/backends/api.py:931: FutureWarning: The datasets supplied have global dimension coordinates. You may want
+to use the new `combine_by_coords` function (or the
+`combine=&#39;by_coords&#39;` option to `open_mfdataset`) to order the datasets
+before concatenation. Alternatively, to continue concatenating based
+on the order the datasets are supplied in future, please use the new
+`combine_nested` function (or the `combine=&#39;nested&#39;` option to
+open_mfdataset).
+  from_openmfds=True,
+</pre></div>
+</div>
+<div class="output text_html"><pre>&lt;xarray.Dataset&gt;
 Dimensions:   (lat: 720, lon: 1440, nv: 2, time: 365)
 Coordinates:
   * lon       (lon) float32 0.125 0.375 0.625 0.875 ... 359.375 359.625 359.875
@@ -3049,32 +1847,18 @@ Attributes:
     time_coverage_end:               2015-01-01T12:00:00Z
     time_coverage_resolution:        P1D
     time_coverage_start:             2014-12-31T12:00:00Z
-    title:                           DT merged all satellites Global Ocean Gr...</pre>
+    title:                           DT merged all satellites Global Ocean Gr...</pre></div></div>
 </div>
-
-                      </div>
-                    </div>
-                  </div>
-
-
-
-Note that the values are not displayed, since that would trigger computation.
-
-
-
-<div class="cell code_cell">
-                    <div class="input_area">
-                      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ssh</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">adt</span>
+<p>Note that the values are not displayed, since that would trigger computation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ssh</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">adt</span>
 <span class="n">ssh</span>
-
-</code></pre></div>                      </div>
-                    </div>
-
-                    <div class="output_wrapper">
-                      <div class="output_subarea">
-
-                        <div class="output output_html">
-<pre>&lt;xarray.DataArray &#x27;adt&#x27; (time: 365, lat: 720, lon: 1440)&gt;
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><pre>&lt;xarray.DataArray &#x27;adt&#x27; (time: 365, lat: 720, lon: 1440)&gt;
 dask.array&lt;concatenate, shape=(365, 720, 1440), dtype=float64, chunksize=(1, 720, 1440), chunktype=numpy.ndarray&gt;
 Coordinates:
   * lon      (lon) float32 0.125 0.375 0.625 0.875 ... 359.375 359.625 359.875
@@ -3084,54 +1868,30 @@ Attributes:
     grid_mapping:   crs
     long_name:      Absolute Dynamic Topography
     standard_name:  sea_surface_height_above_geoid
-    units:          m</pre>
+    units:          m</pre></div></div>
 </div>
-
-                      </div>
-                    </div>
-                  </div>
-
-
-
-<div class="cell code_cell">
-                    <div class="input_area">
-                      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ssh</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-
-</code></pre></div>                      </div>
-                    </div>
-
-                    <div class="output_wrapper">
-                      <div class="output_subarea">
-
-                        <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.collections.QuadMesh at 0x124d93160&gt;
-</code></pre></div>                        </div>
-
-                      </div>
-                    </div>
-                    <div class="output_wrapper">
-                      <div class="output_subarea">
-
-                        <p class="output_png"><img src="../../images/lectures/dask/dask_arrays_46_1.png" alt="png" /></p>
-
-                      </div>
-                    </div>
-                  </div>
-
-
-
-<div class="cell code_cell">
-                    <div class="input_area">
-                      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ssh_2015_mean</span> <span class="o">=</span> <span class="n">ssh</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s">'time'</span><span class="p">)</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ssh</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.QuadMesh at 0x124d93160&gt;
+</pre></div>
+</div>
+<img alt="../../_images/dask_arrays_46_1.png" src="../../_images/dask_arrays_46_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ssh_2015_mean</span> <span class="o">=</span> <span class="n">ssh</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">)</span>
 <span class="n">ssh_2015_mean</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
-
-</code></pre></div>                      </div>
-                    </div>
-
-                    <div class="output_wrapper">
-                      <div class="output_subarea">
-
-                        <div class="output output_html">
-<pre>&lt;xarray.DataArray &#x27;adt&#x27; (lat: 720, lon: 1440)&gt;
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><pre>&lt;xarray.DataArray &#x27;adt&#x27; (lat: 720, lon: 1440)&gt;
 array([[nan, nan, nan, ..., nan, nan, nan],
        [nan, nan, nan, ..., nan, nan, nan],
        [nan, nan, nan, ..., nan, nan, nan],
@@ -3141,135 +1901,80 @@ array([[nan, nan, nan, ..., nan, nan, nan],
        [nan, nan, nan, ..., nan, nan, nan]])
 Coordinates:
   * lon      (lon) float32 0.125 0.375 0.625 0.875 ... 359.375 359.625 359.875
-  * lat      (lat) float32 -89.875 -89.625 -89.375 ... 89.375 89.625 89.875</pre>
+  * lat      (lat) float32 -89.875 -89.625 -89.375 ... 89.375 89.625 89.875</pre></div></div>
 </div>
-
-                      </div>
-                    </div>
-                  </div>
-
-
-
-<div class="cell code_cell">
-                    <div class="input_area">
-                      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ssh_2015_mean</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-
-</code></pre></div>                      </div>
-                    </div>
-
-                    <div class="output_wrapper">
-                      <div class="output_subarea">
-
-                        <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.collections.QuadMesh at 0x12522db00&gt;
-</code></pre></div>                        </div>
-
-                      </div>
-                    </div>
-                    <div class="output_wrapper">
-                      <div class="output_subarea">
-
-                        <p class="output_png"><img src="../../images/lectures/dask/dask_arrays_48_1.png" alt="png" /></p>
-
-                      </div>
-                    </div>
-                  </div>
-
-
-
-<div class="cell code_cell">
-                    <div class="input_area">
-                      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ssh_anom</span> <span class="o">=</span> <span class="n">ssh</span> <span class="o">-</span> <span class="n">ssh_2015_mean</span>
-<span class="n">ssh_variance_lonmean</span> <span class="o">=</span> <span class="p">(</span><span class="n">ssh_anom</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">(</span><span class="s">'lon'</span><span class="p">,</span> <span class="s">'time'</span><span class="p">))</span>
-
-</code></pre></div>                      </div>
-                    </div>
-
-                  </div>
-
-
-
-<div class="cell code_cell">
-                    <div class="input_area">
-                      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ssh_variance_lonmean</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-
-</code></pre></div>                      </div>
-                    </div>
-
-                    <div class="output_wrapper">
-                      <div class="output_subarea">
-
-                        <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[&lt;matplotlib.lines.Line2D at 0x1259633c8&gt;]
-</code></pre></div>                        </div>
-
-                      </div>
-                    </div>
-                    <div class="output_wrapper">
-                      <div class="output_subarea">
-
-                        <p class="output_png"><img src="../../images/lectures/dask/dask_arrays_50_1.png" alt="png" /></p>
-
-                      </div>
-                    </div>
-                  </div>
-
-
-
-<div class="cell code_cell">
-                    <div class="input_area">
-                      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">weight</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">lat</span><span class="p">))</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ssh_2015_mean</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.QuadMesh at 0x12522db00&gt;
+</pre></div>
+</div>
+<img alt="../../_images/dask_arrays_48_1.png" src="../../_images/dask_arrays_48_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ssh_anom</span> <span class="o">=</span> <span class="n">ssh</span> <span class="o">-</span> <span class="n">ssh_2015_mean</span>
+<span class="n">ssh_variance_lonmean</span> <span class="o">=</span> <span class="p">(</span><span class="n">ssh_anom</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ssh_variance_lonmean</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x1259633c8&gt;]
+</pre></div>
+</div>
+<img alt="../../_images/dask_arrays_50_1.png" src="../../_images/dask_arrays_50_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">weight</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">lat</span><span class="p">))</span>
 <span class="n">weight</span> <span class="o">/=</span> <span class="n">weight</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="p">(</span><span class="n">ssh_anom</span> <span class="o">*</span> <span class="n">weight</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">(</span><span class="s">'lon'</span><span class="p">,</span> <span class="s">'lat'</span><span class="p">))</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-
-</code></pre></div>                      </div>
-                    </div>
-
-                    <div class="output_wrapper">
-                      <div class="output_subarea">
-
-                        <div class="output_data_text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[&lt;matplotlib.lines.Line2D at 0x130eac160&gt;]
-</code></pre></div>                        </div>
-
-                      </div>
-                    </div>
-                    <div class="output_wrapper">
-                      <div class="output_subarea">
-
-                        <p class="output_png"><img src="../../images/lectures/dask/dask_arrays_51_1.png" alt="png" /></p>
-
-                      </div>
-                    </div>
-                  </div>
-
-
-
-## Cloud Storage
-
-Since we are in the cloud, we can also skip the whole "download" step and just work with data stored directly in cloud storage.
-
-There are a lot of different pieces that make this work:
-- [Pangeo Cloud Data Catalog](https://pangeo-data.github.io/pangeo-datastore/)
-- [Intake](https://intake.readthedocs.io/)
-- [Zarr](https://zarr.readthedocs.io/)
-
-We don't have time to go over them all.
-
-
-
-<div class="cell code_cell">
-                    <div class="input_area">
-                      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">intake</span>
-<span class="n">cat</span> <span class="o">=</span> <span class="n">intake</span><span class="o">.</span><span class="n">Catalog</span><span class="p">(</span><span class="s">"https://raw.githubusercontent.com/pangeo-data/pangeo-datastore/master/intake-catalogs/ocean.yaml"</span><span class="p">)</span>
-<span class="n">ds</span> <span class="o">=</span> <span class="n">cat</span><span class="p">[</span><span class="s">"sea_surface_height"</span><span class="p">]</span><span class="o">.</span><span class="n">to_dask</span><span class="p">()</span>
+<span class="p">(</span><span class="n">ssh_anom</span> <span class="o">*</span> <span class="n">weight</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span> <span class="s1">&#39;lat&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x130eac160&gt;]
+</pre></div>
+</div>
+<img alt="../../_images/dask_arrays_51_1.png" src="../../_images/dask_arrays_51_1.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="cloud-storage">
+<h1>Cloud Storage<a class="headerlink" href="#cloud-storage" title="Permalink to this headline">¶</a></h1>
+<p>Since we are in the cloud, we can also skip the whole “download” step and just work with data stored directly in cloud storage.</p>
+<p>There are a lot of different pieces that make this work:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://pangeo-data.github.io/pangeo-datastore/">Pangeo Cloud Data Catalog</a></p></li>
+<li><p><a class="reference external" href="https://intake.readthedocs.io/">Intake</a></p></li>
+<li><p><a class="reference external" href="https://zarr.readthedocs.io/">Zarr</a></p></li>
+</ul>
+<p>We don’t have time to go over them all.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">intake</span>
+<span class="n">cat</span> <span class="o">=</span> <span class="n">intake</span><span class="o">.</span><span class="n">Catalog</span><span class="p">(</span><span class="s2">&quot;https://raw.githubusercontent.com/pangeo-data/pangeo-datastore/master/intake-catalogs/ocean.yaml&quot;</span><span class="p">)</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">cat</span><span class="p">[</span><span class="s2">&quot;sea_surface_height&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_dask</span><span class="p">()</span>
 <span class="n">ds</span>
-
-</code></pre></div>                      </div>
-                    </div>
-
-                    <div class="output_wrapper">
-                      <div class="output_subarea">
-
-                        <div class="output output_html">
-<pre>&lt;xarray.Dataset&gt;
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><pre>&lt;xarray.Dataset&gt;
 Dimensions:    (latitude: 720, longitude: 1440, nv: 2, time: 8901)
 Coordinates:
     crs        int32 ...
@@ -3330,27 +2035,16 @@ Attributes:
     time_coverage_end:               1993-01-01T12:00:00Z
     time_coverage_resolution:        P1D
     time_coverage_start:             1992-12-31T12:00:00Z
-    title:                           DT merged all satellites Global Ocean Gr...</pre>
+    title:                           DT merged all satellites Global Ocean Gr...</pre></div></div>
 </div>
-
-                      </div>
-                    </div>
-                  </div>
-
-
-
-<div class="cell code_cell">
-                    <div class="input_area">
-                      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ds</span><span class="o">.</span><span class="n">sla</span><span class="o">.</span><span class="n">data</span>
-
-</code></pre></div>                      </div>
-                    </div>
-
-                    <div class="output_wrapper">
-                      <div class="output_subarea">
-
-                        <div class="output output_html">
-<table>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span><span class="o">.</span><span class="n">sla</span><span class="o">.</span><span class="n">data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table>
 <tr>
 <td>
 <table>
@@ -3366,7 +2060,7 @@ Attributes:
 </table>
 </td>
 <td>
-<svg width="171" height="157" style="stroke:rgb(0,0,0);stroke-width:1">
+<svg width="171" height="157" style="stroke:rgb(0,0,0);stroke-width:1" >
 
   <!-- Horizontal lines -->
   <line x1="10" y1="0" x2="80" y2="70" style="stroke-width:2" />
@@ -5157,7 +3851,7 @@ Attributes:
   <line x1="80" y1="70" x2="80" y2="107" style="stroke-width:2" />
 
   <!-- Colored Rectangle -->
-  <polygon points="10.000000,0.000000 80.588235,70.588235 80.588235,107.979212 10.000000,37.390977" style="fill:#ECB172A0;stroke-width:0" />
+  <polygon points="10.000000,0.000000 80.588235,70.588235 80.588235,107.979212 10.000000,37.390977" style="fill:#ECB172A0;stroke-width:0"/>
 
   <!-- Horizontal lines -->
   <line x1="10" y1="0" x2="51" y2="0" style="stroke-width:2" />
@@ -6948,7 +5642,7 @@ Attributes:
   <line x1="51" y1="0" x2="121" y2="70" style="stroke-width:2" />
 
   <!-- Colored Rectangle -->
-  <polygon points="10.000000,0.000000 51.065611,0.000000 121.653847,70.588235 80.588235,70.588235" style="fill:#ECB172A0;stroke-width:0" />
+  <polygon points="10.000000,0.000000 51.065611,0.000000 121.653847,70.588235 80.588235,70.588235" style="fill:#ECB172A0;stroke-width:0"/>
 
   <!-- Horizontal lines -->
   <line x1="80" y1="70" x2="121" y2="70" style="stroke-width:2" />
@@ -6959,48 +5653,80 @@ Attributes:
   <line x1="121" y1="70" x2="121" y2="107" style="stroke-width:2" />
 
   <!-- Colored Rectangle -->
-  <polygon points="80.588235,70.588235 121.653847,70.588235 121.653847,107.979212 80.588235,107.979212" style="fill:#ECB172A0;stroke-width:0" />
+  <polygon points="80.588235,70.588235 121.653847,70.588235 121.653847,107.979212 80.588235,107.979212" style="fill:#ECB172A0;stroke-width:0"/>
 
   <!-- Text -->
-  <text x="101.121041" y="127.979212" font-size="1.0rem" font-weight="100" text-anchor="middle">1440</text>
+  <text x="101.121041" y="127.979212" font-size="1.0rem" font-weight="100" text-anchor="middle" >1440</text>
   <text x="141.653847" y="89.283724" font-size="1.0rem" font-weight="100" text-anchor="middle" transform="rotate(-90,141.653847,89.283724)">720</text>
   <text x="35.294118" y="92.685095" font-size="1.0rem" font-weight="100" text-anchor="middle" transform="rotate(45,35.294118,92.685095)">8901</text>
 </svg>
 </td>
 </tr>
-</table>
+</table></div></div>
+</div>
 </div>
 
-                      </div>
-                    </div>
-                  </div>
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./lectures/dask"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
 
-</li></ul></td></tr></table></div>
-    </div>
-  </div>
-</div>
+              </div>
+              
+        
+            
 
-              <nav class="c-page__nav">
-  
+
+
+<div class='prev-next-bottom'>
     
-    <a id="js-page__nav__prev" class="c-page__nav__prev" href="/lectures/dask/intro.html">
-      〈 <span class="u-margin-right-tiny"></span> Dask
-    </a>
-  
-
-  
-    
-    <a id="js-page__nav__next" class="c-page__nav__next" href="">
-       <span class="u-margin-right-tiny"></span> 〉
-    </a>
-  
-</nav>
-
+    <div id="prev">
+        <a class="left-prev" href="intro.html" title="previous page">
+            <i class="prevnext-label fas fa-angle-left"></i>
+            <div class="prevnext-info">
+                <p class="prevnext-label">previous</p>
+                <p class="prevnext-title">Dask for Parallel Computing in Python</p>
             </div>
-          </div>
-        </div>
-      </main>
+        </a>
     </div>
 
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Ryan Abernathey<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
   </body>
 </html>
