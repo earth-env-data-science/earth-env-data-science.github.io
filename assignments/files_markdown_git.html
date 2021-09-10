@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Assignment 5: Pandas Fundamentals with Earthquake Data &#8212; Earth and Environmental Data Science</title>
+    <title>Assignment: Files, Git, and Github &#8212; Earth and Environmental Data Science</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
   <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -51,8 +51,8 @@
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Pandas: Groupby" href="../lectures/pandas/pandas_groupby.html" />
-    <link rel="prev" title="Pandas Fundamentals" href="../lectures/pandas/basic_pandas.html" />
+    <link rel="next" title="Managing Python Environments" href="../lectures/environment/python_environments.html" />
+    <link rel="prev" title="Intro to Git for Version Control" href="../lectures/environment/intro_to_git.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -109,7 +109,7 @@
   The Interactive Computing Environment
  </span>
 </p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../lectures/environment/intro_to_jupyterlab.html">
    Intro to JupyterLab
@@ -125,8 +125,8 @@
    Intro to Git for Version Control
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="files_markdown_git.html">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
    Assignment: Files, Git, and Github
   </a>
  </li>
@@ -195,24 +195,24 @@
   High Level Data Analysis Frameworks
  </span>
 </p>
-<ul class="current nav bd-sidenav">
- <li class="toctree-l1 current active has-children">
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
   <a class="reference internal" href="../lectures/pandas/pandas_intro.html">
    Pandas
   </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
   <label for="toctree-checkbox-1">
    <i class="fas fa-chevron-down">
    </i>
   </label>
-  <ul class="current">
+  <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="../lectures/pandas/basic_pandas.html">
      Pandas Fundamentals
     </a>
    </li>
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
+   <li class="toctree-l2">
+    <a class="reference internal" href="basic_pandas.html">
      Assignment 5: Pandas Fundamentals with Earthquake Data
     </a>
    </li>
@@ -345,9 +345,9 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/assignments/basic_pandas.ipynb"><button type="button"
+        <a class="dropdown-buttons" href="../_sources/assignments/files_markdown_git.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.ipynb</button></a>
+                data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
         <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
             onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
@@ -365,23 +365,6 @@
 
             <!-- Launch buttons -->
 
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
-    <div class="dropdown-buttons">
-        
-        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/assignments/basic_pandas.ipynb"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
-                data-placement="left"><img class="binder-button-logo"
-                    src="../_static/images/logo_binder.svg"
-                    alt="Interact on binder">Binder</button></a>
-        
-        
-        
-        
-    </div>
-</div>
-
         </div>
 
         <!-- Table of contents -->
@@ -393,65 +376,13 @@
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#use-pandas-read-csv-function-directly-on-this-url-to-open-it-as-a-dataframe">
-   1) Use Pandas’ read_csv function directly on this URL to open it as a DataFrame
+  <a class="reference internal nav-link" href="#create-a-dummy-resume-repository">
+   Create a Dummy Resume Repository
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#re-read-the-data-in-such-a-way-that-all-date-columns-are-identified-as-dates-and-the-earthquake-id-is-used-as-the-index">
-   2) Re-read the data in such a way that all date columns are identified as dates and the earthquake ID is used as the index
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#use-describe-to-get-the-basic-statistics-of-all-the-columns">
-   3) Use
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     describe
-    </span>
-   </code>
-   to get the basic statistics of all the columns
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#use-nlargest-to-get-the-top-20-earthquakes-by-magnitude">
-   4) Use
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     nlargest
-    </span>
-   </code>
-   to get the top 20 earthquakes by magnitude
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#extract-the-state-or-country-using-pandas-text-data-functions">
-   5) Extract the state or country using Pandas text data functions
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#display-each-unique-value-from-the-new-column">
-   6) Display each unique value from the new column
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#make-a-bar-chart-of-the-top-5-earthquake-magnitudes-vs-country-state">
-   7) Make a bar chart of the top 5 earthquake magnitudes vs country/state
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#create-a-filtered-dataset-that-only-has-earthquakes-of-magnitude-4-or-larger-and">
-   8) Create a filtered dataset that only has earthquakes of magnitude 4 or larger and
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#make-a-histogram-the-distribution-of-the-earthquake-magnitudes">
-   9) Make a histogram the distribution of the Earthquake magnitudes
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#visualize-the-locations-of-earthquakes-by-making-a-scatterplot-of-their-latitude-and-longitude">
-   11) Visualize the locations of earthquakes by making a scatterplot of their latitude and longitude
+  <a class="reference internal nav-link" href="#create-your-assignments-repository">
+   Create your Assignments Repository
   </a>
  </li>
 </ul>
@@ -465,70 +396,57 @@
         
               <div>
                 
-  <div class="section" id="assignment-5-pandas-fundamentals-with-earthquake-data">
-<h1>Assignment 5: Pandas Fundamentals with Earthquake Data<a class="headerlink" href="#assignment-5-pandas-fundamentals-with-earthquake-data" title="Permalink to this headline">¶</a></h1>
-<p>In this assignment, we will review pandas fundamentals, such as how to</p>
-<ul class="simple">
-<li><p>Open csv files</p></li>
-<li><p>Manipulate dataframe indexes</p></li>
-<li><p>Parse date columns</p></li>
-<li><p>Examine basic dataframe statistics</p></li>
-<li><p>Manipulate text columns and extract values</p></li>
-<li><p>Plot dataframe contents using</p>
-<ul>
-<li><p>Bar charts</p></li>
-<li><p>Histograms</p></li>
-<li><p>Scatter plots</p></li>
-</ul>
+  <div class="section" id="assignment-files-git-and-github">
+<h1>Assignment: Files, Git, and Github<a class="headerlink" href="#assignment-files-git-and-github" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="create-a-dummy-resume-repository">
+<h2>Create a Dummy Resume Repository<a class="headerlink" href="#create-a-dummy-resume-repository" title="Permalink to this headline">¶</a></h2>
+<p>Use JupyterLab to launch a terminal and use the terminal to do the following tasks:</p>
+<ol class="simple">
+<li><p>Create a new directory called <code class="docutils literal notranslate"><span class="pre">resume</span></code> within your home directory</p></li>
+<li><p>Create an empty file within this directory called <code class="docutils literal notranslate"><span class="pre">Readme.md</span></code></p></li>
+</ol>
+<p>Now use JupyterLab to edit the file:</p>
+<ol class="simple">
+<li><p>Navigate to the directory in the file browser</p></li>
+<li><p>Open <code class="docutils literal notranslate"><span class="pre">Readme.md</span></code> in the text editor</p></li>
+<li><p>Open <code class="docutils literal notranslate"><span class="pre">Readme.md</span></code> in in Markdown Preview</p></li>
+<li><p>Arrange these files side-by-side so you can see your document rendered</p></li>
+<li><p>Edit the file in the editor. Add the following information:</p>
+<ol class="simple">
+<li><p>Top level heading with your name</p></li>
+<li><p>An image. It can be a photo of you or, if you prefer, a photo of your spirit animal.</p></li>
+<li><p>Secondary heading entitled “Education”</p></li>
+<li><p>A list of schools you attended, hyperlinked to the websites of those insitutions</p></li>
+</ol>
 </li>
+<li><p>Save the file</p></li>
+</ol>
+<p>Now go back to the terminal and do the following:</p>
+<ol class="simple">
+<li><p>Initialize a new git repository in the <code class="docutils literal notranslate"><span class="pre">resume</span></code> directory</p></li>
+<li><p>Add the <code class="docutils literal notranslate"><span class="pre">Readme.md</span></code> file to the repository</p></li>
+<li><p>Create a new commit with a commit message</p></li>
+<li><p>Check the git log to see your commit history</p></li>
+<li><p>Go to GitHub and create a <a class="reference external" href="https://github.com/new">new public repository</a> entitled <code class="docutils literal notranslate"><span class="pre">resume</span></code></p></li>
+<li><p>Push your local resume repository to GitHub following the instructions.</p></li>
+<li><p>View your online resume at <code class="docutils literal notranslate"><span class="pre">http://github.com/&lt;your</span> <span class="pre">github</span> <span class="pre">username&gt;/resume</span></code></p></li>
+</ol>
+<p>Finally, go back to the editor and add a new subsection called “Research Interests” to your <code class="docutils literal notranslate"><span class="pre">Readme.md</span></code> file. Update your local git repository and push your changes to GitHub. Verify that the remote repository is updated.</p>
+<p>To “hand in” this part of the assignment, put a link to it in the <code class="docutils literal notranslate"><span class="pre">Readme.md</span></code> file in the next part.</p>
+</div>
+<div class="section" id="create-your-assignments-repository">
+<h2>Create your Assignments Repository<a class="headerlink" href="#create-your-assignments-repository" title="Permalink to this headline">¶</a></h2>
+<p>Now that you know how to create a git repository, you should create your assignments repository.</p>
+<ul class="simple">
+<li><p>Create a new directory called <code class="docutils literal notranslate"><span class="pre">rces-assignments</span></code> in your home directory.</p></li>
+<li><p>Create a <code class="docutils literal notranslate"><span class="pre">Readme.md</span></code> markdown file that contains your name and a link to your “resume” repo.</p></li>
+<li><p>Initialize a new git repository</p></li>
+<li><p>Add the file and make your first commit</p></li>
+<li><p>Create a new <strong>private</strong> repository on GitHub called <code class="docutils literal notranslate"><span class="pre">rces-assignments</span></code>. (Call it exactly like that. Do not vary the spelling, capitalization, or punctuation.)</p></li>
+<li><p>Push your <code class="docutils literal notranslate"><span class="pre">rces-assignments</span></code> repository to GitHub</p></li>
+<li><p>On GitHub, go to “settings” -&gt; “collaborators” and add <code class="docutils literal notranslate"><span class="pre">tjcrone</span></code> and <code class="docutils literal notranslate"><span class="pre">taoma0528</span></code>.</p></li>
+<li><p>Push new commits to this repository whenever you are ready to hand in your assignments</p></li>
 </ul>
-<p>First, import Numpy, Pandas and Matplotlib and set the display options.</p>
-<p>Data for this assignment in .csv format downloaded from the <a class="reference external" href="https://earthquake.usgs.gov/earthquakes/search/">USGS Earthquakes Database</a> is available at:</p>
-<p><a class="reference external" href="http://www.ldeo.columbia.edu/~rpa/usgs_earthquakes_2014.csv">http://www.ldeo.columbia.edu/~rpa/usgs_earthquakes_2014.csv</a></p>
-<p>You don’t need to download this file. You can open it directly with Pandas.</p>
-<div class="section" id="use-pandas-read-csv-function-directly-on-this-url-to-open-it-as-a-dataframe">
-<h2>1) Use Pandas’ read_csv function directly on this URL to open it as a DataFrame<a class="headerlink" href="#use-pandas-read-csv-function-directly-on-this-url-to-open-it-as-a-dataframe" title="Permalink to this headline">¶</a></h2>
-<p>(Don’t use any special options). Display the first few rows and the DataFrame info.</p>
-<p>You should have seen that the dates were not automatically parsed into datetime types.</p>
-</div>
-<div class="section" id="re-read-the-data-in-such-a-way-that-all-date-columns-are-identified-as-dates-and-the-earthquake-id-is-used-as-the-index">
-<h2>2) Re-read the data in such a way that all date columns are identified as dates and the earthquake ID is used as the index<a class="headerlink" href="#re-read-the-data-in-such-a-way-that-all-date-columns-are-identified-as-dates-and-the-earthquake-id-is-used-as-the-index" title="Permalink to this headline">¶</a></h2>
-<p>Verify that this worked using the <code class="docutils literal notranslate"><span class="pre">head</span></code> and <code class="docutils literal notranslate"><span class="pre">info</span></code> functions.</p>
-</div>
-<div class="section" id="use-describe-to-get-the-basic-statistics-of-all-the-columns">
-<h2>3) Use <code class="docutils literal notranslate"><span class="pre">describe</span></code> to get the basic statistics of all the columns<a class="headerlink" href="#use-describe-to-get-the-basic-statistics-of-all-the-columns" title="Permalink to this headline">¶</a></h2>
-<p>Note the highest and lowest magnitude of earthquakes in the databse.</p>
-</div>
-<div class="section" id="use-nlargest-to-get-the-top-20-earthquakes-by-magnitude">
-<h2>4) Use <code class="docutils literal notranslate"><span class="pre">nlargest</span></code> to get the top 20 earthquakes by magnitude<a class="headerlink" href="#use-nlargest-to-get-the-top-20-earthquakes-by-magnitude" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.nlargest.html">https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.nlargest.html</a></p>
-<p>Examine the structure of the <code class="docutils literal notranslate"><span class="pre">place</span></code> column. The state / country information seems to be in there. How would you get it out?</p>
-</div>
-<div class="section" id="extract-the-state-or-country-using-pandas-text-data-functions">
-<h2>5) Extract the state or country using Pandas <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/text.html">text data functions</a><a class="headerlink" href="#extract-the-state-or-country-using-pandas-text-data-functions" title="Permalink to this headline">¶</a></h2>
-<p>Add it as a new column to the dataframe called <code class="docutils literal notranslate"><span class="pre">country</span></code>. Note that some of the “countries” are actually U.S. states.</p>
-</div>
-<div class="section" id="display-each-unique-value-from-the-new-column">
-<h2>6) Display each unique value from the new column<a class="headerlink" href="#display-each-unique-value-from-the-new-column" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.unique.html">https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.unique.html</a></p>
-</div>
-<div class="section" id="make-a-bar-chart-of-the-top-5-earthquake-magnitudes-vs-country-state">
-<h2>7) Make a bar chart of the top 5 earthquake magnitudes vs country/state<a class="headerlink" href="#make-a-bar-chart-of-the-top-5-earthquake-magnitudes-vs-country-state" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="create-a-filtered-dataset-that-only-has-earthquakes-of-magnitude-4-or-larger-and">
-<h2>8) Create a filtered dataset that only has earthquakes of magnitude 4 or larger and<a class="headerlink" href="#create-a-filtered-dataset-that-only-has-earthquakes-of-magnitude-4-or-larger-and" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="make-a-histogram-the-distribution-of-the-earthquake-magnitudes">
-<h2>9) Make a histogram the distribution of the Earthquake magnitudes<a class="headerlink" href="#make-a-histogram-the-distribution-of-the-earthquake-magnitudes" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/version/0.23/generated/pandas.DataFrame.hist.html">https://pandas.pydata.org/pandas-docs/version/0.23/generated/pandas.DataFrame.hist.html</a>
-<a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.hist.html">https://matplotlib.org/api/_as_gen/matplotlib.pyplot.hist.html</a></p>
-<p>Do one subplot for the filtered and one for the unfiltered dataset.
-Use a Logarithmic scale. What sort of relationship do you see?</p>
-</div>
-<div class="section" id="visualize-the-locations-of-earthquakes-by-making-a-scatterplot-of-their-latitude-and-longitude">
-<h2>11) Visualize the locations of earthquakes by making a scatterplot of their latitude and longitude<a class="headerlink" href="#visualize-the-locations-of-earthquakes-by-making-a-scatterplot-of-their-latitude-and-longitude" title="Permalink to this headline">¶</a></h2>
-<p>Use a two-column subplot with both the filtered and unfiltered datasets. Color the points by magnitude. Make it pretty</p>
-<p>What difference do you note between the filtered and unfiltered datasets?</p>
 </div>
 </div>
 
@@ -562,19 +480,19 @@ Use a Logarithmic scale. What sort of relationship do you see?</p>
 <div class='prev-next-bottom'>
     
     <div id="prev">
-        <a class="left-prev" href="../lectures/pandas/basic_pandas.html" title="previous page">
+        <a class="left-prev" href="../lectures/environment/intro_to_git.html" title="previous page">
             <i class="prevnext-label fas fa-angle-left"></i>
             <div class="prevnext-info">
                 <p class="prevnext-label">previous</p>
-                <p class="prevnext-title">Pandas Fundamentals</p>
+                <p class="prevnext-title">Intro to Git for Version Control</p>
             </div>
         </a>
     </div>
      <div id="next">
-        <a class="right-next" href="../lectures/pandas/pandas_groupby.html" title="next page">
+        <a class="right-next" href="../lectures/environment/python_environments.html" title="next page">
             <div class="prevnext-info">
                 <p class="prevnext-label">next</p>
-                <p class="prevnext-title">Pandas: Groupby</p>
+                <p class="prevnext-title">Managing Python Environments</p>
             </div>
             <i class="prevnext-label fas fa-angle-right"></i>
         </a>
