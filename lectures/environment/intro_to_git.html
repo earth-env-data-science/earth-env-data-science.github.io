@@ -49,6 +49,7 @@
         const thebe_selector_output = ".output"
     </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="canonical" href="https://earth-env-data-science.github.io/lectures/environment/intro_to_git.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Assignment: Files, Git, and Github" href="../../assignments/files_markdown_git.html" />
@@ -363,6 +364,24 @@
 
             <!-- Source interaction buttons -->
 
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/earth-env-data-science/earth-env-data-science-book"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/earth-env-data-science/earth-env-data-science-book/issues/new?title=Issue%20on%20page%20%2Flectures/environment/intro_to_git.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        <a class="edit-button" href="https://github.com/earth-env-data-science/earth-env-data-science-book/edit/master/src/lectures/environment/intro_to_git.md"><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
+    </div>
+</div>
+
             <!-- Full screen (wrap in <a> to have style consistency -->
 
 <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
@@ -395,6 +414,11 @@
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#collaborating-with-git-and-github">
    Collaborating with Git and Github
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#using-git-and-github-from-cloud-jupyterhubs">
+   Using Git and GitHub from Cloud JupyterHubs
   </a>
  </li>
 </ul>
@@ -470,9 +494,15 @@ git diff      # view file content differences
 <li><p>Follow the instructions and run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">remote</span> <span class="pre">add</span> <span class="pre">origin</span> <span class="pre">&lt;repo</span> <span class="pre">url&gt;</span></code> on your local repo</p></li>
 <li><p>make your changes and stage them with <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">add</span></code>,</p></li>
 <li><p>commit your changes with <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">commit</span> <span class="pre">-m</span></code>, and</p></li>
-<li><p>upload the changes to GitHub with<code class="docutils literal notranslate"> <span class="pre">git</span> <span class="pre">push</span> <span class="pre">origin</span> <span class="pre">master</span></code></p></li>
-<li><p>update your local repo with <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">pull</span> <span class="pre">origin</span> <span class="pre">master</span></code></p></li>
+<li><p>upload the changes to GitHub with<code class="docutils literal notranslate"> <span class="pre">git</span> <span class="pre">push</span> <span class="pre">origin</span> <span class="pre">main</span></code></p></li>
+<li><p>update your local repo with <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">pull</span> <span class="pre">origin</span> <span class="pre">main</span></code></p></li>
 </ul>
+</div>
+<div class="section" id="using-git-and-github-from-cloud-jupyterhubs">
+<h2>Using Git and GitHub from Cloud JupyterHubs<a class="headerlink" href="#using-git-and-github-from-cloud-jupyterhubs" title="Permalink to this headline">¶</a></h2>
+<p>All of the above commands are available from our course’s cloud-based JupyterHub.
+This is an excellent way to move code in and out of your cloud-based environment
+(while simultaneously backing it up.)</p>
 </div>
 </div>
 
