@@ -412,13 +412,13 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#collaborating-with-git-and-github">
-   Collaborating with Git and Github
+  <a class="reference internal nav-link" href="#setting-up-github-ssh-keys-inside-jupyterhub">
+   Setting Up GitHub SSH Keys inside JupyterHub
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#using-git-and-github-from-cloud-jupyterhubs">
-   Using Git and GitHub from Cloud JupyterHubs
+  <a class="reference internal nav-link" href="#collaborating-with-git-and-github">
+   Collaborating with Git and Github
   </a>
  </li>
 </ul>
@@ -487,19 +487,67 @@ git diff      # view file content differences
 </pre></div>
 </div>
 </div>
+<div class="section" id="setting-up-github-ssh-keys-inside-jupyterhub">
+<h2>Setting Up GitHub SSH Keys inside JupyterHub<a class="headerlink" href="#setting-up-github-ssh-keys-inside-jupyterhub" title="Permalink to this headline">¶</a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>As of August 12, 2021, GitHub <a class="reference external" href="https://github.blog/changelog/2021-08-12-git-password-authentication-is-shutting-down/">no longer supports username / password authentication</a>.
+Users must switch to personal access tokens or SSH-keys for authentication.</p>
+</div>
+<p>This is a very quick guide to getting your GitHub authentication set up,
+adopted from the <a class="reference external" href="https://swcarpentry.github.io/git-novice/07-github/index.html#ssh-background-and-setup">Carpentries GitHub Remotes lesson</a>.</p>
+<ol>
+<li><p>Open a terminal in JupyterHub</p></li>
+<li><p>Type the command</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>ssh-keygen -t ed25519 -C &quot;YOUR EMAIL ADDRESS GOES HERE&quot;`
+</pre></div>
+</div>
+<p>(Don’t just copy this text; you have to put in tour actual email address in between the quotes.) This command will create an ssh public / private key pair.</p>
+</li>
+<li><p>Enter a password for your new SSH key and record it in a safe place.
+This password is used to “lock” the SSH key. It can’t be used without the password.</p></li>
+<li><p>Type the command</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">~/.</span><span class="n">ssh</span><span class="o">/</span><span class="n">id_ed25519</span><span class="o">.</span><span class="n">pub</span>
+</pre></div>
+</div>
+<p>and copy the result. It should look something like <code class="docutils literal notranslate"><span class="pre">ssh-ed25519</span> <span class="pre">AAAAC3NzaC1lZDI1NTE5AAAAIJOMg813PWuWX/ilyexj2k/di1lBHwQHCHbRB6l4dV9K</span> <span class="pre">rpa&#64;ldeo.columbia.edu</span></code>. (Note that this is my <em>real</em> public key, but it is completely
+safe to share. Without the corresponding private key it is useless.)</p>
+</li>
+<li><p>Go to <a class="reference external" href="https://github.com/settings/keys">https://github.com/settings/keys</a>. Click the green  button that says “New SSH Key”.
+Give your key the title “JupyterHub SSH Key for Research Computing” and paste the
+public key from the previous step into the “Key” box.</p></li>
+<li><p>Verify that your key works by typing</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ssh</span> <span class="o">-</span><span class="n">T</span> <span class="n">git</span><span class="nd">@github</span><span class="o">.</span><span class="n">com</span>
+</pre></div>
+</div>
+<p>on the command like of the JupyterHub. (Note you will have to enter your SSH key password from step 3.)</p>
+</li>
+</ol>
+<p>You should now be able to push to GitHub.</p>
+</div>
 <div class="section" id="collaborating-with-git-and-github">
 <h2>Collaborating with Git and Github<a class="headerlink" href="#collaborating-with-git-and-github" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
+<ul>
 <li><p>Create a new repository on GitHub</p></li>
-<li><p>Follow the instructions and run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">remote</span> <span class="pre">add</span> <span class="pre">origin</span> <span class="pre">&lt;repo</span> <span class="pre">url&gt;</span></code> on your local repo</p></li>
+<li><p>Follow the instructions and run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">remote</span> <span class="pre">add</span> <span class="pre">origin</span> <span class="pre">&lt;repo</span> <span class="pre">url&gt;</span></code> on your local repo</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>In order to authenticate with your SSH key from the previous section, you need use SSH-style GitHub urls.
+When setting up a new repo, underneath where it says “Quick setup — if you’ve done this kind of thing before”,
+make sure you click the SSH box. The repo URL should look something like <code class="docutils literal notranslate"><span class="pre">git&#64;github.com:rabernat/planets.git</span></code>
+(NOT <code class="docutils literal notranslate"><span class="pre">https://github.com/rabernat/planets.git</span></code>).</p>
+<p>If you already added a remote with <code class="docutils literal notranslate"><span class="pre">http://</span></code>, you can remove it by typing</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">remote</span> <span class="n">rm</span> <span class="n">origin</span>
+</pre></div>
+</div>
+<p>(assuming the name of your remote is indeed <code class="docutils literal notranslate"><span class="pre">origin</span></code>.)</p>
+</div>
+</li>
 <li><p>make your changes and stage them with <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">add</span></code>,</p></li>
 <li><p>commit your changes with <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">commit</span> <span class="pre">-m</span></code>, and</p></li>
 <li><p>upload the changes to GitHub with<code class="docutils literal notranslate"> <span class="pre">git</span> <span class="pre">push</span> <span class="pre">origin</span> <span class="pre">main</span></code></p></li>
 <li><p>update your local repo with <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">pull</span> <span class="pre">origin</span> <span class="pre">main</span></code></p></li>
 </ul>
-</div>
-<div class="section" id="using-git-and-github-from-cloud-jupyterhubs">
-<h2>Using Git and GitHub from Cloud JupyterHubs<a class="headerlink" href="#using-git-and-github-from-cloud-jupyterhubs" title="Permalink to this headline">¶</a></h2>
 <p>All of the above commands are available from our course’s cloud-based JupyterHub.
 This is an excellent way to move code in and out of your cloud-based environment
 (while simultaneously backing it up.)</p>
