@@ -23,7 +23,7 @@
 
     
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/sphinx-book-theme.e8f53015daec13862f6db5e763c41738.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.e2363ea40746bee74734a24ffefccd78.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
@@ -71,6 +71,10 @@
     
         <div class="navbar-brand-box">
     <a class="navbar-brand text-wrap" href="../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
       
       <img src="../../_static/eeds-logo.png" class="logo" alt="logo">
       
@@ -605,7 +609,7 @@ False
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;function str.capitalize&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;function str.capitalize()&gt;
 </pre></div>
 </div>
 </div>
@@ -641,7 +645,7 @@ False
 </div>
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="nn">&lt;ipython-input-9-d0ea84c04eb4&gt;</span> in <span class="ni">&lt;module&gt;</span><span class="nt">()</span>
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_376</span><span class="o">/</span><span class="mf">1516236190.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
 <span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="nb">print</span><span class="p">(</span><span class="n">b</span> <span class="o">+</span> <span class="n">c</span><span class="p">)</span>
 <span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="nb">print</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
 <span class="ne">----&gt; </span><span class="mi">5</span> <span class="nb">print</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
@@ -895,6 +899,22 @@ Huge number!
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Red">Init signature:</span> range<span class=" -Color -Color-Blue">(</span>self<span class=" -Color -Color-Blue">,</span> <span class=" -Color -Color-Blue">/,</span> <span class=" -Color -Color-Blue">*</span>args<span class=" -Color -Color-Blue">,</span> <span class=" -Color -Color-Blue">**</span>kwargs<span class=" -Color -Color-Blue">)</span>
+<span class=" -Color -Color-Red">Docstring:</span>     
+range(stop) -&gt; range object
+range(start, stop[, step]) -&gt; range object
+
+Return an object that produces a sequence of integers from start (inclusive)
+to stop (exclusive) by step.  range(i, j) produces i, i+1, i+2, ..., j-1.
+start defaults to 0, and stop is omitted!  range(4) produces 0, 1, 2, 3.
+These are exactly the valid indices for a list of 4 elements.
+When step is given, it specifies the increment (or decrement).
+<span class=" -Color -Color-Red">Type:</span>           type
+<span class=" -Color -Color-Red">Subclasses:</span>     
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1045,7 +1065,7 @@ middle, skipping every other item [10, 12, 14]
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">IndexError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
-<span class="nn">&lt;ipython-input-60-a6804f3b0ad3&gt;</span> in <span class="ni">&lt;module&gt;</span><span class="nt">()</span>
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_376</span><span class="o">/</span><span class="mf">2572331846.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
 <span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># that means we get an error from the following</span>
 <span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
 <span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">z</span><span class="p">[</span><span class="n">N</span><span class="p">]</span>
@@ -1189,7 +1209,7 @@ first: 4 second: 14
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;age&#39;: 25, &#39;name&#39;: &#39;Takaya&#39;}
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;name&#39;: &#39;Takaya&#39;, &#39;age&#39;: 25}
 </pre></div>
 </div>
 </div>
@@ -1233,7 +1253,7 @@ False
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">KeyError</span><span class="g g-Whitespace">                                  </span>Traceback (most recent call last)
-<span class="nn">&lt;ipython-input-83-261ef018477b&gt;</span> in <span class="ni">&lt;module&gt;</span><span class="nt">()</span>
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_376</span><span class="o">/</span><span class="mf">1885707668.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
 <span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># try to access a non-existant key</span>
 <span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span>
 
@@ -1251,7 +1271,7 @@ False
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;age&#39;: 33, &#39;height&#39;: (5, 11), &#39;name&#39;: &#39;Ryan&#39;}
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;name&#39;: &#39;Ryan&#39;, &#39;age&#39;: 33, &#39;height&#39;: (5, 11)}
 </pre></div>
 </div>
 </div>
@@ -1265,7 +1285,7 @@ False
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{99: &#39;ninety nine&#39;, &#39;age&#39;: 33, &#39;name&#39;: &#39;Ryan&#39;, &#39;height&#39;: (5, 11)}
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;name&#39;: &#39;Ryan&#39;, &#39;age&#39;: 33, &#39;height&#39;: (5, 11), 99: &#39;ninety nine&#39;}
 </pre></div>
 </div>
 </div>
@@ -1279,10 +1299,10 @@ False
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>99 ninety nine
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>name Ryan
 age 33
-name Ryan
 height (5, 11)
+99 ninety nine
 </pre></div>
 </div>
 </div>
@@ -1298,10 +1318,10 @@ height (5, 11)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>99 ninety nine
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>name Ryan
 age 33
-name Ryan
 height (5, 11)
+99 ninety nine
 </pre></div>
 </div>
 </div>
@@ -1361,7 +1381,7 @@ height (5, 11)
         
         </div>
     </div>
-    <footer class="footer mt-5 mt-md-0">
+    <footer class="footer">
     <div class="container">
       <p>
         
