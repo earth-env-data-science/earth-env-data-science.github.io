@@ -23,7 +23,7 @@
 
     
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/sphinx-book-theme.e2363ea40746bee74734a24ffefccd78.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
@@ -514,44 +514,23 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#use-the-shell-command-wget-to-download-an-example-argo-float-profile-from-the-north-atlantic">
-     2.1 Use the shell command
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       wget
-      </span>
-     </code>
-     to download an example ARGO float profile from the North Atlantic.
+    <a class="reference internal nav-link" href="#load-each-data-file-as-a-numpy-array">
+     2.1 Load each data file as a numpy array.
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#load-the-data-file">
-     2.2 Load the data file
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#extract-the-temperature-pressure-and-salinity-arrays-to-arrays-t-s-p-and-masking-out-invalid-data-the-nan-values-from-missing-points">
-     2.3 Extract the temperature, pressure and salinity arrays to arrays T, S, P and masking out invalid data (the nan values from missing points).
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#extract-the-date-lat-lon-and-level-arrays">
-     2.4 Extract the date, lat, lon, and level arrays.
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#note-the-shapes-of-t-s-and-p-compared-to-these-arrays-how-do-they-line-up">
-     2.5 Note the shapes of T, S and P compared to these arrays. How do they line up?
+    <a class="reference internal nav-link" href="#examine-the-shapes-of-t-s-and-p-compared-to-these-arrays-how-do-you-think-they-line-up">
+     2.2 Examine the shapes of T, S and P compared to these arrays. How do you think they line up?
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#make-a-plot-for-each-column-of-data-in-t-s-and-p-three-plots">
-     2.6 Make a plot for each column of data in T, S and P (three plots).
+     2.3 Make a plot for each column of data in T, S and P (three plots).
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#compute-the-mean-and-standard-deviation-of-each-of-t-s-and-p-at-each-depth-in-level">
-     2.7 Compute the mean and standard deviation of each of T, S and P at each depth in
+     2.4 Compute the mean and standard deviation of each of T, S and P at each depth in
      <code class="docutils literal notranslate">
       <span class="pre">
        level
@@ -562,12 +541,24 @@
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#now-make-three-similar-plot-but-show-only-the-mean-t-s-and-p-at-each-depth-show-error-bars-on-each-plot-using-the-standard-deviations">
-     2.8 Now make three similar plot, but show only the mean T, S and P at each depth. Show error bars on each plot using the standard deviations.
+     2.5 Now make three similar plot, but show only the mean T, S and P at each depth. Show error bars on each plot using the standard deviations.
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#create-a-scatter-plot-of-the-positions-of-the-argo-float-data-color-the-positions-by-the-date-add-a-grid-overlay">
-     2.9 Create a scatter plot of the positions of the ARGO float data.  Color the positions by the date. Add a grid overlay.
+    <a class="reference internal nav-link" href="#create-a-scatter-plot-of-the-lon-lat-positions-of-the-argo-float">
+     2.6 Create a scatter plot of the
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       lon
+      </span>
+     </code>
+     ,
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       lat
+      </span>
+     </code>
+     positions of the ARGO float.
     </a>
    </li>
   </ul>
@@ -586,16 +577,18 @@
   <div class="section" id="assignment-3-numpy-and-matplotlib">
 <h1>Assignment 3 - Numpy and Matplotlib<a class="headerlink" href="#assignment-3-numpy-and-matplotlib" title="Permalink to this headline">¶</a></h1>
 <p>The goal of this assignment is to gain comfort creating, visualizating, and computing with numpy array. By the end of the assignment, you should feel comfortable:</p>
+<div class="tip admonition">
+<p class="admonition-title">Learning Goals</p>
 <ul class="simple">
 <li><p>Creating new arrays using <code class="docutils literal notranslate"><span class="pre">linspace</span></code> and <code class="docutils literal notranslate"><span class="pre">arange</span></code></p></li>
 <li><p>Computing basic formulas with numpy arrays</p></li>
-<li><p>Loading data from <code class="docutils literal notranslate"><span class="pre">.npz</span></code> files</p></li>
+<li><p>Loading data from <code class="docutils literal notranslate"><span class="pre">.npy</span></code> files</p></li>
 <li><p>Performing reductions (e.g. <code class="docutils literal notranslate"><span class="pre">mean</span></code>, <code class="docutils literal notranslate"><span class="pre">std</span></code> on numpy arrays)</p></li>
 <li><p>Making 1D line plots</p></li>
-<li><p>Making 2D pcolormesh plots</p></li>
 <li><p>Making scatterplots</p></li>
 <li><p>Annotating plots with titles and axes</p></li>
 </ul>
+</div>
 <div class="section" id="creating-and-manipulating-arrays">
 <h2>1 Creating and Manipulating Arrays<a class="headerlink" href="#creating-and-manipulating-arrays" title="Permalink to this headline">¶</a></h2>
 <p>First import numpy and matplotlib</p>
@@ -634,36 +627,40 @@
 <div class="section" id="part-2-analyze-argo-data">
 <h2>Part 2: Analyze <a class="reference external" href="http://www.argo.ucsd.edu/About_Argo.html">ARGO</a> Data<a class="headerlink" href="#part-2-analyze-argo-data" title="Permalink to this headline">¶</a></h2>
 <p>In this problem, we use real data from ocean profiling floats.</p>
-<div class="section" id="use-the-shell-command-wget-to-download-an-example-argo-float-profile-from-the-north-atlantic">
-<h3>2.1 Use the shell command <code class="docutils literal notranslate"><span class="pre">wget</span></code> to download an example ARGO float profile from the North Atlantic.<a class="headerlink" href="#use-the-shell-command-wget-to-download-an-example-argo-float-profile-from-the-north-atlantic" title="Permalink to this headline">¶</a></h3>
-<p>The data file’s url is <a class="reference external" href="http://www.ldeo.columbia.edu/~rpa/argo_float_4901412.npz">http://www.ldeo.columbia.edu/~rpa/argo_float_4901412.npz</a></p>
+<p>Let’s start by using <a class="reference external" href="https://www.fatiando.org/pooch/latest/">pooch</a> to download the data files we need for this exercise.
+The following code will give you a list of <code class="docutils literal notranslate"><span class="pre">.npy</span></code> files that you can open in the next step.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pooch</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://www.ldeo.columbia.edu/~rpa/float_data_4901412.zip&quot;</span>
+<span class="n">files</span> <span class="o">=</span> <span class="n">pooch</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">processor</span><span class="o">=</span><span class="n">pooch</span><span class="o">.</span><span class="n">Unzip</span><span class="p">(),</span> <span class="n">known_hash</span><span class="o">=</span><span class="s2">&quot;2a703c720302c682f1662181d329c9f22f9f10e1539dc2d6082160a469165009&quot;</span><span class="p">)</span>
+<span class="n">files</span>
+</pre></div>
 </div>
-<div class="section" id="load-the-data-file">
-<h3>2.2 Load the data file<a class="headerlink" href="#load-the-data-file" title="Permalink to this headline">¶</a></h3>
 </div>
-<div class="section" id="extract-the-temperature-pressure-and-salinity-arrays-to-arrays-t-s-p-and-masking-out-invalid-data-the-nan-values-from-missing-points">
-<h3>2.3 Extract the temperature, pressure and salinity arrays to arrays T, S, P and masking out invalid data (the nan values from missing points).<a class="headerlink" href="#extract-the-temperature-pressure-and-salinity-arrays-to-arrays-t-s-p-and-masking-out-invalid-data-the-nan-values-from-missing-points" title="Permalink to this headline">¶</a></h3>
 </div>
-<div class="section" id="extract-the-date-lat-lon-and-level-arrays">
-<h3>2.4 Extract the date, lat, lon, and level arrays.<a class="headerlink" href="#extract-the-date-lat-lon-and-level-arrays" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="load-each-data-file-as-a-numpy-array">
+<h3>2.1 Load each data file as a numpy array.<a class="headerlink" href="#load-each-data-file-as-a-numpy-array" title="Permalink to this headline">¶</a></h3>
+<p>You can use whatever names you want for your arrays, but I recommend <code class="docutils literal notranslate"><span class="pre">T</span></code>, <code class="docutils literal notranslate"><span class="pre">S</span></code>, <code class="docutils literal notranslate"><span class="pre">P</span></code>, <code class="docutils literal notranslate"><span class="pre">data</span></code>, <code class="docutils literal notranslate"><span class="pre">lat</span></code>, <code class="docutils literal notranslate"><span class="pre">lon</span></code>, and <code class="docutils literal notranslate"><span class="pre">level</span></code></p>
 </div>
-<div class="section" id="note-the-shapes-of-t-s-and-p-compared-to-these-arrays-how-do-they-line-up">
-<h3>2.5 Note the shapes of T, S and P compared to these arrays. How do they line up?<a class="headerlink" href="#note-the-shapes-of-t-s-and-p-compared-to-these-arrays-how-do-they-line-up" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="examine-the-shapes-of-t-s-and-p-compared-to-these-arrays-how-do-you-think-they-line-up">
+<h3>2.2 Examine the shapes of T, S and P compared to these arrays. How do you think they line up?<a class="headerlink" href="#examine-the-shapes-of-t-s-and-p-compared-to-these-arrays-how-do-you-think-they-line-up" title="Permalink to this headline">¶</a></h3>
+<p>Based on the shapes, which dimensions do you think are shared among the arrays?</p>
 </div>
 <div class="section" id="make-a-plot-for-each-column-of-data-in-t-s-and-p-three-plots">
-<h3>2.6 Make a plot for each column of data in T, S and P (three plots).<a class="headerlink" href="#make-a-plot-for-each-column-of-data-in-t-s-and-p-three-plots" title="Permalink to this headline">¶</a></h3>
+<h3>2.3 Make a plot for each column of data in T, S and P (three plots).<a class="headerlink" href="#make-a-plot-for-each-column-of-data-in-t-s-and-p-three-plots" title="Permalink to this headline">¶</a></h3>
 <p>The vertical scale should be the <code class="docutils literal notranslate"><span class="pre">levels</span></code> data. Flip the veritcal axis direction so that levels increase downward on the plot. Each plot should have a line for each column of data. It will look messy.  Make sure you label the axes and put a title on each plot.</p>
 </div>
 <div class="section" id="compute-the-mean-and-standard-deviation-of-each-of-t-s-and-p-at-each-depth-in-level">
-<h3>2.7 Compute the mean and standard deviation of each of T, S and P at each depth in <code class="docutils literal notranslate"><span class="pre">level</span></code>.<a class="headerlink" href="#compute-the-mean-and-standard-deviation-of-each-of-t-s-and-p-at-each-depth-in-level" title="Permalink to this headline">¶</a></h3>
+<h3>2.4 Compute the mean and standard deviation of each of T, S and P at each depth in <code class="docutils literal notranslate"><span class="pre">level</span></code>.<a class="headerlink" href="#compute-the-mean-and-standard-deviation-of-each-of-t-s-and-p-at-each-depth-in-level" title="Permalink to this headline">¶</a></h3>
 </div>
 <div class="section" id="now-make-three-similar-plot-but-show-only-the-mean-t-s-and-p-at-each-depth-show-error-bars-on-each-plot-using-the-standard-deviations">
-<h3>2.8 Now make three similar plot, but show only the mean T, S and P at each depth. Show <a class="reference external" href="https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.errorbar.html">error bars</a> on each plot using the standard deviations.<a class="headerlink" href="#now-make-three-similar-plot-but-show-only-the-mean-t-s-and-p-at-each-depth-show-error-bars-on-each-plot-using-the-standard-deviations" title="Permalink to this headline">¶</a></h3>
+<h3>2.5 Now make three similar plot, but show only the mean T, S and P at each depth. Show <a class="reference external" href="https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.errorbar.html">error bars</a> on each plot using the standard deviations.<a class="headerlink" href="#now-make-three-similar-plot-but-show-only-the-mean-t-s-and-p-at-each-depth-show-error-bars-on-each-plot-using-the-standard-deviations" title="Permalink to this headline">¶</a></h3>
 <p>Again, make sure you label the axes and put a title on each plot.</p>
 </div>
-<div class="section" id="create-a-scatter-plot-of-the-positions-of-the-argo-float-data-color-the-positions-by-the-date-add-a-grid-overlay">
-<h3>2.9 Create a scatter plot of the positions of the ARGO float data.  Color the positions by the date. Add a grid overlay.<a class="headerlink" href="#create-a-scatter-plot-of-the-positions-of-the-argo-float-data-color-the-positions-by-the-date-add-a-grid-overlay" title="Permalink to this headline">¶</a></h3>
-<p>Don’t forget to label the axes!</p>
+<div class="section" id="create-a-scatter-plot-of-the-lon-lat-positions-of-the-argo-float">
+<h3>2.6 Create a scatter plot of the <code class="docutils literal notranslate"><span class="pre">lon</span></code>, <code class="docutils literal notranslate"><span class="pre">lat</span></code> positions of the ARGO float.<a class="headerlink" href="#create-a-scatter-plot-of-the-lon-lat-positions-of-the-argo-float" title="Permalink to this headline">¶</a></h3>
+<p>Use the <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.scatter.html">plt.scatter</a> function.</p>
 </div>
 </div>
 </div>
