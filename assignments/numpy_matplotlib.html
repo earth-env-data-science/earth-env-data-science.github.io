@@ -519,8 +519,32 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#examine-the-shapes-of-t-s-and-p-compared-to-these-arrays-how-do-you-think-they-line-up">
-     2.2 Examine the shapes of T, S and P compared to these arrays. How do you think they line up?
+    <a class="reference internal nav-link" href="#examine-the-shapes-of-t-s-and-p-compared-to-lon-lat-date-and-level-how-do-you-think-they-are-related">
+     2.2 Examine the shapes of T, S and P compared to
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       lon
+      </span>
+     </code>
+     ,
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       lat
+      </span>
+     </code>
+     ,
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       date
+      </span>
+     </code>
+     and
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       level
+      </span>
+     </code>
+     . How do you think they are related?
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -542,6 +566,11 @@
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#now-make-three-similar-plot-but-show-only-the-mean-t-s-and-p-at-each-depth-show-error-bars-on-each-plot-using-the-standard-deviations">
      2.5 Now make three similar plot, but show only the mean T, S and P at each depth. Show error bars on each plot using the standard deviations.
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#account-for-missing-data">
+     2.6 Account For Missing Data
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -625,8 +654,11 @@
 </div>
 </div>
 <div class="section" id="part-2-analyze-argo-data">
-<h2>Part 2: Analyze <a class="reference external" href="http://www.argo.ucsd.edu/About_Argo.html">ARGO</a> Data<a class="headerlink" href="#part-2-analyze-argo-data" title="Permalink to this headline">¶</a></h2>
-<p>In this problem, we use real data from ocean profiling floats.</p>
+<h2>Part 2: Analyze <a class="reference external" href="http://www.argo.ucsd.edu">ARGO</a> Data<a class="headerlink" href="#part-2-analyze-argo-data" title="Permalink to this headline">¶</a></h2>
+<p>In this problem, we use real data from ocean profiling floats.
+ARGO floats are autonomous robotic instruments that collect Temperature, Salinity, and Pressure data from the ocean. ARGO floats collect one “profile” (a set of messurements at different depths or “levels”).</p>
+<img src="https://argo.ucsd.edu/wp-content/uploads/sites/361/2020/06/float_cycle_1.png" width="80%" />
+<p>Each profile has a single latitude, longitude, and date associated with it, in addition to many different levels.</p>
 <p>Let’s start by using <a class="reference external" href="https://www.fatiando.org/pooch/latest/">pooch</a> to download the data files we need for this exercise.
 The following code will give you a list of <code class="docutils literal notranslate"><span class="pre">.npy</span></code> files that you can open in the next step.</p>
 <div class="cell docutils container">
@@ -641,21 +673,35 @@ The following code will give you a list of <code class="docutils literal notrans
 </div>
 <div class="section" id="load-each-data-file-as-a-numpy-array">
 <h3>2.1 Load each data file as a numpy array.<a class="headerlink" href="#load-each-data-file-as-a-numpy-array" title="Permalink to this headline">¶</a></h3>
-<p>You can use whatever names you want for your arrays, but I recommend <code class="docutils literal notranslate"><span class="pre">T</span></code>, <code class="docutils literal notranslate"><span class="pre">S</span></code>, <code class="docutils literal notranslate"><span class="pre">P</span></code>, <code class="docutils literal notranslate"><span class="pre">data</span></code>, <code class="docutils literal notranslate"><span class="pre">lat</span></code>, <code class="docutils literal notranslate"><span class="pre">lon</span></code>, and <code class="docutils literal notranslate"><span class="pre">level</span></code></p>
+<p>You can use whatever names you want for your arrays, but I recommend</p>
+<p><code class="docutils literal notranslate"><span class="pre">T</span></code>: temperature</p>
+<p><code class="docutils literal notranslate"><span class="pre">S</span></code>: salinity</p>
+<p><code class="docutils literal notranslate"><span class="pre">P</span></code>: pressure</p>
+<p><code class="docutils literal notranslate"><span class="pre">date</span></code>: date</p>
+<p><code class="docutils literal notranslate"><span class="pre">lat</span></code>: latitude</p>
+<p><code class="docutils literal notranslate"><span class="pre">lon</span></code>: longitude</p>
+<p><code class="docutils literal notranslate"><span class="pre">level</span></code>: depth level</p>
+<p><strong>Note</strong>: you have to actually look at the file name (the items in <code class="docutils literal notranslate"><span class="pre">files</span></code>) to know which files corresponds to which variable.</p>
 </div>
-<div class="section" id="examine-the-shapes-of-t-s-and-p-compared-to-these-arrays-how-do-you-think-they-line-up">
-<h3>2.2 Examine the shapes of T, S and P compared to these arrays. How do you think they line up?<a class="headerlink" href="#examine-the-shapes-of-t-s-and-p-compared-to-these-arrays-how-do-you-think-they-line-up" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="examine-the-shapes-of-t-s-and-p-compared-to-lon-lat-date-and-level-how-do-you-think-they-are-related">
+<h3>2.2 Examine the shapes of T, S and P compared to <code class="docutils literal notranslate"><span class="pre">lon</span></code>, <code class="docutils literal notranslate"><span class="pre">lat</span></code>, <code class="docutils literal notranslate"><span class="pre">date</span></code> and <code class="docutils literal notranslate"><span class="pre">level</span></code>. How do you think they are related?<a class="headerlink" href="#examine-the-shapes-of-t-s-and-p-compared-to-lon-lat-date-and-level-how-do-you-think-they-are-related" title="Permalink to this headline">¶</a></h3>
 <p>Based on the shapes, which dimensions do you think are shared among the arrays?</p>
 </div>
 <div class="section" id="make-a-plot-for-each-column-of-data-in-t-s-and-p-three-plots">
 <h3>2.3 Make a plot for each column of data in T, S and P (three plots).<a class="headerlink" href="#make-a-plot-for-each-column-of-data-in-t-s-and-p-three-plots" title="Permalink to this headline">¶</a></h3>
-<p>The vertical scale should be the <code class="docutils literal notranslate"><span class="pre">levels</span></code> data. Flip the veritcal axis direction so that levels increase downward on the plot. Each plot should have a line for each column of data. It will look messy.</p>
+<p>The vertical scale should be the <code class="docutils literal notranslate"><span class="pre">levels</span></code> data. Each plot should have a line for each column of data. It will look messy.</p>
 </div>
 <div class="section" id="compute-the-mean-and-standard-deviation-of-each-of-t-s-and-p-at-each-depth-in-level">
 <h3>2.4 Compute the mean and standard deviation of each of T, S and P at each depth in <code class="docutils literal notranslate"><span class="pre">level</span></code>.<a class="headerlink" href="#compute-the-mean-and-standard-deviation-of-each-of-t-s-and-p-at-each-depth-in-level" title="Permalink to this headline">¶</a></h3>
 </div>
 <div class="section" id="now-make-three-similar-plot-but-show-only-the-mean-t-s-and-p-at-each-depth-show-error-bars-on-each-plot-using-the-standard-deviations">
 <h3>2.5 Now make three similar plot, but show only the mean T, S and P at each depth. Show <a class="reference external" href="https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.errorbar.html">error bars</a> on each plot using the standard deviations.<a class="headerlink" href="#now-make-three-similar-plot-but-show-only-the-mean-t-s-and-p-at-each-depth-show-error-bars-on-each-plot-using-the-standard-deviations" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="account-for-missing-data">
+<h3>2.6 Account For Missing Data<a class="headerlink" href="#account-for-missing-data" title="Permalink to this headline">¶</a></h3>
+<p>The profiles contain many missing values. These are indicated by the special “Not a Number” value, or <code class="docutils literal notranslate"><span class="pre">np.nan</span></code>.</p>
+<p>When you take the mean or standard deviation of data with NaNs in it, the entire result becomes NaN. Instead, if you use the special functions <code class="docutils literal notranslate"><span class="pre">np.nanmean</span></code> and <code class="docutils literal notranslate"><span class="pre">np.nanstd</span></code>, you tell NumPy to ignore the NaNs.</p>
+<p>Recalculate the means and standard deviations as in the previous sections using these functions and plot the results.</p>
 </div>
 <div class="section" id="create-a-scatter-plot-of-the-lon-lat-positions-of-the-argo-float">
 <h3>2.6 Create a scatter plot of the <code class="docutils literal notranslate"><span class="pre">lon</span></code>, <code class="docutils literal notranslate"><span class="pre">lat</span></code> positions of the ARGO float.<a class="headerlink" href="#create-a-scatter-plot-of-the-lon-lat-positions-of-the-argo-float" title="Permalink to this headline">¶</a></h3>
