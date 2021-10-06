@@ -453,33 +453,47 @@
   <div class="section" id="assignment-4-more-matplotlib">
 <h1>Assignment 4: More Matplotlib<a class="headerlink" href="#assignment-4-more-matplotlib" title="Permalink to this headline">¶</a></h1>
 <p>The goal here is to replicate the figures you see as closely as possible.</p>
-<p>In order to get some data, you will have to run the code in the cells below. <strong>Don’t worry about how this code works.</strong> In the end, it will give you some Numpy arrays, which you will use in your plots. You are not allowed to use any packages other than Numpy and Matplotlib to complete your assignment.</p>
+<p>In order to get some data, you will have to run the code in the cells below. <strong>Don’t worry about how this code works.</strong> In the end, it will give you some numpy arrays, which you will use in your plots. You are not allowed to use any packages other than numpy and matplotlib to complete your assignment.</p>
 <div class="section" id="problem-1-line-plots">
 <h2>Problem 1: Line plots<a class="headerlink" href="#problem-1-line-plots" title="Permalink to this headline">¶</a></h2>
 <p>In this problem, we will plot some daily weather data from a NOAA station in <a class="reference external" href="https://www.ncdc.noaa.gov/cdo-web/datasets/GHCND/stations/GHCND:US1NYDT0008/detail">Millbrook, NY</a>. A full description of this dataset is available at: <a class="reference external" href="https://www.ncdc.noaa.gov/data-access/land-based-station-data">https://www.ncdc.noaa.gov/data-access/land-based-station-data</a></p>
-<p>The cell below uses Pandas to download the data and populate a bunch of Numpy arrays (<code class="docutils literal notranslate"><span class="pre">t_daily_min</span></code>, <code class="docutils literal notranslate"><span class="pre">t_daily_max</span></code>, etc.) Run the cell and then use the Numpy arrays to try to re-create the plot you see.</p>
+<p>The cell below uses pandas to download the data and populate a bunch of numpy arrays (<code class="docutils literal notranslate"><span class="pre">t_daily_min</span></code>, <code class="docutils literal notranslate"><span class="pre">t_daily_max</span></code>, etc.) Run the cell and then use the numpy arrays to try to re-create the plot you see.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">urllib</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pooch</span>
+<span class="n">POOCH</span> <span class="o">=</span> <span class="n">pooch</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">path</span><span class="o">=</span><span class="n">pooch</span><span class="o">.</span><span class="n">os_cache</span><span class="p">(</span><span class="s2">&quot;noaa-data&quot;</span><span class="p">),</span>
+    <span class="c1"># Use the figshare DOI</span>
+    <span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;doi:10.5281/zenodo.5553029/&quot;</span><span class="p">,</span>
+    <span class="n">registry</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;HEADERS.txt&quot;</span><span class="p">:</span> <span class="s2">&quot;md5:2a306ca225fe3ccb72a98953ded2f536&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CRND0103-2016-NY_Millbrook_3_W.txt&quot;</span><span class="p">:</span> <span class="s2">&quot;md5:eb69811d14d0573ffa69f70dd9c768d9&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CRND0103-2017-NY_Millbrook_3_W.txt&quot;</span><span class="p">:</span> <span class="s2">&quot;md5:b911da727ba1bdf26a34a775f25d1088&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CRND0103-2018-NY_Millbrook_3_W.txt&quot;</span><span class="p">:</span> <span class="s2">&quot;md5:5b61bc687261596eba83801d7080dc56&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CRND0103-2019-NY_Millbrook_3_W.txt&quot;</span><span class="p">:</span> <span class="s2">&quot;md5:9b814430612cd8a770b72020ca4f2b7d&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CRND0103-2020-NY_Millbrook_3_W.txt&quot;</span><span class="p">:</span> <span class="s2">&quot;md5:cd8de6d5445024ce35fcaafa9b0e7b64&quot;</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+
+
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
-<span class="n">header_url</span> <span class="o">=</span> <span class="s1">&#39;ftp://ftp.ncdc.noaa.gov/pub/data/uscrn/products/daily01/HEADERS.txt&#39;</span>
-<span class="k">with</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">header_url</span><span class="p">)</span> <span class="k">as</span> <span class="n">response</span><span class="p">:</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">POOCH</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s2">&quot;HEADERS.txt&quot;</span><span class="p">))</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 <span class="n">lines</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="n">headers</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
 
-<span class="n">ftp_base</span> <span class="o">=</span> <span class="s1">&#39;ftp://ftp.ncdc.noaa.gov/pub/data/uscrn/products/daily01/&#39;</span>
 <span class="n">dframes</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2016</span><span class="p">,</span> <span class="mi">2019</span><span class="p">):</span>
-    <span class="n">data_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s1">/CRND0103-</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s1">-NY_Millbrook_3_W.txt&#39;</span>               
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">ftp_base</span> <span class="o">+</span> <span class="n">data_url</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+    <span class="n">fname</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;CRND0103-</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s1">-NY_Millbrook_3_W.txt&#39;</span>               
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">POOCH</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="n">fname</span><span class="p">),</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
                      <span class="n">names</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;\s+&#39;</span><span class="p">,</span>
                      <span class="n">na_values</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">9999.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">99.0</span><span class="p">])</span>
     <span class="n">dframes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">dframes</span><span class="p">)</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;LST_DATE&#39;</span><span class="p">)</span>
+<span class="n">df</span>
 
 <span class="c1">#########################################################</span>
 <span class="c1">#### BELOW ARE THE VARIABLES YOU SHOULD USE IN THE PLOTS!</span>
@@ -503,11 +517,7 @@
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">units</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;XXXXX&#39;</span><span class="p">,</span> <span class="s1">&#39;YYYYMMDD&#39;</span><span class="p">,</span> <span class="s1">&#39;XXXXXX&#39;</span><span class="p">,</span><span class="s1">&#39;Decimal_degrees&#39;</span><span class="p">,</span> <span class="s1">&#39;Decimal_degrees&#39;</span><span class="p">,</span> <span class="s1">&#39;Celsius&#39;</span><span class="p">,</span> <span class="s1">&#39;Celsius&#39;</span><span class="p">,</span> 
-         <span class="s1">&#39;Celsius&#39;</span><span class="p">,</span> <span class="s1">&#39;Celsius&#39;</span><span class="p">,</span> <span class="s1">&#39;mm&#39;</span><span class="p">,</span> <span class="s1">&#39;MJ/m^2&#39;</span><span class="p">,</span> <span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="s1">&#39;Celsius&#39;</span><span class="p">,</span> <span class="s1">&#39;Celsius&#39;</span><span class="p">,</span> <span class="s1">&#39;Celsius&#39;</span><span class="p">,</span> <span class="s1">&#39;%&#39;</span><span class="p">,</span> <span class="s1">&#39;%&#39;</span><span class="p">,</span> <span class="s1">&#39;%&#39;</span><span class="p">,</span>
-         <span class="s1">&#39;m^3/m^3&#39;</span><span class="p">,</span> <span class="s1">&#39;m^3/m^3&#39;</span><span class="p">,</span> <span class="s1">&#39;m^3/m^3&#39;</span><span class="p">,</span> <span class="s1">&#39;m^3/m^3&#39;</span><span class="p">,</span> <span class="s1">&#39;m^3/m^3&#39;</span><span class="p">,</span> <span class="s1">&#39;Celsius&#39;</span><span class="p">,</span> <span class="s1">&#39;Celsius&#39;</span><span class="p">,</span> <span class="s1">&#39;Celsius&#39;</span><span class="p">,</span>
-         <span class="s1">&#39;Celsius&#39;</span><span class="p">,</span> <span class="s1">&#39;Celsius&#39;</span><span class="p">]</span>
-
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">units</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">unit</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">headers</span><span class="p">,</span> <span class="n">units</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">unit</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
@@ -542,11 +552,11 @@ SOIL_TEMP_10_DAILY: Celsius
 SOIL_TEMP_20_DAILY: Celsius
 SOIL_TEMP_50_DAILY: Celsius
 SOIL_TEMP_100_DAILY: Celsius
+: 
 </pre></div>
 </div>
 </div>
 </div>
-<p><img alt="fig1" src="../_images/fig1.png" /></p>
 </div>
 <div class="section" id="problem-2-contour-plots">
 <h2>Problem 2: Contour Plots<a class="headerlink" href="#problem-2-contour-plots" title="Permalink to this headline">¶</a></h2>
@@ -570,40 +580,19 @@ SOIL_TEMP_100_DAILY: Celsius
 </div>
 </div>
 </div>
-<p><img alt="fig2" src="../_images/fig2.png" /></p>
 </div>
 <div class="section" id="problem-3-scatter-plots">
 <h2>Problem 3: Scatter plots<a class="headerlink" href="#problem-3-scatter-plots" title="Permalink to this headline">¶</a></h2>
-<p>Here we will make a map plot of earthquakes from a USGS catalog of historic large earthquakes. Color the earthquakes by log10(depth) and adjust the marker size to be magntiude<span class="math notranslate nohighlight">\(^4\)</span>/100</p>
+<p>Here we will make a map plot of earthquakes from a USGS catalog of historic large earthquakes. Color the earthquakes by log10(depth) and adjust the marker size to be magntiude<span class="math notranslate nohighlight">\(^2\)</span>/100</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>curl -L -o earthquakes.tsv <span class="s2">&quot;https://drive.google.com/uc?export=download&amp;id=1dFZ4LbwNaw-Gr0G-ZlPAZ17n2qCkdQBP&quot;</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100   388    0   388    0     0    560      0 --:--:-- --:--:-- --:--:--   559
-100  796k  100  796k    0     0   905k      0 --:--:-- --:--:-- --:--:--  905k
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#########################################################</span>
-<span class="c1">#### BELOW ARE THE VARIABLES YOU SHOULD USE IN THE PLOT!</span>
-<span class="c1">#########################################################</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fname</span> <span class="o">=</span> <span class="n">pooch</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span>
+    <span class="s2">&quot;https://rabernat.github.io/research_computing/signif.txt.tsv.zip&quot;</span><span class="p">,</span>
+    <span class="n">known_hash</span><span class="o">=</span><span class="s1">&#39;22b9f7045bf90fb99e14b95b24c81da3c52a0b4c79acf95d72fbe3a257001dbb&#39;</span><span class="p">,</span>
+    <span class="n">processor</span><span class="o">=</span><span class="n">pooch</span><span class="o">.</span><span class="n">Unzip</span><span class="p">()</span>
+<span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
-<span class="n">earthquakes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="s1">&#39;earthquakes.tsv&#39;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">earthquakes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="n">depth</span> <span class="o">=</span> <span class="n">earthquakes</span><span class="p">[:,</span> <span class="mi">8</span><span class="p">]</span>
 <span class="n">magnitude</span> <span class="o">=</span> <span class="n">earthquakes</span><span class="p">[:,</span> <span class="mi">9</span><span class="p">]</span>
 <span class="n">latitude</span> <span class="o">=</span> <span class="n">earthquakes</span><span class="p">[:,</span> <span class="mi">20</span><span class="p">]</span>
