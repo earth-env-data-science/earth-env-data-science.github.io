@@ -431,13 +431,23 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#geosciences-python-environment">
-   Geosciences Python Environment
+  <a class="reference internal nav-link" href="#installing-more-packages">
+   Installing More Packages
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#installing-more-packages">
-   Installing More Packages
+  <a class="reference internal nav-link" href="#channels-and-conda-forge">
+   Channels and Conda Forge
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#speeding-things-up-with-mamba">
+   Speeding things up with Mamba
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pangeo-python-environment">
+   Pangeo Python Environment
   </a>
  </li>
 </ul>
@@ -453,7 +463,7 @@
                 
   <div class="section" id="managing-python-environments">
 <h1>Managing Python Environments<a class="headerlink" href="#managing-python-environments" title="Permalink to this headline">¶</a></h1>
-<p><em>Note: many elements in this guide are adapted from
+<p><em>Note: many elements in this guide 2343 adapted from
 <a class="reference external" href="http://danielrothenberg.com/">Daniel Rothenberg</a>’s excellent
 <a class="reference external" href="http://danielrothenberg.com/gcpy/getting_started.html">getting started guide</a>.</em></p>
 <div class="section" id="python">
@@ -472,7 +482,7 @@ Coordinating the compatibility between these different packages and their
 multiple versions used to be a nightmare!
 Fortunately, the problem is solved completely by using a Python <em>distribution</em>
 and / or a Python <em>package manager</em> (described in detail below).</p>
-<p>The only hard-and-fast rule about scientific computing in Python is this:</p>
+<p>One important rule about scientific computing in Python is this:</p>
 <p><strong>Do not use your system Python installation!</strong></p>
 <p>The version of Python that ships with operating systems such as Red Hat Linux and
 macOS is usually outdated and configured to support system functions. Although it
@@ -480,14 +490,14 @@ is entirely possible to install and use the necessary packages using the system
 Python, it’s much more practical on both
 your local machine and any other computers you work with to use a specialized Python
 installation.</p>
-<p><strong>Should I use Python 2 or Python 3?</strong></p>
-<p>You should use Python 3. The majority of the scientific Python packages are
-<a class="reference external" href="http://www.python3statement.org/">now support only Python 3</a> in the
-near future without any backwards compatibility. The differences between
-Python 2 and Python 3 are mostly superficial, but large enough that it is
-cumbersome to maintain large codebases that are compatible with both. With the
-exception of a handful of packages you may encounter which do not support
-Python 3, there is no compelling reason to use Python 2 today.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Everything in this course uses Python 3, the latest version of Python.
+Python 2 is similar, but has some important differences that can make
+Python 2 code incompatible with Python 3.
+Python 2 was officially deprecated (declared obsolete) on
+<a class="reference external" href="https://www.python.org/doc/sunset-python-2/">Jan 1, 2020</a></p>
+</div>
 </div>
 <div class="section" id="recommended-installation-method-use-anaconda-python">
 <h2>Recommended Installation Method: Use Anaconda Python<a class="headerlink" href="#recommended-installation-method-use-anaconda-python" title="Permalink to this headline">¶</a></h2>
@@ -553,13 +563,13 @@ than the “default” environment.</p>
 <a class="reference external" href="https://conda.io/docs/user-guide/getting-started.html">Getting Started with Conda</a>
 guide.</p>
 <p>To create a conda environment, you execute the following command:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ conda create --name my_environment python=3.7 numpy
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ conda create --name my_environment python=3.9 numpy
 </pre></div>
 </div>
 <p>This will create a special environment in <code class="docutils literal notranslate"><span class="pre">$MINICONDA_HOME/envs/my_environment</span></code>
 with only Python and numpy to begin with. Here, we’ve also told conda to install
-Python version 3.7; you can specify exact versions or minima, and conda will
-take care of figuring out all the compatibilties between versions for you. To use
+Python version 3.9; you can specify exact versions or minima, and conda will
+take care of figuring out all the compatibilities between versions for you. To use
 this environment, simply “activate” it by executing:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ conda activate my_environment
 </pre></div>
@@ -567,7 +577,8 @@ this environment, simply “activate” it by executing:</p>
 <p>Regardless of your shell, you should now see the string <code class="docutils literal notranslate"><span class="pre">(my_environment)</span></code>
 prepended to your prompt. Now, if you execute any Python-related tool from the
 command line, it will first search in <code class="docutils literal notranslate"><span class="pre">$MINICONDA_HOME/envs/my_environment/bin</span></code>
-to find them. You can deactivate your environment by typing:</p>
+to find them.</p>
+<p>You can deactivate your environment by typing:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ conda deactivate
 </pre></div>
 </div>
@@ -598,69 +609,12 @@ configuration can be installed by executing</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ conda env create -f my_environment.yml
 </pre></div>
 </div>
-</div>
-<div class="section" id="geosciences-python-environment">
-<h2>Geosciences Python Environment<a class="headerlink" href="#geosciences-python-environment" title="Permalink to this headline">¶</a></h2>
-<p>Combining all of the previous sections, we can very easily spin-up a
-full-featured scientific Python environment with a set of packages curated for the
-geosciences. Copy and paste the following <code class="docutils literal notranslate"><span class="pre">environment.yml</span></code> file somewhere
-on your local hard drive:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>name: rces
-channels:
-    - conda-forge
-    - defaults
-dependencies:
-    - python=3.7    # Python version 3.7
-    - basemap       # mapping package
-    - bottleneck    # C-optimized array functions for NumPy
-    - cartopy       # Geographic plotting toolkit
-    - dask          # Parallel processing library
-    - h5py          # Wrapper for HDF5
-    - ipython       # IPython interpreter and tools
-    - jupyter       # Jupyter federation architecture
-    - jupyterlab    # Jupyter Lab environment
-    - matplotlib    # 2D plotting library
-    - netcdf4       # Wrapper for netcdf4
-    - numpy         # N-d array and numerics
-    - numba         # For speeding up python code
-    - pandas        # Labeled array library
-    - proj4         # geographic projections
-    - pyresample    # Geographic resampling tools
-    - scipy         # Common math/stats/science functions
-    - scikit-learn  # Macine learning library
-    - scikit-image  # Image processing routines
-    - statsmodels   # Regression/modeling toolkit
-    - seaborn       # Statistical visualizations
-    - tqdm          # Nice progress bar for longer computations
-    - xarray        # N-d labeled array library
-    - xesmf         # Geographical regridding based on ESMF
-    - xgcm          # Tools for working with finite-volume grids
-    - zarr          # Array storage library
-    - numcodecs     # Compression library used by zarr
-    - gcsfs         # Access data from Google Cloud Storage
-    - s3fs          # Access data from Amazon S3
-</pre></div>
-</div>
-<p>(<strong>Note:</strong>
-Installing this environment will also install many dependencies, including
-compiled libraries. This is totally fine; even if you have these libraries
-already installed through your system package manager, <strong>conda</strong> will install
-and link for use in the environment a configuration which should be to play
-nicely and work with all of its components.)</p>
-<p>Create this environment through <strong>conda</strong></p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ conda env create -f environment.yml
-</pre></div>
-</div>
-<p>Activate this environment</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ source activate rces
-</pre></div>
-</div>
-<p>This environment should be sufficient for all of your work in this class.</p>
+<p>Below we will see an example of an environment file.</p>
 </div>
 <div class="section" id="installing-more-packages">
 <h2>Installing More Packages<a class="headerlink" href="#installing-more-packages" title="Permalink to this headline">¶</a></h2>
 <p>Once you have a basic Python environment, you can easily add or remove packages
-using the <a class="reference external" href="https://conda.io/">conda</a> command line utility.
+using conda.
 Conda was created to help manage the complex dependencies and
 pre-compiled binary libraries that are necessary in scientific python.</p>
 <p>If you set up your python environment using the Anaconda Python Distribution or
@@ -693,37 +647,185 @@ use the <strong>pip</strong> command from a the command line:</p>
 <p>This will fetch the source code, build it, and install it to wherever your
 <code class="docutils literal notranslate"><span class="pre">$PYTHONPATH</span></code> is set. This works in the vast majority of cases, particularly
 when the code you’re installing doesn’t have any compiled dependencies.</p>
-<p>If you
-can’t find a package on either PyPI or conda-forge, you can always install it
+<p>If you can’t find a package on either PyPI or conda-forge, you can always install it
 directly from the source code. If the package is on github, <code class="docutils literal notranslate"><span class="pre">pip</span></code> already has
 an alias to do this for you:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pip install git+https://github.com/&lt;user&gt;/&lt;package-name&gt;.git
 </pre></div>
 </div>
-<p>If all else fails, you can always download the source code and install it manually
-like</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ wget https:/path/to/my/pkg/source.tar.gz
-$ tar -xvzf source.tar.gz
-$ cd source/
-$ python setup.py install
+</div>
+<div class="section" id="channels-and-conda-forge">
+<h2>Channels and Conda Forge<a class="headerlink" href="#channels-and-conda-forge" title="Permalink to this headline">¶</a></h2>
+<p>Where do conda packages come from?
+The packages are hosted on conda <a class="reference external" href="https://conda.io/projects/conda/en/latest/user-guide/concepts/channels.html">“channels”</a>. From the conda docs:</p>
+<blockquote>
+<div><p>Conda channels are the locations where packages are stored. They serve as the base for hosting and managing packages. Conda packages are downloaded from remote channels, which are URLs to directories containing conda packages. The conda command searches a set of channels. By default, packages are automatically downloaded and updated from the default channel <a class="reference external" href="https://repo.anaconda.com/pkgs/">https://repo.anaconda.com/pkgs/</a> which may require a paid license, as described in the repository <a class="reference external" href="https://www.anaconda.com/terms-of-service">terms of service</a> a commercial license. The conda-forge channel is free for all to use. You can modify what remote channels are automatically searched. You might want to do this to maintain a private or internal channel. For details, see how to modify your channel lists.</p>
+<p>Conda-forge is a community channel made up of thousands of contributors. Conda-forge itself is analogous to PyPI but with a unified, automated build infrastructure and more peer review of recipes.</p>
+</div></blockquote>
+<p>Don’t be worried by the “commercial license part”.
+The Anaconda channel terms of service clearly excludes all educational activities
+and all research activities at non-profit institutions from their definition of commercial usage.
+Even companies with fewer than 200 employees are excluded.
+The aim of the commercial paid license for Anaconda is to require large corporations
+which use the repository heavily to contribute financially to its maintenance and development.
+Without such contributions, Anaconda might not be able to sustain itself.</p>
+<p>Despite this, we still recommend <strong>always using the conda-forge channel for your python environments</strong>.
+The reason are as follows:</p>
+<ul class="simple">
+<li><p>Conda Forge is always free from commercial license restrictions</p></li>
+<li><p>Conda Forge generally has the largest volume of packages and the most up-to-date versions</p></li>
+<li><p>You can contribute your own packages to conda forge! This is not covered by this book,
+but you can read about it in the <a class="reference external" href="https://conda-forge.org/docs/maintainer/adding_pkgs.html">Conda Forge docs</a>.</p></li>
+</ul>
+<p>A simple way to use the conda forge channel is to pass the <code class="docutils literal notranslate"><span class="pre">-c</span></code> option when you run conda:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ conda install -c conda-forge  {package_name}
 </pre></div>
 </div>
-<p>You can also use <code class="docutils literal notranslate"><span class="pre">pip</span></code> to install code you’ve downloaded:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ cd source/
-$ pip install -e .
+<p>As shown below, you can also add conda-forge to your <code class="docutils literal notranslate"><span class="pre">environment.yml</span></code> file.</p>
+</div>
+<div class="section" id="speeding-things-up-with-mamba">
+<h2>Speeding things up with Mamba<a class="headerlink" href="#speeding-things-up-with-mamba" title="Permalink to this headline">¶</a></h2>
+<p>In order to put together an actual python environment from your package specifications,
+conda has to solve a difficult puzzle.
+Each package specified has certain dependencies on other packages.
+For example, Xarray depends on Numpy, Pandas, and several others.
+Moreoever, each version of Xarray requires certain minimum versions of other
+packages (e.g. Xarray 0.19 requires Numpy &gt;= 1.17 and Pandas &gt;= 1.0).
+Other packages in your environment may have different or incompatible versions.
+Finding a combination of packages that are mutually compatible can be framed
+mathematically as a <a class="reference external" href="https://en.wikipedia.org/wiki/Boolean_satisfiability_problem">boolean satisfiability problem</a>.</p>
+<p>The default “solver” of this problem for conda can be <a class="reference external" href="https://www.anaconda.com/blog/understanding-and-improving-condas-performance">slow</a>
+It is not unheard of to spend 30 minutes or more solving large environments! 😱
+Fortunately, a much faster alternative called <a class="reference external" href="https://github.com/mamba-org/mamba">mamba</a>
+has recently come out.
+To install it, just run:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>conda install -n base -c conda-forge mamba
 </pre></div>
 </div>
-<p>This will automatically call <strong><a class="reference external" href="http://setup.py">setup.py</a></strong> for you. The “<strong>-e</strong>” flag will
-install the package in “editable” mode, which means that any change you make
-to the source code will automatically be recognized when you load the package
-in Python; this is <em>especially</em> useful when you’re developing code.</p>
-<p>Finally, you don’t <em>have</em> to go through this process of installing packages. If you
-have code sitting on your disk somewhere, you can always modify the environmental
-variable <code class="docutils literal notranslate"><span class="pre">$PYTHONPATH</span></code> to include a path to that code, and Python will find it
-for you. However, you <em>should not do this</em> if it can be avoided, because it is
-extremely difficult (if not impossible) to be sure that any compiled code will
-link against the correct libraries it needs, and it is very hard to debug errors
-associated with mis-matched libraries/headers if you go this route.</p>
+<p>Now you can install environments and packages as before, but using the <code class="docutils literal notranslate"><span class="pre">mamba</span></code> command
+instead of <code class="docutils literal notranslate"><span class="pre">conda</span></code>. Everything will be faster.</p>
+</div>
+<div class="section" id="pangeo-python-environment">
+<h2>Pangeo Python Environment<a class="headerlink" href="#pangeo-python-environment" title="Permalink to this headline">¶</a></h2>
+<p>The environment on our cloud JupyterHub is a highly curated combination of packages
+maintained by the <a class="reference external" href="http://pangeo.io/">Pangeo Project</a>.
+Then environment lives at <a class="reference external" href="https://github.com/pangeo-data/pangeo-docker-images/">https://github.com/pangeo-data/pangeo-docker-images/</a>.
+In addition to just specifying a combination of packages, this repo automatically
+builds <a class="reference external" href="https://docs.docker.com/get-started/">Docker containers</a>.</p>
+<p>The latest Pangeo notebook environment lives at <a class="reference external" href="https://github.com/pangeo-data/pangeo-docker-images/blob/master/pangeo-notebook/environment.yml">https://github.com/pangeo-data/pangeo-docker-images/blob/master/pangeo-notebook/environment.yml</a>.
+Below are the contents of that file as of 2021-11-04.
+Copy and paste the following <code class="docutils literal notranslate"><span class="pre">environment.yml</span></code> file somewhere
+on your local hard drive:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>name: pangeo
+channels:
+ - conda-forge
+dependencies:
+ - python=3.9*
+ - pangeo-notebook=2021.09.30
+ - pip=20
+ - adlfs
+ - awscli
+ - boto3
+ - bottleneck
+ - cartopy &gt;= 0.20.0
+ - cfgrib
+ - cmip6_preprocessing
+ - ciso
+ - dask-ml
+ - datashader
+ - descartes
+ - earthdata
+ - eofs
+ - erddapy
+ - esmpy
+ - fastjmd95
+ - fsspec
+ - fsspec-reference-maker
+ - gcsfs
+ - gh
+ - geocube
+ - geopandas
+ - geopy
+ - geoviews-core
+ - gsw
+ - h5netcdf
+ - h5py
+ - holoviews
+ - hvplot
+ - intake
+ - intake-esm
+ - intake-geopandas
+ - intake-stac
+ - intake-xarray
+ - ipyleaflet
+ - ipytree
+ - ipywidgets
+ - jupyter-panel-proxy
+ - jupyter-resource-usage
+ - lz4
+ - matplotlib-base
+ - metpy
+ - nb_conda_kernels
+ - nbstripout
+ - nc-time-axis
+ - netcdf4
+ - nomkl
+ - numcodecs
+ - numpy
+ - pandas
+ - panel
+ - parcels
+ - param!=1.11.0
+ - prefect
+ - pyarrow
+ - pycamhd
+ - pydap
+ - pygeos
+ - pystac
+ - python-blosc
+ - python-gist
+ - python-graphviz
+ - rasterio
+ - rechunker
+ - rio-cogeo
+ - rioxarray
+ - rise
+ - s3fs&gt;0.5
+ - sat-search
+ - sat-stac
+ - satpy
+ - scikit-image
+ - scikit-learn
+ - scipy
+ - sparse
+ - stackstac
+ - tiledb-py
+ - timezonefinder
+ - xarray
+ - xarrayutils
+ - xarray_leaflet
+ - xarray-spatial
+ - xcape
+ - xcube
+ - xesmf
+ - xgcm
+ - xhistogram
+ - xmitgcm
+ - xpublish
+ - xrft
+ - xskillscore
+ - zarr
+</pre></div>
+</div>
+<p>Create this environment using mamba</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ mamba env create -f environment.yml
+</pre></div>
+</div>
+<p>Activate this environment</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ conda activate pangeo
+</pre></div>
+</div>
+<p>This environment should be sufficient for all of your work in this class.</p>
 </div>
 </div>
 
