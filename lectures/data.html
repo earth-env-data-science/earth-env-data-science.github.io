@@ -738,10 +738,21 @@ CSV is readable by humans and computer programs.</p>
 Parquet files are not human readable, but they can be parsed by computers much more quickly and efficiently.
 They also use compression to achieve a smaller file size compared to CSV.</p>
 <p>Multiple related tabular datasets can be stored and queried in a <a class="reference external" href="https://en.wikipedia.org/wiki/Relational_database">relational database</a>.
-Databases are very useful but beyond the scopeof this class.</p>
+Databases are very useful but beyond the scope of this class.</p>
 </div>
 <div class="section" id="array-data">
 <h3>Array Data<a class="headerlink" href="#array-data" title="Permalink to this headline">¶</a></h3>
+<p>When we have numerical data that are organized into an N-dimensional rectangular grid of values, we are dealing with array data.</p>
+<img src="http://xarray.pydata.org/en/stable/_images/dataset-diagram.png" width="600px" />
+<p>(via <a class="reference external" href="http://xarray.pydata.org/en/stable/user-guide/data-structures.html">http://xarray.pydata.org/en/stable/user-guide/data-structures.html</a>)</p>
+<p>In python, we work with Array data in Numpy and Xarray.</p>
+<p>Array data can be stored in the following standard formats:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Hierarchical_Data_Format">Hierarchical Data Format (HDF5)</a> - Container for many arrays</p></li>
+<li><p><a class="reference external" href="https://www.unidata.ucar.edu/software/netcdf/">Network Common Data Form (NetCDF)</a> - Container for many arrays which conform to the <a class="reference external" href="https://www.unidata.ucar.edu/software/netcdf/docs/netcdf_data_model.html">NetCDF data model</a></p></li>
+<li><p><a class="reference external" href="https://zarr.readthedocs.io/en/stable/">Zarr</a> - New cloud-optimized format for array storage</p></li>
+<li><p><a class="reference external" href="https://docs.tiledb.com/main/">TileDB Embedded</a> - New cloud-optimized format for array storage</p></li>
+</ul>
 </div>
 <div class="section" id="gis-data">
 <h3>“GIS” Data<a class="headerlink" href="#gis-data" title="Permalink to this headline">¶</a></h3>
@@ -761,17 +772,24 @@ Databases are very useful but beyond the scopeof this class.</p>
 </div>
 <div class="section" id="metadata">
 <h3>Metadata<a class="headerlink" href="#metadata" title="Permalink to this headline">¶</a></h3>
-<p>Data about the data</p>
+<p>Common metadata conventions:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://cfconventions.org/">Climate and Forecast (CF) Conventions</a> - Commonly used with NetCDF data</p></li>
+<li><p><a class="reference external" href="https://wiki.esipfed.org/Attribute_Convention_for_Data_Discovery_1-3">Attribute Convention for Data Discovery (ACDD)</a></p></li>
+<li><p><a class="reference external" href="https://schema.org/">Schema.org</a></p></li>
+</ul>
 </div>
 </div>
 <div class="section" id="how-do-programs-access-data">
 <h2>How do programs access data?<a class="headerlink" href="#how-do-programs-access-data" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="local-files">
 <h3>Local Files<a class="headerlink" href="#local-files" title="Permalink to this headline">¶</a></h3>
-<p>Pooch</p>
+<p>Some programs require data to be on your local hard drive to read.</p>
+<p>To download files to your local computer, we strongly recommend <a class="reference external" href="https://www.fatiando.org/pooch/latest/">Pooch</a>.</p>
 </div>
 <div class="section" id="over-a-network">
 <h3>Over a Network<a class="headerlink" href="#over-a-network" title="Permalink to this headline">¶</a></h3>
+<p>A more modern and scalable way of loading data is to read it directly over the network into your program.</p>
 <div class="section" id="http-streams">
 <h4>HTTP streams<a class="headerlink" href="#http-streams" title="Permalink to this headline">¶</a></h4>
 </div>
