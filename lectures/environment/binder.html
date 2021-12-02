@@ -448,10 +448,32 @@
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#nbgitpuller-tricks">
+   nbgitpuller tricks
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pangeo-docker-images">
+     Pangeo Docker Images
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#creating-your-own-binder">
    Creating your Own Binder
   </a>
   <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#using-a-pre-existing-environment">
+     Using a pre-existing environment
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#defining-a-custom-environment">
+     Defining a custom environment
+    </a>
+   </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#updating-your-binder">
      Updating your Binder
@@ -472,7 +494,7 @@
                 
   <div class="section" id="binder-for-reproducible-research">
 <h1>Binder for Reproducible Research<a class="headerlink" href="#binder-for-reproducible-research" title="Permalink to this headline">¶</a></h1>
-<p>This final lesson is concerned with the topic of reproducibility.
+<p>This lecture is concerned with the topic of reproducibility.
 Nearly everyone agrees that reproducibility is an important principle for science:
 if results are not reproducible, they are not valid.</p>
 <p>But how do we achieve reproducibility in practice?
@@ -480,6 +502,7 @@ In computational / data science, a particular analysis, calculation, or notebook
 Reproducibility of our results depends on having the correct version.</p>
 <p>In the <span class="xref myst">lesson on python environments</span>, we learned how to use <a class="reference external" href="https://conda.io/docs/">conda</a> to manage the packages in our environment.
 In this lesson, we will learn how to package our own code / notebooks together with an environment in such a way that it can be executed by anyone / anywhere, using cloud computing.</p>
+<p><img alt="Binder Logo" src="https://mybinder.org/static/logo.svg" /></p>
 <p>From the <a class="reference external" href="https://mybinder.readthedocs.io/en/latest/">Binder Documentation</a></p>
 <blockquote>
 <div><p>Binder allows you to create custom computing environments that can be shared and used by many remote users. It is powered by <a class="reference external" href="https://github.com/jupyterhub/binderhub">BinderHub</a>, which is an open-source tool that deploys the Binder service in the cloud. One-such deployment lives … at <a class="reference external" href="http://mybinder.org">mybinder.org</a> and is free to use.</p>
@@ -498,32 +521,40 @@ In this lesson, we will learn how to package our own code / notebooks together w
 </ul>
 <p>The dask-examples repo contains about 10 different example notebooks.</p>
 <p>To specify the environment, the dask-example repo has the following file at <code class="docutils literal notranslate"><span class="pre">binder/environment.yml</span></code></p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>channels:
-  - conda-forge
-dependencies:
-  - python=3
-  - bokeh=0.13
-  - dask=0.20
-  - dask-ml=0.10.0
-  - distributed=1.24
-  - jupyterlab=0.35.1
-  - nodejs=8.9
-  - numpy
-  - pandas
-  - pyarrow==0.10.0
-  - scikit-learn=0.20
-  - matplotlib
-  - nbserverproxy
-  - nomkl
-  - h5py
-  - xarray
-  - bottleneck
-  - py-xgboost
-  - pip:
-    - graphviz
-    - dask_xgboost
-    - seaborn
-    - mimesis
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">name</span><span class="p">:</span> <span class="n">dask</span><span class="o">-</span><span class="n">examples</span>
+<span class="n">channels</span><span class="p">:</span>
+  <span class="o">-</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span>
+<span class="n">dependencies</span><span class="p">:</span>
+  <span class="o">-</span> <span class="n">python</span><span class="o">=</span><span class="mf">3.8</span>
+  <span class="o">-</span> <span class="n">bokeh</span><span class="o">=</span><span class="mf">2.1.1</span>
+  <span class="o">-</span> <span class="n">dask</span><span class="o">=</span><span class="mf">2.20.0</span>
+  <span class="o">-</span> <span class="n">dask</span><span class="o">-</span><span class="n">image</span><span class="o">=</span><span class="mf">0.2.0</span>
+  <span class="o">-</span> <span class="n">dask</span><span class="o">-</span><span class="n">ml</span><span class="o">=</span><span class="mf">1.6.0</span>
+  <span class="o">-</span> <span class="n">dask</span><span class="o">-</span><span class="n">labextension</span><span class="o">=</span><span class="mf">2.0.2</span>
+  <span class="o">-</span> <span class="n">jupyterlab</span><span class="o">=</span><span class="mf">2.1</span>
+  <span class="o">-</span> <span class="n">nodejs</span><span class="o">=</span><span class="mi">14</span>
+  <span class="o">-</span> <span class="n">numba</span>
+  <span class="o">-</span> <span class="n">numpy</span><span class="o">=</span><span class="mf">1.21</span>
+  <span class="o">-</span> <span class="n">pip</span>
+  <span class="o">-</span> <span class="n">pandas</span><span class="o">=</span><span class="mf">1.3</span>
+  <span class="o">-</span> <span class="n">pyarrow</span>
+  <span class="o">-</span> <span class="n">python</span><span class="o">-</span><span class="n">graphviz</span>
+  <span class="o">-</span> <span class="n">seaborn</span>
+  <span class="o">-</span> <span class="n">scikit</span><span class="o">-</span><span class="n">learn</span><span class="o">=</span><span class="mf">0.23</span>
+  <span class="o">-</span> <span class="n">matplotlib</span>
+  <span class="o">-</span> <span class="n">nbserverproxy</span>
+  <span class="o">-</span> <span class="n">nomkl</span>
+  <span class="o">-</span> <span class="n">h5py</span>
+  <span class="o">-</span> <span class="n">xarray</span>
+  <span class="o">-</span> <span class="n">pooch</span>
+  <span class="o">-</span> <span class="n">bottleneck</span>
+  <span class="o">-</span> <span class="n">requests</span>
+  <span class="o">-</span> <span class="n">py</span><span class="o">-</span><span class="n">xgboost</span>
+  <span class="o">-</span> <span class="n">dask</span><span class="o">-</span><span class="n">xgboost</span>
+  <span class="o">-</span> <span class="n">pip</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">mimesis</span>
+      <span class="o">-</span> <span class="n">pystan</span><span class="o">==</span><span class="mf">2.19.1.1</span>
+      <span class="o">-</span> <span class="n">prophet</span>
 </pre></div>
 </div>
 <p>This is a rather complex set of dependencies.
@@ -550,23 +581,75 @@ For dask-examples, the markdown code looks like this:</p>
 <p>Take some time to launch the binder and play around with it.</p>
 </div>
 </div>
+<div class="section" id="nbgitpuller-tricks">
+<h2>nbgitpuller tricks<a class="headerlink" href="#nbgitpuller-tricks" title="Permalink to this headline">¶</a></h2>
+<p>The original binder model kept both the code itself and the environment specification in the same repo.
+The way binder works means that <em>every time the repo is updated, the environment must be completely rebuilt from scratch.</em>
+As we have seen, building a complex python environment can take upwards of 20 minutes.
+So even if you only change a comment in your code, the entire environment is rebuilt when you try to relaunch the binder.
+Users usually update their code much more frequently than they update the environment.
+Furthermore, many binders may want to share the <em>same</em> base environment.</p>
+<p>To address these issues, we can leverage a clever tool called <a class="reference external" href="https://jupyterhub.github.io/nbgitpuller/">nbgitpuller</a>.
+Nbgitpuller is a JupyterHub extension that allows you to automatically launch content from a github repo into a specific
+JupyterHub or Binder via a simple URL.
+That’s how this book works.
+The “Launch JupyterHub” button for this page points to the following link:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>https://https//us-central1-b.gcp.pangeo.io//hub/user-redirect/git-pull?repo=https://github.com/earth-env-data-science/earth-env-data-science-book&amp;urlpath=lab/tree/earth-env-data-science-book/src/lectures/environment/binder.ipynb&amp;branch=master
+</pre></div>
+</div>
+<p>Ok, maybe not a “simple” URL. 😬 In fact, constructing these links can be so tricky that nbgitpuller has a <a class="reference external" href="https://jupyterhub.github.io/nbgitpuller/link.html">special webpage</a> to help you generate them.</p>
+<p>An nbgitpuller link can also be generated for a binder. Here is a link that will open this notebook in <a class="reference external" href="http://mybinder.org">mybinder.org</a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>https://mybinder.org/v2/gh/pangeo-data/pangeo-docker-images/2021.09.30?urlpath=git-pull%3Frepo%3Dhttps%253A%252F%252Fgithub.com%252Fearth-env-data-science%252Fearth-env-data-science-book%26urlpath%3Dtree%252Fearth-env-data-science-book%252Fearth-env-data-science-book%252Fsrc%252Flectures%252Fenvironment%252Fbinder.ipynb%26branch%3Dmaster
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>https://mybinder.org/v2/gh/pangeo-data/pangeo-docker-images/2021.09.30?urlpath=git-pull%3Frepo%3Dhttps%253A%252F%252Fgithub.com%252Fearth-env-data-science%252Fearth-env-data-science-book%26urlpath%3Dlab%252Ftree%252Fearth-env-data-science-book%252Fsrc%252Flectures%252Fenvironment%252Fbinder.ipynb%26branch%3Dmaster
+</pre></div>
+</div>
+<p>Yes, very complicated and messy. But it works! As with a regular binder, you can hide it behind a button link.</p>
+<div class="section" id="pangeo-docker-images">
+<h3>Pangeo Docker Images<a class="headerlink" href="#pangeo-docker-images" title="Permalink to this headline">¶</a></h3>
+<p>For students of this class, when creating your first binder, we recommend <em>not defining your own environment from scratch</em> but rather using the default environment that comes with our JupyterHub.
+This environment is curated and automatically built into a Docker containter at <a class="reference external" href="https://github.com/pangeo-data/pangeo-docker-images">https://github.com/pangeo-data/pangeo-docker-images</a>.
+The list of official “tags” is at <a class="reference external" href="https://github.com/pangeo-data/pangeo-docker-images/tags">https://github.com/pangeo-data/pangeo-docker-images/tags</a> – you can see that a new image is released every few weeks.
+The built Docker images live at <a class="reference external" href="https://hub.docker.com/r/pangeo/pangeo-notebook/tags">https://hub.docker.com/r/pangeo/pangeo-notebook/tags</a>.</p>
+<p>Our class has been using the tag <code class="docutils literal notranslate"><span class="pre">2021.09.30</span></code>.</p>
+<p>To create a binder that uses this environment</p>
+<ul class="simple">
+<li><p>Go to <a class="reference external" href="https://jupyterhub.github.io/nbgitpuller/link.html">https://jupyterhub.github.io/nbgitpuller/link.html</a></p></li>
+<li><p>Click the “binder” tab</p></li>
+<li><p>In “Git Environment Repository URL” specify <code class="docutils literal notranslate"><span class="pre">https://github.com/pangeo-data/pangeo-docker-images</span></code></p></li>
+<li><p>In “Branch” specify <code class="docutils literal notranslate"><span class="pre">2021.09.30</span></code></p></li>
+<li><p>In “Git Content Repository URL” put the <em>GitHub link to YOUR repo</em>.</p></li>
+</ul>
+</div>
+</div>
 <div class="section" id="creating-your-own-binder">
 <h2>Creating your Own Binder<a class="headerlink" href="#creating-your-own-binder" title="Permalink to this headline">¶</a></h2>
-<p>To create your own binder, you will need to have the same two ingredients:</p>
+<p>When creating your own binder, you have two options:</p>
+<ul class="simple">
+<li><p>Use a pre-existing environment</p></li>
+<li><p>Define your own custom environment.</p></li>
+</ul>
+<div class="section" id="using-a-pre-existing-environment">
+<h3>Using a pre-existing environment<a class="headerlink" href="#using-a-pre-existing-environment" title="Permalink to this headline">¶</a></h3>
+<p>In this case, all you need is a GitHub repo with one or more notebooks in it.
+Then use the nbgitpuller approach described above.</p>
+</div>
+<div class="section" id="defining-a-custom-environment">
+<h3>Defining a custom environment<a class="headerlink" href="#defining-a-custom-environment" title="Permalink to this headline">¶</a></h3>
+<p>To create your own binder with a custom environment, you will need two ingredients:</p>
 <ul class="simple">
 <li><p>Some code to share</p></li>
 <li><p>An appropriate environment</p></li>
 </ul>
-<p>At this point, probably the best way to develop a binder is to start on your personal computer.</p>
-<p>First create or clone a github repo with the following file / directory structure:</p>
+<p>First create new github repo with the following file / directory structure:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>binder/environment.yml
 some-notebook.ipynb
 Readme.md
 </pre></div>
 </div>
-<p><strong>Note: you should use your <span class="xref myst">final_project</span> repository for this.</strong>
-Modify the <code class="docutils literal notranslate"><span class="pre">environment.yml</span></code> to specify the packages you think you will be using, and then create and activate the environment.
-(See the <span class="xref myst">lesson on python environments</span> to review how to do this.)</p>
+<p>Fill out your environment.yml with your desired packages.
+(See the <span class="xref myst">lesson on python environments</span> to review how to specify environments.)</p>
 <p>Then add some basic content to the notebook. For example, try importing the packages you might want to use:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>import numpy as np
 import pandas as pd
@@ -577,6 +660,7 @@ from matplotlib import pyplot as plt
 </div>
 <p>Once things are working, push the repo to github. Then use <a class="reference external" href="https://mybinder.org">https://mybinder.org</a> to generate a binder badge and add it to your <code class="docutils literal notranslate"><span class="pre">Readme.md</span></code> file.</p>
 <p>You should now be able to run your binder on <a class="reference external" href="http://mybinder.org">mybinder.org</a>!</p>
+</div>
 <div class="section" id="updating-your-binder">
 <h3>Updating your Binder<a class="headerlink" href="#updating-your-binder" title="Permalink to this headline">¶</a></h3>
 <p>An important thing to remember is that <strong>you cannot save changes from within a running binder</strong>. The running notebooks will automatically shut down after 10 minutes of inactivity, and you will <strong>lose any modifications you made to the notebooks</strong>. (See <a class="reference external" href="https://mybinder.readthedocs.io/en/latest/faq.html">mybinder FAQ</a> for more details.) This is very different from our research computing jupyterhub, where all changes are saved. Binder is meant for demonstrating and sharing finished projects, not development of new ones.</p>
