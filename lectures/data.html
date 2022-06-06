@@ -41,7 +41,7 @@
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
@@ -198,7 +198,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../assignments/numpy_matplotlib.html">
-   Assignment 3 - Numpy and Matplotlib
+   Assignment: Numpy and Matplotlib
   </a>
  </li>
  <li class="toctree-l1">
@@ -208,7 +208,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../assignments/more_matplotlib.html">
-   Assignment 4: More Matplotlib
+   Assignment: More Matplotlib
   </a>
  </li>
 </ul>
@@ -235,7 +235,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../assignments/basic_pandas.html">
-     Assignment 5: Pandas Fundamentals with Earthquake Data
+     Assignment: Pandas Fundamentals with Earthquake Data
     </a>
    </li>
    <li class="toctree-l2">
@@ -245,7 +245,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../assignments/pandas_groupby.html">
-     Assignment 6: Pandas Groupby with Hurricane Data
+     Assignment: Pandas Groupby with Hurricane Data
     </a>
    </li>
   </ul>
@@ -267,7 +267,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../assignments/basic_xarray.html">
-     Assignment 7: Xarray Fundamentals with Atmospheric Radiation Data
+     Assignment: Xarray Fundamentals with Atmospheric Radiation Data
     </a>
    </li>
    <li class="toctree-l2">
@@ -372,7 +372,7 @@
                 data-placement="left">.ipynb</button></a>
         <!-- Download PDF via print -->
         <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
     </div>
 </div>
 
@@ -425,7 +425,7 @@
         </div>
 
         <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show">
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
             
             <div class="tocsection onthispage pt-5 pb-3">
                 <i class="fas fa-list"></i> Contents
@@ -626,7 +626,211 @@
 </div>
     <div id="main-content" class="row">
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-        
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>All About Data</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-is-are-data">
+   What is (are) data?
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#data-encoding">
+     Data Encoding
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#numerical-data">
+       Numerical Data
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#text-data">
+       Text Data
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tabular-data">
+     Tabular Data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#array-data">
+     Array Data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#gis-data">
+     “GIS” Data
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#raster-data">
+       Raster Data
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#vector-data">
+       Vector Data
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#graph-data">
+     Graph Data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#unstructured-data">
+     Unstructured Data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#metadata">
+     Metadata
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-do-programs-access-data">
+   How do programs access data?
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#reproducibility-and-manual-download-steps">
+     Reproducibility and Manual Download Steps
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#loading-data-directly-over-the-network">
+     Loading Data Directly Over the Network
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#http-streams">
+       HTTP streams
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#opendap">
+       OPeNDAP
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#filesystem-spec-fsspec">
+       Filesystem-Spec (fsspec)
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#cloud-object-storage">
+     Cloud Object Storage
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#local-files">
+     Local Files
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#best-practices-for-data-sharing-fair">
+   Best practices for data sharing: FAIR
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#to-be-findable">
+     To be Findable:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#to-be-accessible">
+     To be Accessible:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#to-be-interoperable">
+     To be Interoperable:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#to-be-re-useable">
+     To be Re-useable:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#persistent-identifiers-pi-pid">
+     Persistent Identifiers (PI / PID)
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#digital-object-identifiers">
+       Digital Object Identifiers
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#how-can-you-can-create-fair-data-and-code">
+     How can YOU can create FAIR data and code?
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#what-not-to-do">
+     What not to do
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#rough-guide-to-fairly-sharing-data">
+     Rough guide to FAIRly sharing data
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#step-1-quality-control-the-data-and-metadata">
+       Step 1: Quality control the data and metadata
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#step-2-upload-the-data-to-zenodo">
+       Step 2: Upload the data to Zenodo
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#step-3-verify-you-can-access-the-data">
+       Step 3: Verify you can access the data
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#sharing-code">
+     Sharing Code
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
               <div>
                 
   <div class="section" id="all-about-data">
@@ -2129,8 +2333,8 @@ Fortunately, Zenodo and GitHub integrate very well with each other.</p>
 
               </div>
               
-        
-            <!-- Previous / next buttons -->
+            
+                <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
     <a class='left-prev' id="prev-link" href="environment/binder.html" title="previous page">
         <i class="fas fa-angle-left"></i>
@@ -2147,19 +2351,17 @@ Fortunately, Zenodo and GitHub integrate very well with each other.</p>
     <i class="fas fa-angle-right"></i>
     </a>
 </div>
-        
+            
         </div>
     </div>
     <footer class="footer">
-    <div class="container">
-      <p>
-        
-          By Ryan Abernathey<br/>
-        
-            &copy; Copyright 2016-2021.<br/>
-      </p>
-    </div>
-  </footer>
+  <p>
+    
+      By Ryan Abernathey<br/>
+    
+        &copy; Copyright 2016-2021.<br/>
+  </p>
+</footer>
 </main>
 
 

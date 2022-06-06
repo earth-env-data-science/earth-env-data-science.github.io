@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Assignment 5: Pandas Fundamentals with Earthquake Data &#8212; Earth and Environmental Data Science</title>
+    <title>Assignment: Pandas Fundamentals with Earthquake Data &#8212; Earth and Environmental Data Science</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet">
   <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -41,7 +41,7 @@
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -196,7 +196,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="numpy_matplotlib.html">
-   Assignment 3 - Numpy and Matplotlib
+   Assignment: Numpy and Matplotlib
   </a>
  </li>
  <li class="toctree-l1">
@@ -206,7 +206,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="more_matplotlib.html">
-   Assignment 4: More Matplotlib
+   Assignment: More Matplotlib
   </a>
  </li>
 </ul>
@@ -233,7 +233,7 @@
    </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     Assignment 5: Pandas Fundamentals with Earthquake Data
+     Assignment: Pandas Fundamentals with Earthquake Data
     </a>
    </li>
    <li class="toctree-l2">
@@ -243,7 +243,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="pandas_groupby.html">
-     Assignment 6: Pandas Groupby with Hurricane Data
+     Assignment: Pandas Groupby with Hurricane Data
     </a>
    </li>
   </ul>
@@ -265,7 +265,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="basic_xarray.html">
-     Assignment 7: Xarray Fundamentals with Atmospheric Radiation Data
+     Assignment: Xarray Fundamentals with Atmospheric Radiation Data
     </a>
    </li>
    <li class="toctree-l2">
@@ -370,7 +370,7 @@
                 data-placement="left">.ipynb</button></a>
         <!-- Download PDF via print -->
         <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
     </div>
 </div>
 
@@ -423,7 +423,7 @@
         </div>
 
         <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show">
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
             
             <div class="tocsection onthispage pt-5 pb-3">
                 <i class="fas fa-list"></i> Contents
@@ -500,11 +500,91 @@
 </div>
     <div id="main-content" class="row">
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-        
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Assignment: Pandas Fundamentals with Earthquake Data</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#use-pandas-read-csv-function-directly-on-this-url-to-open-it-as-a-dataframe">
+   1) Use Pandas’ read_csv function directly on this URL to open it as a DataFrame
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#re-read-the-data-in-such-a-way-that-all-date-columns-are-identified-as-dates-and-the-earthquake-id-is-used-as-the-index">
+   2) Re-read the data in such a way that all date columns are identified as dates and the earthquake ID is used as the index
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#use-describe-to-get-the-basic-statistics-of-all-the-columns">
+   3) Use
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     describe
+    </span>
+   </code>
+   to get the basic statistics of all the columns
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#use-nlargest-to-get-the-top-20-earthquakes-by-magnitude">
+   4) Use
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     nlargest
+    </span>
+   </code>
+   to get the top 20 earthquakes by magnitude
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#extract-the-state-or-country-using-pandas-text-data-functions">
+   5) Extract the state or country using Pandas text data functions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#display-each-unique-value-from-the-new-column">
+   6) Display each unique value from the new column
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#create-a-filtered-dataset-that-only-has-earthquakes-of-magnitude-4-or-larger-and">
+   7) Create a filtered dataset that only has earthquakes of magnitude 4 or larger and
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#using-the-filtered-dataset-magnitude-4-count-the-number-of-earthquakes-in-each-country-state-make-a-bar-chart-of-this-number-for-the-top-5-locations-with-the-most-earthquakes">
+   8) Using the filtered dataset (magnitude &gt; 4), count the number of earthquakes in each country/state. Make a bar chart of this number for the top 5 locations with the most earthquakes
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#make-a-histogram-the-distribution-of-the-earthquake-magnitudes">
+   9) Make a histogram the distribution of the Earthquake magnitudes
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#visualize-the-locations-of-earthquakes-by-making-a-scatterplot-of-their-latitude-and-longitude">
+   11) Visualize the locations of earthquakes by making a scatterplot of their latitude and longitude
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
               <div>
                 
-  <div class="section" id="assignment-5-pandas-fundamentals-with-earthquake-data">
-<h1>Assignment 5: Pandas Fundamentals with Earthquake Data<a class="headerlink" href="#assignment-5-pandas-fundamentals-with-earthquake-data" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="assignment-pandas-fundamentals-with-earthquake-data">
+<h1>Assignment: Pandas Fundamentals with Earthquake Data<a class="headerlink" href="#assignment-pandas-fundamentals-with-earthquake-data" title="Permalink to this headline">¶</a></h1>
 <p>In this assignment, we will review pandas fundamentals, such as how to</p>
 <ul class="simple">
 <li><p>Open csv files</p></li>
@@ -593,8 +673,8 @@ Use a Logarithmic scale. What sort of relationship do you see?</p>
 
               </div>
               
-        
-            <!-- Previous / next buttons -->
+            
+                <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
     <a class='left-prev' id="prev-link" href="../lectures/pandas/basic_pandas.html" title="previous page">
         <i class="fas fa-angle-left"></i>
@@ -611,19 +691,17 @@ Use a Logarithmic scale. What sort of relationship do you see?</p>
     <i class="fas fa-angle-right"></i>
     </a>
 </div>
-        
+            
         </div>
     </div>
     <footer class="footer">
-    <div class="container">
-      <p>
-        
-          By Ryan Abernathey<br/>
-        
-            &copy; Copyright 2016-2021.<br/>
-      </p>
-    </div>
-  </footer>
+  <p>
+    
+      By Ryan Abernathey<br/>
+    
+        &copy; Copyright 2016-2021.<br/>
+  </p>
+</footer>
 </main>
 
 

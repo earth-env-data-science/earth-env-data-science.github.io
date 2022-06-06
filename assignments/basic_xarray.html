@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Assignment 7: Xarray Fundamentals with Atmospheric Radiation Data &#8212; Earth and Environmental Data Science</title>
+    <title>Assignment: Xarray Fundamentals with Atmospheric Radiation Data &#8212; Earth and Environmental Data Science</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet">
   <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -41,7 +41,7 @@
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
@@ -198,7 +198,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="numpy_matplotlib.html">
-   Assignment 3 - Numpy and Matplotlib
+   Assignment: Numpy and Matplotlib
   </a>
  </li>
  <li class="toctree-l1">
@@ -208,7 +208,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="more_matplotlib.html">
-   Assignment 4: More Matplotlib
+   Assignment: More Matplotlib
   </a>
  </li>
 </ul>
@@ -235,7 +235,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="basic_pandas.html">
-     Assignment 5: Pandas Fundamentals with Earthquake Data
+     Assignment: Pandas Fundamentals with Earthquake Data
     </a>
    </li>
    <li class="toctree-l2">
@@ -245,7 +245,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="pandas_groupby.html">
-     Assignment 6: Pandas Groupby with Hurricane Data
+     Assignment: Pandas Groupby with Hurricane Data
     </a>
    </li>
   </ul>
@@ -267,7 +267,7 @@
    </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     Assignment 7: Xarray Fundamentals with Atmospheric Radiation Data
+     Assignment: Xarray Fundamentals with Atmospheric Radiation Data
     </a>
    </li>
    <li class="toctree-l2">
@@ -372,7 +372,7 @@
                 data-placement="left">.ipynb</button></a>
         <!-- Download PDF via print -->
         <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
     </div>
 </div>
 
@@ -425,7 +425,7 @@
         </div>
 
         <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show">
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
             
             <div class="tocsection onthispage pt-5 pb-3">
                 <i class="fas fa-list"></i> Contents
@@ -582,11 +582,171 @@
 </div>
     <div id="main-content" class="row">
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-        
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Assignment: Xarray Fundamentals with Atmospheric Radiation Data</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#opening-data-and-examining-metadata">
+   1) Opening data and examining metadata
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#open-the-dataset-and-display-its-contents">
+     1.1) Open the dataset and display its contents
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#print-out-the-long-name-attribute-of-each-variable">
+     1.2) Print out the
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       long_name
+      </span>
+     </code>
+     attribute of each variable
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#basic-reductions-arithmetic-and-plotting">
+   2) Basic reductions, arithmetic, and plotting
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#calculate-the-time-mean-of-the-entire-dataset">
+     2.1) Calculate the time-mean of the entire dataset
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#from-this-make-a-2d-plot-of-the-the-time-mean-top-of-atmosphere-longwave-shortwave-and-incoming-solar-radiation">
+     2.2) From this, make a 2D plot of the the time-mean Top of Atmosphere Longwave, Shortwave, and Incoming Solar Radiation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#add-up-the-three-variables-above-and-verify-visually-that-they-are-equivalent-to-the-toa-net-flux">
+     2.3) Add up the three variables above and verify (visually) that they are equivalent to the TOA net flux
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#mean-and-weighted-mean">
+   3) Mean and weighted mean
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#calculate-the-global-unweighted-mean-of-toa-net-radiation">
+     3.1) Calculate the global (unweighted) mean of TOA net radiation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-a-weight-array-proportional-to-cos-lambda">
+     3.2) Create a
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       weight
+      </span>
+     </code>
+     array proportional to
+     <span class="math notranslate nohighlight">
+      \(\cos(\lambda)\)
+     </span>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#redo-your-global-mean-toa-net-radiation-calculation-with-this-weight-factor">
+     3.3) Redo your global mean TOA net radiation calculation with this weight factor
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#now-that-you-have-a-weight-factor-verify-that-the-toa-incoming-solar-outgoing-longwave-and-outgoing-shortwave-approximately-match-up-with-infographic-shown-in-the-first-cell-of-this-assignment">
+     3.4) Now that you have a
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       weight
+      </span>
+     </code>
+     factor, verify that the TOA incoming solar, outgoing longwave, and outgoing shortwave approximately match up with infographic shown in the first cell of this assignment
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#meridional-heat-transport-calculation">
+   4) Meridional Heat Transport Calculation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#calculate-the-pixel-area-using-this-formula-and-create-a-2d-lon-lat-dataarray-for-it">
+     4.1) calculate the pixel area using this formula and create a 2D (lon, lat) DataArray for it
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#calculate-and-plot-the-total-amount-of-net-radiation-in-each-1-degree-latitude-band">
+     4.2) Calculate and plot the total amount of net radiation in each 1-degree latitude band
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#plot-the-cumulatuve-sum-in-latitude-of-that-quantity">
+     4.3) Plot the cumulatuve sum in latitude of that quantity
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#selecting-and-merging-data">
+   5) Selecting and Merging Data
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-a-dataset-for-each-point-from-the-global-dataset">
+     5.1) Create a
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Dataset
+      </span>
+     </code>
+     for each point from the global dataset
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#merge-these-four-datasets-into-a-new-dataset-with-the-new-dimension-city">
+     5.2) Merge these four datasets into a new dataset with the new dimension
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       city
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#plot-the-incoming-solar-and-net-radiation-at-each-city">
+     5.3) Plot the incoming solar and net radiation at each city
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
               <div>
                 
-  <div class="section" id="assignment-7-xarray-fundamentals-with-atmospheric-radiation-data">
-<h1>Assignment 7: Xarray Fundamentals with Atmospheric Radiation Data<a class="headerlink" href="#assignment-7-xarray-fundamentals-with-atmospheric-radiation-data" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="assignment-xarray-fundamentals-with-atmospheric-radiation-data">
+<h1>Assignment: Xarray Fundamentals with Atmospheric Radiation Data<a class="headerlink" href="#assignment-xarray-fundamentals-with-atmospheric-radiation-data" title="Permalink to this headline">¶</a></h1>
 <p>In this assignment, we will use Xarray to analyze top-of-atmosphere radiation data from <a class="reference external" href="https://ceres.larc.nasa.gov/">NASA’s CERES project</a>.</p>
 <img src="https://upload.wikimedia.org/wikipedia/commons/b/bb/The-NASA-Earth%27s-Energy-Budget-Poster-Radiant-Energy-System-satellite-infrared-radiation-fluxes.jpg" width=65%>
 <p><em>Public domain, by NASA, from Wikimedia Commons</em></p>
@@ -746,8 +906,8 @@ Try to have your legend created automatically from the data.</p>
 
               </div>
               
-        
-            <!-- Previous / next buttons -->
+            
+                <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
     <a class='left-prev' id="prev-link" href="../lectures/xarray/xarray.html" title="previous page">
         <i class="fas fa-angle-left"></i>
@@ -764,19 +924,17 @@ Try to have your legend created automatically from the data.</p>
     <i class="fas fa-angle-right"></i>
     </a>
 </div>
-        
+            
         </div>
     </div>
     <footer class="footer">
-    <div class="container">
-      <p>
-        
-          By Ryan Abernathey<br/>
-        
-            &copy; Copyright 2016-2021.<br/>
-      </p>
-    </div>
-  </footer>
+  <p>
+    
+      By Ryan Abernathey<br/>
+    
+        &copy; Copyright 2016-2021.<br/>
+  </p>
+</footer>
 </main>
 
 

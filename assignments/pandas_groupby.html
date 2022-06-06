@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Assignment 6: Pandas Groupby with Hurricane Data &#8212; Earth and Environmental Data Science</title>
+    <title>Assignment: Pandas Groupby with Hurricane Data &#8212; Earth and Environmental Data Science</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet">
   <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -41,7 +41,7 @@
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -196,7 +196,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="numpy_matplotlib.html">
-   Assignment 3 - Numpy and Matplotlib
+   Assignment: Numpy and Matplotlib
   </a>
  </li>
  <li class="toctree-l1">
@@ -206,7 +206,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="more_matplotlib.html">
-   Assignment 4: More Matplotlib
+   Assignment: More Matplotlib
   </a>
  </li>
 </ul>
@@ -233,7 +233,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="basic_pandas.html">
-     Assignment 5: Pandas Fundamentals with Earthquake Data
+     Assignment: Pandas Fundamentals with Earthquake Data
     </a>
    </li>
    <li class="toctree-l2">
@@ -243,7 +243,7 @@
    </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     Assignment 6: Pandas Groupby with Hurricane Data
+     Assignment: Pandas Groupby with Hurricane Data
     </a>
    </li>
   </ul>
@@ -265,7 +265,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="basic_xarray.html">
-     Assignment 7: Xarray Fundamentals with Atmospheric Radiation Data
+     Assignment: Xarray Fundamentals with Atmospheric Radiation Data
     </a>
    </li>
    <li class="toctree-l2">
@@ -370,7 +370,7 @@
                 data-placement="left">.ipynb</button></a>
         <!-- Download PDF via print -->
         <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
     </div>
 </div>
 
@@ -423,7 +423,7 @@
         </div>
 
         <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show">
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
             
             <div class="tocsection onthispage pt-5 pb-3">
                 <i class="fas fa-list"></i> Contents
@@ -592,11 +592,183 @@
 </div>
     <div id="main-content" class="row">
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-        
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Assignment: Pandas Groupby with Hurricane Data</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#get-the-unique-values-of-the-basin-subbasin-and-nature-columns">
+   1) Get the unique values of the
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     BASIN
+    </span>
+   </code>
+   ,
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     SUBBASIN
+    </span>
+   </code>
+   , and
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     NATURE
+    </span>
+   </code>
+   columns
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#rename-the-wmo-wind-and-wmo-pres-columns-to-wind-and-pres">
+   2) Rename the
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     WMO_WIND
+    </span>
+   </code>
+   and
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     WMO_PRES
+    </span>
+   </code>
+   columns to
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     WIND
+    </span>
+   </code>
+   and
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     PRES
+    </span>
+   </code>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#get-the-10-largest-rows-in-the-dataset-by-wind">
+   3) Get the 10 largest rows in the dataset by
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     WIND
+    </span>
+   </code>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#group-the-data-on-sid-and-get-the-10-largest-hurricanes-by-wind">
+   4) Group the data on
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     SID
+    </span>
+   </code>
+   and get the 10 largest hurricanes by
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     WIND
+    </span>
+   </code>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#make-a-bar-chart-of-the-wind-speed-of-the-20-strongest-wind-hurricanes">
+   5) Make a bar chart of the wind speed of the 20 strongest-wind hurricanes
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#plot-the-count-of-all-datapoints-by-basin">
+   6) Plot the count of all datapoints by Basin
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#plot-the-count-of-unique-hurricanes-by-basin">
+   7) Plot the count of unique hurricanes by Basin
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#make-a-hexbin-of-the-location-of-datapoints-in-latitude-and-longitude">
+   8) Make a
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     hexbin
+    </span>
+   </code>
+   of the location of datapoints in Latitude and Longitude
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#find-hurricane-katrina-from-2005-and-plot-its-track-as-a-scatter-plot">
+   9) Find Hurricane Katrina (from 2005) and plot its track as a scatter plot
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#make-time-the-index-on-your-dataframe">
+   10) Make time the index on your dataframe
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#plot-the-count-of-all-datapoints-per-year-as-a-timeseries">
+   11) Plot the count of all datapoints per year as a timeseries
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#plot-all-tracks-from-the-north-atlantic-in-2005">
+   12) Plot all tracks from the North Atlantic in 2005
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#create-a-filtered-dataframe-that-contains-only-data-since-1970-from-the-north-atlantic-na-basin">
+   13) Create a filtered dataframe that contains only data since 1970 from the North Atlantic (“NA”) Basin
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#plot-the-number-of-datapoints-per-day-from-this-filtered-dataframe">
+   14) Plot the number of datapoints per day from this filtered dataframe
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#calculate-the-climatology-of-datapoint-counts-as-a-function-of-dayofyear">
+   15) Calculate the climatology of datapoint counts as a function of
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     dayofyear
+    </span>
+   </code>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#use-transform-to-calculate-the-anomaly-of-daily-counts-from-the-climatology">
+   16) Use
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     transform
+    </span>
+   </code>
+   to calculate the anomaly of daily counts from the climatology
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
               <div>
                 
-  <div class="section" id="assignment-6-pandas-groupby-with-hurricane-data">
-<h1>Assignment 6: Pandas Groupby with Hurricane Data<a class="headerlink" href="#assignment-6-pandas-groupby-with-hurricane-data" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="assignment-pandas-groupby-with-hurricane-data">
+<h1>Assignment: Pandas Groupby with Hurricane Data<a class="headerlink" href="#assignment-pandas-groupby-with-hurricane-data" title="Permalink to this headline">¶</a></h1>
 <p>Import Numpy, Pandas and Matplotlib and set the display options.</p>
 <p>Use the following code to load a CSV file of the <a class="reference external" href="https://www.ncdc.noaa.gov/ibtracs/index.php?name=ibtracs-data">NOAA IBTrACS</a> hurricane dataset:</p>
 <div class="cell docutils container">
@@ -698,8 +870,8 @@
 
               </div>
               
-        
-            <!-- Previous / next buttons -->
+            
+                <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
     <a class='left-prev' id="prev-link" href="../lectures/pandas/pandas_groupby.html" title="previous page">
         <i class="fas fa-angle-left"></i>
@@ -716,19 +888,17 @@
     <i class="fas fa-angle-right"></i>
     </a>
 </div>
-        
+            
         </div>
     </div>
     <footer class="footer">
-    <div class="container">
-      <p>
-        
-          By Ryan Abernathey<br/>
-        
-            &copy; Copyright 2016-2021.<br/>
-      </p>
-    </div>
-  </footer>
+  <p>
+    
+      By Ryan Abernathey<br/>
+    
+        &copy; Copyright 2016-2021.<br/>
+  </p>
+</footer>
 </main>
 
 

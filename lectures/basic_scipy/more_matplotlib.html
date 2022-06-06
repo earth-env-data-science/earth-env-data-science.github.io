@@ -41,7 +41,7 @@
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -52,8 +52,8 @@
     <link rel="canonical" href="https://earth-env-data-science.github.io/lectures/basic_scipy/more_matplotlib.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Assignment 4: More Matplotlib" href="../../assignments/more_matplotlib.html" />
-    <link rel="prev" title="Assignment 3 - Numpy and Matplotlib" href="../../assignments/numpy_matplotlib.html" />
+    <link rel="next" title="Assignment: More Matplotlib" href="../../assignments/more_matplotlib.html" />
+    <link rel="prev" title="Assignment: Numpy and Matplotlib" href="../../assignments/numpy_matplotlib.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -196,7 +196,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../../assignments/numpy_matplotlib.html">
-   Assignment 3 - Numpy and Matplotlib
+   Assignment: Numpy and Matplotlib
   </a>
  </li>
  <li class="toctree-l1 current active">
@@ -206,7 +206,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../../assignments/more_matplotlib.html">
-   Assignment 4: More Matplotlib
+   Assignment: More Matplotlib
   </a>
  </li>
 </ul>
@@ -233,7 +233,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../assignments/basic_pandas.html">
-     Assignment 5: Pandas Fundamentals with Earthquake Data
+     Assignment: Pandas Fundamentals with Earthquake Data
     </a>
    </li>
    <li class="toctree-l2">
@@ -243,7 +243,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../assignments/pandas_groupby.html">
-     Assignment 6: Pandas Groupby with Hurricane Data
+     Assignment: Pandas Groupby with Hurricane Data
     </a>
    </li>
   </ul>
@@ -265,7 +265,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../assignments/basic_xarray.html">
-     Assignment 7: Xarray Fundamentals with Atmospheric Radiation Data
+     Assignment: Xarray Fundamentals with Atmospheric Radiation Data
     </a>
    </li>
    <li class="toctree-l2">
@@ -370,7 +370,7 @@
                 data-placement="left">.ipynb</button></a>
         <!-- Download PDF via print -->
         <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
     </div>
 </div>
 
@@ -423,7 +423,7 @@
         </div>
 
         <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show">
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
             
             <div class="tocsection onthispage pt-5 pb-3">
                 <i class="fas fa-list"></i> Contents
@@ -546,7 +546,133 @@
 </div>
     <div id="main-content" class="row">
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-        
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>More Matplotlib</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#figure-and-axes">
+   Figure and Axes
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#subplots">
+     Subplots
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#drawing-into-axes">
+   Drawing into Axes
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#labeling-plots">
+   Labeling Plots
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#customizing-line-plots">
+   Customizing Line Plots
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#line-styles">
+     Line Styles
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#colors">
+     Colors
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#markers">
+     Markers
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#label-ticks-and-gridlines">
+     Label, Ticks, and Gridlines
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#axis-limits">
+     Axis Limits
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#text-annotations">
+     Text Annotations
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#other-1d-plots">
+   Other 1D Plots
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#scatter-plots">
+     Scatter Plots
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#bar-plots">
+     Bar Plots
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#d-plotting-methods">
+   2D Plotting Methods
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#imshow">
+     imshow
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pcolormesh">
+     pcolormesh
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#contour-contourf">
+     contour / contourf
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#quiver">
+     quiver
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#streamplot">
+     streamplot
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
               <div>
                 
   <div class="section" id="more-matplotlib">
@@ -1301,37 +1427,35 @@
 
               </div>
               
-        
-            <!-- Previous / next buttons -->
+            
+                <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
     <a class='left-prev' id="prev-link" href="../../assignments/numpy_matplotlib.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Assignment 3 - Numpy and Matplotlib</p>
+            <p class="prev-next-title">Assignment: Numpy and Matplotlib</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="../../assignments/more_matplotlib.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Assignment 4: More Matplotlib</p>
+        <p class="prev-next-title">Assignment: More Matplotlib</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
 </div>
-        
+            
         </div>
     </div>
     <footer class="footer">
-    <div class="container">
-      <p>
-        
-          By Ryan Abernathey<br/>
-        
-            &copy; Copyright 2016-2021.<br/>
-      </p>
-    </div>
-  </footer>
+  <p>
+    
+      By Ryan Abernathey<br/>
+    
+        &copy; Copyright 2016-2021.<br/>
+  </p>
+</footer>
 </main>
 
 

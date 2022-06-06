@@ -41,7 +41,7 @@
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -196,7 +196,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="numpy_matplotlib.html">
-   Assignment 3 - Numpy and Matplotlib
+   Assignment: Numpy and Matplotlib
   </a>
  </li>
  <li class="toctree-l1">
@@ -206,7 +206,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="more_matplotlib.html">
-   Assignment 4: More Matplotlib
+   Assignment: More Matplotlib
   </a>
  </li>
 </ul>
@@ -233,7 +233,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="basic_pandas.html">
-     Assignment 5: Pandas Fundamentals with Earthquake Data
+     Assignment: Pandas Fundamentals with Earthquake Data
     </a>
    </li>
    <li class="toctree-l2">
@@ -243,7 +243,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="pandas_groupby.html">
-     Assignment 6: Pandas Groupby with Hurricane Data
+     Assignment: Pandas Groupby with Hurricane Data
     </a>
    </li>
   </ul>
@@ -265,7 +265,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="basic_xarray.html">
-     Assignment 7: Xarray Fundamentals with Atmospheric Radiation Data
+     Assignment: Xarray Fundamentals with Atmospheric Radiation Data
     </a>
    </li>
    <li class="toctree-l2">
@@ -370,7 +370,7 @@
                 data-placement="left">.ipynb</button></a>
         <!-- Download PDF via print -->
         <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
     </div>
 </div>
 
@@ -423,7 +423,7 @@
         </div>
 
         <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show">
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
             
             <div class="tocsection onthispage pt-5 pb-3">
                 <i class="fas fa-list"></i> Contents
@@ -544,7 +544,131 @@
 </div>
     <div id="main-content" class="row">
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-        
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Assignment: Basic Python</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#part-i-lists-and-loops">
+   Part I: Lists and Loops
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-a-list-with-the-names-of-every-planet-in-the-solar-system-in-order">
+     1) Create a list with the names of every planet in the solar system (in order)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#have-python-tell-you-how-many-planets-there-are-by-examining-your-list">
+     2) Have Python tell you how many planets there are by examining your list
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#use-slicing-to-display-the-first-four-planets-the-rocky-planets">
+     3) Use slicing to display the first four planets (the rocky planets)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#iterate-through-your-planets-and-print-the-planet-name-only-if-it-has-an-s-at-the-end">
+     4) Iterate through your planets and print the planet name only if it has an
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       s
+      </span>
+     </code>
+     at the end
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#part-ii-dictionaries">
+   Part II: Dictionaries
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#now-create-a-dictionary-that-maps-each-planet-name-to-its-mass">
+     1) Now create a dictionary that maps each planet name to its mass
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#use-your-dictionary-to-look-up-earth-s-mass">
+     2) Use your dictionary to look up Earth’s mass
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#loop-through-the-data-and-create-a-list-of-planets-whose-mast-is-greater-than-100-x-10-24-kg">
+     3) Loop through the data and create a list of planets whose mast is greater than 100 x 10^24 kg
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#now-add-pluto-to-your-dictionary">
+     4) Now add pluto to your dictionary
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#part-iii-functions">
+   Part III: Functions
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#write-a-function-to-convert-temperature-from-kelvin-to-celsius">
+     1. Write a function to convert temperature from kelvin to celsius
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#write-a-function-to-convert-temperature-to-fahrenheit">
+     2. Write a function to convert temperature to fahrenheit
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#check-that-the-outputs-are-sensible">
+     3) Check that the outputs are sensible
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#now-write-a-function-that-converts-from-farenheit">
+     4) Now write a function that converts
+     <em>
+      from
+     </em>
+     farenheit
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#write-a-function-that-takes-two-arguments-feet-and-inches-and-returns-height-in-meters">
+     5) Write a function that takes two arguments (feet and inches) and returns height in meters
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#write-a-function-takes-one-argument-height-in-meters-and-returns-two-arguments-feet-and-inches">
+     6. Write a function takes one argument (height in meters) and returns two arguments (feet and inches)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#verify-that-the-round-trip-conversion-from-and-back-to-meters-is-consistent">
+     7) Verify that the “round trip” conversion from and back to meters is consistent
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
               <div>
                 
   <div class="section" id="assignment-basic-python">
@@ -654,8 +778,8 @@ Call your previously defined functions if necessary.</p>
 
               </div>
               
-        
-            <!-- Previous / next buttons -->
+            
+                <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
     <a class='left-prev' id="prev-link" href="../lectures/core_python/organization_and_packaging.html" title="previous page">
         <i class="fas fa-angle-left"></i>
@@ -672,19 +796,17 @@ Call your previously defined functions if necessary.</p>
     <i class="fas fa-angle-right"></i>
     </a>
 </div>
-        
+            
         </div>
     </div>
     <footer class="footer">
-    <div class="container">
-      <p>
-        
-          By Ryan Abernathey<br/>
-        
-            &copy; Copyright 2016-2021.<br/>
-      </p>
-    </div>
-  </footer>
+  <p>
+    
+      By Ryan Abernathey<br/>
+    
+        &copy; Copyright 2016-2021.<br/>
+  </p>
+</footer>
 </main>
 
 
