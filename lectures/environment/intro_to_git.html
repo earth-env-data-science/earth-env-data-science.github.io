@@ -424,8 +424,8 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#setting-up-github-ssh-keys-inside-jupyterhub">
-   Setting Up GitHub SSH Keys inside JupyterHub
+  <a class="reference internal nav-link" href="#using-git-github-from-remote-jupyterhub">
+   Using Git / GitHub from remote JupyterHub
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -464,8 +464,8 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#setting-up-github-ssh-keys-inside-jupyterhub">
-   Setting Up GitHub SSH Keys inside JupyterHub
+  <a class="reference internal nav-link" href="#using-git-github-from-remote-jupyterhub">
+   Using Git / GitHub from remote JupyterHub
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -537,43 +537,29 @@ git diff      # view file content differences
 </pre></div>
 </div>
 </div>
-<div class="section" id="setting-up-github-ssh-keys-inside-jupyterhub">
-<h2>Setting Up GitHub SSH Keys inside JupyterHub<a class="headerlink" href="#setting-up-github-ssh-keys-inside-jupyterhub" title="Permalink to this headline">¶</a></h2>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>As of August 12, 2021, GitHub <a class="reference external" href="https://github.blog/changelog/2021-08-12-git-password-authentication-is-shutting-down/">no longer supports username / password authentication</a>.
-Users must switch to personal access tokens or SSH-keys for authentication.</p>
-</div>
-<p>This is a very quick guide to getting your GitHub authentication set up,
-adopted from the <a class="reference external" href="https://swcarpentry.github.io/git-novice/07-github/index.html#ssh-background-and-setup">Carpentries GitHub Remotes lesson</a>.</p>
-<ol>
-<li><p>Open a terminal in JupyterHub</p></li>
-<li><p>Type the command</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>ssh-keygen -t ed25519 -C &quot;YOUR EMAIL ADDRESS GOES HERE&quot;`
+<div class="section" id="using-git-github-from-remote-jupyterhub">
+<h2>Using Git / GitHub from remote JupyterHub<a class="headerlink" href="#using-git-github-from-remote-jupyterhub" title="Permalink to this headline">¶</a></h2>
+<p>The recommended way to move code in and out of a remote hub is via git / GitHub.
+You should clone your project repo from the terminal and use git pull / git push to update and push changes.
+In order to push data to GitHub from the hub, you will need to set up GitHub authentication.
+<a class="reference external" href="https://github.com/yuvipanda/gh-scoped-creds/">gh-scoped-creds</a> should be already setup
+on your 2i2c managed JupyterHub, and we shall use that to authenticate to GitHub for
+push / pull access.</p>
+<p>Open a terminal in JupyterHub, run <code class="docutils literal notranslate"><span class="pre">gh-scoped-creds</span></code> and follow the prompts.</p>
+<p>Alternatively, in a notebook, run the following code and follow the prompts:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gh_scoped_creds</span>
+<span class="o">%</span><span class="n">ghscopedcreds</span>
 </pre></div>
 </div>
-<p>(Don’t just copy this text; you have to put in tour actual email address in between the quotes.) This command will create an ssh public / private key pair.</p>
-</li>
-<li><p>Enter a password for your new SSH key and record it in a safe place.
-This password is used to “lock” the SSH key. It can’t be used without the password.</p></li>
-<li><p>Type the command</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">~/.</span><span class="n">ssh</span><span class="o">/</span><span class="n">id_ed25519</span><span class="o">.</span><span class="n">pub</span>
-</pre></div>
-</div>
-<p>and copy the result. It should look something like <code class="docutils literal notranslate"><span class="pre">ssh-ed25519</span> <span class="pre">AAAAC3NzaC1lZDI1NTE5AAAAIJOMg813PWuWX/ilyexj2k/di1lBHwQHCHbRB6l4dV9K</span> <span class="pre">rpa&#64;ldeo.columbia.edu</span></code>. (Note that this is my <em>real</em> public key, but it is completely
-safe to share. Without the corresponding private key it is useless.)</p>
-</li>
-<li><p>Go to <a class="reference external" href="https://github.com/settings/keys">https://github.com/settings/keys</a>. Click the green  button that says “New SSH Key”.
-Give your key the title “JupyterHub SSH Key for Research Computing” and paste the
-public key from the previous step into the “Key” box.</p></li>
-<li><p>Verify that your key works by typing</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ssh</span> <span class="o">-</span><span class="n">T</span> <span class="n">git</span><span class="nd">@github</span><span class="o">.</span><span class="n">com</span>
-</pre></div>
-</div>
-<p>on the command like of the JupyterHub. (Note you will have to enter your SSH key password from step 3.)</p>
-</li>
-</ol>
-<p>You should now be able to push to GitHub.</p>
+<p>You should now be able to push to GitHub from the hub! These credentials will expire after
+8 hours (or whenever your JupyterHub server stops), and you’ll have to repeat these steps
+to fetch a fresh set of credentials. Once you authenticate, you’ll be provided with a link
+to a <a class="reference external" href="https://docs.github.com/en/developers/apps/getting-started-with-apps/about-apps">GitHub App</a>
+that you have to <a class="reference external" href="https://docs.github.com/en/developers/apps/managing-github-apps/installing-github-apps">install</a>
+on the repositories you want to be able to push to from this particular JupyterHub. You only
+need to do this once per JupyterHub, and can revoke access any time. You can always provide
+access to your own personal repositories, but might need approval from admins of GitHub
+organizations if you want to push to repos in that organization.</p>
 </div>
 <div class="section" id="collaborating-with-git-and-github">
 <h2>Collaborating with Git and Github<a class="headerlink" href="#collaborating-with-git-and-github" title="Permalink to this headline">¶</a></h2>
