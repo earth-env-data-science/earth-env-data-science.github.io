@@ -466,8 +466,8 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#from-this-make-a-2d-plot-of-the-the-time-mean-top-of-atmosphere-longwave-shortwave-and-incoming-solar-radiation">
-     2.2) From this, make a 2D plot of the the time-mean Top of Atmosphere Longwave, Shortwave, and Incoming Solar Radiation
+    <a class="reference internal nav-link" href="#from-this-make-a-2d-plot-of-the-the-time-mean-top-of-atmosphere-toa-longwave-shortwave-and-incoming-solar-radiation">
+     2.2) From this, make a 2D plot of the the time-mean Top of Atmosphere (TOA) Longwave, Shortwave, and Incoming Solar Radiation
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -535,8 +535,8 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#plot-the-cumulatuve-sum-in-latitude-of-that-quantity">
-     4.3) Plot the cumulatuve sum in latitude of that quantity
+    <a class="reference internal nav-link" href="#plot-the-cumulative-sum-of-the-total-amount-of-net-radiation-as-a-function-of-latitude">
+     4.3) Plot the cumulative sum of the total amount of net radiation as a function of latitude
     </a>
    </li>
   </ul>
@@ -628,8 +628,8 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#from-this-make-a-2d-plot-of-the-the-time-mean-top-of-atmosphere-longwave-shortwave-and-incoming-solar-radiation">
-     2.2) From this, make a 2D plot of the the time-mean Top of Atmosphere Longwave, Shortwave, and Incoming Solar Radiation
+    <a class="reference internal nav-link" href="#from-this-make-a-2d-plot-of-the-the-time-mean-top-of-atmosphere-toa-longwave-shortwave-and-incoming-solar-radiation">
+     2.2) From this, make a 2D plot of the the time-mean Top of Atmosphere (TOA) Longwave, Shortwave, and Incoming Solar Radiation
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -697,8 +697,8 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#plot-the-cumulatuve-sum-in-latitude-of-that-quantity">
-     4.3) Plot the cumulatuve sum in latitude of that quantity
+    <a class="reference internal nav-link" href="#plot-the-cumulative-sum-of-the-total-amount-of-net-radiation-as-a-function-of-latitude">
+     4.3) Plot the cumulative sum of the total amount of net radiation as a function of latitude
     </a>
    </li>
   </ul>
@@ -753,6 +753,17 @@
 <p>A pre-downloaded and subsetted a portion of the CERES dataset is available here: <a class="reference external" href="http://ldeo.columbia.edu/~rpa/CERES_EBAF-TOA_Edition4.0_200003-201701.condensed.nc">http://ldeo.columbia.edu/~rpa/CERES_EBAF-TOA_Edition4.0_200003-201701.condensed.nc</a>. The size of the data file is 702.53 MB. It may take a few minutes to download.</p>
 <p>Please review the CERES <a class="reference external" href="https://ceres.larc.nasa.gov/resources/faqs">FAQs</a> before getting started.</p>
 <p>Start by importing Numpy, Matplotlib, and Xarray. Set the default figure size to (12, 6).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="o">%</span><span class="k">config</span> InlineBackend.figure_format = &#39;retina&#39;
+</pre></div>
+</div>
+</div>
+</div>
 <p>Next, download the NetCDF file using pooch.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -762,11 +773,6 @@
     <span class="n">known_hash</span><span class="o">=</span><span class="s1">&#39;a876cc7106e7dcb1344fbec5dcd7510e5cd947e62049a8cbc188ad05ffe00345&#39;</span>
 <span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/jovyan/.cache/pooch/8e18cca34f0b893a1829cf86ad4b7c49-CERES_EBAF-TOA_Edition4.0_200003-201701.condensed.nc
 </pre></div>
 </div>
 </div>
@@ -786,14 +792,14 @@
 <div class="section" id="calculate-the-time-mean-of-the-entire-dataset">
 <h3>2.1) Calculate the time-mean of the entire dataset<a class="headerlink" href="#calculate-the-time-mean-of-the-entire-dataset" title="Permalink to this headline">¶</a></h3>
 </div>
-<div class="section" id="from-this-make-a-2d-plot-of-the-the-time-mean-top-of-atmosphere-longwave-shortwave-and-incoming-solar-radiation">
-<h3>2.2) From this, make a 2D plot of the the time-mean Top of Atmosphere Longwave, Shortwave, and Incoming Solar Radiation<a class="headerlink" href="#from-this-make-a-2d-plot-of-the-the-time-mean-top-of-atmosphere-longwave-shortwave-and-incoming-solar-radiation" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="from-this-make-a-2d-plot-of-the-the-time-mean-top-of-atmosphere-toa-longwave-shortwave-and-incoming-solar-radiation">
+<h3>2.2) From this, make a 2D plot of the the time-mean Top of Atmosphere (TOA) Longwave, Shortwave, and Incoming Solar Radiation<a class="headerlink" href="#from-this-make-a-2d-plot-of-the-the-time-mean-top-of-atmosphere-toa-longwave-shortwave-and-incoming-solar-radiation" title="Permalink to this headline">¶</a></h3>
 <p>(Use “All-Sky” conditions)</p>
 <p>Note the sign conventions on each variable.</p>
 </div>
 <div class="section" id="add-up-the-three-variables-above-and-verify-visually-that-they-are-equivalent-to-the-toa-net-flux">
 <h3>2.3) Add up the three variables above and verify (visually) that they are equivalent to the TOA net flux<a class="headerlink" href="#add-up-the-three-variables-above-and-verify-visually-that-they-are-equivalent-to-the-toa-net-flux" title="Permalink to this headline">¶</a></h3>
-<p>You have to pay attention to and think carefully about the sign conventions for each variable in order to get this to work.</p>
+<p>You have to pay attention to and think carefully about the sign conventions (positive or negative) for each variable in order for the variables to sum to the right TOA net flux. Refer to the NASA figure at the top of the page to understand incoming and outgoing radiation.</p>
 </div>
 </div>
 <div class="section" id="mean-and-weighted-mean">
@@ -826,17 +832,17 @@
 <div class="section" id="calculate-the-pixel-area-using-this-formula-and-create-a-2d-lon-lat-dataarray-for-it">
 <h3>4.1) calculate the pixel area using this formula and create a 2D (lon, lat) DataArray for it<a class="headerlink" href="#calculate-the-pixel-area-using-this-formula-and-create-a-2d-lon-lat-dataarray-for-it" title="Permalink to this headline">¶</a></h3>
 <p>(Xarray’s <code class="docutils literal notranslate"><span class="pre">ones_like</span></code> function can help you easily create and broadcast DataArrays.) Verify that the sum of all the pixels equals the Earth’s true surface area as evaluated using the formula for the area of a sphere (yes, the Earth is not a sphere … it’s just a homework problem).</p>
-<p>Multiplying the pixel area (m<span class="math notranslate nohighlight">\(^2\)</span>) from above with the radiative flux (W m<span class="math notranslate nohighlight">\(^{-2}\)</span>) gives you the total amount of radiation absorbed in each pixel in W.</p>
 </div>
 <div class="section" id="calculate-and-plot-the-total-amount-of-net-radiation-in-each-1-degree-latitude-band">
 <h3>4.2) Calculate and plot the total amount of net radiation in each 1-degree latitude band<a class="headerlink" href="#calculate-and-plot-the-total-amount-of-net-radiation-in-each-1-degree-latitude-band" title="Permalink to this headline">¶</a></h3>
-<p>Label with correct units</p>
+<p>Multiplying the pixel area (m<span class="math notranslate nohighlight">\(^2\)</span>) from above with the radiative flux (W m<span class="math notranslate nohighlight">\(^{-2}\)</span>) gives you the total amount of radiation absorbed in each pixel in W.</p>
+<p>Label with correct units.</p>
 </div>
-<div class="section" id="plot-the-cumulatuve-sum-in-latitude-of-that-quantity">
-<h3>4.3) Plot the cumulatuve sum in latitude of that quantity<a class="headerlink" href="#plot-the-cumulatuve-sum-in-latitude-of-that-quantity" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="plot-the-cumulative-sum-of-the-total-amount-of-net-radiation-as-a-function-of-latitude">
+<h3>4.3) Plot the cumulative sum of the total amount of net radiation as a function of latitude<a class="headerlink" href="#plot-the-cumulative-sum-of-the-total-amount-of-net-radiation-as-a-function-of-latitude" title="Permalink to this headline">¶</a></h3>
 <p>Label with correct units. (Hint: check out xarray’s <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.cumsum.html">cumsum</a> function.)</p>
 <p>This curve tells you how much energy must be transported meridionally by the ocean and atmosphere in order to account for the radiative imbalance at the top of the atmosphere.</p>
-<p>You should get a curve that looks something like this: <a class="reference external" href="http://www.cgd.ucar.edu/cas/papers/jclim2001a/Fig7.html">http://www.cgd.ucar.edu/cas/papers/jclim2001a/Fig7.html</a></p>
+<p>You should get a curve that looks something like this: <a class="reference external" href="https://journals.ametsoc.org/view/journals/clim/14/16/full-i1520-0442-14-16-3433-f07.gif">https://journals.ametsoc.org/view/journals/clim/14/16/full-i1520-0442-14-16-3433-f07.gif</a> (Figure from Trenberth &amp; Caron, 2001)</p>
 </div>
 </div>
 <div class="section" id="selecting-and-merging-data">
@@ -870,6 +876,7 @@
 </table>
 <div class="section" id="create-a-dataset-for-each-point-from-the-global-dataset">
 <h3>5.1) Create a <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> for each point from the global dataset<a class="headerlink" href="#create-a-dataset-for-each-point-from-the-global-dataset" title="Permalink to this headline">¶</a></h3>
+<p>Each city should get its own <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> with the same variables as the one you imported. Find the nearest associated incoming solar radiation and net radiation timeseries at each city.</p>
 </div>
 <div class="section" id="merge-these-four-datasets-into-a-new-dataset-with-the-new-dimension-city">
 <h3>5.2) Merge these four datasets into a new dataset with the new dimension <code class="docutils literal notranslate"><span class="pre">city</span></code><a class="headerlink" href="#merge-these-four-datasets-into-a-new-dataset-with-the-new-dimension-city" title="Permalink to this headline">¶</a></h3>
