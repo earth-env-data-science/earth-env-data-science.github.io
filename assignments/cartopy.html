@@ -511,9 +511,11 @@
 <p>Download this file and then use it to plot the concentration of Antarctic Sea Ice on Aug. 7, 2017. Again, you will need to explore the file contents in order to determine the correct projection.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pooch</span>
-<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;ftp://sidads.colorado.edu/pub/DATASETS/NOAA/G02202_V3/south/daily/2017/seaice_conc_daily_sh_f17_20170807_v03r01.nc&quot;</span>
-<span class="n">fname</span> <span class="o">=</span> <span class="n">pooch</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">known_hash</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">pooch</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://polarwatch.noaa.gov/erddap/files/nsidcCDRiceSQsh1day/2017/seaice_conc_daily_sh_f17_20170807_v03r01.nc&#39;</span>
+<span class="n">fname</span> <span class="o">=</span> <span class="n">pooch</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">known_hash</span><span class="o">=</span><span class="s1">&#39;19b74e7e97f1c0786da0c674c4d5e4af0da5b32e2fe8c66a8f1a8a9a1241e73c&#39;</span><span class="p">)</span>
+<span class="n">ds_ice</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">drop_variables</span><span class="o">=</span><span class="s1">&#39;melt_onset_day_seaice_conc_cdr&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
