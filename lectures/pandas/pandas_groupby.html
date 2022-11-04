@@ -4,11 +4,20 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta property="og:title" content="Pandas: Groupby" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://earth-env-data-science.github.io/lectures/pandas/pandas_groupby.html" />
+<meta property="og:description" content="groupby is an amazingly powerful function in pandas. But it is also complicated to use and understand. The point of this lesson is to make you feel confident in using groupby and its cousins, resam..." />
+<meta property="og:image" content="https://earth-env-data-science.github.io/_images/pandas_groupby_5_1.png" />
+<meta property="og:image:alt" content="Pandas: Groupby" />
+<meta name="description" content="groupby is an amazingly powerful function in pandas. But it is also complicated to use and understand. The point of this lesson is to make you feel confident in using groupby and its cousins, resam..." />
+
     <title>Pandas: Groupby &#8212; Earth and Environmental Data Science</title>
     
-  <link href="../../_static/css/theme.css" rel="stylesheet">
-  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -18,36 +27,35 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    
-      
-
-    
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
     
-  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
 
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/togglebutton.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <link rel="canonical" href="https://earth-env-data-science.github.io/lectures/pandas/pandas_groupby.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -61,7 +69,21 @@
     <!-- Google Analytics -->
     
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
     
     <div class="container-fluid" id="banner"></div>
 
@@ -70,9 +92,10 @@
     <div class="container-xl">
       <div class="row">
           
-<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
-    
-        <div class="navbar-brand-box">
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
     <a class="navbar-brand text-wrap" href="../../index.html">
       
         <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
@@ -90,14 +113,15 @@
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item active">
-        <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../intro.html">
-   An Introduction to Earth and Environmental Data Science
-  </a>
- </li>
-</ul>
-<p class="caption">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    An Introduction to Earth and Environmental Data Science
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   About this Book
  </span>
@@ -114,7 +138,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   The Interactive Computing Environment
  </span>
@@ -156,7 +180,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   The Core Python Language
  </span>
@@ -183,7 +207,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Scientific Python Fundamentals
  </span>
@@ -210,7 +234,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   High Level Data Analysis Frameworks
  </span>
@@ -286,7 +310,7 @@
   </ul>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Geoscience Package
  </span>
@@ -308,7 +332,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Big Data
  </span>
@@ -327,109 +351,226 @@
 </ul>
 
     </div>
-</nav> <!-- To handle the deprecated key -->
-
-<div class="navbar_extra_footer">
-  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-</div>
-
-</div>
-
-
-          
-
-
-          
-<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
-    
-    <div class="topbar container-xl fixed-top">
-    <div class="topbar-contents row">
-        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
-        <div class="col pl-md-4 topbar-main">
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
             
-            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
-                <i class="fas fa-bars"></i>
-                <i class="fas fa-arrow-left"></i>
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            
-            
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
-            class="fas fa-download"></i></button>
-
-    <div class="dropdown-buttons">
-        <!-- ipynb file if we had a myst markdown file -->
-        
-        <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../_sources/lectures/pandas/pandas_groupby.ipynb"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.ipynb</button></a>
-        <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
-    </div>
-</div>
-
-            <!-- Source interaction buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
-    <div class="dropdown-buttons sourcebuttons">
-        <a class="repository-button"
-            href="https://github.com/earth-env-data-science/earth-env-data-science-book"><button type="button" class="btn btn-secondary topbarbtn"
-                data-toggle="tooltip" data-placement="left" title="Source repository"><i
-                    class="fab fa-github"></i>repository</button></a>
-        <a class="issues-button"
-            href="https://github.com/earth-env-data-science/earth-env-data-science-book/issues/new?title=Issue%20on%20page%20%2Flectures/pandas/pandas_groupby.html&body=Your%20issue%20content%20here."><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
-        <a class="edit-button" href="https://github.com/earth-env-data-science/earth-env-data-science-book/edit/master/src/lectures/pandas/pandas_groupby.ipynb"><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
-    </div>
-</div>
-
-            <!-- Full screen (wrap in <a> to have style consistency -->
-
-<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-        title="Fullscreen mode"><i
-            class="fas fa-expand"></i></button></a>
-
-            <!-- Launch buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
-    <div class="dropdown-buttons">
-        
-        
-        <a class="jupyterhub-button" href="https://https://us-central1-b.gcp.pangeo.io//hub/user-redirect/git-pull?repo=https://github.com/earth-env-data-science/earth-env-data-science-book&urlpath=lab/tree/earth-env-data-science-book/src/lectures/pandas/pandas_groupby.ipynb&branch=master"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Launch JupyterHub" data-toggle="tooltip"
-                data-placement="left"><img class="jupyterhub-button-logo"
-                    src="../../_static/images/logo_jupyterhub.svg"
-                    alt="Interact on JupyterHub">JupyterHub</button></a>
-        
-        
-        
-    </div>
-</div>
-
-        </div>
-
-        <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
-            
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
             </div>
-            <nav id="bd-toc-nav" aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://https://us-central1-b.gcp.pangeo.io/hub/user-redirect/git-pull?repo=https%3A//github.com/earth-env-data-science/earth-env-data-science-book&urlpath=lab/tree/earth-env-data-science-book/src/lectures/pandas/pandas_groupby.ipynb&branch=master"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on JupyterHub"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="headerbtn__text-container">JupyterHub</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/earth-env-data-science/earth-env-data-science-book"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/earth-env-data-science/earth-env-data-science-book/issues/new?title=Issue%20on%20page%20%2Flectures/pandas/pandas_groupby.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/earth-env-data-science/earth-env-data-science-book/edit/master/src/lectures/pandas/pandas_groupby.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../_sources/lectures/pandas/pandas_groupby.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#an-example">
    An Example
@@ -503,12 +644,11 @@
  </li>
 </ul>
 
-            </nav>
-        </div>
-    </div>
+    </nav>
 </div>
-    <div id="main-content" class="row">
-        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
                 <h1>Pandas: Groupby</h1>
@@ -598,11 +738,12 @@
                     </div>
                 </div>
             </div>
-            
+            <main id="main-content" role="main">
+                
               <div>
                 
-  <div class="section" id="pandas-groupby">
-<h1>Pandas: Groupby<a class="headerlink" href="#pandas-groupby" title="Permalink to this headline">¶</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="pandas-groupby">
+<h1>Pandas: Groupby<a class="headerlink" href="#pandas-groupby" title="Permalink to this headline">#</a></h1>
 <p><code class="docutils literal notranslate"><span class="pre">groupby</span></code> is an amazingly powerful function in pandas. But it is also complicated to use and understand.
 The point of this lesson is to make you feel confident in using <code class="docutils literal notranslate"><span class="pre">groupby</span></code> and its cousins, <code class="docutils literal notranslate"><span class="pre">resample</span></code> and <code class="docutils literal notranslate"><span class="pre">rolling</span></code>.</p>
 <p>These notes are loosely based on the <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/groupby.html">Pandas GroupBy Documentation</a>.</p>
@@ -779,8 +920,8 @@ The point of this lesson is to make you feel confident in using <code class="doc
 </table>
 </div></div></div>
 </div>
-<div class="section" id="an-example">
-<h2>An Example<a class="headerlink" href="#an-example" title="Permalink to this headline">¶</a></h2>
+<section id="an-example">
+<h2>An Example<a class="headerlink" href="#an-example" title="Permalink to this headline">#</a></h2>
 <p>This is an example of a “one-liner” that you can accomplish with groupby.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -808,9 +949,9 @@ The point of this lesson is to make you feel confident in using <code class="doc
 <img alt="../../_images/pandas_groupby_6_1.png" src="../../_images/pandas_groupby_6_1.png" />
 </div>
 </div>
-</div>
-<div class="section" id="what-happened">
-<h2>What Happened?<a class="headerlink" href="#what-happened" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="what-happened">
+<h2>What Happened?<a class="headerlink" href="#what-happened" title="Permalink to this headline">#</a></h2>
 <p>Let’s break apart this operation a bit. The workflow with <code class="docutils literal notranslate"><span class="pre">groubpy</span></code> can be divided into three general steps:</p>
 <ol class="simple">
 <li><p><strong>Split</strong>: Partition the data into different groups based on some criterion.</p></li>
@@ -821,8 +962,8 @@ The point of this lesson is to make you feel confident in using <code class="doc
 <li><p><strong>Combine</strong>: Put the results back together into a single object.</p></li>
 </ol>
 <p><img alt="split-apply-combine" src="https://miro.medium.com/max/1840/1*JbF6nhrQsn4f-TaSF6IR9g.png" /></p>
-<div class="section" id="the-groupby-method">
-<h3>The <code class="docutils literal notranslate"><span class="pre">groupby</span></code> method<a class="headerlink" href="#the-groupby-method" title="Permalink to this headline">¶</a></h3>
+<section id="the-groupby-method">
+<h3>The <code class="docutils literal notranslate"><span class="pre">groupby</span></code> method<a class="headerlink" href="#the-groupby-method" title="Permalink to this headline">#</a></h3>
 <p>Both <code class="docutils literal notranslate"><span class="pre">Series</span></code> and <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> objects have a groupby method. It accepts a variety of arguments, but the simplest way to think about it is that you pass another series, whose unique values are used to split the original object into different groups.</p>
 <p>via <a class="reference external" href="https://medium.com/analytics-vidhya/split-apply-combine-strategy-for-data-mining-4fd6e2a0cc99">https://medium.com/analytics-vidhya/split-apply-combine-strategy-for-data-mining-4fd6e2a0cc99</a></p>
 <div class="cell docutils container">
@@ -850,9 +991,9 @@ The point of this lesson is to make you feel confident in using <code class="doc
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="the-groubby-object">
-<h3>The <code class="docutils literal notranslate"><span class="pre">GroubBy</span></code> object<a class="headerlink" href="#the-groubby-object" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="the-groubby-object">
+<h3>The <code class="docutils literal notranslate"><span class="pre">GroubBy</span></code> object<a class="headerlink" href="#the-groubby-object" title="Permalink to this headline">#</a></h3>
 <p>When we call, <code class="docutils literal notranslate"><span class="pre">groupby</span></code> we get back a <code class="docutils literal notranslate"><span class="pre">GroupBy</span></code> object:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1167,9 +1308,9 @@ The point of this lesson is to make you feel confident in using <code class="doc
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="iterating-and-selecting-groups">
-<h3>Iterating and selecting groups<a class="headerlink" href="#iterating-and-selecting-groups" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="iterating-and-selecting-groups">
+<h3>Iterating and selecting groups<a class="headerlink" href="#iterating-and-selecting-groups" title="Permalink to this headline">#</a></h3>
 <p>You can loop through the groups if you want.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1488,10 +1629,10 @@ The point of this lesson is to make you feel confident in using <code class="doc
 </table>
 </div></div></div>
 </div>
-</div>
-</div>
-<div class="section" id="aggregation">
-<h2>Aggregation<a class="headerlink" href="#aggregation" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="aggregation">
+<h2>Aggregation<a class="headerlink" href="#aggregation" title="Permalink to this headline">#</a></h2>
 <p>Now that we know how to create a <code class="docutils literal notranslate"><span class="pre">GroupBy</span></code> object, let’s learn how to do aggregation on it.</p>
 <p>One way us to use the <code class="docutils literal notranslate"><span class="pre">.aggregate</span></code> method, which accepts another function as its argument. The result is automatically combined into a new dataframe with the group key as the index.</p>
 <div class="cell docutils container">
@@ -1862,9 +2003,9 @@ Name: mag, dtype: float64
 <img alt="../../_images/pandas_groupby_34_1.png" src="../../_images/pandas_groupby_34_1.png" />
 </div>
 </div>
-</div>
-<div class="section" id="transformation">
-<h2>Transformation<a class="headerlink" href="#transformation" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="transformation">
+<h2>Transformation<a class="headerlink" href="#transformation" title="Permalink to this headline">#</a></h2>
 <p>The key difference between aggregation and transformation is that aggregation returns a <em>smaller</em> object than the original, indexed by the group keys, while <em>transformation</em> returns an object with the same index (and same size) as the original object. Groupby + transformation is used when applying an operation that requires information about the whole group.</p>
 <p>In this example, we standardize the earthquakes in each country so that the distribution has zero mean and unit variance. We do this by first defining a function called <code class="docutils literal notranslate"><span class="pre">standardize</span></code> and then passing it to the <code class="docutils literal notranslate"><span class="pre">transform</span></code> method.</p>
 <p>I admit that I don’t know why you would want to do this. <code class="docutils literal notranslate"><span class="pre">transform</span></code> makes more sense to me in the context of time grouping operation. See below for another example.</p>
@@ -1890,9 +2031,9 @@ Name: mag, dtype: float64
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="time-grouping">
-<h2>Time Grouping<a class="headerlink" href="#time-grouping" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="time-grouping">
+<h2>Time Grouping<a class="headerlink" href="#time-grouping" title="Permalink to this headline">#</a></h2>
 <p>We already saw how pandas has a strong built-in understanding of time. This capability is even more powerful in the context of <code class="docutils literal notranslate"><span class="pre">groupby</span></code>. With datasets indexed by a pandas <code class="docutils literal notranslate"><span class="pre">DateTimeIndex</span></code>, we can easily group and resample the data using common time units.</p>
 <p>To get started, let’s load the timeseries data we already explored in past lessons.</p>
 <div class="cell docutils container">
@@ -2607,8 +2748,8 @@ Name: mag, dtype: float64
 <img alt="../../_images/pandas_groupby_48_1.png" src="../../_images/pandas_groupby_48_1.png" />
 </div>
 </div>
-<div class="section" id="calculating-anomalies">
-<h3>Calculating anomalies<a class="headerlink" href="#calculating-anomalies" title="Permalink to this headline">¶</a></h3>
+<section id="calculating-anomalies">
+<h3>Calculating anomalies<a class="headerlink" href="#calculating-anomalies" title="Permalink to this headline">#</a></h3>
 <p>A common mode of analysis in climate science is to remove the climatology from a signal to focus only on the “anomaly” values. This can be accomplished with transformation.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2631,9 +2772,9 @@ Name: mag, dtype: float64
 <img alt="../../_images/pandas_groupby_50_2.png" src="../../_images/pandas_groupby_50_2.png" />
 </div>
 </div>
-</div>
-<div class="section" id="resampling">
-<h3>Resampling<a class="headerlink" href="#resampling" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="resampling">
+<h3>Resampling<a class="headerlink" href="#resampling" title="Permalink to this headline">#</a></h3>
 <p>Another common operation is to change the resolution of a dataset by resampling in time. Pandas exposes this through the <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/timeseries.html#resampling">resample</a> function. The resample periods are specified using pandas <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases">offset index</a> syntax.</p>
 <p>Below we resample the dataset by taking the mean over each month.</p>
 <div class="cell docutils container">
@@ -2663,9 +2804,9 @@ Name: mag, dtype: float64
 <img alt="../../_images/pandas_groupby_54_1.png" src="../../_images/pandas_groupby_54_1.png" />
 </div>
 </div>
-</div>
-<div class="section" id="rolling-operations">
-<h3>Rolling Operations<a class="headerlink" href="#rolling-operations" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="rolling-operations">
+<h3>Rolling Operations<a class="headerlink" href="#rolling-operations" title="Permalink to this headline">#</a></h3>
 <p>The final category of operations applies to “rolling windows”. (See <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.rolling.html">rolling</a> documentation.) We specify a function to apply over a moving window along the index. We specify the size of the window and, optionally, the weights. We also use the keyword <code class="docutils literal notranslate"><span class="pre">centered</span></code> to tell pandas whether to center the operation around the midpoint of the window.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2681,9 +2822,9 @@ Name: mag, dtype: float64
 <img alt="../../_images/pandas_groupby_56_1.png" src="../../_images/pandas_groupby_56_1.png" />
 </div>
 </div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -2707,9 +2848,11 @@ Name: mag, dtype: float64
 
               </div>
               
-            
-                <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
     <a class='left-prev' id="prev-link" href="../../assignments/basic_pandas.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
@@ -2725,24 +2868,28 @@ Name: mag, dtype: float64
     <i class="fas fa-angle-right"></i>
     </a>
 </div>
-            
+            </footer>
         </div>
     </div>
-    <footer class="footer">
-  <p>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Ryan Abernathey<br/>
+  
+      &copy; Copyright 2016-2021.<br/>
+</p>
+        </footer>
+    </div>
     
-      By Ryan Abernathey<br/>
-    
-        &copy; Copyright 2016-2021.<br/>
-  </p>
-</footer>
-</main>
+</div>
 
 
       </div>
     </div>
   
-  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
 
   </body>
 </html>

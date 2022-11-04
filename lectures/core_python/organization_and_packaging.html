@@ -4,11 +4,20 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta property="og:title" content="Organization and Packaging of Python Projects" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://earth-env-data-science.github.io/lectures/core_python/organization_and_packaging.html" />
+<meta property="og:description" content="A complex research project often relies and many different programs and software packages to accomplish the research goals. An important part of scientific computing is deciding how to organize and..." />
+<meta property="og:image" content="https://earth-env-data-science.github.io/_static/eeds-logo.png" />
+<meta property="og:image:alt" content="Organization and Packaging of Python Projects" />
+<meta name="description" content="A complex research project often relies and many different programs and software packages to accomplish the research goals. An important part of scientific computing is deciding how to organize and..." />
+
     <title>Organization and Packaging of Python Projects &#8212; Earth and Environmental Data Science</title>
     
-  <link href="../../_static/css/theme.css" rel="stylesheet">
-  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -18,36 +27,35 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    
-      
-
-    
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
     
-  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
 
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/togglebutton.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <link rel="canonical" href="https://earth-env-data-science.github.io/lectures/core_python/organization_and_packaging.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -61,7 +69,21 @@
     <!-- Google Analytics -->
     
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
     
     <div class="container-fluid" id="banner"></div>
 
@@ -70,9 +92,10 @@
     <div class="container-xl">
       <div class="row">
           
-<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
-    
-        <div class="navbar-brand-box">
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
     <a class="navbar-brand text-wrap" href="../../index.html">
       
         <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
@@ -90,14 +113,15 @@
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item active">
-        <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../intro.html">
-   An Introduction to Earth and Environmental Data Science
-  </a>
- </li>
-</ul>
-<p class="caption">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    An Introduction to Earth and Environmental Data Science
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   About this Book
  </span>
@@ -114,7 +138,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   The Interactive Computing Environment
  </span>
@@ -156,7 +180,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   The Core Python Language
  </span>
@@ -183,7 +207,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Scientific Python Fundamentals
  </span>
@@ -210,7 +234,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   High Level Data Analysis Frameworks
  </span>
@@ -286,7 +310,7 @@
   </ul>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Geoscience Package
  </span>
@@ -308,7 +332,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Big Data
  </span>
@@ -327,109 +351,226 @@
 </ul>
 
     </div>
-</nav> <!-- To handle the deprecated key -->
-
-<div class="navbar_extra_footer">
-  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-</div>
-
-</div>
-
-
-          
-
-
-          
-<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
-    
-    <div class="topbar container-xl fixed-top">
-    <div class="topbar-contents row">
-        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
-        <div class="col pl-md-4 topbar-main">
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
             
-            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
-                <i class="fas fa-bars"></i>
-                <i class="fas fa-arrow-left"></i>
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            
-            
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
-            class="fas fa-download"></i></button>
-
-    <div class="dropdown-buttons">
-        <!-- ipynb file if we had a myst markdown file -->
-        
-        <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../_sources/lectures/core_python/organization_and_packaging.ipynb"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.ipynb</button></a>
-        <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
-    </div>
-</div>
-
-            <!-- Source interaction buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
-    <div class="dropdown-buttons sourcebuttons">
-        <a class="repository-button"
-            href="https://github.com/earth-env-data-science/earth-env-data-science-book"><button type="button" class="btn btn-secondary topbarbtn"
-                data-toggle="tooltip" data-placement="left" title="Source repository"><i
-                    class="fab fa-github"></i>repository</button></a>
-        <a class="issues-button"
-            href="https://github.com/earth-env-data-science/earth-env-data-science-book/issues/new?title=Issue%20on%20page%20%2Flectures/core_python/organization_and_packaging.html&body=Your%20issue%20content%20here."><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
-        <a class="edit-button" href="https://github.com/earth-env-data-science/earth-env-data-science-book/edit/master/src/lectures/core_python/organization_and_packaging.ipynb"><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
-    </div>
-</div>
-
-            <!-- Full screen (wrap in <a> to have style consistency -->
-
-<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-        title="Fullscreen mode"><i
-            class="fas fa-expand"></i></button></a>
-
-            <!-- Launch buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
-    <div class="dropdown-buttons">
-        
-        
-        <a class="jupyterhub-button" href="https://https://us-central1-b.gcp.pangeo.io//hub/user-redirect/git-pull?repo=https://github.com/earth-env-data-science/earth-env-data-science-book&urlpath=lab/tree/earth-env-data-science-book/src/lectures/core_python/organization_and_packaging.ipynb&branch=master"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Launch JupyterHub" data-toggle="tooltip"
-                data-placement="left"><img class="jupyterhub-button-logo"
-                    src="../../_static/images/logo_jupyterhub.svg"
-                    alt="Interact on JupyterHub">JupyterHub</button></a>
-        
-        
-        
-    </div>
-</div>
-
-        </div>
-
-        <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
-            
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
             </div>
-            <nav id="bd-toc-nav" aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://https://us-central1-b.gcp.pangeo.io/hub/user-redirect/git-pull?repo=https%3A//github.com/earth-env-data-science/earth-env-data-science-book&urlpath=lab/tree/earth-env-data-science-book/src/lectures/core_python/organization_and_packaging.ipynb&branch=master"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on JupyterHub"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="headerbtn__text-container">JupyterHub</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/earth-env-data-science/earth-env-data-science-book"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/earth-env-data-science/earth-env-data-science-book/issues/new?title=Issue%20on%20page%20%2Flectures/core_python/organization_and_packaging.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/earth-env-data-science/earth-env-data-science-book/edit/master/src/lectures/core_python/organization_and_packaging.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../_sources/lectures/core_python/organization_and_packaging.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#types-of-projects">
    Types of Projects
@@ -498,12 +639,11 @@
  </li>
 </ul>
 
-            </nav>
-        </div>
-    </div>
+    </nav>
 </div>
-    <div id="main-content" class="row">
-        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
                 <h1>Organization and Packaging of Python Projects</h1>
@@ -588,19 +728,20 @@
                     </div>
                 </div>
             </div>
-            
+            <main id="main-content" role="main">
+                
               <div>
                 
-  <div class="section" id="organization-and-packaging-of-python-projects">
-<h1>Organization and Packaging of Python Projects<a class="headerlink" href="#organization-and-packaging-of-python-projects" title="Permalink to this headline">¶</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="organization-and-packaging-of-python-projects">
+<h1>Organization and Packaging of Python Projects<a class="headerlink" href="#organization-and-packaging-of-python-projects" title="Permalink to this headline">#</a></h1>
 <p>A complex research project often relies and many different programs and software packages to accomplish the research goals.
 An important part of scientific computing is deciding how to organize and structure the code you use for research.
 A well-structured project can make you a more efficient and effective researcher.
 It is also a key component of <a class="reference external" href="http://lorenabarba.com/blog/barbagroup-reproducibility-syllabus/">scientific reproducibility</a>.</p>
 <p>Just putting all of your code into git repositories won’t magically turn a mess of scripts into a beautiful, well-organized project.
 More deliberate effort is required.</p>
-<div class="section" id="types-of-projects">
-<h2>Types of Projects<a class="headerlink" href="#types-of-projects" title="Permalink to this headline">¶</a></h2>
+<section id="types-of-projects">
+<h2>Types of Projects<a class="headerlink" href="#types-of-projects" title="Permalink to this headline">#</a></h2>
 <p>Not all projects are created equal.
 Based on my experience, I categorize three different types of “research code” scenarios commonly encountered in geosciences.</p>
 <ol class="simple">
@@ -609,9 +750,9 @@ Based on my experience, I categorize three different types of “research code�
 <li><p><strong>Reusable software elements</strong>: In the course of our research computing, we often identify specialized routines that we want to package for reuse in other projects, or by other scientists. This is where “scripts” become “software.”</p></li>
 </ol>
 <p>This lecture outlines some suggested practices for each category.</p>
-</div>
-<div class="section" id="exploratory-analysis">
-<h2>Exploratory Analysis<a class="headerlink" href="#exploratory-analysis" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="exploratory-analysis">
+<h2>Exploratory Analysis<a class="headerlink" href="#exploratory-analysis" title="Permalink to this headline">#</a></h2>
 <p>When starting something new, we are often motivated to just start coding and get some results quick.
 This is fine!
 Jupyter notebooks are an ideal format for open-ended exploratory analysis, since they are totally self-contained: they encapsulate text, code, and figures.
@@ -623,11 +764,11 @@ Gists are like mini repos you can easily share and embed.
 <p>You can upload any file (including an <code class="docutils literal notranslate"><span class="pre">.ipynb</span></code> notebook file) by dragging and dropping it into the gist website.
 You have the choice of making you gist public or secret. (There is no private option, but a secret gist can only be seen by others if you give them the URL.)</p>
 <p>GitHub’s rendering of Gists is a bit buggy. For a more consistent rendering experience, you can share your gist via <a class="reference external" href="http://nbviewer.ipython.org/">http://nbviewer.ipython.org/</a>.</p>
-</div>
-<div class="section" id="a-single-paper">
-<h2>A Single Paper<a class="headerlink" href="#a-single-paper" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="scientific-reproducibility">
-<h3>Scientific Reproducibility<a class="headerlink" href="#scientific-reproducibility" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="a-single-paper">
+<h2>A Single Paper<a class="headerlink" href="#a-single-paper" title="Permalink to this headline">#</a></h2>
+<section id="scientific-reproducibility">
+<h3>Scientific Reproducibility<a class="headerlink" href="#scientific-reproducibility" title="Permalink to this headline">#</a></h3>
 <p>Reproducibility is a cornerstone of the scientific process.
 However, today one often reads that science is in the midst of a <a class="reference external" href="http://www.nature.com/news/1-500-scientists-lift-the-lid-on-reproducibility-1.19970">reproducibility crisis</a>.
 This crisis may be due to increasing complexity and cost of scientific analysis, together with mounting pressure to publish as much and as quickly as possible.</p>
@@ -657,9 +798,9 @@ Many of the suggestions in this lecture are adopted or paraphrased from <em>Barb
 <li><p>Provide public access to scripts, runs, and results</p></li>
 </ol>
 <p>These recommendations suggest a certain structure for a project.</p>
-</div>
-<div class="section" id="project-layout">
-<h3>Project Layout<a class="headerlink" href="#project-layout" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="project-layout">
+<h3>Project Layout<a class="headerlink" href="#project-layout" title="Permalink to this headline">#</a></h3>
 <p>A reproducible single-paper project directory structure might look something like this</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>README.md
 LICENSE
@@ -673,13 +814,13 @@ manuscript/manuscript.tex
 </pre></div>
 </div>
 <p>A great example of such a paper is <a class="reference external" href="https://crocha700.github.io/">Cesar Rocha</a>’s Upper Ocean Seasonality project: <a class="reference external" href="https://github.com/crocha700/UpperOceanSeasonality">https://github.com/crocha700/UpperOceanSeasonality</a>.</p>
-</div>
-</div>
-<div class="section" id="reuseable-software-elements">
-<h2>Reuseable Software Elements<a class="headerlink" href="#reuseable-software-elements" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="reuseable-software-elements">
+<h2>Reuseable Software Elements<a class="headerlink" href="#reuseable-software-elements" title="Permalink to this headline">#</a></h2>
 <p>Scientific software can perhaps be grouped into two categories: single-use “scripts” that are used in a very specific context to do a very specific thing (e.g.~to generate a specific figure for a paper), and reuseable components which encapsulate a more generic workflow. Once you find yourself repeating the same chunks of code in many different scripts or projects, it’s time to start composing reusable software elements.</p>
-<div class="section" id="modules">
-<h3>Modules<a class="headerlink" href="#modules" title="Permalink to this headline">¶</a></h3>
+<section id="modules">
+<h3>Modules<a class="headerlink" href="#modules" title="Permalink to this headline">#</a></h3>
 <p>The basic element of reusability in python is the <a class="reference external" href="https://docs.python.org/3/tutorial/modules.html">module</a>.
 A module is a <code class="docutils literal notranslate"><span class="pre">.py</span></code> file which contains python objects which can be <em>imported</em> by other scripts or notebooks.
 Let’s illustrate how modules work with a simple example.</p>
@@ -809,9 +950,9 @@ FILE
 </div>
 <p>Modules are a simple way to share code between different scripts or notebooks in the same project. <em>Module files must reside in the same directory as any script which imports them!</em> This is a big limitation; it means you can’t share modules between different projects.</p>
 <p>Once you have a piece of code that is general-purpose enough to share between projects, you need to create a package.</p>
-</div>
-<div class="section" id="aside-python-style">
-<h3>Aside: Python Style<a class="headerlink" href="#aside-python-style" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="aside-python-style">
+<h3>Aside: Python Style<a class="headerlink" href="#aside-python-style" title="Permalink to this headline">#</a></h3>
 <p>There are few absolute rules for python code style, but there is a detailed <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">recommended style guide</a>. Some especially relevant points are:</p>
 <ul class="simple">
 <li><p>Line length should not exceed 79 characters</p></li>
@@ -819,9 +960,9 @@ FILE
 <li><p>Function and variable names should be <code class="docutils literal notranslate"><span class="pre">lower_case_with_underscores</span></code></p></li>
 <li><p>Class names should be <code class="docutils literal notranslate"><span class="pre">CamelCase</span></code></p></li>
 </ul>
-</div>
-<div class="section" id="packages">
-<h3>Packages<a class="headerlink" href="#packages" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="packages">
+<h3>Packages<a class="headerlink" href="#packages" title="Permalink to this headline">#</a></h3>
 <p><a class="reference external" href="https://docs.python.org/3/tutorial/modules.html#packages">Packages</a> are python’s way of encapsulating reusable code elements for sharing with others. Packaging is a huge and complicated topic. We will just scratch the surface.</p>
 <p>We have already interacted with many packages already. Browse some of their github repositories to explore the structure of a large python package:</p>
 <ul class="simple">
@@ -870,9 +1011,9 @@ gcdistancs/tests/test_gcdistance.py
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="the-actual-package">
-<h3>The actual package<a class="headerlink" href="#the-actual-package" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="the-actual-package">
+<h3>The actual package<a class="headerlink" href="#the-actual-package" title="Permalink to this headline">#</a></h3>
 <p>The directory <code class="docutils literal notranslate"><span class="pre">gcdistance</span></code> is the actual package. Any directory that contains an <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> file is recognized by python as a package. This file can be blank, bu it needs to be present. From the root directory, we can import a module from the package as follows</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gcdistance</span> <span class="kn">import</span> <span class="n">gcdistance</span>
 </pre></div>
@@ -902,10 +1043,10 @@ If we plan to keep developing the package, we can install it in “developer mod
 </pre></div>
 </div>
 <p>In this case, the files are symlinked rather than copied.</p>
-</div>
-</div>
-<div class="section" id="testing">
-<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">#</a></h2>
 <p>A software package requires <a class="reference external" href="https://en.wikipedia.org/wiki/Software_testing">tests</a> to ensure that it works properly. Matt Rocklin has a great <a class="reference external" href="http://matthewrocklin.com/blog/work/2016/02/08/tests">blog post</a> on why we should write tests for our code.</p>
 <p>Tests don’t have to be complicated. They are simply a check to verify that your code does what it is supposed to do.</p>
 <p>To add tests to our project, we create create the file <code class="docutils literal notranslate"><span class="pre">gcdistance/tests/test_gcdistance.py</span></code>. (We also need an <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> file in the <code class="docutils literal notranslate"><span class="pre">tests</span></code> directory.) The example below shows an example of a test function for our package.</p>
@@ -940,8 +1081,8 @@ If we plan to keep developing the package, we can install it in “developer mod
 </pre></div>
 </div>
 <p>from the root directory of your project. You should see a notification that the tests passed. Try playing around with the tests to cause something to fail.</p>
-<div class="section" id="continuous-integration-with-travis-ci">
-<h3>Continuous Integration with Travis CI<a class="headerlink" href="#continuous-integration-with-travis-ci" title="Permalink to this headline">¶</a></h3>
+<section id="continuous-integration-with-travis-ci">
+<h3>Continuous Integration with Travis CI<a class="headerlink" href="#continuous-integration-with-travis-ci" title="Permalink to this headline">#</a></h3>
 <p>You can configure automatic testing of your package by integrating github with <a class="reference external" href="https://travis-ci.org/">Travis-CI</a>. Travis-CI is a free “continuous integration” service: it automatically downloads your package and runs your tests in the cloud every time you commit to your repository. The travis <a class="reference external" href="https://docs.travis-ci.com/user/getting-started">getting started guide</a> gives a great overview of how to use the service.</p>
 <p>For us to use travis with our project, the steps are simple:</p>
 <ol>
@@ -959,9 +1100,9 @@ If we plan to keep developing the package, we can install it in “developer mod
 <li><p>Add the file, commit, and push to github</p></li>
 <li><p>Go to <a class="reference external" href="https://travis-ci.org">https://travis-ci.org</a> and watch the magic happen!</p></li>
 </ol>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -985,9 +1126,11 @@ If we plan to keep developing the package, we can install it in “developer mod
 
               </div>
               
-            
-                <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
     <a class='left-prev' id="prev-link" href="functions_classes.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
@@ -1003,24 +1146,28 @@ If we plan to keep developing the package, we can install it in “developer mod
     <i class="fas fa-angle-right"></i>
     </a>
 </div>
-            
+            </footer>
         </div>
     </div>
-    <footer class="footer">
-  <p>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Ryan Abernathey<br/>
+  
+      &copy; Copyright 2016-2021.<br/>
+</p>
+        </footer>
+    </div>
     
-      By Ryan Abernathey<br/>
-    
-        &copy; Copyright 2016-2021.<br/>
-  </p>
-</footer>
-</main>
+</div>
 
 
       </div>
     </div>
   
-  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
 
   </body>
 </html>

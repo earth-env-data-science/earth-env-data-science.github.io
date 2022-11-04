@@ -4,11 +4,20 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta property="og:title" content="Binder for Reproducible Research" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://earth-env-data-science.github.io/lectures/environment/binder.html" />
+<meta property="og:description" content="This lecture is concerned with the topic of reproducibility. Nearly everyone agrees that reproducibility is an important principle for science: if results are not reproducible, they are not valid. ..." />
+<meta property="og:image" content="https://earth-env-data-science.github.io/_static/eeds-logo.png" />
+<meta property="og:image:alt" content="Binder for Reproducible Research" />
+<meta name="description" content="This lecture is concerned with the topic of reproducibility. Nearly everyone agrees that reproducibility is an important principle for science: if results are not reproducible, they are not valid. ..." />
+
     <title>Binder for Reproducible Research &#8212; Earth and Environmental Data Science</title>
     
-  <link href="../../_static/css/theme.css" rel="stylesheet">
-  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -18,36 +27,35 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    
-      
-
-    
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
     
-  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
 
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/togglebutton.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <link rel="canonical" href="https://earth-env-data-science.github.io/lectures/environment/binder.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -61,7 +69,21 @@
     <!-- Google Analytics -->
     
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
     
     <div class="container-fluid" id="banner"></div>
 
@@ -70,9 +92,10 @@
     <div class="container-xl">
       <div class="row">
           
-<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
-    
-        <div class="navbar-brand-box">
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
     <a class="navbar-brand text-wrap" href="../../index.html">
       
         <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
@@ -90,14 +113,15 @@
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item active">
-        <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../intro.html">
-   An Introduction to Earth and Environmental Data Science
-  </a>
- </li>
-</ul>
-<p class="caption">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    An Introduction to Earth and Environmental Data Science
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   About this Book
  </span>
@@ -114,7 +138,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   The Interactive Computing Environment
  </span>
@@ -156,7 +180,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   The Core Python Language
  </span>
@@ -183,7 +207,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Scientific Python Fundamentals
  </span>
@@ -210,7 +234,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   High Level Data Analysis Frameworks
  </span>
@@ -286,7 +310,7 @@
   </ul>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Geoscience Package
  </span>
@@ -308,7 +332,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Big Data
  </span>
@@ -327,109 +351,226 @@
 </ul>
 
     </div>
-</nav> <!-- To handle the deprecated key -->
-
-<div class="navbar_extra_footer">
-  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-</div>
-
-</div>
-
-
-          
-
-
-          
-<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
-    
-    <div class="topbar container-xl fixed-top">
-    <div class="topbar-contents row">
-        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
-        <div class="col pl-md-4 topbar-main">
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
             
-            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
-                <i class="fas fa-bars"></i>
-                <i class="fas fa-arrow-left"></i>
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            
-            
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
-            class="fas fa-download"></i></button>
-
-    <div class="dropdown-buttons">
-        <!-- ipynb file if we had a myst markdown file -->
-        
-        <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../_sources/lectures/environment/binder.ipynb"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.ipynb</button></a>
-        <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
-    </div>
-</div>
-
-            <!-- Source interaction buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
-    <div class="dropdown-buttons sourcebuttons">
-        <a class="repository-button"
-            href="https://github.com/earth-env-data-science/earth-env-data-science-book"><button type="button" class="btn btn-secondary topbarbtn"
-                data-toggle="tooltip" data-placement="left" title="Source repository"><i
-                    class="fab fa-github"></i>repository</button></a>
-        <a class="issues-button"
-            href="https://github.com/earth-env-data-science/earth-env-data-science-book/issues/new?title=Issue%20on%20page%20%2Flectures/environment/binder.html&body=Your%20issue%20content%20here."><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
-        <a class="edit-button" href="https://github.com/earth-env-data-science/earth-env-data-science-book/edit/master/src/lectures/environment/binder.ipynb"><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
-    </div>
-</div>
-
-            <!-- Full screen (wrap in <a> to have style consistency -->
-
-<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-        title="Fullscreen mode"><i
-            class="fas fa-expand"></i></button></a>
-
-            <!-- Launch buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
-    <div class="dropdown-buttons">
-        
-        
-        <a class="jupyterhub-button" href="https://https://us-central1-b.gcp.pangeo.io//hub/user-redirect/git-pull?repo=https://github.com/earth-env-data-science/earth-env-data-science-book&urlpath=lab/tree/earth-env-data-science-book/src/lectures/environment/binder.ipynb&branch=master"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Launch JupyterHub" data-toggle="tooltip"
-                data-placement="left"><img class="jupyterhub-button-logo"
-                    src="../../_static/images/logo_jupyterhub.svg"
-                    alt="Interact on JupyterHub">JupyterHub</button></a>
-        
-        
-        
-    </div>
-</div>
-
-        </div>
-
-        <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
-            
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
             </div>
-            <nav id="bd-toc-nav" aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://https://us-central1-b.gcp.pangeo.io/hub/user-redirect/git-pull?repo=https%3A//github.com/earth-env-data-science/earth-env-data-science-book&urlpath=lab/tree/earth-env-data-science-book/src/lectures/environment/binder.ipynb&branch=master"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on JupyterHub"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="headerbtn__text-container">JupyterHub</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/earth-env-data-science/earth-env-data-science-book"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/earth-env-data-science/earth-env-data-science-book/issues/new?title=Issue%20on%20page%20%2Flectures/environment/binder.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/earth-env-data-science/earth-env-data-science-book/edit/master/src/lectures/environment/binder.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../_sources/lectures/environment/binder.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#an-example-binder">
    An Example Binder
@@ -483,12 +624,11 @@
  </li>
 </ul>
 
-            </nav>
-        </div>
-    </div>
+    </nav>
 </div>
-    <div id="main-content" class="row">
-        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
                 <h1>Binder for Reproducible Research</h1>
@@ -558,11 +698,12 @@
                     </div>
                 </div>
             </div>
-            
+            <main id="main-content" role="main">
+                
               <div>
                 
-  <div class="section" id="binder-for-reproducible-research">
-<h1>Binder for Reproducible Research<a class="headerlink" href="#binder-for-reproducible-research" title="Permalink to this headline">¶</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="binder-for-reproducible-research">
+<h1>Binder for Reproducible Research<a class="headerlink" href="#binder-for-reproducible-research" title="Permalink to this headline">#</a></h1>
 <p>This lecture is concerned with the topic of reproducibility.
 Nearly everyone agrees that reproducibility is an important principle for science:
 if results are not reproducible, they are not valid.</p>
@@ -578,11 +719,11 @@ In this lesson, we will learn how to package our own code / notebooks together w
 </div></blockquote>
 <p>BinderHub uses a combination of open source technologies, including JupyterHub and <a class="reference external" href="https://docs.docker.com/">Docker</a> (a containerization service), to achieve this magic.</p>
 <p>In addition to the <a class="reference external" href="http://mybinder.org">http://mybinder.org</a> deployment, the Pangeo project operates a BinderHub service at <a class="reference external" href="http://binder.pangeo.io">http://binder.pangeo.io</a>. This BinderHub is customized to allow users to also launch Dask clusters in the cloud.</p>
-<div class="section" id="an-example-binder">
-<h2>An Example Binder<a class="headerlink" href="#an-example-binder" title="Permalink to this headline">¶</a></h2>
+<section id="an-example-binder">
+<h2>An Example Binder<a class="headerlink" href="#an-example-binder" title="Permalink to this headline">#</a></h2>
 <p>All binders start with a github repository. As an example, let’s consider the the official dask examples repo: <a class="reference external" href="https://github.com/dask/dask-examples">https://github.com/dask/dask-examples</a></p>
-<div class="section" id="contents">
-<h3>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h3>
+<section id="contents">
+<h3>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">#</a></h3>
 <p>The repository should contain the following two elements:</p>
 <ul class="simple">
 <li><p>Python code and / or notebooks (these can live in sub-directories)</p></li>
@@ -629,9 +770,9 @@ In this lesson, we will learn how to package our own code / notebooks together w
 <p>This is a rather complex set of dependencies.
 In addition, there are other files in the <code class="docutils literal notranslate"><span class="pre">binder/</span></code> directory that help further customize the environment.
 These customizations are described in the <a class="reference external" href="https://mybinder.readthedocs.io/en/latest/using.html#executing-post-build-commands">Binder Documentation</a>.</p>
-</div>
-<div class="section" id="binder-link">
-<h3>Binder Link<a class="headerlink" href="#binder-link" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="binder-link">
+<h3>Binder Link<a class="headerlink" href="#binder-link" title="Permalink to this headline">#</a></h3>
 <p>Once the repository is ready, it’s time to generate a link to the BinderHub.
 These links have the following structure:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>https://mybinder.org/v2/&lt;provider-name&gt;/&lt;org-name&gt;/&lt;repo-name&gt;/&lt;branch|commit|tag&gt;?filepath=&lt;path/to/notebook.ipynb&gt;
@@ -648,10 +789,10 @@ For dask-examples, the markdown code looks like this:</p>
 <p>And renders like this</p>
 <p><a class="reference external" href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"><img alt="Binder" src="https://mybinder.org/badge.svg" /></a></p>
 <p>Take some time to launch the binder and play around with it.</p>
-</div>
-</div>
-<div class="section" id="nbgitpuller-tricks">
-<h2>nbgitpuller tricks<a class="headerlink" href="#nbgitpuller-tricks" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="nbgitpuller-tricks">
+<h2>nbgitpuller tricks<a class="headerlink" href="#nbgitpuller-tricks" title="Permalink to this headline">#</a></h2>
 <p>The original binder model kept both the code itself and the environment specification in the same repo.
 The way binder works means that <em>every time the repo is updated, the environment must be completely rebuilt from scratch.</em>
 As we have seen, building a complex python environment can take upwards of 20 minutes.
@@ -675,8 +816,8 @@ The “Launch JupyterHub” button for this page points to the following link:</
 </pre></div>
 </div>
 <p>Yes, very complicated and messy. But it works! As with a regular binder, you can hide it behind a button link.</p>
-<div class="section" id="pangeo-docker-images">
-<h3>Pangeo Docker Images<a class="headerlink" href="#pangeo-docker-images" title="Permalink to this headline">¶</a></h3>
+<section id="pangeo-docker-images">
+<h3>Pangeo Docker Images<a class="headerlink" href="#pangeo-docker-images" title="Permalink to this headline">#</a></h3>
 <p>For students of this class, when creating your first binder, we recommend <em>not defining your own environment from scratch</em> but rather using the default environment that comes with our JupyterHub.
 This environment is curated and automatically built into a Docker containter at <a class="reference external" href="https://github.com/pangeo-data/pangeo-docker-images">https://github.com/pangeo-data/pangeo-docker-images</a>.
 The list of official “tags” is at <a class="reference external" href="https://github.com/pangeo-data/pangeo-docker-images/tags">https://github.com/pangeo-data/pangeo-docker-images/tags</a> – you can see that a new image is released every few weeks.
@@ -690,22 +831,22 @@ The built Docker images live at <a class="reference external" href="https://hub.
 <li><p>In “Branch” specify <code class="docutils literal notranslate"><span class="pre">2021.09.30</span></code></p></li>
 <li><p>In “Git Content Repository URL” put the <em>GitHub link to YOUR repo</em>.</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="creating-your-own-binder">
-<h2>Creating your Own Binder<a class="headerlink" href="#creating-your-own-binder" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="creating-your-own-binder">
+<h2>Creating your Own Binder<a class="headerlink" href="#creating-your-own-binder" title="Permalink to this headline">#</a></h2>
 <p>When creating your own binder, you have two options:</p>
 <ul class="simple">
 <li><p>Use a pre-existing environment</p></li>
 <li><p>Define your own custom environment.</p></li>
 </ul>
-<div class="section" id="using-a-pre-existing-environment">
-<h3>Using a pre-existing environment<a class="headerlink" href="#using-a-pre-existing-environment" title="Permalink to this headline">¶</a></h3>
+<section id="using-a-pre-existing-environment">
+<h3>Using a pre-existing environment<a class="headerlink" href="#using-a-pre-existing-environment" title="Permalink to this headline">#</a></h3>
 <p>In this case, all you need is a GitHub repo with one or more notebooks in it.
 Then use the nbgitpuller approach described above.</p>
-</div>
-<div class="section" id="defining-a-custom-environment">
-<h3>Defining a custom environment<a class="headerlink" href="#defining-a-custom-environment" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="defining-a-custom-environment">
+<h3>Defining a custom environment<a class="headerlink" href="#defining-a-custom-environment" title="Permalink to this headline">#</a></h3>
 <p>To create your own binder with a custom environment, you will need two ingredients:</p>
 <ul class="simple">
 <li><p>Some code to share</p></li>
@@ -729,14 +870,14 @@ from matplotlib import pyplot as plt
 </div>
 <p>Once things are working, push the repo to github. Then use <a class="reference external" href="https://mybinder.org">https://mybinder.org</a> to generate a binder badge and add it to your <code class="docutils literal notranslate"><span class="pre">Readme.md</span></code> file.</p>
 <p>You should now be able to run your binder on <a class="reference external" href="http://mybinder.org">mybinder.org</a>!</p>
-</div>
-<div class="section" id="updating-your-binder">
-<h3>Updating your Binder<a class="headerlink" href="#updating-your-binder" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="updating-your-binder">
+<h3>Updating your Binder<a class="headerlink" href="#updating-your-binder" title="Permalink to this headline">#</a></h3>
 <p>An important thing to remember is that <strong>you cannot save changes from within a running binder</strong>. The running notebooks will automatically shut down after 10 minutes of inactivity, and you will <strong>lose any modifications you made to the notebooks</strong>. (See <a class="reference external" href="https://mybinder.readthedocs.io/en/latest/faq.html">mybinder FAQ</a> for more details.) This is very different from our research computing jupyterhub, where all changes are saved. Binder is meant for demonstrating and sharing finished projects, not development of new ones.</p>
 <p>To update your binder, you need to go back to your personal copy of the repo, make changes, commit, and push back to github.</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -760,9 +901,11 @@ from matplotlib import pyplot as plt
 
               </div>
               
-            
-                <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
     <a class='left-prev' id="prev-link" href="python_environments.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
@@ -778,24 +921,28 @@ from matplotlib import pyplot as plt
     <i class="fas fa-angle-right"></i>
     </a>
 </div>
-            
+            </footer>
         </div>
     </div>
-    <footer class="footer">
-  <p>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Ryan Abernathey<br/>
+  
+      &copy; Copyright 2016-2021.<br/>
+</p>
+        </footer>
+    </div>
     
-      By Ryan Abernathey<br/>
-    
-        &copy; Copyright 2016-2021.<br/>
-  </p>
-</footer>
-</main>
+</div>
 
 
       </div>
     </div>
   
-  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
 
   </body>
 </html>

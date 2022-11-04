@@ -4,11 +4,20 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta property="og:title" content="Maps in Scientific Python" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://earth-env-data-science.github.io/lectures/mapping_cartopy.html" />
+<meta property="og:description" content="Making maps is a fundamental part of geoscience research. Maps differ from regular figures in the following principle ways: Maps require a projection of geographic coordinates on the 3D Earth to th..." />
+<meta property="og:image" content="https://raw.githubusercontent.com/SciTools/cartopy-tutorial/master/static/flat_medium.jpg" />
+<meta property="og:image:alt" content="" />
+<meta name="description" content="Making maps is a fundamental part of geoscience research. Maps differ from regular figures in the following principle ways: Maps require a projection of geographic coordinates on the 3D Earth to th..." />
+
     <title>Maps in Scientific Python &#8212; Earth and Environmental Data Science</title>
     
-  <link href="../_static/css/theme.css" rel="stylesheet">
-  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -18,36 +27,35 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    
-      
-
-    
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
 
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/togglebutton.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="canonical" href="https://earth-env-data-science.github.io/lectures/mapping_cartopy.html" />
     <link rel="index" title="Index" href="../genindex.html" />
@@ -61,7 +69,21 @@
     <!-- Google Analytics -->
     
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
     
     <div class="container-fluid" id="banner"></div>
 
@@ -70,9 +92,10 @@
     <div class="container-xl">
       <div class="row">
           
-<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
-    
-        <div class="navbar-brand-box">
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
     <a class="navbar-brand text-wrap" href="../index.html">
       
         <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
@@ -90,14 +113,15 @@
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item active">
-        <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../intro.html">
-   An Introduction to Earth and Environmental Data Science
-  </a>
- </li>
-</ul>
-<p class="caption">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    An Introduction to Earth and Environmental Data Science
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   About this Book
  </span>
@@ -114,7 +138,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   The Interactive Computing Environment
  </span>
@@ -156,7 +180,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   The Core Python Language
  </span>
@@ -183,7 +207,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Scientific Python Fundamentals
  </span>
@@ -210,7 +234,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   High Level Data Analysis Frameworks
  </span>
@@ -286,7 +310,7 @@
   </ul>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Geoscience Package
  </span>
@@ -308,7 +332,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Big Data
  </span>
@@ -327,109 +351,226 @@
 </ul>
 
     </div>
-</nav> <!-- To handle the deprecated key -->
-
-<div class="navbar_extra_footer">
-  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-</div>
-
-</div>
-
-
-          
-
-
-          
-<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
-    
-    <div class="topbar container-xl fixed-top">
-    <div class="topbar-contents row">
-        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
-        <div class="col pl-md-4 topbar-main">
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
             
-            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
-                <i class="fas fa-bars"></i>
-                <i class="fas fa-arrow-left"></i>
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            
-            
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
-            class="fas fa-download"></i></button>
-
-    <div class="dropdown-buttons">
-        <!-- ipynb file if we had a myst markdown file -->
-        
-        <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/lectures/mapping_cartopy.ipynb"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.ipynb</button></a>
-        <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
-    </div>
-</div>
-
-            <!-- Source interaction buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
-    <div class="dropdown-buttons sourcebuttons">
-        <a class="repository-button"
-            href="https://github.com/earth-env-data-science/earth-env-data-science-book"><button type="button" class="btn btn-secondary topbarbtn"
-                data-toggle="tooltip" data-placement="left" title="Source repository"><i
-                    class="fab fa-github"></i>repository</button></a>
-        <a class="issues-button"
-            href="https://github.com/earth-env-data-science/earth-env-data-science-book/issues/new?title=Issue%20on%20page%20%2Flectures/mapping_cartopy.html&body=Your%20issue%20content%20here."><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
-        <a class="edit-button" href="https://github.com/earth-env-data-science/earth-env-data-science-book/edit/master/src/lectures/mapping_cartopy.ipynb"><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
-    </div>
-</div>
-
-            <!-- Full screen (wrap in <a> to have style consistency -->
-
-<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-        title="Fullscreen mode"><i
-            class="fas fa-expand"></i></button></a>
-
-            <!-- Launch buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
-    <div class="dropdown-buttons">
-        
-        
-        <a class="jupyterhub-button" href="https://https://us-central1-b.gcp.pangeo.io//hub/user-redirect/git-pull?repo=https://github.com/earth-env-data-science/earth-env-data-science-book&urlpath=lab/tree/earth-env-data-science-book/src/lectures/mapping_cartopy.ipynb&branch=master"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Launch JupyterHub" data-toggle="tooltip"
-                data-placement="left"><img class="jupyterhub-button-logo"
-                    src="../_static/images/logo_jupyterhub.svg"
-                    alt="Interact on JupyterHub">JupyterHub</button></a>
-        
-        
-        
-    </div>
-</div>
-
-        </div>
-
-        <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
-            
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
             </div>
-            <nav id="bd-toc-nav" aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://https://us-central1-b.gcp.pangeo.io/hub/user-redirect/git-pull?repo=https%3A//github.com/earth-env-data-science/earth-env-data-science-book&urlpath=lab/tree/earth-env-data-science-book/src/lectures/mapping_cartopy.ipynb&branch=master"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on JupyterHub"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="headerbtn__text-container">JupyterHub</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/earth-env-data-science/earth-env-data-science-book"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/earth-env-data-science/earth-env-data-science-book/issues/new?title=Issue%20on%20page%20%2Flectures/mapping_cartopy.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/earth-env-data-science/earth-env-data-science-book/edit/master/src/lectures/mapping_cartopy.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/lectures/mapping_cartopy.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#credit-phil-elson">
    Credit: Phil Elson
@@ -527,12 +668,11 @@
  </li>
 </ul>
 
-            </nav>
-        </div>
-    </div>
+    </nav>
 </div>
-    <div id="main-content" class="row">
-        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
                 <h1>Maps in Scientific Python</h1>
@@ -646,11 +786,12 @@
                     </div>
                 </div>
             </div>
-            
+            <main id="main-content" role="main">
+                
               <div>
                 
-  <div class="section" id="maps-in-scientific-python">
-<h1>Maps in Scientific Python<a class="headerlink" href="#maps-in-scientific-python" title="Permalink to this headline">¶</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="maps-in-scientific-python">
+<h1>Maps in Scientific Python<a class="headerlink" href="#maps-in-scientific-python" title="Permalink to this headline">#</a></h1>
 <p>Making maps is a fundamental part of geoscience research.
 Maps differ from regular figures in the following principle ways:</p>
 <ul class="simple">
@@ -659,30 +800,30 @@ Maps differ from regular figures in the following principle ways:</p>
 </ul>
 <p>Mapping is a notoriously hard and complicated problem, mostly due to the complexities of projection.</p>
 <p>In this lecture, we will learn about <a class="reference external" href="https://scitools.org.uk/cartopy/docs/latest/">Cartopy</a>, one of the most common packages for making maps within python. Another popular and powerful library is <a class="reference external" href="https://matplotlib.org/basemap/">Basemap</a>; however, Basemap is <a class="reference external" href="https://matplotlib.org/basemap/users/intro.html#cartopy-new-management-and-eol-announcement">going away</a> and being replaced with Cartopy in the near future. For this reason, new python learners are recommended to learn Cartopy.</p>
-<div class="section" id="credit-phil-elson">
-<h2>Credit: Phil Elson<a class="headerlink" href="#credit-phil-elson" title="Permalink to this headline">¶</a></h2>
+<section id="credit-phil-elson">
+<h2>Credit: Phil Elson<a class="headerlink" href="#credit-phil-elson" title="Permalink to this headline">#</a></h2>
 <p>Lots of the material in this lesson was adopted from <a class="reference external" href="https://pelson.github.io/">Phil Elson</a>’s excellent <a class="reference external" href="https://github.com/SciTools/cartopy-tutorial">Cartopy Tutorial</a>. Phil is the creator of Cartopy and published his tutorial under an <a class="reference external" href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/">open license</a>, meaning that we can copy, adapt, and redistribute it as long as we give proper attribution. <strong>THANKS PHIL!</strong> 👏👏👏</p>
-</div>
-<div class="section" id="background-projections">
-<h2>Background: Projections<a class="headerlink" href="#background-projections" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="most-of-our-media-for-visualization-are-flat">
-<h3>Most of our media for visualization <em>are</em> flat<a class="headerlink" href="#most-of-our-media-for-visualization-are-flat" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="background-projections">
+<h2>Background: Projections<a class="headerlink" href="#background-projections" title="Permalink to this headline">#</a></h2>
+<section id="most-of-our-media-for-visualization-are-flat">
+<h3>Most of our media for visualization <em>are</em> flat<a class="headerlink" href="#most-of-our-media-for-visualization-are-flat" title="Permalink to this headline">#</a></h3>
 <p>Our two most common media are flat:</p>
 <ul class="simple">
 <li><p>Paper</p></li>
 <li><p>Screen</p></li>
 </ul>
 <p><img alt="" src="https://raw.githubusercontent.com/SciTools/cartopy-tutorial/master/static/flat_medium.jpg" /></p>
-</div>
-<div class="section" id="map-projections-taking-us-from-spherical-to-flat">
-<h3>[Map] Projections: Taking us from spherical to flat<a class="headerlink" href="#map-projections-taking-us-from-spherical-to-flat" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="map-projections-taking-us-from-spherical-to-flat">
+<h3>[Map] Projections: Taking us from spherical to flat<a class="headerlink" href="#map-projections-taking-us-from-spherical-to-flat" title="Permalink to this headline">#</a></h3>
 <p>A map projection (or more commonly refered to as just “projection”) is:</p>
 <blockquote>
 <div><p>a systematic transformation of the latitudes and longitudes of locations from the surface of a sphere or an ellipsoid into locations on a plane. [<a class="reference external" href="https://en.wikipedia.org/wiki/Map_projection">Wikipedia: Map projection</a>].</p>
 </div></blockquote>
-</div>
-<div class="section" id="the-major-problem-with-map-projections">
-<h3>The major problem with map projections<a class="headerlink" href="#the-major-problem-with-map-projections" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="the-major-problem-with-map-projections">
+<h3>The major problem with map projections<a class="headerlink" href="#the-major-problem-with-map-projections" title="Permalink to this headline">#</a></h3>
 <p><img alt="orange peel" src="https://raw.githubusercontent.com/SciTools/cartopy-tutorial/master/static/orange_peel.jpg" /></p>
 <ul class="simple">
 <li><p>The surface of a sphere is topologically different to a 2D surface, therefore we <em>have</em> to cut the sphere <em>somewhere</em></p></li>
@@ -690,15 +831,15 @@ Maps differ from regular figures in the following principle ways:</p>
 </ul>
 <p>There are many different ways to make a projection, and we will not attempt to explain all of the choices and tradeoffs here. Instead, you can read Phil’s <a class="reference external" href="https://github.com/SciTools/cartopy-tutorial/blob/master/tutorial/projections_crs_and_terms.ipynb">original tutorial</a> for a great overview of this topic.
 Instead, we will dive into the more practical sides of Caropy usage.</p>
-</div>
-</div>
-<div class="section" id="introducing-cartopy">
-<h2>Introducing Cartopy<a class="headerlink" href="#introducing-cartopy" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="introducing-cartopy">
+<h2>Introducing Cartopy<a class="headerlink" href="#introducing-cartopy" title="Permalink to this headline">#</a></h2>
 <p><a class="reference external" href="https://scitools.org.uk/cartopy/docs/latest/">https://scitools.org.uk/cartopy/docs/latest/</a></p>
 <p>Cartopy makes use of the powerful <a class="reference external" href="https://proj4.org/">PROJ.4</a>, numpy and shapely libraries and includes a programatic interface built on top of Matplotlib for the creation of publication quality maps.</p>
 <p>Key features of cartopy are its object oriented projection definitions, and its ability to transform points, lines, vectors, polygons and images between those projections.</p>
-<div class="section" id="cartopy-projections-and-other-reference-systems">
-<h3>Cartopy Projections and other reference systems<a class="headerlink" href="#cartopy-projections-and-other-reference-systems" title="Permalink to this headline">¶</a></h3>
+<section id="cartopy-projections-and-other-reference-systems">
+<h3>Cartopy Projections and other reference systems<a class="headerlink" href="#cartopy-projections-and-other-reference-systems" title="Permalink to this headline">#</a></h3>
 <p>In Cartopy, each projection is a class.
 Most classes of projection can be configured in projection-specific ways, although Cartopy takes an opinionated stance on sensible defaults.</p>
 <p>Let’s create a Plate Carree projection instance.</p>
@@ -6663,9 +6804,9 @@ L 7.2 146.7
 </svg>
 <pre>&lt;cartopy.crs.PlateCarree object at 0x7fc4bc764dc0&gt;</pre></div></div>
 </div>
-</div>
-<div class="section" id="drawing-a-map">
-<h3>Drawing a map<a class="headerlink" href="#drawing-a-map" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="drawing-a-map">
+<h3>Drawing a map<a class="headerlink" href="#drawing-a-map" title="Permalink to this headline">#</a></h3>
 <p>Cartopy optionally depends upon matplotlib, and each projection knows how to create a matplotlib Axes (or AxesSubplot) that can represent itself.</p>
 <p>The Axes that the projection creates is a <a class="reference external" href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxes">cartopy.mpl.geoaxes.GeoAxes</a>. This Axes subclass overrides some of matplotlib’s existing methods, and adds a number of extremely useful ones for drawing maps.</p>
 <p>We’ll go back and look at those methods shortly, but first, let’s actually see the cartopy+matplotlib dance in action:</p>
@@ -6763,9 +6904,9 @@ globe: :class:`~cartopy.crs.Globe` instance, optional
 <img alt="../_images/mapping_cartopy_15_1.png" src="../_images/mapping_cartopy_15_1.png" />
 </div>
 </div>
-</div>
-<div class="section" id="useful-methods-of-a-geoaxes">
-<h3>Useful methods of a GeoAxes<a class="headerlink" href="#useful-methods-of-a-geoaxes" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="useful-methods-of-a-geoaxes">
+<h3>Useful methods of a GeoAxes<a class="headerlink" href="#useful-methods-of-a-geoaxes" title="Permalink to this headline">#</a></h3>
 <p>The <a class="reference external" href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxes">cartopy.mpl.geoaxes.GeoAxes</a> class adds a number of useful methods.</p>
 <p>Let’s take a look at:</p>
 <ul class="simple">
@@ -6777,9 +6918,9 @@ globe: :class:`~cartopy.crs.Globe` instance, optional
 <li><p><a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.imshow.html#matplotlib.axes.Axes.imshow">imshow</a> - add an image (numpy array) to the axes</p></li>
 <li><p><a class="reference external" href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxes.add_geometries">add_geometries</a> - add a collection of geometries (Shapely) to the axes</p></li>
 </ul>
-</div>
-<div class="section" id="some-more-examples-of-different-global-projections">
-<h3>Some More Examples of Different Global Projections<a class="headerlink" href="#some-more-examples-of-different-global-projections" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="some-more-examples-of-different-global-projections">
+<h3>Some More Examples of Different Global Projections<a class="headerlink" href="#some-more-examples-of-different-global-projections" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">projections</span> <span class="o">=</span> <span class="p">[</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
@@ -6807,9 +6948,9 @@ globe: :class:`~cartopy.crs.Globe` instance, optional
 <img alt="../_images/mapping_cartopy_17_4.png" src="../_images/mapping_cartopy_17_4.png" />
 </div>
 </div>
-</div>
-<div class="section" id="regional-maps">
-<h3>Regional Maps<a class="headerlink" href="#regional-maps" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="regional-maps">
+<h3>Regional Maps<a class="headerlink" href="#regional-maps" title="Permalink to this headline">#</a></h3>
 <p>To create a regional map, we use the <code class="docutils literal notranslate"><span class="pre">set_extent</span></code> method of GeoAxis to limit the size of the region.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -6854,10 +6995,10 @@ extents
 <img alt="../_images/mapping_cartopy_20_1.png" src="../_images/mapping_cartopy_20_1.png" />
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="adding-features-to-the-map">
-<h2>Adding Features to the Map<a class="headerlink" href="#adding-features-to-the-map" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="adding-features-to-the-map">
+<h2>Adding Features to the Map<a class="headerlink" href="#adding-features-to-the-map" title="Permalink to this headline">#</a></h2>
 <p>To give our map more styles and details, we add <code class="docutils literal notranslate"><span class="pre">cartopy.feature</span></code> objects.
 Many useful features are built in. These “default features” are at coarse (110m) resolution.</p>
 <table class="colwidths-auto table">
@@ -6950,9 +7091,9 @@ Many useful features are built in. These “default features” are at coarse (1
 <img alt="../_images/mapping_cartopy_24_1.png" src="../_images/mapping_cartopy_24_1.png" />
 </div>
 </div>
-</div>
-<div class="section" id="adding-data-to-the-map">
-<h2>Adding Data to the Map<a class="headerlink" href="#adding-data-to-the-map" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="adding-data-to-the-map">
+<h2>Adding Data to the Map<a class="headerlink" href="#adding-data-to-the-map" title="Permalink to this headline">#</a></h2>
 <p>Now that we know how to create a map, let’s add our data to it! That’s the whole point.</p>
 <p>Because our map is a matplotlib axis, we can use all the familiar maptplotlib commands to make plots.
 By default, the map extent will be adjusted to match the data. We can override this with the <code class="docutils literal notranslate"><span class="pre">.set_global</span></code> or <code class="docutils literal notranslate"><span class="pre">.set_extent</span></code> commands.</p>
@@ -6989,8 +7130,8 @@ If you don’t specify a transform, Cartopy assume that the data is using the sa
 <img alt="../_images/mapping_cartopy_28_0.png" src="../_images/mapping_cartopy_28_0.png" />
 </div>
 </div>
-<div class="section" id="plotting-2d-raster-data">
-<h3>Plotting 2D (Raster) Data<a class="headerlink" href="#plotting-2d-raster-data" title="Permalink to this headline">¶</a></h3>
+<section id="plotting-2d-raster-data">
+<h3>Plotting 2D (Raster) Data<a class="headerlink" href="#plotting-2d-raster-data" title="Permalink to this headline">#</a></h3>
 <p>The same principles apply to 2D data. Below we create some example data defined in regular lat / lon coordinates.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -7064,9 +7205,9 @@ This happens to work because <code class="docutils literal notranslate"><span cl
 <img alt="../_images/mapping_cartopy_36_1.png" src="../_images/mapping_cartopy_36_1.png" />
 </div>
 </div>
-</div>
-<div class="section" id="showing-images">
-<h3>Showing Images<a class="headerlink" href="#showing-images" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="showing-images">
+<h3>Showing Images<a class="headerlink" href="#showing-images" title="Permalink to this headline">#</a></h3>
 <p>We can plot a satellite image easily on a map if we know its extent</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -7127,10 +7268,10 @@ Miriam.A2012270.205 100%[===================&gt;] 250.21K  --.-KB/s    in 0.1s
 <img alt="../_images/mapping_cartopy_39_1.png" src="../_images/mapping_cartopy_39_1.png" />
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="xarray-integration">
-<h2>Xarray Integration<a class="headerlink" href="#xarray-integration" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="xarray-integration">
+<h2>Xarray Integration<a class="headerlink" href="#xarray-integration" title="Permalink to this headline">#</a></h2>
 <p>Cartopy transforms can be passed to xarray! This creates a very quick path for creating professional looking maps from netCDF data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -7560,12 +7701,12 @@ Attributes: (12/38)
 <img alt="../_images/mapping_cartopy_42_1.png" src="../_images/mapping_cartopy_42_1.png" />
 </div>
 </div>
-</div>
-<div class="section" id="doing-more">
-<h2>Doing More<a class="headerlink" href="#doing-more" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="doing-more">
+<h2>Doing More<a class="headerlink" href="#doing-more" title="Permalink to this headline">#</a></h2>
 <p>Browse the <a class="reference external" href="https://scitools.org.uk/cartopy/docs/latest/gallery/index.html">Cartopy Gallery</a> to learn about all the different types of data and plotting methods available!</p>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -7589,9 +7730,11 @@ Attributes: (12/38)
 
               </div>
               
-            
-                <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
     <a class='left-prev' id="prev-link" href="xarray/xarray_tips_and_tricks.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
@@ -7607,24 +7750,28 @@ Attributes: (12/38)
     <i class="fas fa-angle-right"></i>
     </a>
 </div>
-            
+            </footer>
         </div>
     </div>
-    <footer class="footer">
-  <p>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Ryan Abernathey<br/>
+  
+      &copy; Copyright 2016-2021.<br/>
+</p>
+        </footer>
+    </div>
     
-      By Ryan Abernathey<br/>
-    
-        &copy; Copyright 2016-2021.<br/>
-  </p>
-</footer>
-</main>
+</div>
 
 
       </div>
     </div>
   
-  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
 
   </body>
 </html>

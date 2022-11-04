@@ -4,11 +4,20 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta property="og:title" content="Assignment: Pandas Groupby with Hurricane Data" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://earth-env-data-science.github.io/assignments/pandas_groupby.html" />
+<meta property="og:description" content="Import Numpy, Pandas and Matplotlib and set the display options. Use the following code to load a CSV file of the NOAA IBTrACS hurricane dataset: Basin Key: (NI - North Indian, SI - South Indian, W..." />
+<meta property="og:image" content="https://earth-env-data-science.github.io/_static/eeds-logo.png" />
+<meta property="og:image:alt" content="Assignment: Pandas Groupby with Hurricane Data" />
+<meta name="description" content="Import Numpy, Pandas and Matplotlib and set the display options. Use the following code to load a CSV file of the NOAA IBTrACS hurricane dataset: Basin Key: (NI - North Indian, SI - South Indian, W..." />
+
     <title>Assignment: Pandas Groupby with Hurricane Data &#8212; Earth and Environmental Data Science</title>
     
-  <link href="../_static/css/theme.css" rel="stylesheet">
-  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -18,36 +27,35 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    
-      
-
-    
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
 
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/togglebutton.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="canonical" href="https://earth-env-data-science.github.io/assignments/pandas_groupby.html" />
     <link rel="index" title="Index" href="../genindex.html" />
@@ -61,7 +69,21 @@
     <!-- Google Analytics -->
     
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
     
     <div class="container-fluid" id="banner"></div>
 
@@ -70,9 +92,10 @@
     <div class="container-xl">
       <div class="row">
           
-<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
-    
-        <div class="navbar-brand-box">
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
     <a class="navbar-brand text-wrap" href="../index.html">
       
         <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
@@ -90,14 +113,15 @@
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item active">
-        <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../intro.html">
-   An Introduction to Earth and Environmental Data Science
-  </a>
- </li>
-</ul>
-<p class="caption">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    An Introduction to Earth and Environmental Data Science
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   About this Book
  </span>
@@ -114,7 +138,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   The Interactive Computing Environment
  </span>
@@ -156,7 +180,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   The Core Python Language
  </span>
@@ -183,7 +207,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Scientific Python Fundamentals
  </span>
@@ -210,7 +234,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   High Level Data Analysis Frameworks
  </span>
@@ -286,7 +310,7 @@
   </ul>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Geoscience Package
  </span>
@@ -308,7 +332,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Big Data
  </span>
@@ -327,109 +351,226 @@
 </ul>
 
     </div>
-</nav> <!-- To handle the deprecated key -->
-
-<div class="navbar_extra_footer">
-  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-</div>
-
-</div>
-
-
-          
-
-
-          
-<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
-    
-    <div class="topbar container-xl fixed-top">
-    <div class="topbar-contents row">
-        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
-        <div class="col pl-md-4 topbar-main">
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
             
-            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
-                <i class="fas fa-bars"></i>
-                <i class="fas fa-arrow-left"></i>
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            
-            
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
-            class="fas fa-download"></i></button>
-
-    <div class="dropdown-buttons">
-        <!-- ipynb file if we had a myst markdown file -->
-        
-        <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/assignments/pandas_groupby.ipynb"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.ipynb</button></a>
-        <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
-    </div>
-</div>
-
-            <!-- Source interaction buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
-    <div class="dropdown-buttons sourcebuttons">
-        <a class="repository-button"
-            href="https://github.com/earth-env-data-science/earth-env-data-science-book"><button type="button" class="btn btn-secondary topbarbtn"
-                data-toggle="tooltip" data-placement="left" title="Source repository"><i
-                    class="fab fa-github"></i>repository</button></a>
-        <a class="issues-button"
-            href="https://github.com/earth-env-data-science/earth-env-data-science-book/issues/new?title=Issue%20on%20page%20%2Fassignments/pandas_groupby.html&body=Your%20issue%20content%20here."><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
-        <a class="edit-button" href="https://github.com/earth-env-data-science/earth-env-data-science-book/edit/master/src/assignments/pandas_groupby.ipynb"><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
-    </div>
-</div>
-
-            <!-- Full screen (wrap in <a> to have style consistency -->
-
-<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-        title="Fullscreen mode"><i
-            class="fas fa-expand"></i></button></a>
-
-            <!-- Launch buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
-    <div class="dropdown-buttons">
-        
-        
-        <a class="jupyterhub-button" href="https://https://us-central1-b.gcp.pangeo.io//hub/user-redirect/git-pull?repo=https://github.com/earth-env-data-science/earth-env-data-science-book&urlpath=lab/tree/earth-env-data-science-book/src/assignments/pandas_groupby.ipynb&branch=master"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Launch JupyterHub" data-toggle="tooltip"
-                data-placement="left"><img class="jupyterhub-button-logo"
-                    src="../_static/images/logo_jupyterhub.svg"
-                    alt="Interact on JupyterHub">JupyterHub</button></a>
-        
-        
-        
-    </div>
-</div>
-
-        </div>
-
-        <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
-            
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
             </div>
-            <nav id="bd-toc-nav" aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://https://us-central1-b.gcp.pangeo.io/hub/user-redirect/git-pull?repo=https%3A//github.com/earth-env-data-science/earth-env-data-science-book&urlpath=lab/tree/earth-env-data-science-book/src/assignments/pandas_groupby.ipynb&branch=master"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on JupyterHub"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="headerbtn__text-container">JupyterHub</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/earth-env-data-science/earth-env-data-science-book"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/earth-env-data-science/earth-env-data-science-book/issues/new?title=Issue%20on%20page%20%2Fassignments/pandas_groupby.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/earth-env-data-science/earth-env-data-science-book/edit/master/src/assignments/pandas_groupby.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/assignments/pandas_groupby.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#get-the-unique-values-of-the-basin-subbasin-and-nature-columns">
    1) Get the unique values of the
@@ -586,12 +727,11 @@
  </li>
 </ul>
 
-            </nav>
-        </div>
-    </div>
+    </nav>
 </div>
-    <div id="main-content" class="row">
-        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
                 <h1>Assignment: Pandas Groupby with Hurricane Data</h1>
@@ -764,11 +904,12 @@
                     </div>
                 </div>
             </div>
-            
+            <main id="main-content" role="main">
+                
               <div>
                 
-  <div class="section" id="assignment-pandas-groupby-with-hurricane-data">
-<h1>Assignment: Pandas Groupby with Hurricane Data<a class="headerlink" href="#assignment-pandas-groupby-with-hurricane-data" title="Permalink to this headline">¶</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="assignment-pandas-groupby-with-hurricane-data">
+<h1>Assignment: Pandas Groupby with Hurricane Data<a class="headerlink" href="#assignment-pandas-groupby-with-hurricane-data" title="Permalink to this headline">#</a></h1>
 <p>Import Numpy, Pandas and Matplotlib and set the display options.</p>
 <p>Use the following code to load a CSV file of the <a class="reference external" href="https://www.ncdc.noaa.gov/ibtracs/index.php?name=ibtracs-data">NOAA IBTrACS</a> hurricane dataset:</p>
 <div class="cell docutils container">
@@ -785,68 +926,68 @@
 <p>Basin Key: (NI - North Indian, SI - South Indian, WP - Western Pacific, SP - Southern Pacific, EP - Eastern Pacific, NA - North Atlantic)</p>
 <p>How many rows does this dataset have?</p>
 <p>How many North Atlantic hurricanes are in this dataset?</p>
-<div class="section" id="get-the-unique-values-of-the-basin-subbasin-and-nature-columns">
-<h2>1) Get the unique values of the <code class="docutils literal notranslate"><span class="pre">BASIN</span></code>, <code class="docutils literal notranslate"><span class="pre">SUBBASIN</span></code>, and <code class="docutils literal notranslate"><span class="pre">NATURE</span></code> columns<a class="headerlink" href="#get-the-unique-values-of-the-basin-subbasin-and-nature-columns" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="rename-the-wmo-wind-and-wmo-pres-columns-to-wind-and-pres">
-<h2>2) Rename the <code class="docutils literal notranslate"><span class="pre">WMO_WIND</span></code> and <code class="docutils literal notranslate"><span class="pre">WMO_PRES</span></code> columns to <code class="docutils literal notranslate"><span class="pre">WIND</span></code> and <code class="docutils literal notranslate"><span class="pre">PRES</span></code><a class="headerlink" href="#rename-the-wmo-wind-and-wmo-pres-columns-to-wind-and-pres" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="get-the-10-largest-rows-in-the-dataset-by-wind">
-<h2>3) Get the 10 largest rows in the dataset by <code class="docutils literal notranslate"><span class="pre">WIND</span></code><a class="headerlink" href="#get-the-10-largest-rows-in-the-dataset-by-wind" title="Permalink to this headline">¶</a></h2>
+<section id="get-the-unique-values-of-the-basin-subbasin-and-nature-columns">
+<h2>1) Get the unique values of the <code class="docutils literal notranslate"><span class="pre">BASIN</span></code>, <code class="docutils literal notranslate"><span class="pre">SUBBASIN</span></code>, and <code class="docutils literal notranslate"><span class="pre">NATURE</span></code> columns<a class="headerlink" href="#get-the-unique-values-of-the-basin-subbasin-and-nature-columns" title="Permalink to this headline">#</a></h2>
+</section>
+<section id="rename-the-wmo-wind-and-wmo-pres-columns-to-wind-and-pres">
+<h2>2) Rename the <code class="docutils literal notranslate"><span class="pre">WMO_WIND</span></code> and <code class="docutils literal notranslate"><span class="pre">WMO_PRES</span></code> columns to <code class="docutils literal notranslate"><span class="pre">WIND</span></code> and <code class="docutils literal notranslate"><span class="pre">PRES</span></code><a class="headerlink" href="#rename-the-wmo-wind-and-wmo-pres-columns-to-wind-and-pres" title="Permalink to this headline">#</a></h2>
+</section>
+<section id="get-the-10-largest-rows-in-the-dataset-by-wind">
+<h2>3) Get the 10 largest rows in the dataset by <code class="docutils literal notranslate"><span class="pre">WIND</span></code><a class="headerlink" href="#get-the-10-largest-rows-in-the-dataset-by-wind" title="Permalink to this headline">#</a></h2>
 <p>You will notice some names are repeated.</p>
-</div>
-<div class="section" id="group-the-data-on-sid-and-get-the-10-largest-hurricanes-by-wind">
-<h2>4) Group the data on <code class="docutils literal notranslate"><span class="pre">SID</span></code> and get the 10 largest hurricanes by <code class="docutils literal notranslate"><span class="pre">WIND</span></code><a class="headerlink" href="#group-the-data-on-sid-and-get-the-10-largest-hurricanes-by-wind" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="make-a-bar-chart-of-the-wind-speed-of-the-20-strongest-wind-hurricanes">
-<h2>5) Make a bar chart of the wind speed of the 20 strongest-wind hurricanes<a class="headerlink" href="#make-a-bar-chart-of-the-wind-speed-of-the-20-strongest-wind-hurricanes" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="group-the-data-on-sid-and-get-the-10-largest-hurricanes-by-wind">
+<h2>4) Group the data on <code class="docutils literal notranslate"><span class="pre">SID</span></code> and get the 10 largest hurricanes by <code class="docutils literal notranslate"><span class="pre">WIND</span></code><a class="headerlink" href="#group-the-data-on-sid-and-get-the-10-largest-hurricanes-by-wind" title="Permalink to this headline">#</a></h2>
+</section>
+<section id="make-a-bar-chart-of-the-wind-speed-of-the-20-strongest-wind-hurricanes">
+<h2>5) Make a bar chart of the wind speed of the 20 strongest-wind hurricanes<a class="headerlink" href="#make-a-bar-chart-of-the-wind-speed-of-the-20-strongest-wind-hurricanes" title="Permalink to this headline">#</a></h2>
 <p>Use the name on the x-axis.</p>
-</div>
-<div class="section" id="plot-the-count-of-all-datapoints-by-basin">
-<h2>6) Plot the count of all datapoints by Basin<a class="headerlink" href="#plot-the-count-of-all-datapoints-by-basin" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="plot-the-count-of-all-datapoints-by-basin">
+<h2>6) Plot the count of all datapoints by Basin<a class="headerlink" href="#plot-the-count-of-all-datapoints-by-basin" title="Permalink to this headline">#</a></h2>
 <p>as a bar chart</p>
-</div>
-<div class="section" id="plot-the-count-of-unique-hurricanes-by-basin">
-<h2>7) Plot the count of unique hurricanes by Basin<a class="headerlink" href="#plot-the-count-of-unique-hurricanes-by-basin" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="plot-the-count-of-unique-hurricanes-by-basin">
+<h2>7) Plot the count of unique hurricanes by Basin<a class="headerlink" href="#plot-the-count-of-unique-hurricanes-by-basin" title="Permalink to this headline">#</a></h2>
 <p>as a bar chart.</p>
-</div>
-<div class="section" id="make-a-hexbin-of-the-location-of-datapoints-in-latitude-and-longitude">
-<h2>8) Make a <code class="docutils literal notranslate"><span class="pre">hexbin</span></code> of the location of datapoints in Latitude and Longitude<a class="headerlink" href="#make-a-hexbin-of-the-location-of-datapoints-in-latitude-and-longitude" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="find-hurricane-katrina-from-2005-and-plot-its-track-as-a-scatter-plot">
-<h2>9) Find Hurricane Katrina (from 2005) and plot its track as a scatter plot<a class="headerlink" href="#find-hurricane-katrina-from-2005-and-plot-its-track-as-a-scatter-plot" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="make-a-hexbin-of-the-location-of-datapoints-in-latitude-and-longitude">
+<h2>8) Make a <code class="docutils literal notranslate"><span class="pre">hexbin</span></code> of the location of datapoints in Latitude and Longitude<a class="headerlink" href="#make-a-hexbin-of-the-location-of-datapoints-in-latitude-and-longitude" title="Permalink to this headline">#</a></h2>
+</section>
+<section id="find-hurricane-katrina-from-2005-and-plot-its-track-as-a-scatter-plot">
+<h2>9) Find Hurricane Katrina (from 2005) and plot its track as a scatter plot<a class="headerlink" href="#find-hurricane-katrina-from-2005-and-plot-its-track-as-a-scatter-plot" title="Permalink to this headline">#</a></h2>
 <p>First find the SID of this hurricane.</p>
 <p>Next get this hurricane’s group and plot its position as a scatter plot. Use wind speed to color the points.</p>
-</div>
-<div class="section" id="make-time-the-index-on-your-dataframe">
-<h2>10) Make time the index on your dataframe<a class="headerlink" href="#make-time-the-index-on-your-dataframe" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="plot-the-count-of-all-datapoints-per-year-as-a-timeseries">
-<h2>11) Plot the count of all datapoints per year as a timeseries<a class="headerlink" href="#plot-the-count-of-all-datapoints-per-year-as-a-timeseries" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="make-time-the-index-on-your-dataframe">
+<h2>10) Make time the index on your dataframe<a class="headerlink" href="#make-time-the-index-on-your-dataframe" title="Permalink to this headline">#</a></h2>
+</section>
+<section id="plot-the-count-of-all-datapoints-per-year-as-a-timeseries">
+<h2>11) Plot the count of all datapoints per year as a timeseries<a class="headerlink" href="#plot-the-count-of-all-datapoints-per-year-as-a-timeseries" title="Permalink to this headline">#</a></h2>
 <p>You should use <code class="docutils literal notranslate"><span class="pre">resample</span></code></p>
-</div>
-<div class="section" id="plot-all-tracks-from-the-north-atlantic-in-2005">
-<h2>12) Plot all tracks from the North Atlantic in 2005<a class="headerlink" href="#plot-all-tracks-from-the-north-atlantic-in-2005" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="plot-all-tracks-from-the-north-atlantic-in-2005">
+<h2>12) Plot all tracks from the North Atlantic in 2005<a class="headerlink" href="#plot-all-tracks-from-the-north-atlantic-in-2005" title="Permalink to this headline">#</a></h2>
 <p>You will probably have to iterate through a <code class="docutils literal notranslate"><span class="pre">GroupBy</span></code> object</p>
-</div>
-<div class="section" id="create-a-filtered-dataframe-that-contains-only-data-since-1970-from-the-north-atlantic-na-basin">
-<h2>13) Create a filtered dataframe that contains only data since 1970 from the North Atlantic (“NA”) Basin<a class="headerlink" href="#create-a-filtered-dataframe-that-contains-only-data-since-1970-from-the-north-atlantic-na-basin" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="create-a-filtered-dataframe-that-contains-only-data-since-1970-from-the-north-atlantic-na-basin">
+<h2>13) Create a filtered dataframe that contains only data since 1970 from the North Atlantic (“NA”) Basin<a class="headerlink" href="#create-a-filtered-dataframe-that-contains-only-data-since-1970-from-the-north-atlantic-na-basin" title="Permalink to this headline">#</a></h2>
 <p>Use this for the rest of the assignment</p>
-</div>
-<div class="section" id="plot-the-number-of-datapoints-per-day-from-this-filtered-dataframe">
-<h2>14) Plot the number of datapoints per day from this filtered dataframe<a class="headerlink" href="#plot-the-number-of-datapoints-per-day-from-this-filtered-dataframe" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="plot-the-number-of-datapoints-per-day-from-this-filtered-dataframe">
+<h2>14) Plot the number of datapoints per day from this filtered dataframe<a class="headerlink" href="#plot-the-number-of-datapoints-per-day-from-this-filtered-dataframe" title="Permalink to this headline">#</a></h2>
 <p>Make sure you figure is big enough to actually see the plot</p>
-</div>
-<div class="section" id="calculate-the-climatology-of-datapoint-counts-as-a-function-of-dayofyear">
-<h2>15) Calculate the climatology of datapoint counts as a function of <code class="docutils literal notranslate"><span class="pre">dayofyear</span></code><a class="headerlink" href="#calculate-the-climatology-of-datapoint-counts-as-a-function-of-dayofyear" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="calculate-the-climatology-of-datapoint-counts-as-a-function-of-dayofyear">
+<h2>15) Calculate the climatology of datapoint counts as a function of <code class="docutils literal notranslate"><span class="pre">dayofyear</span></code><a class="headerlink" href="#calculate-the-climatology-of-datapoint-counts-as-a-function-of-dayofyear" title="Permalink to this headline">#</a></h2>
 <p>Plot the mean and standard deviation on a single figure</p>
-</div>
-<div class="section" id="use-transform-to-calculate-the-anomaly-of-daily-counts-from-the-climatology">
-<h2>16) Use <code class="docutils literal notranslate"><span class="pre">transform</span></code> to calculate the anomaly of daily counts from the climatology<a class="headerlink" href="#use-transform-to-calculate-the-anomaly-of-daily-counts-from-the-climatology" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="use-transform-to-calculate-the-anomaly-of-daily-counts-from-the-climatology">
+<h2>16) Use <code class="docutils literal notranslate"><span class="pre">transform</span></code> to calculate the anomaly of daily counts from the climatology<a class="headerlink" href="#use-transform-to-calculate-the-anomaly-of-daily-counts-from-the-climatology" title="Permalink to this headline">#</a></h2>
 <p>Resample the anomaly timeseries at annual resolution and plot a line with dots as markers.</p>
 <p>Which years stand out as having anomalous hurricane activity?</p>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -870,9 +1011,11 @@
 
               </div>
               
-            
-                <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
     <a class='left-prev' id="prev-link" href="../lectures/pandas/pandas_groupby.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
@@ -888,24 +1031,28 @@
     <i class="fas fa-angle-right"></i>
     </a>
 </div>
-            
+            </footer>
         </div>
     </div>
-    <footer class="footer">
-  <p>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Ryan Abernathey<br/>
+  
+      &copy; Copyright 2016-2021.<br/>
+</p>
+        </footer>
+    </div>
     
-      By Ryan Abernathey<br/>
-    
-        &copy; Copyright 2016-2021.<br/>
-  </p>
-</footer>
-</main>
+</div>
 
 
       </div>
     </div>
   
-  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
 
   </body>
 </html>
