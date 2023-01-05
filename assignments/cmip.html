@@ -5,16 +5,16 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<meta property="og:title" content="Assignment: Making Maps with Cartopy" />
+<meta property="og:title" content="Assignment: Calculate wet bulb temperature for CMIP6 models" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://earth-env-data-science.github.io/assignments/cartopy.html" />
+<meta property="og:url" content="https://earth-env-data-science.github.io/assignments/cmip.html" />
 <meta property="og:site_name" content="Python" />
-<meta property="og:description" content="1) Plot data from NARR: NARR is NCEP’s North American Regional Reanalysis, a widely used product for studying the weather and climate of the continental US. The data is available from NOAA’s Earth ..." />
-<meta property="og:image" content="https://earth-env-data-science.github.io/_images/narr_map.png" />
-<meta property="og:image:alt" content="narr_map" />
-<meta name="description" content="1) Plot data from NARR: NARR is NCEP’s North American Regional Reanalysis, a widely used product for studying the weather and climate of the continental US. The data is available from NOAA’s Earth ..." />
+<meta property="og:description" content="Global temperatures are increasing due to the effects of anthropogenic greenhouse gas emissions. This has many potentially disastrous consequences for many people around the world. One of the conce..." />
+<meta property="og:image" content="https://earth-env-data-science.github.io/assignments/assignments/attachment:8fffbb48-ab88-4728-9e14-56cf8ccb51b7.png" />
+<meta property="og:image:alt" content="Screen Shot 2023-01-04 at 9.00.44 PM.png" />
+<meta name="description" content="Global temperatures are increasing due to the effects of anthropogenic greenhouse gas emissions. This has many potentially disastrous consequences for many people around the world. One of the conce..." />
 
-    <title>Assignment: Making Maps with Cartopy &#8212; Earth and Environmental Data Science</title>
+    <title>Assignment: Calculate wet bulb temperature for CMIP6 models &#8212; Earth and Environmental Data Science</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -58,11 +58,11 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <link rel="canonical" href="https://earth-env-data-science.github.io/assignments/cartopy.html" />
+    <link rel="canonical" href="https://earth-env-data-science.github.io/assignments/cmip.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Working With Earth Science Model Output" href="../lectures/models/intro_models.html" />
-    <link rel="prev" title="Maps in Scientific Python" href="../lectures/mapping_cartopy.html" />
+    <link rel="next" title="Model validation: Comparing a state estimate to observations" href="../lectures/models/regridding.html" />
+    <link rel="prev" title="Working with output from many different CMIP6 climate models" href="../lectures/models/cmip.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -316,14 +316,14 @@ const thebe_selector_output = ".output, .cell_output"
   Geoscience Package
  </span>
 </p>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../lectures/mapping_cartopy.html">
    Maps in Scientific Python
   </a>
  </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cartopy.html">
    Assignment: Making Maps with Cartopy
   </a>
  </li>
@@ -333,7 +333,7 @@ const thebe_selector_output = ".output, .cell_output"
   Climate Model Data
  </span>
 </p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../lectures/models/intro_models.html">
    Working With Earth Science Model Output
@@ -344,8 +344,8 @@ const thebe_selector_output = ".output, .cell_output"
    Working with output from many different CMIP6 climate models
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cmip.html">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
    Assignment: Calculate wet bulb temperature for CMIP6 models
   </a>
  </li>
@@ -435,7 +435,7 @@ title="Toggle navigation"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="https://https://us-central1-b.gcp.pangeo.io/hub/user-redirect/git-pull?repo=https%3A//github.com/earth-env-data-science/earth-env-data-science-book&urlpath=lab/tree/earth-env-data-science-book/src/assignments/cartopy.ipynb&branch=master"
+        <a href="https://https://us-central1-b.gcp.pangeo.io/hub/user-redirect/git-pull?repo=https%3A//github.com/earth-env-data-science/earth-env-data-science-book&urlpath=lab/tree/earth-env-data-science-book/src/assignments/cmip.ipynb&branch=master"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -495,7 +495,7 @@ title="Source repository"
       </li>
       
       <li>
-        <a href="https://github.com/earth-env-data-science/earth-env-data-science-book/issues/new?title=Issue%20on%20page%20%2Fassignments/cartopy.html&body=Your%20issue%20content%20here."
+        <a href="https://github.com/earth-env-data-science/earth-env-data-science-book/issues/new?title=Issue%20on%20page%20%2Fassignments/cmip.html&body=Your%20issue%20content%20here."
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -512,7 +512,7 @@ title="Open an issue"
       </li>
       
       <li>
-        <a href="https://github.com/earth-env-data-science/earth-env-data-science-book/edit/master/src/assignments/cartopy.ipynb"
+        <a href="https://github.com/earth-env-data-science/earth-env-data-science-book/edit/master/src/assignments/cmip.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -540,7 +540,7 @@ title="Edit this page"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="../_sources/assignments/cartopy.ipynb"
+        <a href="../_sources/assignments/cmip.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -577,80 +577,23 @@ title="Print to PDF"
     </ul>
   </div>
 </div>
-<label for="__page-toc"
-  class="headerbtn headerbtn-page-toc"
-  
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-list"></i>
-  </span>
-
-</label>
 
     </div>
 </div>
 
 <!-- Table of contents -->
 <div class="col-md-3 bd-toc show noprint">
-    <div class="tocsection onthispage pt-5 pb-3">
-        <i class="fas fa-list"></i> Contents
-    </div>
-    <nav id="bd-toc-nav" aria-label="Page">
-        <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#plot-data-from-narr">
-   1) Plot data from NARR
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#antarctic-sea-ice">
-   2) Antarctic Sea Ice
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#global-usgs-earthquakes">
-   3) Global USGS Earthquakes
-  </a>
- </li>
-</ul>
-
-    </nav>
 </div>
     </div>
     <div class="article row">
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Assignment: Making Maps with Cartopy</h1>
+                <h1>Assignment: Calculate wet bulb temperature for CMIP6 models</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
                         
-                        <div>
-                            <h2> Contents </h2>
-                        </div>
-                        <nav aria-label="Page">
-                            <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#plot-data-from-narr">
-   1) Plot data from NARR
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#antarctic-sea-ice">
-   2) Antarctic Sea Ice
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#global-usgs-earthquakes">
-   3) Global USGS Earthquakes
-  </a>
- </li>
-</ul>
-
-                        </nav>
                     </div>
                 </div>
             </div>
@@ -658,48 +601,55 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="assignment-making-maps-with-cartopy">
-<h1>Assignment: Making Maps with Cartopy<a class="headerlink" href="#assignment-making-maps-with-cartopy" title="Permalink to this headline">#</a></h1>
-<section id="plot-data-from-narr">
-<h2>1) Plot data from NARR<a class="headerlink" href="#plot-data-from-narr" title="Permalink to this headline">#</a></h2>
-<p>NARR is NCEP’s <a class="reference external" href="https://www.esrl.noaa.gov/psd/data/gridded/data.narr.html">North American Regional Reanalysis</a>, a widely used product for studying the weather and climate of the continental US. The data is available from NOAA’s <a class="reference external" href="https://www.esrl.noaa.gov/">Earth System Research Laboratory</a> via <a class="reference external" href="https://en.wikipedia.org/wiki/OPeNDAP">OPeNDAP</a>, meaing that xarray can open the data “remotely” without downloading a file.</p>
-<p>For this problem, you should open this geopential height file:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>https://www.esrl.noaa.gov/psd/thredds/dodsC/Datasets/NARR/Dailies/pressure/hgt.201810.nc
-</pre></div>
-</div>
-<p>And this precipitation file:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>https://www.esrl.noaa.gov/psd/thredds/dodsC/Datasets/NARR/Dailies/monolevel/apcp.2018.nc
-</pre></div>
-</div>
-<p>Your goal is to make a map that looks like the one below. It shows total precipitation on Oct. 15, 2018 in blue, plus contours of the 500 mb geopotential surface.</p>
-<p><em>Hint: examine the dataset variables and attirbutes carefully in order to determine the projection of the data.</em></p>
-<p><img alt="narr_map" src="../_images/narr_map.png" /></p>
-</section>
-<section id="antarctic-sea-ice">
-<h2>2) Antarctic Sea Ice<a class="headerlink" href="#antarctic-sea-ice" title="Permalink to this headline">#</a></h2>
-<p>Download this file and then use it to plot the concentration of Antarctic Sea Ice on Aug. 7, 2017. Again, you will need to explore the file contents in order to determine the correct projection.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
-<span class="kn">import</span> <span class="nn">pooch</span>
-<span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://polarwatch.noaa.gov/erddap/files/nsidcCDRiceSQsh1day/2017/seaice_conc_daily_sh_f17_20170807_v03r01.nc&#39;</span>
-<span class="n">fname</span> <span class="o">=</span> <span class="n">pooch</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">known_hash</span><span class="o">=</span><span class="s1">&#39;19b74e7e97f1c0786da0c674c4d5e4af0da5b32e2fe8c66a8f1a8a9a1241e73c&#39;</span><span class="p">)</span>
-<span class="n">ds_ice</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">drop_variables</span><span class="o">=</span><span class="s1">&#39;melt_onset_day_seaice_conc_cdr&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p><img alt="sea_ice_map" src="../_images/sea_ice_map.png" /></p>
-</section>
-<section id="global-usgs-earthquakes">
-<h2>3) Global USGS Earthquakes<a class="headerlink" href="#global-usgs-earthquakes" title="Permalink to this headline">#</a></h2>
-<p>Reload the file we explored in homework 5 using pandas</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>http://www.ldeo.columbia.edu/~rpa/usgs_earthquakes_2014.csv
-</pre></div>
-</div>
-<p>and use the data to recreate this map.</p>
-<p><img alt="earthquake_map" src="../_images/earthquake_map.png" /></p>
-</section>
+  <section class="tex2jax_ignore mathjax_ignore" id="assignment-calculate-wet-bulb-temperature-for-cmip6-models">
+<h1>Assignment: Calculate wet bulb temperature for CMIP6 models<a class="headerlink" href="#assignment-calculate-wet-bulb-temperature-for-cmip6-models" title="Permalink to this headline">#</a></h1>
+<p>Global temperatures are increasing due to the effects of anthropogenic greenhouse gas emissions. This has many potentially disastrous consequences for many people around the world. One of the concerns is that in hot and humid climates, depending on the humidity and increase in temperature could lead to fatal conditions.
+One way to quantify the combined effect of temperature and humidity for human health is the wet bulb temperature (WBT), which can be approximated as:</p>
+<p><img alt="Screen Shot 2023-01-04 at 9.00.44 PM.png" src="assignments/attachment:8fffbb48-ab88-4728-9e14-56cf8ccb51b7.png" /></p>
+<p><a class="reference external" href="https://journals.ametsoc.org/view/journals/apme/50/11/jamc-d-11-0143.1.xml">source</a></p>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Wet-bulb_temperature#:~:text=Wet%2Dbulb%20temperature%20and%20health,-See%20also%3A%20Effects&amp;text=A%20sustained%20wet%2Dbulb%20temperature,to%20gaining%20heat%20from%20it.">“The wet-bulb temperature is the lowest temperature that can be reached under current ambient conditions by the evaporation of water only”</a>. Simply put, if the wet bulb temperature gets too high, the evaporation of sweat can not cool the human body sufficiently.</p>
+<p>A sustained wet bulb temperature &gt;35C is likely to be fatal, but lower WBT can also be dangerous depending on other external factors (e.g. solar radiation and insufficient air flow). From <a class="reference external" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7209987/">Raymond et al. 2020</a>: “for example, regions affected by the deadly 2003 European and 2010 Russian heat waves experienced TW values no greater than 28°C”</p>
+<p>This exercise aims to practice working with the CMIP6 cloud archive by computing the wet bulb temperature from available variables and summarizing the results in timeseries plots.</p>
+<blockquote>
+<div><p>Lets start by importing matplotlib, xarray, numpy, and combined_preprocessing from xmip.preprocessing. Set the default figure size to (12, 6).</p>
+</div></blockquote>
+<blockquote>
+<div><p>Then load the intake-esm collection for CMIP6 data on Google Cloud Storage (you can use xmip, as we did in the lecture, or set this up according to the <a class="reference external" href="http://gallery.pangeo.io/repos/pangeo-gallery/cmip6/intake_ESM_example.html">pangeo instructions</a>). The result should be the same.</p>
+</div></blockquote>
+<blockquote>
+<div><p>The ingredients we need for wet bulb temperature are surface temperature and relative humidity.</p>
+</div></blockquote>
+<blockquote>
+<div><p>Find the relevant variables using the <a class="reference external" href="https://docs.google.com/spreadsheets/d/1UUtoz6Ofyjlpx5LdqhKcwHFz2SGoTQV2_yekHyMfL9Y/edit#gid=1221485271">spreadheet</a> from the lecture. You can enter multiple variables in the search query like so: <code class="docutils literal notranslate"><span class="pre">.search(...,</span> <span class="pre">variable_id=['a',</span> <span class="pre">'b'],</span> <span class="pre">...)</span></code>.</p>
+</div></blockquote>
+<blockquote>
+<div><p>Select a subset of the variables, the <code class="docutils literal notranslate"><span class="pre">'historical'</span></code> experiment, the native model grid, monthly output, thres models (<code class="docutils literal notranslate"><span class="pre">['NorESM2-MM',</span> <span class="pre">'MPI-ESM1-2-LR',</span> <span class="pre">'CanESM5']</span></code> are recommended but feel free to explore), and a single member (<code class="docutils literal notranslate"><span class="pre">'r1i1p1f1'</span></code>) for starters. <em>Check out some more models/members later if you are curious!</em></p>
+</div></blockquote>
+<blockquote>
+<div><p>Then load the data into a dictionary of xarray datasets like we did in the lecture.</p>
+</div></blockquote>
+<blockquote>
+<div><p>Now lets calculate the wet bulb temperature according to the formula above. Write a function that calculates wet bulb temperature from temperature and humidity.</p>
+</div></blockquote>
+<blockquote>
+<div><p>🚨 Watch the units and convert if necessary! You can always check the units by looking at the metadata of a variable (<code class="docutils literal notranslate"><span class="pre">ds['your_variable'].attrs['units]</span></code>).</p>
+</div></blockquote>
+<blockquote>
+<div><p>A good test to see if your function is doint the right thing is to calculate the example from the <a class="reference external" href="https://journals.ametsoc.org/view/journals/apme/50/11/jamc-d-11-0143.1.xml">paper</a>: For relative humidity of 50% and temperature of 20C, we expect ~13.7C for the wet bulb temperature.</p>
+</div></blockquote>
+<blockquote>
+<div><p>To get an idea of the extremes globally lets compute the 90th percentile (<code class="docutils literal notranslate"><span class="pre">xarray.DataArray.quantile()</span></code> is your friend) of wet bulb temperature at every timesteps and then compute the annual average of that and plot is as a timeseries for each model.</p>
+</div></blockquote>
+<blockquote>
+<div><p>What we are really interested in is to see how these extreme WBT are going to evolve in the future. Lets use your new CMIP6 skills to get some more data!
+Make another query to get two of the future scenario experiments (<code class="docutils literal notranslate"><span class="pre">ssp585</span></code> and <code class="docutils literal notranslate"><span class="pre">ssp245</span></code>- the ‘worst case’ and ‘middle of the road’ scenarios) for the same models and load them into separate dataset_dictionaries.</p>
+</div></blockquote>
+<blockquote>
+<div><p>Plot the same quantity as before (90th percentile in space and annual maximum) for each model and all 3 experiments to see how each model predicts wet bulb temperature extremes until the end of the century. Use color/linestyle/lineweight to separate the experiments.</p>
+</div></blockquote>
+<blockquote>
+<div><p>As a final step, lets look where these extremes occur. Plot a map of an annual average from 2099-2100 for each model and scenario. Make sure to restrict the colormap to + 30 to see where extremes occur</p>
+</div></blockquote>
 </section>
 
     <script type="text/x-thebe-config">
@@ -729,17 +679,17 @@ title="Print to PDF"
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="../lectures/mapping_cartopy.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="../lectures/models/cmip.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Maps in Scientific Python</p>
+            <p class="prev-next-title">Working with output from many different CMIP6 climate models</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="../lectures/models/intro_models.html" title="next page">
+    <a class='right-next' id="next-link" href="../lectures/models/regridding.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Working With Earth Science Model Output</p>
+        <p class="prev-next-title">Model validation: Comparing a state estimate to observations</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
