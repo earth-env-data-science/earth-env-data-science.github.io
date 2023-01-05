@@ -8,6 +8,7 @@
 <meta property="og:title" content="Maps in Scientific Python" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://earth-env-data-science.github.io/lectures/mapping_cartopy.html" />
+<meta property="og:site_name" content="Python" />
 <meta property="og:description" content="Making maps is a fundamental part of geoscience research. Maps differ from regular figures in the following principle ways: Maps require a projection of geographic coordinates on the 3D Earth to th..." />
 <meta property="og:image" content="https://raw.githubusercontent.com/SciTools/cartopy-tutorial/master/static/flat_medium.jpg" />
 <meta property="og:image:alt" content="" />
@@ -326,9 +327,31 @@ const thebe_selector_output = ".output, .cell_output"
    Assignment: Making Maps with Cartopy
   </a>
  </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Climate Model Data
+ </span>
+</p>
+<ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="working_with_gcm_data.html">
-   Working with output from general circulation models using xesmf and xgcm
+  <a class="reference internal" href="models/intro_models.html">
+   Working With Earth Science Model Output
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="models/cmip.html">
+   Working with output from many different CMIP6 climate models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="models/regridding.html">
+   Model validation: Comparing a state estimate to observations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="models/xgcm.html">
+   Calculating properties in the native model grid using xgcm
   </a>
  </li>
 </ul>
@@ -7211,7 +7234,7 @@ This happens to work because <code class="docutils literal notranslate"><span cl
 <p>We can plot a satellite image easily on a map if we know its extent</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span> wget https://lance-modis.eosdis.nasa.gov/imagery/gallery/2012270-0926/Miriam.A2012270.2050.2km.jpg
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span><span class="w"> </span>wget<span class="w"> </span>https://lance-modis.eosdis.nasa.gov/imagery/gallery/2012270-0926/Miriam.A2012270.2050.2km.jpg
 </pre></div>
 </div>
 </div>

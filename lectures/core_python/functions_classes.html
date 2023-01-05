@@ -8,9 +8,10 @@
 <meta property="og:title" content="Python Functions and Classes" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://earth-env-data-science.github.io/lectures/core_python/functions_classes.html" />
+<meta property="og:site_name" content="Python" />
 <meta property="og:description" content="For longer and more complex tasks, it is important to organize your code into reuseable elements. For example, if you find yourself cutting and pasting the same or similar lines of code over and ov..." />
 <meta property="og:image" content="https://earth-env-data-science.github.io/_static/eeds-logo.png" />
-<meta property="og:image:alt" content="Python Functions and Classes" />
+<meta property="og:image:alt" content="Python" />
 <meta name="description" content="For longer and more complex tasks, it is important to organize your code into reuseable elements. For example, if you find yourself cutting and pasting the same or similar lines of code over and ov..." />
 
     <title>Python Functions and Classes &#8212; Earth and Environmental Data Science</title>
@@ -326,9 +327,31 @@ const thebe_selector_output = ".output, .cell_output"
    Assignment: Making Maps with Cartopy
   </a>
  </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Climate Model Data
+ </span>
+</p>
+<ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../working_with_gcm_data.html">
-   Working with output from general circulation models using xesmf and xgcm
+  <a class="reference internal" href="../models/intro_models.html">
+   Working With Earth Science Model Output
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../models/cmip.html">
+   Working with output from many different CMIP6 climate models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../models/regridding.html">
+   Model validation: Comparing a state estimate to observations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../models/xgcm.html">
+   Calculating properties in the native model grid using xgcm
   </a>
  </li>
 </ul>
@@ -693,7 +716,7 @@ Usually functions return something, but not always.</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># define a function</span>
 <span class="k">def</span> <span class="nf">say_hello</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Return the word hello.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the word hello.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="s1">&#39;Hello&#39;</span>
 </pre></div>
 </div>
@@ -759,7 +782,7 @@ say_hello<span class="o">?</span>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># take some arguments</span>
 <span class="k">def</span> <span class="nf">say_hello_to</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return a greeting to `name`&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a greeting to `name`&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="s1">&#39;Hello &#39;</span> <span class="o">+</span> <span class="n">name</span>
 </pre></div>
 </div>
@@ -792,7 +815,7 @@ say_hello<span class="o">?</span>
 
 <span class="nn">&lt;ipython-input-6-a444b0f12be2&gt;</span> in <span class="ni">say_hello_to</span><span class="nt">(name)</span>
 <span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="k">def</span> <span class="nf">say_hello_to</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="sd">&quot;&quot;&quot;Return a greeting to `name`&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;Return a greeting to `name`&quot;&quot;&quot;</span>
 <span class="ne">----&gt; </span><span class="mi">4</span>     <span class="k">return</span> <span class="s1">&#39;Hello &#39;</span> <span class="o">+</span> <span class="n">name</span>
 
 <span class="ne">TypeError</span>: must be str, not int
@@ -804,7 +827,7 @@ say_hello<span class="o">?</span>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># redefine the function</span>
 <span class="k">def</span> <span class="nf">say_hello_to</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return a greeting to `name`&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a greeting to `name`&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="s1">&#39;Hello &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -826,7 +849,7 @@ say_hello<span class="o">?</span>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># take an optional keyword argument</span>
 <span class="k">def</span> <span class="nf">say_hello_or_hola</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">spanish</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Say hello in multiple languages.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Say hello in multiple languages.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">spanish</span><span class="p">:</span>
         <span class="n">greeting</span> <span class="o">=</span> <span class="s1">&#39;Hola &#39;</span>
     <span class="k">else</span><span class="p">:</span>

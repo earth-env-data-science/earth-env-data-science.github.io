@@ -5,16 +5,16 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<meta property="og:title" content="Intro to JupyterLab" />
+<meta property="og:title" content="Calculating properties in the native model grid using xgcm" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://earth-env-data-science.github.io/lectures/environment/intro_to_jupyterlab.html" />
+<meta property="og:url" content="https://earth-env-data-science.github.io/lectures/models/xgcm.html" />
 <meta property="og:site_name" content="Python" />
-<meta property="og:description" content="JupyterLab will be our primary method for interacting with the computer. JupyterLab contains a complete environment for interactive scientific computing which runs in your web browser. Jupyter is a..." />
-<meta property="og:image" content="https://earth-env-data-science.github.io/_static/eeds-logo.png" />
+<meta property="og:description" content="For maximum accuracy it is always preferrable to calculate properties in the closest way possible to the model code, which at the least means executing calculations on the native grid. For comparis..." />
+<meta property="og:image" content="https://earth-env-data-science.github.io/_images/xgcm_13_1.png" />
 <meta property="og:image:alt" content="Python" />
-<meta name="description" content="JupyterLab will be our primary method for interacting with the computer. JupyterLab contains a complete environment for interactive scientific computing which runs in your web browser. Jupyter is a..." />
+<meta name="description" content="For maximum accuracy it is always preferrable to calculate properties in the closest way possible to the model code, which at the least means executing calculations on the native grid. For comparis..." />
 
-    <title>Intro to JupyterLab &#8212; Earth and Environmental Data Science</title>
+    <title>Calculating properties in the native model grid using xgcm &#8212; Earth and Environmental Data Science</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -58,11 +58,13 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
-    <link rel="canonical" href="https://earth-env-data-science.github.io/lectures/environment/intro_to_jupyterlab.html" />
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="canonical" href="https://earth-env-data-science.github.io/lectures/models/xgcm.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Intro to Unix" href="intro_to_unix.html" />
-    <link rel="prev" title="Final Projects" href="../../projects.html" />
+    <link rel="next" title="Dask for Parallel Computing in Python" href="../dask/intro.html" />
+    <link rel="prev" title="Model validation: Comparing a state estimate to observations" href="regridding.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -144,19 +146,19 @@ const thebe_selector_output = ".output, .cell_output"
   The Interactive Computing Environment
  </span>
 </p>
-<ul class="current nav bd-sidenav">
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../environment/intro_to_jupyterlab.html">
    Intro to JupyterLab
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="intro_to_unix.html">
+  <a class="reference internal" href="../environment/intro_to_unix.html">
    Intro to Unix
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="intro_to_git.html">
+  <a class="reference internal" href="../environment/intro_to_git.html">
    Intro to Git for Version Control
   </a>
  </li>
@@ -166,12 +168,12 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="python_environments.html">
+  <a class="reference internal" href="../environment/python_environments.html">
    Managing Python Environments
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="binder.html">
+  <a class="reference internal" href="../environment/binder.html">
    Binder for Reproducible Research
   </a>
  </li>
@@ -333,24 +335,24 @@ const thebe_selector_output = ".output, .cell_output"
   Climate Model Data
  </span>
 </p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../models/intro_models.html">
+  <a class="reference internal" href="intro_models.html">
    Working With Earth Science Model Output
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../models/cmip.html">
+  <a class="reference internal" href="cmip.html">
    Working with output from many different CMIP6 climate models
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../models/regridding.html">
+  <a class="reference internal" href="regridding.html">
    Model validation: Comparing a state estimate to observations
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../models/xgcm.html">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
    Calculating properties in the native model grid using xgcm
   </a>
  </li>
@@ -422,6 +424,35 @@ title="Toggle navigation"
         
     </div>
     <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://https://us-central1-b.gcp.pangeo.io/hub/user-redirect/git-pull?repo=https%3A//github.com/earth-env-data-science/earth-env-data-science-book&urlpath=lab/tree/earth-env-data-science-book/src/lectures/models/xgcm.ipynb&branch=master"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on JupyterHub"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="headerbtn__text-container">JupyterHub</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
 <button onclick="toggleFullScreen()"
   class="headerbtn"
   data-toggle="tooltip"
@@ -461,7 +492,7 @@ title="Source repository"
       </li>
       
       <li>
-        <a href="https://github.com/earth-env-data-science/earth-env-data-science-book/issues/new?title=Issue%20on%20page%20%2Flectures/environment/intro_to_jupyterlab.html&body=Your%20issue%20content%20here."
+        <a href="https://github.com/earth-env-data-science/earth-env-data-science-book/issues/new?title=Issue%20on%20page%20%2Flectures/models/xgcm.html&body=Your%20issue%20content%20here."
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -478,7 +509,7 @@ title="Open an issue"
       </li>
       
       <li>
-        <a href="https://github.com/earth-env-data-science/earth-env-data-science-book/edit/master/src/lectures/environment/intro_to_jupyterlab.md"
+        <a href="https://github.com/earth-env-data-science/earth-env-data-science-book/edit/master/src/lectures/models/xgcm.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -506,7 +537,7 @@ title="Edit this page"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="../../_sources/lectures/environment/intro_to_jupyterlab.md"
+        <a href="../../_sources/lectures/models/xgcm.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -517,7 +548,7 @@ title="Download source file"
 <span class="headerbtn__icon-container">
   <i class="fas fa-file"></i>
   </span>
-<span class="headerbtn__text-container">.md</span>
+<span class="headerbtn__text-container">.ipynb</span>
 </a>
 
       </li>
@@ -543,70 +574,23 @@ title="Print to PDF"
     </ul>
   </div>
 </div>
-<label for="__page-toc"
-  class="headerbtn headerbtn-page-toc"
-  
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-list"></i>
-  </span>
-
-</label>
 
     </div>
 </div>
 
 <!-- Table of contents -->
 <div class="col-md-3 bd-toc show noprint">
-    <div class="tocsection onthispage pt-5 pb-3">
-        <i class="fas fa-list"></i> Contents
-    </div>
-    <nav id="bd-toc-nav" aria-label="Page">
-        <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#markdown">
-   Markdown
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#our-course-jupyterhub">
-   Our Course JupyterHub
-  </a>
- </li>
-</ul>
-
-    </nav>
 </div>
     </div>
     <div class="article row">
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Intro to JupyterLab</h1>
+                <h1>Calculating properties in the native model grid using xgcm</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
                         
-                        <div>
-                            <h2> Contents </h2>
-                        </div>
-                        <nav aria-label="Page">
-                            <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#markdown">
-   Markdown
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#our-course-jupyterhub">
-   Our Course JupyterHub
-  </a>
- </li>
-</ul>
-
-                        </nav>
                     </div>
                 </div>
             </div>
@@ -614,42 +598,117 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="intro-to-jupyterlab">
-<h1>Intro to JupyterLab<a class="headerlink" href="#intro-to-jupyterlab" title="Permalink to this headline">#</a></h1>
-<p><a class="reference external" href="https://jupyterlab.readthedocs.io">JupyterLab</a> will be our primary method for
-interacting with the computer. JupyterLab contains a complete environment for
-interactive scientific computing which runs in your web browser. Jupyter is an
-open source python project that was started by scientists like yourselves who
-wanted a more effective way to interact with their computers.</p>
-<p>JupyterLab has excellent documentation. Rather than repeat that documentation
-here, we point you to their docs. The following pages are particularly relevant:</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://jupyterlab.readthedocs.io/en/stable/user/interface.html">The JupyterLab Interface</a></p></li>
-<li><p><a class="reference external" href="https://jupyterlab.readthedocs.io/en/stable/user/files.html">Working with Files</a></p></li>
-<li><p><a class="reference external" href="https://jupyterlab.readthedocs.io/en/stable/user/file_editor.html">The Text Editor</a></p></li>
-<li><p><a class="reference external" href="https://jupyterlab.readthedocs.io/en/stable/user/notebook.html">Notebooks</a></p></li>
-<li><p><a class="reference external" href="https://jupyterlab.readthedocs.io/en/stable/user/terminal.html">Terminals</a></p></li>
-<li><p><a class="reference external" href="https://jupyterlab.readthedocs.io/en/stable/user/running.html">Managing Kernels and Terminals</a></p></li>
-</ul>
-<p>You will gain experience and familiarity with JupyterLab over the course of the
-semester as we use it in our weekly lectures and assignments.</p>
-<section id="markdown">
-<h2>Markdown<a class="headerlink" href="#markdown" title="Permalink to this headline">#</a></h2>
-<p>Throughout the course, we will write rich text documents using Markdown.
-Here are some useful references on Markdown syntax.</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://daringfireball.net/projects/markdown/">Official Markdown Documentation</a></p></li>
-<li><p><a class="reference external" href="https://www.markdownguide.org/basic-syntax">Markdown Guide / Basic Syntax</a> -
-A more user-friendly syntax guide.</p></li>
-</ul>
-</section>
-<section id="our-course-jupyterhub">
-<h2>Our Course JupyterHub<a class="headerlink" href="#our-course-jupyterhub" title="Permalink to this headline">#</a></h2>
-<p><a class="reference external" href="https://jupyter.org/hub">JupyterHub</a> is multi-user Jupyter environment designed for companies, classrooms and research labs.
-The Columbia version of this course uses a cloud-based JupyterHub environment
-managed by <a class="reference external" href="https://2i2c.org/infrastructure/">2i2c</a>:</p>
-<p><span class="xref myst"><img alt="Launch JupyterHub" src="https://img.shields.io/badge/jupyterhub-us--central1--b.gcp.pangeo.io-orange?style=for-the-badge&amp;logo=jupyter" /></span></p>
-</section>
+  <section class="tex2jax_ignore mathjax_ignore" id="calculating-properties-in-the-native-model-grid-using-xgcm">
+<h1>Calculating properties in the native model grid using xgcm<a class="headerlink" href="#calculating-properties-in-the-native-model-grid-using-xgcm" title="Permalink to this headline">#</a></h1>
+<p>For maximum accuracy it is always preferrable to calculate properties in the closest way possible to the model code, which at the least means executing calculations on the native grid. For comparison you can then regrid properties afterwards. To demonstrate how to do this we now calculate the meridional sea surface temperature gradient for the SOSE output.</p>
+<p>For these sort of calculations we use <a class="reference external" href="https://xgcm.readthedocs.io/en/latest/index.html">xgcm</a>, which helps us to deal with the staggered grids that models use:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">xgcm</span> <span class="kn">import</span> <span class="n">Grid</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>in order to work with xgcm we have to create a <code class="docutils literal notranslate"><span class="pre">Grid</span></code> object which ‘understands’ which coordinates of a dataset are representing the various staggered grid positions.</p>
+<p>But first we need to check quickly how the model grid is designed.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">ds_model</span><span class="o">.</span><span class="n">XC</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">ds_model</span><span class="o">.</span><span class="n">XG</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ds_model</span><span class="o">.</span><span class="n">YC</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">ds_model</span><span class="o">.</span><span class="n">YG</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;xarray.DataArray ()&gt;
+array(False)
+Coordinates:
+    XC       float32 0.083333336
+    XG       float32 5.551115e-17
+&lt;xarray.DataArray ()&gt;
+array(False)
+Coordinates:
+    YC       float32 -77.87497
+    YG       float32 -77.9583
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can see that for the first datapoint of the dataset, the ‘grid coordinates’ (<code class="docutils literal notranslate"><span class="pre">XG</span></code> and <code class="docutils literal notranslate"><span class="pre">YG</span></code>) have smaller values than the ‘tracer coordinates’ (<code class="docutils literal notranslate"><span class="pre">XC</span></code> and <code class="docutils literal notranslate"><span class="pre">YC</span></code>). This means that for both <code class="docutils literal notranslate"><span class="pre">axes</span></code> (each axis decribes a logical direction and both tracer and grid coordinates), the tracer coordinate is at the center and the grid coordinate is on the left (this can be on the right for some model setups; thus, carefull checking beforehand is always recommended).</p>
+<p>With this information, we can now construct the <code class="docutils literal notranslate"><span class="pre">Grid</span></code> object and configure it properly (this step is only required once for a single grid).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid</span> <span class="o">=</span> <span class="n">Grid</span><span class="p">(</span><span class="n">ds_model</span><span class="p">,</span>
+            <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;X&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;center&#39;</span><span class="p">:</span> <span class="s1">&#39;XC&#39;</span><span class="p">,</span> <span class="s1">&#39;left&#39;</span><span class="p">:</span> <span class="s1">&#39;XG&#39;</span><span class="p">},</span>
+                    <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;center&#39;</span><span class="p">:</span> <span class="s1">&#39;YC&#39;</span><span class="p">,</span> <span class="s1">&#39;left&#39;</span><span class="p">:</span> <span class="s1">&#39;YG&#39;</span><span class="p">}})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">grid</span></code> object can now be used to apply various operations on the data variables of the dataset. Most GCMs calculate all properties by using simple differences and interpolation between neighboring cells.</p>
+<p>We first select the surface layer of temperature and average over year 2009.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sst</span> <span class="o">=</span> <span class="n">ds_model</span><span class="o">.</span><span class="n">THETA</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">Z</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;2009&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In order to compute the meridional gradient of sea surface temperature, we have to simply compute the finite difference along axis <code class="docutils literal notranslate"><span class="pre">Y</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">deltay_sst</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">sst</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">)</span>
+<span class="n">deltay_sst</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;xarray.DataArray &#39;sub-9563c8ac51aadebd24c532c2db11db98&#39; (YG: 320, XC: 2160)&gt;
+dask.array&lt;shape=(320, 2160), dtype=float32, chunksize=(1, 2160)&gt;
+Coordinates:
+  * YG       (YG) float32 -77.9583 -77.79163 -77.62497 ... -24.9583 -24.791632
+  * XC       (XC) float32 0.083333336 0.25 0.4166667 ... 359.75 359.9167
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you look carefully, you see that the <code class="docutils literal notranslate"><span class="pre">Y</span></code> dimension has been shifted, from <code class="docutils literal notranslate"><span class="pre">YC</span></code> to <code class="docutils literal notranslate"><span class="pre">YG</span></code>. The gradient is defined on the cell face or <span class="math notranslate nohighlight">\(v\)</span> velocity point. This is however just a difference between cells. To derive the gradient in the y direction in physical units <code class="docutils literal notranslate"><span class="pre">degC/m</span></code>, we need to divide the array by the distance along the <code class="docutils literal notranslate"><span class="pre">Y</span></code> axes between adjacent tracer points <code class="docutils literal notranslate"><span class="pre">dyC</span></code> , which itself is located at the <span class="math notranslate nohighlight">\(v\)</span> velocity point.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dsst_dy</span> <span class="o">=</span> <span class="n">deltay_sst</span> <span class="o">/</span> <span class="n">ds_model</span><span class="o">.</span><span class="n">dyC</span>
+<span class="n">dsst_dy</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;xarray.DataArray (YG: 320, XC: 2160)&gt;
+dask.array&lt;shape=(320, 2160), dtype=float32, chunksize=(1, 2160)&gt;
+Coordinates:
+  * YG       (YG) float32 -77.9583 -77.79163 -77.62497 ... -24.9583 -24.791632
+  * XC       (XC) float32 0.083333336 0.25 0.4166667 ... 359.75 359.9167
+    dxG      (YG, XC) float32 dask.array&lt;shape=(320, 2160), chunksize=(320, 2160)&gt;
+    dyC      (YG, XC) float32 dask.array&lt;shape=(320, 2160), chunksize=(320, 2160)&gt;
+    rAs      (YG, XC) float32 dask.array&lt;shape=(320, 2160), chunksize=(320, 2160)&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now lets select the surface layer and the first timestep and plot the results</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">SouthPolarStereo</span><span class="p">())</span>
+<span class="n">dsst_dy</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">robust</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;cartopy.mpl.feature_artist.FeatureArtist at 0x7f46382c17f0&gt;
+</pre></div>
+</div>
+<img alt="../../_images/xgcm_13_1.png" src="../../_images/xgcm_13_1.png" />
+</div>
+</div>
+<p>The meridional gradient is positive over the whole domain (temperature is increasing towards the equator), as might be expected. The stronges gradient is associated with the boundary between the retroflection of the warm <a class="reference external" href="https://en.wikipedia.org/wiki/Agulhas_Current">Agulhas current</a> and the cold waters of the <a class="reference external" href="https://en.wikipedia.org/wiki/Antarctic_Circumpolar_Current">Antarctic Circumpolar Current</a> in the Indian Ocean sector.</p>
 </section>
 
     <script type="text/x-thebe-config">
@@ -665,7 +724,7 @@ managed by <a class="reference external" href="https://2i2c.org/infrastructure/"
         },
         kernelOptions: {
             kernelName: "python3",
-            path: "./lectures/environment"
+            path: "./lectures/models"
         },
         predefinedOutput: true
     }
@@ -679,17 +738,17 @@ managed by <a class="reference external" href="https://2i2c.org/infrastructure/"
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="../../projects.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="regridding.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Final Projects</p>
+            <p class="prev-next-title">Model validation: Comparing a state estimate to observations</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="intro_to_unix.html" title="next page">
+    <a class='right-next' id="next-link" href="../dask/intro.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Intro to Unix</p>
+        <p class="prev-next-title">Dask for Parallel Computing in Python</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

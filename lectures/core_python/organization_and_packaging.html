@@ -8,9 +8,10 @@
 <meta property="og:title" content="Organization and Packaging of Python Projects" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://earth-env-data-science.github.io/lectures/core_python/organization_and_packaging.html" />
+<meta property="og:site_name" content="Python" />
 <meta property="og:description" content="A complex research project often relies and many different programs and software packages to accomplish the research goals. An important part of scientific computing is deciding how to organize and..." />
 <meta property="og:image" content="https://earth-env-data-science.github.io/_static/eeds-logo.png" />
-<meta property="og:image:alt" content="Organization and Packaging of Python Projects" />
+<meta property="og:image:alt" content="Python" />
 <meta name="description" content="A complex research project often relies and many different programs and software packages to accomplish the research goals. An important part of scientific computing is deciding how to organize and..." />
 
     <title>Organization and Packaging of Python Projects &#8212; Earth and Environmental Data Science</title>
@@ -326,9 +327,31 @@ const thebe_selector_output = ".output, .cell_output"
    Assignment: Making Maps with Cartopy
   </a>
  </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Climate Model Data
+ </span>
+</p>
+<ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../working_with_gcm_data.html">
-   Working with output from general circulation models using xesmf and xgcm
+  <a class="reference internal" href="../models/intro_models.html">
+   Working With Earth Science Model Output
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../models/cmip.html">
+   Working with output from many different CMIP6 climate models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../models/regridding.html">
+   Model validation: Comparing a state estimate to observations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../models/xgcm.html">
+   Calculating properties in the native model grid using xgcm
   </a>
  </li>
 </ul>
@@ -839,7 +862,7 @@ There are several <a class="reference external" href="https://pypi.python.org/py
 <span class="n">R</span> <span class="o">=</span> <span class="mf">6.371e6</span>
 
 <span class="k">def</span> <span class="nf">great_circle_distance</span><span class="p">(</span><span class="n">point1</span><span class="p">,</span> <span class="n">point2</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Calculate great-circle distance between two points.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate great-circle distance between two points.</span>
 <span class="sd">    </span>
 <span class="sd">    PARAMETERS</span>
 <span class="sd">    ----------</span>
@@ -1077,7 +1100,7 @@ If we plan to keep developing the package, we can install it in “developer mod
 </pre></div>
 </div>
 <p>We will use <a class="reference external" href="https://docs.pytest.org/en/latest/getting-started.html">pytest</a> to run our tests. If you don’t have pytest installed in your active python environment, take a minute to run <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">pytest</span></code> from the command line. Now run</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>py.test -v
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>py.test<span class="w"> </span>-v
 </pre></div>
 </div>
 <p>from the root directory of your project. You should see a notification that the tests passed. Try playing around with the tests to cause something to fail.</p>

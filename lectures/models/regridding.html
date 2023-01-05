@@ -5,65 +5,66 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<meta property="og:title" content="Working with output from general circulation models using xesmf and xgcm" />
+<meta property="og:title" content="Model validation: Comparing a state estimate to observations" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://earth-env-data-science.github.io/lectures/working_with_gcm_data.html" />
-<meta property="og:description" content="In this lecture, we will discuss some fundamental aspects and techniques to work with the output of general circulation models. What is a general circulation model?: A general circulation model (GC..." />
-<meta property="og:image" content="https://www.ipcc-data.org/img/3d_gcm_structure.jpg" />
-<meta property="og:image:alt" content="gcm-schematic" />
-<meta name="description" content="In this lecture, we will discuss some fundamental aspects and techniques to work with the output of general circulation models. What is a general circulation model?: A general circulation model (GC..." />
+<meta property="og:url" content="https://earth-env-data-science.github.io/lectures/models/regridding.html" />
+<meta property="og:site_name" content="Python" />
+<meta property="og:description" content="We start by importing xarray, numpy and matplotlib as usual The model we will be using in this lecture is the Southen Ocean State Estimate (SOSE), which is available in the pangeo cloud as an intak..." />
+<meta property="og:image" content="https://earth-env-data-science.github.io/_images/regridding_5_1.png" />
+<meta property="og:image:alt" content="Python" />
+<meta name="description" content="We start by importing xarray, numpy and matplotlib as usual The model we will be using in this lecture is the Southen Ocean State Estimate (SOSE), which is available in the pangeo cloud as an intak..." />
 
-    <title>Working with output from general circulation models using xesmf and xgcm &#8212; Earth and Environmental Data Science</title>
+    <title>Model validation: Comparing a state estimate to observations &#8212; Earth and Environmental Data Science</title>
     
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 
     
   <link rel="stylesheet"
-    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
   <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
   <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
     
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../_static/togglebutton.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../_static/design-tabs.js"></script>
+    <script src="../../_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
-    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <link rel="canonical" href="https://earth-env-data-science.github.io/lectures/working_with_gcm_data.html" />
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Dask for Parallel Computing in Python" href="dask/intro.html" />
-    <link rel="prev" title="Assignment: Making Maps with Cartopy" href="../assignments/cartopy.html" />
+    <link rel="canonical" href="https://earth-env-data-science.github.io/lectures/models/regridding.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Calculating properties in the native model grid using xgcm" href="xgcm.html" />
+    <link rel="prev" title="Working with output from many different CMIP6 climate models" href="cmip.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -98,19 +99,19 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="bd-sidebar noprint" id="site-navigation">
     <div class="bd-sidebar__content">
         <div class="bd-sidebar__top"><div class="navbar-brand-box">
-    <a class="navbar-brand text-wrap" href="../index.html">
+    <a class="navbar-brand text-wrap" href="../../index.html">
       
         <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
         
       
       
-      <img src="../_static/eeds-logo.png" class="logo" alt="logo">
+      <img src="../../_static/eeds-logo.png" class="logo" alt="logo">
       
       
       <h1 class="site-logo" id="site-title">Earth and Environmental Data Science</h1>
       
     </a>
-</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
   <i class="icon fas fa-search"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
@@ -118,7 +119,7 @@ const thebe_selector_output = ".output, .cell_output"
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
-                <a class="reference internal" href="../intro.html">
+                <a class="reference internal" href="../../intro.html">
                     An Introduction to Earth and Environmental Data Science
                 </a>
             </li>
@@ -130,12 +131,12 @@ const thebe_selector_output = ".output, .cell_output"
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../LICENSE.html">
+  <a class="reference internal" href="../../LICENSE.html">
    License for this book
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../projects.html">
+  <a class="reference internal" href="../../projects.html">
    Final Projects
   </a>
  </li>
@@ -147,37 +148,37 @@ const thebe_selector_output = ".output, .cell_output"
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="environment/intro_to_jupyterlab.html">
+  <a class="reference internal" href="../environment/intro_to_jupyterlab.html">
    Intro to JupyterLab
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="environment/intro_to_unix.html">
+  <a class="reference internal" href="../environment/intro_to_unix.html">
    Intro to Unix
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="environment/intro_to_git.html">
+  <a class="reference internal" href="../environment/intro_to_git.html">
    Intro to Git for Version Control
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../assignments/files_markdown_git.html">
+  <a class="reference internal" href="../../assignments/files_markdown_git.html">
    Assignment: Files, Git, and Github
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="environment/python_environments.html">
+  <a class="reference internal" href="../environment/python_environments.html">
    Managing Python Environments
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="environment/binder.html">
+  <a class="reference internal" href="../environment/binder.html">
    Binder for Reproducible Research
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="data.html">
+  <a class="reference internal" href="../data.html">
    All About Data
   </a>
  </li>
@@ -189,22 +190,22 @@ const thebe_selector_output = ".output, .cell_output"
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="core_python/python_fundamentals.html">
+  <a class="reference internal" href="../core_python/python_fundamentals.html">
    Python Fundamentals
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="core_python/functions_classes.html">
+  <a class="reference internal" href="../core_python/functions_classes.html">
    Python Functions and Classes
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="core_python/organization_and_packaging.html">
+  <a class="reference internal" href="../core_python/organization_and_packaging.html">
    Organization and Packaging of Python Projects
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../assignments/python_basics_and_functions.html">
+  <a class="reference internal" href="../../assignments/python_basics_and_functions.html">
    Assignment: Basic Python
   </a>
  </li>
@@ -216,22 +217,22 @@ const thebe_selector_output = ".output, .cell_output"
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="basic_scipy/numpy_and_matplotlib.html">
+  <a class="reference internal" href="../basic_scipy/numpy_and_matplotlib.html">
    Numpy and Matplotlib
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../assignments/numpy_matplotlib.html">
+  <a class="reference internal" href="../../assignments/numpy_matplotlib.html">
    Assignment: Numpy and Matplotlib
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="basic_scipy/more_matplotlib.html">
+  <a class="reference internal" href="../basic_scipy/more_matplotlib.html">
    More Matplotlib
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../assignments/more_matplotlib.html">
+  <a class="reference internal" href="../../assignments/more_matplotlib.html">
    Assignment: More Matplotlib
   </a>
  </li>
@@ -243,7 +244,7 @@ const thebe_selector_output = ".output, .cell_output"
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1 has-children">
-  <a class="reference internal" href="pandas/pandas_intro.html">
+  <a class="reference internal" href="../pandas/pandas_intro.html">
    Pandas
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
@@ -253,29 +254,29 @@ const thebe_selector_output = ".output, .cell_output"
   </label>
   <ul>
    <li class="toctree-l2">
-    <a class="reference internal" href="pandas/basic_pandas.html">
+    <a class="reference internal" href="../pandas/basic_pandas.html">
      Pandas Fundamentals
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/basic_pandas.html">
+    <a class="reference internal" href="../../assignments/basic_pandas.html">
      Assignment: Pandas Fundamentals with Earthquake Data
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="pandas/pandas_groupby.html">
+    <a class="reference internal" href="../pandas/pandas_groupby.html">
      Pandas: Groupby
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/pandas_groupby.html">
+    <a class="reference internal" href="../../assignments/pandas_groupby.html">
      Assignment: Pandas Groupby with Hurricane Data
     </a>
    </li>
   </ul>
  </li>
  <li class="toctree-l1 has-children">
-  <a class="reference internal" href="xarray/xarray_intro.html">
+  <a class="reference internal" href="../xarray/xarray_intro.html">
    Xarray for multidimensional gridded data
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
@@ -285,27 +286,27 @@ const thebe_selector_output = ".output, .cell_output"
   </label>
   <ul>
    <li class="toctree-l2">
-    <a class="reference internal" href="xarray/xarray.html">
+    <a class="reference internal" href="../xarray/xarray.html">
      Xarray Fundamentals
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/basic_xarray.html">
+    <a class="reference internal" href="../../assignments/basic_xarray.html">
      Assignment: Xarray Fundamentals with Atmospheric Radiation Data
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="xarray/xarray-part2.html">
+    <a class="reference internal" href="../xarray/xarray-part2.html">
      Xarray Interpolation, Groupby, Resample, Rolling, and Coarsen
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/more_xarray.html">
+    <a class="reference internal" href="../../assignments/more_xarray.html">
      Assignment: More Xarray with El Niño-Southern Oscillation (ENSO) Data
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="xarray/xarray_tips_and_tricks.html">
+    <a class="reference internal" href="../xarray/xarray_tips_and_tricks.html">
      Xarray Tips and Tricks
     </a>
    </li>
@@ -317,20 +318,42 @@ const thebe_selector_output = ".output, .cell_output"
   Geoscience Package
  </span>
 </p>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="mapping_cartopy.html">
+  <a class="reference internal" href="../mapping_cartopy.html">
    Maps in Scientific Python
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../assignments/cartopy.html">
+  <a class="reference internal" href="../../assignments/cartopy.html">
    Assignment: Making Maps with Cartopy
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Climate Model Data
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro_models.html">
+   Working With Earth Science Model Output
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cmip.html">
+   Working with output from many different CMIP6 climate models
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   Working with output from general circulation models using xesmf and xgcm
+   Model validation: Comparing a state estimate to observations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="xgcm.html">
+   Calculating properties in the native model grid using xgcm
   </a>
  </li>
 </ul>
@@ -341,12 +364,12 @@ const thebe_selector_output = ".output, .cell_output"
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="dask/intro.html">
+  <a class="reference internal" href="../dask/intro.html">
    Dask for Parallel Computing in Python
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="dask/dask_arrays.html">
+  <a class="reference internal" href="../dask/dask_arrays.html">
    Computing with Dask
   </a>
  </li>
@@ -409,7 +432,7 @@ title="Toggle navigation"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="https://https://us-central1-b.gcp.pangeo.io/hub/user-redirect/git-pull?repo=https%3A//github.com/earth-env-data-science/earth-env-data-science-book&urlpath=lab/tree/earth-env-data-science-book/src/lectures/working_with_gcm_data.ipynb&branch=master"
+        <a href="https://https://us-central1-b.gcp.pangeo.io/hub/user-redirect/git-pull?repo=https%3A//github.com/earth-env-data-science/earth-env-data-science-book&urlpath=lab/tree/earth-env-data-science-book/src/lectures/models/regridding.ipynb&branch=master"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -419,7 +442,7 @@ title="Launch on JupyterHub"
 
 <span class="headerbtn__icon-container">
   
-    <img src="../_static/images/logo_jupyterhub.svg">
+    <img src="../../_static/images/logo_jupyterhub.svg">
   </span>
 <span class="headerbtn__text-container">JupyterHub</span>
 </a>
@@ -469,7 +492,7 @@ title="Source repository"
       </li>
       
       <li>
-        <a href="https://github.com/earth-env-data-science/earth-env-data-science-book/issues/new?title=Issue%20on%20page%20%2Flectures/working_with_gcm_data.html&body=Your%20issue%20content%20here."
+        <a href="https://github.com/earth-env-data-science/earth-env-data-science-book/issues/new?title=Issue%20on%20page%20%2Flectures/models/regridding.html&body=Your%20issue%20content%20here."
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -486,7 +509,7 @@ title="Open an issue"
       </li>
       
       <li>
-        <a href="https://github.com/earth-env-data-science/earth-env-data-science-book/edit/master/src/lectures/working_with_gcm_data.ipynb"
+        <a href="https://github.com/earth-env-data-science/earth-env-data-science-book/edit/master/src/lectures/models/regridding.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -514,7 +537,7 @@ title="Edit this page"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="../_sources/lectures/working_with_gcm_data.ipynb"
+        <a href="../../_sources/lectures/models/regridding.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -574,47 +597,18 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#what-is-a-general-circulation-model">
-   What is a general circulation model?
+  <a class="reference internal nav-link" href="#considerations-for-model-validation">
+   Considerations for model validation
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#the-globe-divided-into-boxes">
-     The globe divided into boxes
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#grid-resolution">
-     Grid resolution
-    </a>
-   </li>
-  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#part-1-model-validation-comparing-a-state-estimate-to-observations">
-   Part 1: Model validation: Comparing a state estimate to observations
+  <a class="reference internal nav-link" href="#regridding-via-interpolation">
+   Regridding via interpolation
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#considerations-for-model-validation">
-     Considerations for model validation
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#regridding-via-interpolation">
-     Regridding via interpolation
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#regridding-using-conservative-interpolation">
-     Regridding using conservative interpolation
-    </a>
-   </li>
-  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#part-2-calculating-properties-in-the-native-model-grid-using-xgcm">
-   Part 2: Calculating properties in the native model grid using xgcm
+  <a class="reference internal nav-link" href="#regridding-using-conservative-interpolation">
+   Regridding using conservative interpolation
   </a>
  </li>
 </ul>
@@ -626,7 +620,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Working with output from general circulation models using xesmf and xgcm</h1>
+                <h1>Model validation: Comparing a state estimate to observations</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -637,47 +631,18 @@ title="Print to PDF"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#what-is-a-general-circulation-model">
-   What is a general circulation model?
+  <a class="reference internal nav-link" href="#considerations-for-model-validation">
+   Considerations for model validation
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#the-globe-divided-into-boxes">
-     The globe divided into boxes
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#grid-resolution">
-     Grid resolution
-    </a>
-   </li>
-  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#part-1-model-validation-comparing-a-state-estimate-to-observations">
-   Part 1: Model validation: Comparing a state estimate to observations
+  <a class="reference internal nav-link" href="#regridding-via-interpolation">
+   Regridding via interpolation
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#considerations-for-model-validation">
-     Considerations for model validation
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#regridding-via-interpolation">
-     Regridding via interpolation
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#regridding-using-conservative-interpolation">
-     Regridding using conservative interpolation
-    </a>
-   </li>
-  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#part-2-calculating-properties-in-the-native-model-grid-using-xgcm">
-   Part 2: Calculating properties in the native model grid using xgcm
+  <a class="reference internal nav-link" href="#regridding-using-conservative-interpolation">
+   Regridding using conservative interpolation
   </a>
  </li>
 </ul>
@@ -690,70 +655,8 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="working-with-output-from-general-circulation-models-using-xesmf-and-xgcm">
-<h1>Working with output from general circulation models using xesmf and xgcm<a class="headerlink" href="#working-with-output-from-general-circulation-models-using-xesmf-and-xgcm" title="Permalink to this headline">#</a></h1>
-<p>In this lecture, we will discuss some fundamental aspects and techniques to work with the output of general circulation models.</p>
-<section id="what-is-a-general-circulation-model">
-<h2>What is a general circulation model?<a class="headerlink" href="#what-is-a-general-circulation-model" title="Permalink to this headline">#</a></h2>
-<p>A general circulation model (GCM) is a computer model that simulates the circulation of a fluid (e.g., the ocean or atmosphere). The model is based on a set of partial differential equations, which describe the motion of a fluid in 3D space, and integrates these forward in time.  Most fundamentally, these models use a discrete representation of the <a class="reference external" href="https://en.wikipedia.org/wiki/Navier%E2%80%93Stokes_equations">Navier-Stokes Equations</a> but can include more equations to represent e.g., the thermodynamics, chemistry or biology of the coupled earth system.</p>
-<section id="the-globe-divided-into-boxes">
-<h3>The globe divided into boxes<a class="headerlink" href="#the-globe-divided-into-boxes" title="Permalink to this headline">#</a></h3>
-<p>Since there is no analytical solution to the full Navier-Stokes equation, modern GCMs solve them using numerical methods. They use a discretized version of the equations, which approximates them within a finite volume, or grid-cell. Each GCM splits the ocean or atmosphere into many cells, both in the horizontal and vertical.</p>
-<p><img alt="gcm-schematic" src="https://www.ipcc-data.org/img/3d_gcm_structure.jpg" /></p>
-<blockquote>
-<div><p>Source: <a class="reference external" href="http://www.ipcc-data.org">www.ipcc-data.org</a></p>
-</div></blockquote>
-<p>It is numerically favorable to shift (or ‘stagger’) the grid points where the model calculates the velocity with regard to the grid point where tracer values (temperature, salinity, or others) are calculated. There are several different ways to shift these points, commonly referred to as <a class="reference external" href="https://en.wikipedia.org/wiki/Arakawa_grids">Arakawa grids</a>. Most modern ocean models use a C-Grid. Thus, this lecture will focus on this particular grid configuration.
-In the C-grid, the zonal velocity <span class="math notranslate nohighlight">\(u\)</span> is located on the right side (or east face) of the tracer location and the meridional velocity <span class="math notranslate nohighlight">\(v\)</span> is located on the upper side (or north face). Similarly, the vertical velocity <span class="math notranslate nohighlight">\(w\)</span> is shifted with depth, but horizontally (when looking at it from straight above), it is on the tracer location.</p>
-<p><img alt="c-grid" src="https://xgcm.readthedocs.io/en/latest/_images/grid2d_hv.svg" /></p>
-<blockquote>
-<div><p>Source: <a class="reference external" href="http://xgcm.readthedocs.io">xgcm.readthedocs.io</a></p>
-</div></blockquote>
-</section>
-<section id="grid-resolution">
-<h3>Grid resolution<a class="headerlink" href="#grid-resolution" title="Permalink to this headline">#</a></h3>
-<p>Discretizing the equations has consequences:</p>
-<ul class="simple">
-<li><p>In order to get a realistic representation of the global circulation, the size of grid cells needs to be chosen so that all relevant processes are resolved.  In reality, this usually requires too much computing power for global models and so processes that are too small to be explicitly resolved, like <a class="reference external" href="https://www.gfdl.noaa.gov/ocean-mesoscale-eddies/">mesoscale eddies</a> or <a class="reference external" href="https://www.gfdl.noaa.gov/ocean-mixing/">vertical mixing</a>, need to be carefully parameterized since they influence the large scale circulation. The following video illustrates the representation of mesoscale eddies in global models of different grid resolution. It shows the surface nutrient fields of three coupled climate models (produced by NOAA/GFDL) around the Antarctic Peninsula with increasing ocean resolution from left to right.</p></li>
-</ul>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Video to show difference in resolution</span>
-<span class="c1"># from IPython.display import HTML</span>
-<span class="c1"># HTML(&#39;&lt;iframe src=&quot;https://player.vimeo.com/video/259423826&quot; width=&quot;640&quot; height=&quot;360&quot; frameborder=&quot;0&quot; allow=&quot;autoplay; fullscreen&quot; allowfullscreen&gt;&lt;/iframe&gt;&#39;)</span>
-<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">IFrame</span><span class="c1">#, VimeoVideo, HTML</span>
-<span class="n">IFrame</span><span class="p">(</span><span class="s2">&quot;https://player.vimeo.com/video/259423826&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s2">&quot;640&quot;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s2">&quot;360&quot;</span><span class="p">)</span>
-<span class="c1"># HTML(&#39;&lt;div style=&quot;text-align: center&quot;&gt;&lt;iframe width=&quot;640&quot;, height=&quot;360&quot; src=&quot;https://player.vimeo.com/video/259423826&quot; frameborder=&quot;4&quot;&gt;&lt;/iframe&gt;&lt;/div&gt;&#39;)</span>
-<span class="c1"># VimeoVideo()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html">
-<iframe
-    width="640"
-    height="360"
-    src="https://player.vimeo.com/video/259423826"
-    frameborder="0"
-    allowfullscreen
-></iframe>
-</div></div>
-</div>
-<p><strong>Nominal model resolution from left to right: 1 degree (CM2.1deg), 0.25 degree (CM2.5) and 0.1 degree (CM2.6). The left ocean model employs a parametrization for both the advective and diffusive effects of mesoscale eddies, while the middle and right model do not.</strong></p>
-<blockquote>
-<div><p>We will learn how to <code class="docutils literal notranslate"><span class="pre">regrid</span></code> high-resolution model fields in order to compare them to observations in the first part of this lecture.</p>
-</div></blockquote>
-<ul class="simple">
-<li><p>While regridding is necessary to compare model output to other datasets, some calculations should be performed on the native model grid for maximum accuracy. This is usually the case when you want to derive additional quantities, like the gradient or divergence of a field. Most GCMs use a <a class="reference external" href="https://en.wikipedia.org/wiki/Curvilinear_coordinates">curvilinear grid</a> to avoid infinitely small grid cells at the North Pole. Some examples of curvilinear grids are a tripolar grid (the Arctic region is defined by two poles, placed over landmasses, see Figure below) or a cubed-sphere grid (several connected patches of curvilinear grids, see Figure below).
-In most ocean models, due to these ‘warped’ coordinate systems, the boxes described are not perfectly rectangular<a class="reference external" href="https://en.wikipedia.org/wiki/Cuboid">cuboids</a>. To accurately represent the volume of the cell, we require so-called grid metrics - the distances, cell areas, and volume to calculate operators like e.g., divergence.</p></li>
-</ul>
-<blockquote>
-<div><p>We will learn how to use <a class="reference external" href="https://xgcm.readthedocs.io/en/latest/">xgcm</a> in order to deal with computations on the raw model grid.</p>
-</div></blockquote>
-</section>
-</section>
-<section id="part-1-model-validation-comparing-a-state-estimate-to-observations">
-<h2>Part 1: Model validation: Comparing a state estimate to observations<a class="headerlink" href="#part-1-model-validation-comparing-a-state-estimate-to-observations" title="Permalink to this headline">#</a></h2>
+  <section class="tex2jax_ignore mathjax_ignore" id="model-validation-comparing-a-state-estimate-to-observations">
+<h1>Model validation: Comparing a state estimate to observations<a class="headerlink" href="#model-validation-comparing-a-state-estimate-to-observations" title="Permalink to this headline">#</a></h1>
 <p>We start by importing xarray, numpy and matplotlib as usual</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -879,7 +782,7 @@ Data variables:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.QuadMesh at 0x7f466c068710&gt;
 </pre></div>
 </div>
-<img alt="../_images/working_with_gcm_data_9_1.png" src="../_images/working_with_gcm_data_9_1.png" />
+<img alt="../../_images/regridding_5_1.png" src="../../_images/regridding_5_1.png" />
 </div>
 </div>
 <p>As the name suggests, this model output is not global, but instead focusses on the Southern Ocean.
@@ -965,11 +868,11 @@ Attributes:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.QuadMesh at 0x7f465431c8d0&gt;
 </pre></div>
 </div>
-<img alt="../_images/working_with_gcm_data_13_1.png" src="../_images/working_with_gcm_data_13_1.png" />
+<img alt="../../_images/regridding_9_1.png" src="../../_images/regridding_9_1.png" />
 </div>
 </div>
 <section id="considerations-for-model-validation">
-<h3>Considerations for model validation<a class="headerlink" href="#considerations-for-model-validation" title="Permalink to this headline">#</a></h3>
+<h2>Considerations for model validation<a class="headerlink" href="#considerations-for-model-validation" title="Permalink to this headline">#</a></h2>
 <p>Now that we have both datasets loaded, how do we approach the model validation?</p>
 <p>It is always crucial to put some thought into which time periods of a model and observations are actually comparable. In this case both should be directly comparable since SOSE is a state estimate, which incorporates observations to estimate the state of the ocean at the time observations were taken (and in between). If however the model data would be from a fully coupled climate model, we would have to take e.g. long averages due to the fact that internal variability - like for instance ENSO - can not be expected to happen in the same year as observations. But since we chose a state estimate, we can actually compare the data in a single year or even month (this will save us some computing time, but if you are interested, go ahead and choose a longer averaging period below and compare the results).</p>
 <p>Now select a time period that overlaps between model and observations, e.g. the year 2009 and average over the year.</p>
@@ -1012,13 +915,13 @@ Attributes:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.QuadMesh at 0x7f4654183c50&gt;
 </pre></div>
 </div>
-<img alt="../_images/working_with_gcm_data_19_1.png" src="../_images/working_with_gcm_data_19_1.png" />
+<img alt="../../_images/regridding_15_1.png" src="../../_images/regridding_15_1.png" />
 </div>
 </div>
 <p>This looks nice and the large scale structure (colder waters near Antarctica) agree. But since temperature differs over such a wide range, it is hard to quantify the differences with the naked eye. Naturally we would want to plot the difference between both datasets.</p>
 </section>
 <section id="regridding-via-interpolation">
-<h3>Regridding via interpolation<a class="headerlink" href="#regridding-via-interpolation" title="Permalink to this headline">#</a></h3>
+<h2>Regridding via interpolation<a class="headerlink" href="#regridding-via-interpolation" title="Permalink to this headline">#</a></h2>
 <p>There is however a major problem: Both datasets are on a different grid - the model has a much higher resolution (~ 1/5 deg) than the observations (~ 2 degree). In the model we can see signs of mesoscale eddies, even in the yearly average.</p>
 <p>To compare the dataset directly they have to be on the same grid, e.g. each point of the array has to correspond to the same position.</p>
 <p><em>We have 3 options to achieve this</em>:</p>
@@ -1119,7 +1022,7 @@ Attributes:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.QuadMesh at 0x7f4648031320&gt;
 </pre></div>
 </div>
-<img alt="../_images/working_with_gcm_data_27_1.png" src="../_images/working_with_gcm_data_27_1.png" />
+<img alt="../../_images/regridding_23_1.png" src="../../_images/regridding_23_1.png" />
 </div>
 </div>
 <p>The observations now have more datapoints and look a lot smoother, but since the values are just linearly interpolated, there is no new information on smaller scales.</p>
@@ -1135,7 +1038,7 @@ Attributes:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.QuadMesh at 0x7f4643f08320&gt;
 </pre></div>
 </div>
-<img alt="../_images/working_with_gcm_data_29_1.png" src="../_images/working_with_gcm_data_29_1.png" />
+<img alt="../../_images/regridding_25_1.png" src="../../_images/regridding_25_1.png" />
 </div>
 </div>
 <p>We can see that the model sea surface temperature is quite a bit different (up to 2 deg C in some places). But the comparison is hindered by a lot of smaller scale structure that stems from eddies in the model data, which are not resolved in the observations.</p>
@@ -1188,7 +1091,7 @@ Attributes:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.QuadMesh at 0x7f4643ebf4a8&gt;
 </pre></div>
 </div>
-<img alt="../_images/working_with_gcm_data_33_1.png" src="../_images/working_with_gcm_data_33_1.png" />
+<img alt="../../_images/regridding_29_1.png" src="../../_images/regridding_29_1.png" />
 </div>
 </div>
 <p>That was easy enough, but there is a problem with this approach. Using linear interpolation works very well when we ‘upsample’ (going from lower to higher resolution), since most of the interpolated points are between the wider spaced original data. If we ‘downsample’ (going from higher resolution to lower resolution), this method will only use the two nearest points to infer a new value. This means most of the high resolution source data is not taken into consideration, and small noisy features can have a disproportionate influence on the regridded data. It also implies that properties like tracer concentrations over the full domain are not necessarily conserved.</p>
@@ -1205,13 +1108,13 @@ Attributes:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f4638207898&gt;]
 </pre></div>
 </div>
-<img alt="../_images/working_with_gcm_data_35_1.png" src="../_images/working_with_gcm_data_35_1.png" />
+<img alt="../../_images/regridding_31_1.png" src="../../_images/regridding_31_1.png" />
 </div>
 </div>
 <p>As you can see the upsampled datapoints depend highly on the position of the target grid. What we should rather do in this case is average values around the wider target grid. This can be achieved by using a different method in xesmf.</p>
 </section>
 <section id="regridding-using-conservative-interpolation">
-<h3>Regridding using conservative interpolation<a class="headerlink" href="#regridding-using-conservative-interpolation" title="Permalink to this headline">#</a></h3>
+<h2>Regridding using conservative interpolation<a class="headerlink" href="#regridding-using-conservative-interpolation" title="Permalink to this headline">#</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">conservative</span></code> option will take an average over several grid cells to reduce the resolution of the model. This ensures that no information is discarded and that for instance adjacent positive and negative anomalies are not increasing the noise in the regridded data.</p>
 <p>This method is always preferable, when moving to lower resolutions, especially when the data is not very smooth. Unfortunately this also requires some more input parameter, namely the bounding coordinates of each gridpoint (in addition to the center or tracer coordinate; see schematic in the introduction). xesmf expects those coordinates to be named <code class="docutils literal notranslate"><span class="pre">lon_b</span></code> and <code class="docutils literal notranslate"><span class="pre">lat_b</span></code>.</p>
 <p>When we look carefully at the model data, these bounding coordinates are already given (as the coodinates for the <span class="math notranslate nohighlight">\(u\)</span> and <span class="math notranslate nohighlight">\(v\)</span> velocities on a staggered grid - <code class="docutils literal notranslate"><span class="pre">XC</span></code> and <code class="docutils literal notranslate"><span class="pre">YC</span></code> respectively), but xesmf requires a bounding value at each side (This model does only provides the same amount of coordinate values for both tracer and velocity points).</p>
@@ -1456,7 +1359,7 @@ Attributes:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.QuadMesh at 0x7f464348bb38&gt;
 </pre></div>
 </div>
-<img alt="../_images/working_with_gcm_data_46_1.png" src="../_images/working_with_gcm_data_46_1.png" />
+<img alt="../../_images/regridding_42_1.png" src="../../_images/regridding_42_1.png" />
 </div>
 </div>
 <p>As expected the downsampling (regridding to lower resolution) via interpolation shows more noise. But even in the conservative regridding case there are still many alternating positive and negative anomalies, indicative of the fact that the observations so not resolve features down to the scale of the grid. This is a common issue with observational datasets, which have to use smoothing techniques to aquire a gridded dataset from point measurements.</p>
@@ -1537,7 +1440,7 @@ Remove file conservative_32x180_16x72.nc
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/working_with_gcm_data_55_0.png" src="../_images/working_with_gcm_data_55_0.png" />
+<img alt="../../_images/regridding_51_0.png" src="../../_images/regridding_51_0.png" />
 </div>
 </div>
 <p>Ultimately which method you use will depend on the particular use case. Before regridding, carefully inspect your datasets and think of what you want to achieve:</p>
@@ -1545,119 +1448,6 @@ Remove file conservative_32x180_16x72.nc
 <li><p>Are both datasets of a similar resolution and relatively smooth? Then using linear interpolation should be acceptable and is by far the easiest way to compare the datasets.</p></li>
 <li><p>Is the goal of the comparison to evaluate differences on larger scales than the grid scale? Then create a coarser grid and interpolate conservatively to gain a larger scale perspective without getting distracted by smaller scale features.</p></li>
 </ul>
-</section>
-</section>
-<section id="part-2-calculating-properties-in-the-native-model-grid-using-xgcm">
-<h2>Part 2: Calculating properties in the native model grid using xgcm<a class="headerlink" href="#part-2-calculating-properties-in-the-native-model-grid-using-xgcm" title="Permalink to this headline">#</a></h2>
-<p>For maximum accuracy it is always preferrable to calculate properties in the closest way possible to the model code, which at the least means executing calculations on the native grid. For comparison you can then regrid properties afterwards. To demonstrate how to do this we now calculate the meridional sea surface temperature gradient for the SOSE output.</p>
-<p>For these sort of calculations we use <a class="reference external" href="https://xgcm.readthedocs.io/en/latest/index.html">xgcm</a>, which helps us to deal with the staggered grids that models use:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">xgcm</span> <span class="kn">import</span> <span class="n">Grid</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>in order to work with xgcm we have to create a <code class="docutils literal notranslate"><span class="pre">Grid</span></code> object which ‘understands’ which coordinates of a dataset are representing the various staggered grid positions.</p>
-<p>But first we need to check quickly how the model grid is designed.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">ds_model</span><span class="o">.</span><span class="n">XC</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">ds_model</span><span class="o">.</span><span class="n">XG</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">ds_model</span><span class="o">.</span><span class="n">YC</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">ds_model</span><span class="o">.</span><span class="n">YG</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;xarray.DataArray ()&gt;
-array(False)
-Coordinates:
-    XC       float32 0.083333336
-    XG       float32 5.551115e-17
-&lt;xarray.DataArray ()&gt;
-array(False)
-Coordinates:
-    YC       float32 -77.87497
-    YG       float32 -77.9583
-</pre></div>
-</div>
-</div>
-</div>
-<p>We can see that for the first datapoint of the dataset, the ‘grid coordinates’ (<code class="docutils literal notranslate"><span class="pre">XG</span></code> and <code class="docutils literal notranslate"><span class="pre">YG</span></code>) have smaller values than the ‘tracer coordinates’ (<code class="docutils literal notranslate"><span class="pre">XC</span></code> and <code class="docutils literal notranslate"><span class="pre">YC</span></code>). This means that for both <code class="docutils literal notranslate"><span class="pre">axes</span></code> (each axis decribes a logical direction and both tracer and grid coordinates), the tracer coordinate is at the center and the grid coordinate is on the left (this can be on the right for some model setups; thus, carefull checking beforehand is always recommended).</p>
-<p>With this information, we can now construct the <code class="docutils literal notranslate"><span class="pre">Grid</span></code> object and configure it properly (this step is only required once for a single grid).</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid</span> <span class="o">=</span> <span class="n">Grid</span><span class="p">(</span><span class="n">ds_model</span><span class="p">,</span>
-            <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;X&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;center&#39;</span><span class="p">:</span> <span class="s1">&#39;XC&#39;</span><span class="p">,</span> <span class="s1">&#39;left&#39;</span><span class="p">:</span> <span class="s1">&#39;XG&#39;</span><span class="p">},</span>
-                    <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;center&#39;</span><span class="p">:</span> <span class="s1">&#39;YC&#39;</span><span class="p">,</span> <span class="s1">&#39;left&#39;</span><span class="p">:</span> <span class="s1">&#39;YG&#39;</span><span class="p">}})</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>The <code class="docutils literal notranslate"><span class="pre">grid</span></code> object can now be used to apply various operations on the data variables of the dataset. Most GCMs calculate all properties by using simple differences and interpolation between neighboring cells.</p>
-<p>We first select the surface layer of temperature and average over year 2009.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sst</span> <span class="o">=</span> <span class="n">ds_model</span><span class="o">.</span><span class="n">THETA</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">Z</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;2009&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>In order to compute the meridional gradient of sea surface temperature, we have to simply compute the finite difference along axis <code class="docutils literal notranslate"><span class="pre">Y</span></code>.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">deltay_sst</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">sst</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">)</span>
-<span class="n">deltay_sst</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;xarray.DataArray &#39;sub-9563c8ac51aadebd24c532c2db11db98&#39; (YG: 320, XC: 2160)&gt;
-dask.array&lt;shape=(320, 2160), dtype=float32, chunksize=(1, 2160)&gt;
-Coordinates:
-  * YG       (YG) float32 -77.9583 -77.79163 -77.62497 ... -24.9583 -24.791632
-  * XC       (XC) float32 0.083333336 0.25 0.4166667 ... 359.75 359.9167
-</pre></div>
-</div>
-</div>
-</div>
-<p>If you look carefully, you see that the <code class="docutils literal notranslate"><span class="pre">Y</span></code> dimension has been shifted, from <code class="docutils literal notranslate"><span class="pre">YC</span></code> to <code class="docutils literal notranslate"><span class="pre">YG</span></code>. The gradient is defined on the cell face or <span class="math notranslate nohighlight">\(v\)</span> velocity point. This is however just a difference between cells. To derive the gradient in the y direction in physical units <code class="docutils literal notranslate"><span class="pre">degC/m</span></code>, we need to divide the array by the distance along the <code class="docutils literal notranslate"><span class="pre">Y</span></code> axes between adjacent tracer points <code class="docutils literal notranslate"><span class="pre">dyC</span></code> , which itself is located at the <span class="math notranslate nohighlight">\(v\)</span> velocity point.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dsst_dy</span> <span class="o">=</span> <span class="n">deltay_sst</span> <span class="o">/</span> <span class="n">ds_model</span><span class="o">.</span><span class="n">dyC</span>
-<span class="n">dsst_dy</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;xarray.DataArray (YG: 320, XC: 2160)&gt;
-dask.array&lt;shape=(320, 2160), dtype=float32, chunksize=(1, 2160)&gt;
-Coordinates:
-  * YG       (YG) float32 -77.9583 -77.79163 -77.62497 ... -24.9583 -24.791632
-  * XC       (XC) float32 0.083333336 0.25 0.4166667 ... 359.75 359.9167
-    dxG      (YG, XC) float32 dask.array&lt;shape=(320, 2160), chunksize=(320, 2160)&gt;
-    dyC      (YG, XC) float32 dask.array&lt;shape=(320, 2160), chunksize=(320, 2160)&gt;
-    rAs      (YG, XC) float32 dask.array&lt;shape=(320, 2160), chunksize=(320, 2160)&gt;
-</pre></div>
-</div>
-</div>
-</div>
-<p>Now lets select the surface layer and the first timestep and plot the results</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">SouthPolarStereo</span><span class="p">())</span>
-<span class="n">dsst_dy</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">robust</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;cartopy.mpl.feature_artist.FeatureArtist at 0x7f46382c17f0&gt;
-</pre></div>
-</div>
-<img alt="../_images/working_with_gcm_data_70_1.png" src="../_images/working_with_gcm_data_70_1.png" />
-</div>
-</div>
-<p>The meridional gradient is positive over the whole domain (temperature is increasing towards the equator), as might be expected. The stronges gradient is associated with the boundary between the retroflection of the warm <a class="reference external" href="https://en.wikipedia.org/wiki/Agulhas_Current">Agulhas current</a> and the cold waters of the <a class="reference external" href="https://en.wikipedia.org/wiki/Antarctic_Circumpolar_Current">Antarctic Circumpolar Current</a> in the Indian Ocean sector.</p>
 </section>
 </section>
 
@@ -1674,7 +1464,7 @@ Coordinates:
         },
         kernelOptions: {
             kernelName: "python3",
-            path: "./lectures"
+            path: "./lectures/models"
         },
         predefinedOutput: true
     }
@@ -1688,17 +1478,17 @@ Coordinates:
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="../assignments/cartopy.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="cmip.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Assignment: Making Maps with Cartopy</p>
+            <p class="prev-next-title">Working with output from many different CMIP6 climate models</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="dask/intro.html" title="next page">
+    <a class='right-next' id="next-link" href="xgcm.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Dask for Parallel Computing in Python</p>
+        <p class="prev-next-title">Calculating properties in the native model grid using xgcm</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
@@ -1723,7 +1513,7 @@ Coordinates:
     </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
 
 
   </body>
