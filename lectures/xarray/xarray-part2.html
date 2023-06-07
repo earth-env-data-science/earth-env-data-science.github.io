@@ -6906,7 +6906,7 @@ Data variables:
 <section id="coarsen">
 <h2>Coarsen<a class="headerlink" href="#coarsen" title="Permalink to this headline">#</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">coarsen</span></code> is a simple way to reduce the size of your data along one or more axes.
-It is very similar to <code class="docutils literal notranslate"><span class="pre">resample</span></code> when operating on time dimensions; the key differnce is that <code class="docutils literal notranslate"><span class="pre">coarsen</span></code> only operates on fixed blocks of data, irrespective of the coordinate values, while <code class="docutils literal notranslate"><span class="pre">resample</span></code> actually looks at the coordinates to figure out, e.g. what month a particular data point is in.</p>
+It is very similar to <code class="docutils literal notranslate"><span class="pre">resample</span></code> when operating on time dimensions; the key difference is that <code class="docutils literal notranslate"><span class="pre">coarsen</span></code> only operates on fixed blocks of data, irrespective of the coordinate values, while <code class="docutils literal notranslate"><span class="pre">resample</span></code> actually looks at the coordinates to figure out, e.g. what month a particular data point is in.</p>
 <p>For regularly-spaced monthly data beginning in January, the following should be equivalent to annual resampling.
 However, results would different for irregularly-spaced data.</p>
 <div class="cell docutils container">
